@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="junit"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/junit/junit-4.7.jar" sourcepath="libsource/junit-4.7-src.jar"/>
+	<classpathentry kind="lib" path="lib/jme/jme.jar" sourcepath="libsource/jme.zip"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
