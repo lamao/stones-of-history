@@ -22,4 +22,9 @@ public class SHUtils
 			   Math.abs(v1.y - v2.y) < accuracy &&
 			   Math.abs(v1.z - v2.z) < accuracy;
 	}
+	
+	public static boolean inRange(float value, float p1, float p2)
+	{
+		return (p1 <= value && value <= p2) || (p2 <= value && value <= p1);
+	}
 }

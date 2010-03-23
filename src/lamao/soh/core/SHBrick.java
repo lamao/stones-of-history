@@ -9,7 +9,9 @@ package lamao.soh.core;
 import com.jme.scene.Spatial;
 
 /**
- * Brick game element. 
+ * Brick game element.<br>
+ * <b>NOTE:</b> Model bound for brick must be only <code>BoundingBox</code> 
+ * 
  * @author lamao
  *
  */

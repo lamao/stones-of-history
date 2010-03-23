@@ -38,6 +38,30 @@ public class SHUtilsTest
 		v2 = new Vector3f(-0.0f, -0.0f, -0.0f);
 		assertTrue(SHUtils.areEqual(v1, v2 , 0.000001f));
 		assertFalse(SHUtils.areEqual(v1, v2, 0.0f));
+	}
+	
+	@Test
+	public void testInRange()
+	{
+		assertTrue(SHUtils.inRange(1.2f, 1.1f, 1.3f));
+		assertTrue(SHUtils.inRange(1.1f, 1.1f, 1.3f));
+		assertTrue(SHUtils.inRange(1.3f, 1.1f, 1.3f));
+		assertFalse(SHUtils.inRange(1.2f, 1.21f, 1.3f));
 		
+		assertTrue(SHUtils.inRange(1.2f, 1.3f, 1.1f));
+		assertTrue(SHUtils.inRange(1.1f, 1.3f, 1.1f));
+		assertTrue(SHUtils.inRange(1.3f, 1.3f, 1.1f));
+		assertFalse(SHUtils.inRange(1.2f, 1.3f, 1.21f));
+		
+		assertTrue(SHUtils.inRange(-1.2f, -1.1f, -1.3f));
+		assertTrue(SHUtils.inRange(-1.1f, -1.1f, -1.3f));
+		assertTrue(SHUtils.inRange(-1.3f, -1.1f, -1.3f));
+		assertFalse(SHUtils.inRange(-1.2f, -1.21f, -1.3f));
+		
+		assertTrue(SHUtils.inRange(-1.2f, -1.3f, -1.1f));
+		assertTrue(SHUtils.inRange(-1.1f, -1.3f, -1.1f));
+		assertTrue(SHUtils.inRange(-1.3f, -1.3f, -1.1f));
+		assertFalse(SHUtils.inRange(-1.2f, -1.3f, -1.21f));
+
 	}
 }
