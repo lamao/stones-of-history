@@ -147,5 +147,17 @@ public class SHBallTest
 									0.001f));
 		
 	}
+	
+	@Test
+	public void testGlassHit()
+	{
+		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHBrick brick = SHCoreTestHelper.createDefaultBrick();
+		
+		ball.setLocation(0, 2, 0);
+		brick.setGlass(true);
+		ball.onHit(brick);
+		assertTrue(SHUtils.areEqual(Vector3f.UNIT_Y, ball.getVelocity(), 0.001f));
+	}
 
 }

@@ -87,6 +87,42 @@ public class SHDefaultPaddleHitHandlerTest
 	}
 	
 	@Test
+	public void testCornerHits()
+	{
+		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHPaddle paddle = SHCoreTestHelper.createDefaultPaddle();
+		
+		// left corner
+		ball.setLocation(-3, 2, 0);
+		ball.setVelocity(1, -1, 0);
+		paddle.onHit(ball);
+		assertTrue(SHUtils.areEqual(new Vector3f(-1, -1, 0), ball.getVelocity(), 
+				0.001f));
+		
+		// left side
+		ball.setLocation(-3, 1, 0);
+		ball.setVelocity(1, -1, 0);
+		paddle.onHit(ball);
+		assertTrue(SHUtils.areEqual(new Vector3f(-1, -1, 0), ball.getVelocity(), 
+				0.001f));
+		
+		// right corner 
+		ball.setLocation(3, 2, 0);
+		ball.setVelocity(-1, -1, 0);
+		paddle.onHit(ball);
+		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 
+				0.001f));
+		
+		// right side 
+		ball.setLocation(3, 1, 0);
+		ball.setVelocity(-1, -1, 0);
+		paddle.onHit(ball);
+		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 
+				0.001f));
+		
+	}
+	
+	@Test
 	public void testOnHitStressTest()
 	{
 		SHPaddle paddle = SHCoreTestHelper.createDefaultPaddle();

@@ -62,4 +62,16 @@ public class SHBrick extends SHEntity
 	{
 		_glass = glass;
 	}
+	
+	/** 
+	 * Invoked when brick is hit. Decreases its strength by one if it is not
+	 * Integer.MAX_VALUE (super brick).
+	 */
+	public void hit()
+	{
+		if (_strength != Integer.MAX_VALUE)
+		{
+			_strength--;
+		}
+	}
 }

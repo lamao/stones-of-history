@@ -32,14 +32,23 @@ public class SHDefaultPaddleHitHandler implements ISHPaddleHitHandler
 			float ballPos = ball.getLocation().x - paddle.getLocation().x 
 					+ paddleBound.xExtent;
 			float paddleWidth = paddleBound.xExtent * 2;
+			Vector3f newVelocity = null;
 			
-			double newAngle = Math.acos((ballPos - 0.5f * paddleWidth) 
-										/ (0.5f * paddleWidth));
-			float speed = ball.getVelocity().length();
-			Vector3f newVelocity = new Vector3f(
-					(float)(speed * Math.cos(newAngle)),
-					(float)(speed * Math.sin(newAngle)),
-					0);
+			if (ballPos < 0 || ballPos > paddleWidth)
+			{
+				newVelocity = ball.getVelocity();
+				newVelocity.x = -newVelocity.x;
+			}
+			else
+			{
+				double newAngle = Math.acos((ballPos - 0.5f * paddleWidth) 
+						/ (0.5f * paddleWidth));
+				float speed = ball.getVelocity().length();
+				newVelocity = new Vector3f(
+						(float)(speed * Math.cos(newAngle)),
+						(float)(speed * Math.sin(newAngle)),
+						0);
+			}
 			ball.setVelocity(newVelocity);
 		}
 	}

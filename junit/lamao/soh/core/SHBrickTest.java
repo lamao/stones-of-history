@@ -28,5 +28,27 @@ public class SHBrickTest
 		assertEquals(1, brick.getStrength());
 		assertFalse(brick.isGlass());
 	}
+	
+	@Test
+	public void testHit()
+	{
+		SHBrick brick = SHCoreTestHelper.createDefaultBrick();
+		brick.setStrength(10);
+		
+		brick.hit();
+		assertEquals(9, brick.getStrength());
+		
+		brick.setGlass(true);
+		brick.hit();
+		assertEquals(8, brick.getStrength());
+		
+		brick.setStrength(Integer.MAX_VALUE);
+		brick.hit();
+		assertEquals(Integer.MAX_VALUE, brick.getStrength());
+		
+		brick.setGlass(false);
+		brick.hit();
+		assertEquals(Integer.MAX_VALUE, brick.getStrength());
+	}
 
 }
