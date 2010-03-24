@@ -9,17 +9,14 @@ package lamao.soh.core;
 import com.jme.scene.Spatial;
 
 /**
- * Brick game element.<br>
+ * Brick game entity.<br>
  * <b>NOTE:</b> Model bound for brick must be only <code>BoundingBox</code> 
  * 
  * @author lamao
  *
  */
-public class SHBrick
+public class SHBrick extends SHEntity
 {
-	/** Model for brick */
-	private Spatial _model;
-	
 	/** Strength (or lives) of the brick */
 	private int _strength;
 	
@@ -29,8 +26,7 @@ public class SHBrick
 	
 	public SHBrick(Spatial model, int strength, boolean glass)
 	{
-		super();
-		_model = model;
+		super(model);
 		_strength = strength;
 		_glass = glass;
 	}
@@ -45,16 +41,6 @@ public class SHBrick
 	public SHBrick()
 	{
 		this(null);
-	}
-
-	public Spatial getModel()
-	{
-		return _model;
-	}
-
-	public void setModel(Spatial model)
-	{
-		_model = model;
 	}
 
 	public int getStrength()

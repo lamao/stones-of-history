@@ -11,22 +11,18 @@ import com.jme.math.Vector3f;
 import com.jme.scene.Spatial;
 
 /**
- * Ball element
+ * Ball entity.
  * @author lamao
  *
  */
-public class SHBall
+public class SHBall extends SHEntity
 {
-	/** Model for ball */
-	private Spatial _model;
-	
-	/** Move direction */
+	/** Ball velocity */
 	private Vector3f _velocity;
 	
 	public SHBall(Spatial model, Vector3f velocity)
 	{
-		super();
-		_model = model;
+		super(model);
 		_velocity = velocity;
 	}
 	
@@ -40,16 +36,6 @@ public class SHBall
 	public SHBall()
 	{
 		this(null);
-	}
-
-	public Spatial getModel()
-	{
-		return _model;
-	}
-
-	public void setModel(Spatial model)
-	{
-		_model = model;
 	}
 
 	public Vector3f getVelocity()
@@ -67,27 +53,6 @@ public class SHBall
 		_velocity.set(x, y, z);
 	}
 
-	/** 
-	 * Changes model local translation. <br>
-	 * <b>NOTE: </b>Model must be not null
-	 */
-	public void setLocation(Vector3f location)
-	{
-		_model.setLocalTranslation(location);
-		_model.updateModelBound();
-	}
-	
-	public void setLocation(float x, float y, float z)
-	{
-		_model.setLocalTranslation(x, y, z);
-		_model.updateModelBound();
-	}
-	
-	public Vector3f getLocation()
-	{
-		return _model.getLocalTranslation();
-	}
-	
 	/** 
 	 * Reacts on collision with brick. If brick is glass ball does not change
 	 * its velocity (e.i it moves thought the brick)<br> 
@@ -107,13 +72,13 @@ public class SHBall
 		// if ball hits up or bottom side change velocity.y component
 		// if ball hits left or right side change velocity.x component
 		// else ball hits in corner repulse it back
-		if (SHUtils.inRange(_model.getLocalTranslation().x, 
+		if (SHUtils.inRange(getModel().getLocalTranslation().x, 
 							box.getCenter().x - box.xExtent,
 							box.getCenter().x + box.xExtent))
 		{
 			_velocity.y = -_velocity.y;
 		}
-		else if (SHUtils.inRange(_model.getLocalTranslation().y, 
+		else if (SHUtils.inRange(getModel().getLocalTranslation().y, 
 							box.getCenter().y - box.yExtent,
 							box.getCenter().y + box.yExtent))
 		{
