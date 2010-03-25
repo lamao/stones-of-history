@@ -1,4 +1,4 @@
-<project name="stones-of-history" basedir="." default="run.windows">
+<project name="stones-of-history" basedir="." default="run.testes">
 <!--=============================== Properties ==============================-->
 	
 	<!-- ***************** SETTINGS *********************** -->

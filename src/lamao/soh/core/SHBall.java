@@ -64,6 +64,7 @@ public class SHBall extends SHEntity
 	 */
 	public void onHit(SHBrick brick)
 	{
+		brick.hit();
 		if (brick.isGlass())
 			return;
 		

@@ -11,5 +11,7 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="stones-of-history/native/win32"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/jme/jme-gamestates.jar" sourcepath="libsource/jme.zip"/>
+	<classpathentry kind="lib" path="lib/jme/jme-audio.jar" sourcepath="libsource/jme.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

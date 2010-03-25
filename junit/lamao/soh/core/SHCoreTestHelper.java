@@ -6,9 +6,12 @@
  */
 package lamao.soh.core;
 
+import lamao.soh.core.SHLevel.SHWallType;
+
 import org.junit.Test;
 
 import com.jme.bounding.BoundingBox;
+import com.jme.bounding.BoundingSphere;
 import com.jme.math.Vector3f;
 import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Sphere;
@@ -24,19 +27,46 @@ import static org.junit.Assert.*;
 public class SHCoreTestHelper
 {
 	/** Creates default box brick dimension (1, 1, 1) located at (0, 0, 0) */ 
-	static SHBrick createDefaultBrick()
+	static SHBrick createDefaultBrick(String id)
 	{
-		SHBrick brick = new SHBrick(new Box("brick", new Vector3f(0, 0, 0), 
+		SHBrick brick = new SHBrick(new Box(id, new Vector3f(0, 0, 0), 
 				2, 1, 1));
 		brick.getModel().setModelBound(new BoundingBox());
 		brick.getModel().updateModelBound();
 		return brick;
 	}
 	
+	/** Creates same box as in {@link #createDefaultBrick()} but it is glass */
+	static SHBrick createGlassBrick(String id)
+	{
+		SHBrick brick = createDefaultBrick(id);
+		brick.setGlass(true);
+		return brick;
+	}
+	
+	/** 
+	 * Creates same box as in {@link #createDefaultBrick()} but it is 
+	 * superbrick 
+	 */
+	static SHBrick createSuperBrick(String id)
+	{
+		SHBrick brick = createDefaultBrick(id);
+		brick.setStrength(Integer.MAX_VALUE);
+		return brick;
+	}
+	
 	/** Creates default ball with radius 1 located at (0, 0, 0)*/
+	static SHBall createDefaultBall(String id)
+	{
+		Sphere model = new Sphere(id, 15, 15, 1);
+		model.setModelBound(new BoundingSphere());
+		model.updateModelBound();
+		return new SHBall(model);
+	}
+	
 	static SHBall createDefaultBall()
 	{
-		return new SHBall(new Sphere("ball", 15, 15, 1));
+		return createDefaultBall("ball");
 	}
 	
 	/** 
@@ -52,11 +82,108 @@ public class SHCoreTestHelper
 		return paddle;
 	}
 	
+	/**
+	 * Creates level with default walls, default ball, default paddle, and 
+	 * three bricks: default, super, glass. <br>
+	 * Ball location is (0, 2, 0), paddle location is (0, 0, 0),
+	 * default brick location (-5, 0, 0), glass brick - (0, 0, 0),
+	 * super brick (5, 0, 0) 
+	 */
+	static SHLevel createDefaultLevel()
+	{
+		SHLevel level = new SHLevel();
+		
+		SHBrick defaultBrick = createDefaultBrick("brick");
+		defaultBrick.setLocation(-5, 0, 0);
+		level.addBrick(defaultBrick);
+		
+		SHBrick glassBrick = createGlassBrick("glass");
+		glassBrick.setLocation(0, 0, 0);
+		level.addBrick(glassBrick);
+		
+		SHBrick superBrick = createSuperBrick("super");
+		superBrick.setLocation(5, 0, 0);
+		level.addBrick(superBrick);
+		
+		SHBall ball = createDefaultBall("ball");
+		ball.setLocation(0, -5, 0);
+		level.addBall(ball);
+		
+		SHPaddle paddle = createDefaultPaddle();
+		paddle.setLocation(0, -7, 0);
+		level.setPaddle(paddle);
+		
+		createDefaultWalls(level);
+		
+		return level;
+	}
+	
+	/**
+	 * Create walls for the given level. Walls are boxes.<br>
+	 * @param level
+	 */
+	private static void createDefaultWalls(SHLevel level)
+	{
+		Box leftWall = new Box("left wall", new Vector3f(-10, 0, 0), 1, 10, 1);
+		leftWall.setModelBound(new BoundingBox());
+		leftWall.updateModelBound();
+		level.setWall(leftWall, SHWallType.LEFT);
+		
+		Box rightWall = new Box("right wall", new Vector3f(10, 0, 0), 1, 10, 1);
+		rightWall.setModelBound(new BoundingBox());
+		rightWall.updateModelBound();
+		level.setWall(rightWall, SHWallType.RIGHT);
+		
+		Box topWall = new Box("top wall", new Vector3f(0, 10, 0), 10, 1, 1);
+		topWall.setModelBound(new BoundingBox());
+		topWall.updateModelBound();
+		level.setWall(topWall, SHWallType.TOP);
+		
+		Box bottomWall = new Box("bottom wall", new Vector3f(0, -10, 0), 10, 1, 1);
+		bottomWall.setModelBound(new BoundingBox());
+		bottomWall.updateModelBound();
+		level.setWall(bottomWall, SHWallType.BOTTOM);
+	}
+	
 	@Test
 	public void testDefaultBrick()
 	{
-		SHBrick brick = createDefaultBrick();
+		SHBrick brick = createDefaultBrick("brick");
 		assertEquals(1, brick.getStrength());
+		assertFalse(brick.isGlass());
+		assertTrue(brick.getModel() instanceof Box);
+		assertTrue(brick.getModel().getWorldBound() instanceof BoundingBox);
+		assertTrue(SHUtils.areEqual(Vector3f.ZERO, 
+									brick.getModel().getLocalTranslation(), 
+									0.001f));
+		BoundingBox box = (BoundingBox)brick.getModel().getWorldBound();
+		assertTrue(SHUtils.areEqual(new Vector3f(2, 1, 1), 
+									box.getExtent(null), 
+									0.001f));
+	}
+	
+	@Test
+	public void testGlassBrick()
+	{
+		SHBrick brick = createGlassBrick("glass");
+		assertEquals(1, brick.getStrength());
+		assertTrue(brick.isGlass());
+		assertTrue(brick.getModel() instanceof Box);
+		assertTrue(brick.getModel().getWorldBound() instanceof BoundingBox);
+		assertTrue(SHUtils.areEqual(Vector3f.ZERO, 
+									brick.getModel().getLocalTranslation(), 
+									0.001f));
+		BoundingBox box = (BoundingBox)brick.getModel().getWorldBound();
+		assertTrue(SHUtils.areEqual(new Vector3f(2, 1, 1), 
+									box.getExtent(null), 
+									0.001f));
+	}
+	
+	@Test
+	public void testSuperBrick()
+	{
+		SHBrick brick = createSuperBrick("super");
+		assertEquals(Integer.MAX_VALUE, brick.getStrength());
 		assertFalse(brick.isGlass());
 		assertTrue(brick.getModel() instanceof Box);
 		assertTrue(brick.getModel().getWorldBound() instanceof BoundingBox);
@@ -74,6 +201,7 @@ public class SHCoreTestHelper
 	{
 		SHBall ball = createDefaultBall();
 		assertNotNull(ball.getModel());
+		assertNotNull(ball.getModel().getWorldBound());
 		assertTrue(SHUtils.areEqual(Vector3f.UNIT_Y, ball.getVelocity(), 0.001f));
 		assertTrue(SHUtils.areEqual(Vector3f.ZERO, ball.getLocation(), 0.001f));
 	}
@@ -89,5 +217,19 @@ public class SHCoreTestHelper
 		assertTrue(SHUtils.areEqual(Vector3f.ZERO, paddle.getModel()
 				.getLocalTranslation(), 0.001f));
 	}
-
+	
+	@Test
+	public void testDefaultLevel()
+	{
+		SHLevel level = createDefaultLevel();
+		assertEquals(3, level.getBricks().size());
+		assertEquals(1, level.getBalls().size());
+		assertNotNull(level.getPaddle());
+		assertEquals(7, level.getRootNode().getChildren().size());
+		for (SHWallType type : SHLevel.SHWallType.values())
+		{
+			assertNotNull(level.getWall(type));
+		}
+	}
+	
 }

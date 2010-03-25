@@ -24,7 +24,7 @@ public class SHBallTest
 	@Before
 	public void setUp()
 	{
-		sharedBrick = SHCoreTestHelper.createDefaultBrick();
+		sharedBrick = SHCoreTestHelper.createDefaultBrick("brick");
 	}
 	
 	@Test
@@ -152,12 +152,32 @@ public class SHBallTest
 	public void testGlassHit()
 	{
 		SHBall ball = SHCoreTestHelper.createDefaultBall();
-		SHBrick brick = SHCoreTestHelper.createDefaultBrick();
+		SHBrick brick = SHCoreTestHelper.createDefaultBrick("brick");
 		
 		ball.setLocation(0, 2, 0);
 		brick.setGlass(true);
 		ball.onHit(brick);
 		assertTrue(SHUtils.areEqual(Vector3f.UNIT_Y, ball.getVelocity(), 0.001f));
+	}
+	
+	@Test
+	public void testStrengthDecreasing()
+	{
+		sharedBrick.setStrength(10);
+		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		
+		ball.setLocation(0, 2, 0);
+		ball.onHit(sharedBrick);
+		ball.onHit(sharedBrick);
+		assertEquals(8, sharedBrick.getStrength());
+		
+		sharedBrick.setGlass(true);
+		ball.onHit(sharedBrick);
+		assertEquals(7, sharedBrick.getStrength());
+		
+		sharedBrick.setStrength(Integer.MAX_VALUE);
+		ball.onHit(sharedBrick);
+		assertEquals(Integer.MAX_VALUE, sharedBrick.getStrength());
 	}
 
 }

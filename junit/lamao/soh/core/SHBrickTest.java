@@ -32,7 +32,7 @@ public class SHBrickTest
 	@Test
 	public void testHit()
 	{
-		SHBrick brick = SHCoreTestHelper.createDefaultBrick();
+		SHBrick brick = SHCoreTestHelper.createDefaultBrick("brick");
 		brick.setStrength(10);
 		
 		brick.hit();
