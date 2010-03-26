@@ -15,7 +15,6 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Sphere;
-import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.WireframeState;
 import com.jme.system.DisplaySystem;

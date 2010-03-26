@@ -6,6 +6,7 @@
  */
 package lamao.soh;
 
+import lamao.soh.console.SHConsoleState;
 import lamao.soh.states.SHLevelState;
 
 import com.jme.app.AbstractGame.ConfigShowMode;
@@ -26,6 +27,9 @@ public class SHMain
 		GAME = new StandardGame("Stones of History");
 		GAME.setConfigShowMode(ConfigShowMode.AlwaysShow);
 		GAME.start();
+		
+		SHConsoleState console = new SHConsoleState(SHConsoleState.STATE_NAME);
+		GameStateManager.getInstance().attachChild(console);
 		
 		SHLevelState level = new SHLevelState();
 		SHLevelGenerator.generate(level.getLevel());

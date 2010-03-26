@@ -6,11 +6,17 @@
  */
 package lamao.soh.states;
 
+import lamao.soh.console.SHConsoleState;
+import lamao.soh.console.SHWireFrameCommand;
 import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHLevelListener;
 import lamao.soh.core.SHLevel.SHWallType;
 
+import com.jme.input.InputHandler;
+import com.jme.input.KeyInput;
+import com.jme.input.action.InputActionEvent;
+import com.jme.input.action.KeyInputAction;
 import com.jme.light.PointLight;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
@@ -20,6 +26,7 @@ import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.Timer;
 import com.jmex.game.state.BasicGameState;
+import com.jmex.game.state.GameStateManager;
 
 /**
  * Game state for actual game for one level (from starting to winning or
@@ -47,6 +54,8 @@ public class SHLevelState extends BasicGameState
 	
 	private DisplaySystem _display = DisplaySystem.getDisplaySystem();
 	
+	private InputHandler _input = new InputHandler();
+	
 	public SHLevelState()
 	{
 		super(NAME);
@@ -64,6 +73,8 @@ public class SHLevelState extends BasicGameState
 		rootNode.setRenderState(ls);
 		
 		initTextLabels();
+		initConsole();
+		bindKeys();
 		
 		rootNode.updateRenderState();
 		_statNode.updateRenderState();
@@ -83,6 +94,26 @@ public class SHLevelState extends BasicGameState
 		_events.setLocalTranslation(_display.getWidth() * 3 / 4, 0, 0);
 		_statNode.attachChild(_events);
 	}
+	
+	public void initConsole()
+	{
+		SHConsoleState console = (SHConsoleState)GameStateManager.getInstance()
+				.getChild(SHConsoleState.STATE_NAME);
+		console.add("wired", new SHWireFrameCommand(rootNode));
+		
+	}
+	
+	public void bindKeys()
+	{
+		_input.addAction(new KeyInputAction(){
+			public void performAction(InputActionEvent evt)
+			{
+				SHConsoleState console = (SHConsoleState)GameStateManager
+						.getInstance().getChild(SHConsoleState.STATE_NAME);
+				console.setActive(true);
+			}
+		}, "show console", KeyInput.KEY_GRAVE, false);
+	}
 
 	public SHLevel getLevel()
 	{
@@ -95,6 +126,7 @@ public class SHLevelState extends BasicGameState
 	@Override
 	public void update(float tpf)
 	{
+		_input.update(tpf);
 		super.update(tpf);
 		_level.update(tpf);
 		_fps.print(Float.toString(Timer.getTimer().getFrameRate()));
