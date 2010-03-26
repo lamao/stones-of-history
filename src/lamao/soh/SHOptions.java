@@ -20,4 +20,9 @@ public class SHOptions
 	
 	public static int PaddleLeftKey = KeyInput.KEY_LEFT;
 	public static int PaddleRightKey = KeyInput.KEY_RIGHT;
+	
+	/** Mouse button for releasing ball when paddle is stick or at the begin
+	 * of the level
+	 */
+	public static int ReleaseBallButton = 0;
 }

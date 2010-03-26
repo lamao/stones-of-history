@@ -24,39 +24,49 @@ import com.jme.scene.Spatial;
 public class SHPaddleInputHandler extends InputHandler
 {
 	/** Controlled spatial */
-	private Spatial _spatial;
+	private Spatial _model;
+	
+	/** Mouse used for handling events */
+	private RelativeMouse _mouse = null;
 	
 	private float _leftConstraint = -10;
 	private float _rightConstraint = 10;
 	
-	public SHPaddleInputHandler(Spatial spatial)
+	public SHPaddleInputHandler(Spatial model)
 	{
-		_spatial = spatial;
-		RelativeMouse mouse = new RelativeMouse("rel mouse");
-		mouse.registerWithInputHandler(this);
+		_model = model;
+		_mouse = new RelativeMouse("rel mouse");
+		_mouse.registerWithInputHandler(this);
 		
 		SHMousePaddleMove mouseAction = new SHMousePaddleMove();
-		mouseAction.setMouse(mouse);
+		mouseAction.setMouse(_mouse);
 		addAction(mouseAction);
 		
-		addAction(new KeyNodeStrafeRightAction(spatial, 
+		addAction(new KeyNodeStrafeRightAction(model, 
 				SHOptions.PaddleKeyboardSensitivity),
 				"paddle left", SHOptions.PaddleLeftKey, true);
-		addAction(new KeyNodeStrafeLeftAction(spatial, 
+		addAction(new KeyNodeStrafeLeftAction(model, 
 				SHOptions.PaddleKeyboardSensitivity), 
 				"paddle right", SHOptions.PaddleRightKey, true);
 	}
 
-	public Spatial getSpatial()
+	public Spatial getModel()
 	{
-		return _spatial;
+		return _model;
 	}
 
-	public void setSpatial(Spatial spatial)
+	public void setModel(Spatial model)
 	{
-		_spatial = spatial;
+		_model = model;
 	}
 	
+	
+	
+	public RelativeMouse getMouse()
+	{
+		return _mouse;
+	}
+
 	public void setConstraints(float left, float right)
 	{
 		_leftConstraint = left;
@@ -69,7 +79,7 @@ public class SHPaddleInputHandler extends InputHandler
 		@Override
 		public void performAction(InputActionEvent evt)
 		{
-			float newX = _spatial.getLocalTranslation().x 
+			float newX = _model.getLocalTranslation().x 
 							+ mouse.getLocalTranslation().x 
 							* SHOptions.PaddleMouseSensitivity;
 			if (newX > _rightConstraint)
@@ -81,7 +91,7 @@ public class SHPaddleInputHandler extends InputHandler
 				newX = _leftConstraint;
 			}
 			
-			_spatial.getLocalTranslation().x = newX;
+			_model.getLocalTranslation().x = newX;
 
 		}
 	}

@@ -35,6 +35,7 @@ public class SHLevelTest
 		assertNull(level.getPaddle());
 		assertNotNull(level.getRootNode());
 		assertEquals(1, level.getRootNode().getChildren().size());
+		assertNull(level.getInputHandler());
 	}
 	
 	@Test

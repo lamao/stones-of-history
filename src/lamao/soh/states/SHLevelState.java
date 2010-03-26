@@ -76,7 +76,6 @@ public class SHLevelState extends BasicGameState
 	@Override
 	public void update(float tpf)
 	{
-		_input.update(tpf);
 		super.update(tpf);
 		_level.update(tpf);
 		_fps.print(Float.toString(Timer.getTimer().getFrameRate()));
@@ -98,11 +97,6 @@ public class SHLevelState extends BasicGameState
 	@Override
 	public void setActive(boolean active)
 	{
-		if (active)
-		{
-			_input = new SHPaddleInputHandler(_level.getPaddle().getModel());
-			_input.setConstraints(-8, 8);
-		}
 		super.setActive(active);
 	}
 	

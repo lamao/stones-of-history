@@ -10,6 +10,7 @@ import java.util.Random;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
+import com.jme.input.InputHandler;
 import com.jme.math.Vector3f;
 import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Sphere;
@@ -18,7 +19,10 @@ import lamao.soh.core.SHBall;
 import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHDefaultBallMover;
 import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHMouseBallLauncher;
 import lamao.soh.core.SHPaddle;
+import lamao.soh.core.SHPaddleInputHandler;
+import lamao.soh.core.SHPaddleSticker;
 import lamao.soh.core.SHLevel.SHWallType;
 
 /**
@@ -33,6 +37,7 @@ public class SHLevelGenerator
 		createWalls(level);
 		createEntities(level);
 		level.setBottomWallActive(true);
+		setupInputHandler(level);
 	}
 	
 	private static void createWalls(SHLevel level)
@@ -84,21 +89,31 @@ public class SHLevelGenerator
 			level.addBrick(brick);
 		}
 		
-		SHBall ball = new SHBall(new Sphere("ball", 15, 15, 0.25f));
-		ball.getModel().setModelBound(new BoundingSphere());
-		ball.getModel().updateModelBound();
-		ball.setLocation(-2, 0, 0);
-		ball.setVelocity(-3 ,3 ,0);
-		ball.getModel().addController(new SHDefaultBallMover(ball));
-		level.addBall(ball);
-		
-		Box box = new Box("paddle", new Vector3f(0, 0, 0), 1, 0.5f, 0.5f);
+		Box box = new Box("paddle", new Vector3f(0, 0, 0), 2, 0.25f, 0.25f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		SHPaddle paddle = new SHPaddle(box);
 		paddle.setLocation(0, -7, 0);
 		level.setPaddle(paddle);
 		
+		SHBall ball = new SHBall(new Sphere("ball", 15, 15, 0.25f));
+		ball.getModel().setModelBound(new BoundingSphere());
+		ball.getModel().updateModelBound();
+		ball.setLocation(-0, -6.5f, 0);
+		ball.setVelocity(-3 ,3 ,0);
+		ball.getModel().addController(new SHPaddleSticker(ball, paddle.getModel()));
+		level.addBall(ball);
+		
+	}
+	
+	private static void setupInputHandler(SHLevel level)
+	{
+		InputHandler input = new SHPaddleInputHandler(level.getPaddle().getModel());
+		level.setInputHandler(input);
+		for (SHBall ball : level.getBalls())
+		{
+			level.getInputHandler().addAction(new SHMouseBallLauncher(ball, input));
+		}
 	}
 	
 }

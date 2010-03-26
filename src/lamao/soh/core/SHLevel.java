@@ -8,8 +8,8 @@ package lamao.soh.core;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
+import com.jme.input.InputHandler;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
@@ -64,6 +64,9 @@ public class SHLevel
 	 * or not (default behavior)
 	 */
 	private boolean _bottomWallActive = false;
+	
+	/** Input handler for level */
+	private InputHandler _input = null;
 	
 	public SHLevel()
 	{
@@ -217,6 +220,16 @@ public class SHLevel
 		return _bottomWallActive;
 	}
 	
+	public void setInputHandler(InputHandler input)
+	{
+		_input = input;
+	}
+	
+	public InputHandler getInputHandler()
+	{
+		return _input;
+	}
+	
 	/** 
 	 * Deletes all bricks and balls from level. Changes paddle state to default. 
 	 * Does not effects on walls.
@@ -237,6 +250,10 @@ public class SHLevel
 	 */
 	public void update(float tpf)
 	{
+		if (_input != null)
+		{
+			_input.update(tpf);
+		}
 		for (SHBall ball : _balls)
 		{
 			if (ball.getModel().hasCollision(_walls[SHWallType.LEFT.intValue()], 
