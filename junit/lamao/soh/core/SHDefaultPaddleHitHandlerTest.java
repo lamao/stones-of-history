@@ -96,28 +96,42 @@ public class SHDefaultPaddleHitHandlerTest
 		ball.setLocation(-3, 2, 0);
 		ball.setVelocity(1, -1, 0);
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(new Vector3f(-1, -1, 0), ball.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(-1, 1, 0), ball.getVelocity(), 
 				0.001f));
 		
-		// left side
+		// left upper side
 		ball.setLocation(-3, 1, 0);
+		ball.setVelocity(3, -4, 0);
+		paddle.onHit(ball);
+		assertTrue(SHUtils.areEqual(new Vector3f(-3, 4, 0), ball.getVelocity(), 
+				0.001f));
+		
+		// left bottom side
+		ball.setLocation(-3, -1, 0);
 		ball.setVelocity(1, -1, 0);
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(new Vector3f(-1, -1, 0), ball.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 
 				0.001f));
 		
 		// right corner 
 		ball.setLocation(3, 2, 0);
 		ball.setVelocity(-1, -1, 0);
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
 				0.001f));
 		
-		// right side 
+		// right upper side 
 		ball.setLocation(3, 1, 0);
+		ball.setVelocity(-3, -2, 0);
+		paddle.onHit(ball);
+		assertTrue(SHUtils.areEqual(new Vector3f(3, 2, 0), ball.getVelocity(), 
+				0.001f));
+		
+		// right bottom side 
+		ball.setLocation(3, -1, 0);
 		ball.setVelocity(-1, -1, 0);
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(-1, -1, 0), ball.getVelocity(), 
 				0.001f));
 		
 	}
@@ -136,6 +150,19 @@ public class SHDefaultPaddleHitHandlerTest
 		}
 		
 		assertTrue(Math.abs(ball.getVelocity().length() - 2) < 0.001f);
+	}
+	
+	@Test
+	public void testBallWithUpVelocity()
+	{
+		SHPaddle paddle = SHCoreTestHelper.createDefaultPaddle();
+		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		
+		ball.setLocation(0, 2, 0);
+		ball.setVelocity(1, 1, 0);
+		paddle.onHit(ball);
+		assertTrue(SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
+				0.001f));
 	}
 
 }

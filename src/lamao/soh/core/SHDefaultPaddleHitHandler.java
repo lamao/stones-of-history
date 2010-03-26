@@ -21,29 +21,32 @@ public class SHDefaultPaddleHitHandler implements ISHPaddleHitHandler
 {
 
 	/* (non-Javadoc)
-	 * @see lamao.soh.core.ISHPaddleHitHandler#execute(lamao.soh.core.SHBall, lamao.soh.core.SHPaddle)
+	 * @see lamao.soh.core.ISHPaddleHitHandler#execute(lamao.soh.core.SHBall, 
+	 * lamao.soh.core.SHPaddle)
 	 */
 	@Override
 	public void execute(SHBall ball, SHPaddle paddle)
 	{
-		if (ball.getLocation().y > paddle.getLocation().y)
+		if (ball.getLocation().y > paddle.getLocation().y &&
+			ball.getVelocity().y <= 0)
 		{
 			BoundingBox paddleBound = (BoundingBox)paddle.getModel().getWorldBound();
 			float ballPos = ball.getLocation().x - paddle.getLocation().x 
 					+ paddleBound.xExtent;
 			float paddleWidth = paddleBound.xExtent * 2;
+			float speed = ball.getVelocity().length();
 			Vector3f newVelocity = null;
 			
 			if (ballPos < 0 || ballPos > paddleWidth)
 			{
 				newVelocity = ball.getVelocity();
 				newVelocity.x = -newVelocity.x;
+				newVelocity.y = -newVelocity.y;
 			}
 			else
 			{
 				double newAngle = Math.acos((ballPos - 0.5f * paddleWidth) 
 						/ (0.5f * paddleWidth));
-				float speed = ball.getVelocity().length();
 				newVelocity = new Vector3f(
 						(float)(speed * Math.cos(newAngle)),
 						(float)(speed * Math.sin(newAngle)),
