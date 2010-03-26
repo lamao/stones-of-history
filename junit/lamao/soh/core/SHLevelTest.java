@@ -25,6 +25,42 @@ import static org.junit.Assert.*;
  */
 public class SHLevelTest
 {
+	/** Stub for level listener */
+	private class SHTestLevelListner implements SHLevelListener
+	{
+		public int wallHit = 0;
+		public int brickHit = 0;
+		public int completed = 0;
+		public int numDeletebleBricks = 0;
+		public int bricksDeleted = 0;
+
+		@Override
+		public void wallHit(SHWallType wall)
+		{
+			wallHit++;
+		}
+		
+		@Override
+		public void completed()
+		{
+			completed++;
+		}
+
+		@Override
+		public void brickHit(SHBrick brick)
+		{
+			brickHit++;
+		}
+		
+		@Override
+		public void brickDeleted(SHBrick brick)
+		{
+			bricksDeleted++;
+		}
+	}
+	
+	private SHTestLevelListner listener = new SHTestLevelListner();
+	
 	@Test
 	public void testContstructors()
 	{
@@ -354,4 +390,88 @@ public class SHLevelTest
 		assertEquals(3, bricksRoot.getChildren().size());
 	}
 	
+	@Test
+	public void testUpdateDeletebleBricks()
+	{
+		SHLevel level = SHCoreTestHelper.createDefaultLevel();
+		assertEquals(2, level.getNumDeletebleBricks());
+		
+		level.getBricks().remove(0);
+		assertEquals(2, level.getNumDeletebleBricks());
+		
+		level.updateDeletebleBricks();
+		assertEquals(1, level.getNumDeletebleBricks());
+		
+		level.getBricks().remove(1);
+		level.updateDeletebleBricks();
+		assertEquals(1, level.getNumDeletebleBricks());
+		
+		level.addBrick(SHCoreTestHelper.createDefaultBrick("brick"));
+		level.updateDeletebleBricks();
+		assertEquals(2, level.getNumDeletebleBricks());
+		
+		level.addBrick(SHCoreTestHelper.createSuperBrick("super"));
+		level.updateDeletebleBricks();
+		assertEquals(2, level.getNumDeletebleBricks());
+	}
+	
+	@Test
+	public void testInGameBrickAddRemove()
+	{
+		SHLevel level = SHCoreTestHelper.createDefaultLevel();
+		SHBall ball = level.getBalls().get(0);
+		level.addListener(listener);
+		listener.completed = 0;
+		
+		ball.setLocation(0, -1, 0);
+		level.update(1);
+		assertEquals(0, listener.completed);
+		
+		ball.setLocation(-5, -1, 0);
+		level.update(1);
+		assertEquals(1, listener.completed);
+		
+		level.update(1f);
+		assertEquals(1, listener.completed);
+		level.update(1f);
+		assertEquals(1, listener.completed);
+	}
+	
+	@Test
+	public void testListener()
+	{
+		SHLevel level = SHCoreTestHelper.createDefaultLevel();
+		SHBall ball = level.getBalls().get(0);
+		level.addListener(listener);
+		listener.brickHit = 0;
+		listener.wallHit = 0;
+		listener.bricksDeleted = 0;
+		
+		ball.setLocation(5, -1, 0);
+		level.update(1);
+		assertEquals(1, listener.brickHit);
+		assertEquals(0, listener.bricksDeleted);
+		
+		ball.setLocation(0, -1, 0);
+		level.update(1);
+		assertEquals(2, listener.brickHit);
+		assertEquals(1, listener.bricksDeleted);
+		
+		ball.setLocation(-8, -8, 0);
+		level.update(1);
+		assertEquals(2, listener.wallHit);
+		
+		ball.setLocation(0, 8, 0);
+		level.update(1);
+		assertEquals(3, listener.wallHit);
+		
+		ball.setLocation(8, 8, 0);
+		level.update(1);
+		assertEquals(5, listener.wallHit);
+		
+		ball.setLocation(8, 0, 0);
+		level.update(1);
+		assertEquals(6, listener.wallHit);
+		
+	}
 }

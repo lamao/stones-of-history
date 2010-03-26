@@ -42,6 +42,9 @@ public class SHLevel
 	/** All brick in current level */ 
 	private List<SHBrick> _bricks = new LinkedList<SHBrick>();
 	
+	/** Number of bricks that can be destroyed (e.i. they are not superbricks */
+	private int _numDeletebleBricks = 0;
+	
 	/** Bricks to delete from level */
 	private List<SHBrick> _bricksToDelete = new LinkedList<SHBrick>();
 	
@@ -67,6 +70,8 @@ public class SHLevel
 	
 	/** Input handler for level */
 	private InputHandler _input = null;
+	
+	private List<SHLevelListener> _listeners = new LinkedList<SHLevelListener>();
 	
 	public SHLevel()
 	{
@@ -121,6 +126,11 @@ public class SHLevel
 		_bricksRoot.updateRenderState();
 		
 		_bricks.removeAll(bricks);
+	}
+	
+	public int getNumDeletebleBricks()
+	{
+		return _numDeletebleBricks;
 	}
 
 	public List<SHBall> getBalls()
@@ -230,6 +240,22 @@ public class SHLevel
 		return _input;
 	}
 	
+	public List<SHLevelListener> getListeners()
+	{
+		return _listeners;
+	}
+	
+	public void addListener(SHLevelListener listener)
+	{
+		_listeners.add(listener);
+	}
+	
+	public void removeListener(SHLevelListener listener)
+	{
+		_listeners.remove(listener);
+	}
+
+
 	/** 
 	 * Deletes all bricks and balls from level. Changes paddle state to default. 
 	 * Does not effects on walls.
@@ -257,16 +283,22 @@ public class SHLevel
 		for (SHBall ball : _balls)
 		{
 			if (ball.getModel().hasCollision(_walls[SHWallType.LEFT.intValue()], 
-				false) || 
-				ball.getModel().hasCollision(_walls[SHWallType.RIGHT.intValue()], 
 				false))
 			{
 				ball.getVelocity().x = -ball.getVelocity().x;
+				fireWallHit(SHWallType.LEFT);
+			}
+			else if (ball.getModel().hasCollision(_walls[SHWallType.RIGHT.intValue()], 
+					false))
+			{
+				ball.getVelocity().x = -ball.getVelocity().x;
+				fireWallHit(SHWallType.RIGHT);
 			}
 			if (ball.getModel().hasCollision(_walls[SHWallType.TOP.intValue()], 
 				false)) 
 			{
 				ball.getVelocity().y = -ball.getVelocity().y;
+				fireWallHit(SHWallType.TOP);
 			}
 			if (ball.getModel().hasCollision(_walls[SHWallType.BOTTOM.intValue()], 
 					false))
@@ -275,12 +307,14 @@ public class SHLevel
 				{
 					ball.getVelocity().y = -ball.getVelocity().y;
 				}
+				fireWallHit(SHWallType.BOTTOM);
 			}
 			
 			for (SHBrick brick : _bricks)
 			{
 				if (ball.getModel().hasCollision(brick.getModel(), false))
 				{
+					fireBrickHit(brick);
 					ball.onHit(brick);
 					if (brick.getStrength() <= 0)
 					{
@@ -295,12 +329,77 @@ public class SHLevel
 		}
 		
 		processDeleteQueues();
+		
+		if (_numDeletebleBricks == 0)
+		{
+			fireComplete();
+		}
+		
 	}
 	
 	/** Process all delete queues and removes entities in them */
 	private void processDeleteQueues()
 	{
+		for (SHBrick brick : _bricksToDelete)
+		{
+			if (brick.getStrength() != Integer.MAX_VALUE)
+			{
+				_numDeletebleBricks--;
+				fireBrickDeleted(brick);
+			}
+		}
 		deleteBricks(_bricksToDelete);
+		_bricksToDelete.clear();
+	}
+	
+	/** 
+	 * Updates number of bricks that can be deleted. This method should be
+	 * invoked every time bricks are changed outside the <code>SHLevel</code> 
+	 * class or using public methods.
+	 */
+	public void updateDeletebleBricks()
+	{
+		_numDeletebleBricks = 0;
+		for (SHBrick brick : _bricks)
+		{
+			if (brick.getStrength() != Integer.MAX_VALUE)
+			{
+				_numDeletebleBricks ++;
+			}
+		}
+	}
+	
+	private void fireComplete()
+	{
+		for (SHLevelListener listener : _listeners)
+		{
+			listener.completed();
+		}
+		_numDeletebleBricks--;
+	}
+	
+	private void fireBrickHit(SHBrick brick)
+	{
+		for (SHLevelListener listener : _listeners)
+		{
+			listener.brickHit(brick);
+		}
+	}
+	
+	private void fireWallHit(SHWallType wall)
+	{
+		for (SHLevelListener listener : _listeners)
+		{
+			listener.wallHit(wall);
+		}
+	}
+	
+	private void fireBrickDeleted(SHBrick brick)
+	{
+		for (SHLevelListener listener : _listeners)
+		{
+			listener.brickDeleted(brick);
+		}
 	}
 	
 }

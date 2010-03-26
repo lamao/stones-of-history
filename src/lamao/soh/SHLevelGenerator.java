@@ -12,12 +12,16 @@ import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
 import com.jme.input.InputHandler;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Sphere;
+import com.jme.scene.state.BlendState;
+import com.jme.scene.state.MaterialState;
+import com.jme.scene.state.WireframeState;
+import com.jme.system.DisplaySystem;
 
 import lamao.soh.core.SHBall;
 import lamao.soh.core.SHBrick;
-import lamao.soh.core.SHDefaultBallMover;
 import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHMouseBallLauncher;
 import lamao.soh.core.SHPaddle;
@@ -37,7 +41,9 @@ public class SHLevelGenerator
 		createWalls(level);
 		createEntities(level);
 		level.setBottomWallActive(true);
+		level.updateDeletebleBricks();
 		setupInputHandler(level);
+		
 	}
 	
 	private static void createWalls(SHLevel level)
@@ -64,6 +70,15 @@ public class SHLevelGenerator
 	}
 	private static void createEntities(SHLevel level)
 	{
+		DisplaySystem display = DisplaySystem.getDisplaySystem();
+		MaterialState superMs = display.getRenderer().createMaterialState();
+		superMs.setEmissive(ColorRGBA.black);
+		MaterialState defaultMs = display.getRenderer().createMaterialState();
+		defaultMs.setEmissive(ColorRGBA.green);
+		WireframeState glassMs = display.getRenderer().createWireframeState();
+		glassMs.setEnabled(true);
+		
+		
 		Random random = new Random();
 		for (int i = 0; i < 10; i++)
 		{
@@ -79,12 +94,18 @@ public class SHLevelGenerator
 			if (random.nextBoolean())
 			{
 				brick.setStrength(Integer.MAX_VALUE);
+				brick.getModel().setRenderState(superMs);
 			}
 			else
 			{
 				brick.setStrength(random.nextInt(5));
+				brick.getModel().setRenderState(defaultMs);
 			}
 			brick.setGlass(random.nextBoolean());
+			if (brick.isGlass())
+			{
+				brick.getModel().setRenderState(glassMs);
+			}
 			
 			level.addBrick(brick);
 		}

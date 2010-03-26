@@ -115,6 +115,7 @@ public class SHCoreTestHelper
 		
 		createDefaultWalls(level);
 		
+		level.updateDeletebleBricks();
 		return level;
 	}
 	

@@ -6,8 +6,10 @@
  */
 package lamao.soh.states;
 
+import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHLevel;
-import lamao.soh.core.SHPaddleInputHandler;
+import lamao.soh.core.SHLevelListener;
+import lamao.soh.core.SHLevel.SHWallType;
 
 import com.jme.light.PointLight;
 import com.jme.math.Vector3f;
@@ -39,14 +41,17 @@ public class SHLevelState extends BasicGameState
 	/** Displays FPS */
 	private Text _fps = null;
 	
-	private DisplaySystem _display = DisplaySystem.getDisplaySystem();
+	private Text _info = null;
 	
-	private SHPaddleInputHandler _input = null;
+	private Text _events = null;
+	
+	private DisplaySystem _display = DisplaySystem.getDisplaySystem();
 	
 	public SHLevelState()
 	{
 		super(NAME);
 		_level = new SHLevel();
+		_level.addListener(new SHDefaultLevelListener());
 		rootNode.attachChild(_level.getRootNode());
 		
 		PointLight light = new  PointLight();
@@ -58,11 +63,25 @@ public class SHLevelState extends BasicGameState
 		ls.attach(light);
 		rootNode.setRenderState(ls);
 		
-		_fps = Text.createDefaultTextLabel("fps", "FPS");
-		_statNode.attachChild(_fps);
+		initTextLabels();
 		
 		rootNode.updateRenderState();
 		_statNode.updateRenderState();
+	}
+	
+	public void initTextLabels()
+	{
+		_fps = Text.createDefaultTextLabel("fps", "FPS");
+		_statNode.attachChild(_fps);
+		
+		_info = Text.createDefaultTextLabel("into", "info");
+		_info.setLocalTranslation(_display.getWidth() / 2 - _info.getWidth() / 2, 
+				0, 0);
+		_statNode.attachChild(_info);
+		
+		_events = Text.createDefaultTextLabel("events", "events");
+		_events.setLocalTranslation(_display.getWidth() * 3 / 4, 0, 0);
+		_statNode.attachChild(_events);
 	}
 
 	public SHLevel getLevel()
@@ -97,7 +116,44 @@ public class SHLevelState extends BasicGameState
 	@Override
 	public void setActive(boolean active)
 	{
+		if (active)
+		{
+			_info.print(Integer.toString(_level.getNumDeletebleBricks()));
+		}
 		super.setActive(active);
+	}
+	
+	private class SHDefaultLevelListener implements SHLevelListener
+	{
+		@Override
+		public void completed()
+		{
+			_events.print("Victory");
+			Text win = Text.createDefaultTextLabel("win", "YOU ARE WINNER");
+			win.setLocalTranslation(_display.getWidth() / 2 - win.getWidth() / 2,
+					_display.getHeight() / 2 - win.getHeight(), 0);
+			_statNode.attachChild(win);
+			_statNode.updateRenderState();
+		}
+		
+		@Override
+		public void brickHit(SHBrick brick)
+		{
+			_events.print("Brick hit");
+		}
+		
+		@Override
+		public void wallHit(SHWallType wall)
+		{
+			_events.print("Wall hit: " + wall.toString());
+		}
+		
+		@Override
+		public void brickDeleted(SHBrick brick)
+		{
+			_events.print("Brick deleted");
+			_info.print(Integer.toString(_level.getNumDeletebleBricks()));
+		}
 	}
 	
 	
