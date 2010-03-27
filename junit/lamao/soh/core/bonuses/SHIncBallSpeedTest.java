@@ -41,18 +41,19 @@ public class SHIncBallSpeedTest
 		bonus.apply(level);
 		for (SHBall ball : level.getBalls())
 		{
-			assertTrue(Math.abs(Math.abs(ball.getVelocity().length() - 
+			assertTrue(Math.abs(Math.abs(ball.getVelocity().length()/ 
 					new Vector3f(1, -1, 0).length()) - 
-					SHIncBallSpeedBonus.INC_PERCENT) < 0.001f);
+					(1 + SHIncBallSpeedBonus.INC_PERCENT)) < 0.001f);
 		}
 		
 		SHIncBallSpeedBonus bonus2 = new SHIncBallSpeedBonus();
 		bonus2.apply(level);
 		for (SHBall ball : level.getBalls())
 		{
-			assertTrue(Math.abs(Math.abs(ball.getVelocity().length() - 
+			assertTrue(Math.abs(Math.abs(ball.getVelocity().length() / 
 					new Vector3f(1, -1, 0).length()) - 
-					SHIncBallSpeedBonus.INC_PERCENT * 2) < 0.001f);
+					(1 + SHIncBallSpeedBonus.INC_PERCENT) * 
+					(1 + SHIncBallSpeedBonus.INC_PERCENT)) < 0.001f);
 		}
 		
 		level.addBall(SHCoreTestHelper.createDefaultBall());
@@ -62,9 +63,9 @@ public class SHIncBallSpeedTest
 		for (int i = 0; i < 2; i++)
 		{
 			SHBall ball = level.getBalls().get(i);
-			assertTrue(Math.abs(Math.abs(ball.getVelocity().length() - 
+			assertTrue(Math.abs(Math.abs(ball.getVelocity().length() / 
 					new Vector3f(1, -1, 0).length()) - 
-					SHIncBallSpeedBonus.INC_PERCENT) < 0.001f);
+					(1 + SHIncBallSpeedBonus.INC_PERCENT)) < 0.001f);
 		}
 		
 		bonus2.cleanup(level);

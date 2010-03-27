@@ -22,7 +22,7 @@ import com.jme.scene.Spatial;
 public class SHDecBallSpeedBonus extends SHBonus
 {
 	public final static float DURATION = 5;
-	public final static float INC_PERCENT = 1;
+	public final static float DEC_PERCENT = 0.5f;
 	
 	private List<SHBall> _balls = new LinkedList<SHBall>();
 	
@@ -54,8 +54,8 @@ public class SHDecBallSpeedBonus extends SHBonus
 				angle = 2 * Math.PI - angle;
 			}
 			
-			ball.getVelocity().x -= Math.cos(angle) * INC_PERCENT;
-			ball.getVelocity().y -= Math.sin(angle) * INC_PERCENT;
+			ball.getVelocity().x = (float)Math.cos(angle) * speed * (1 - DEC_PERCENT);
+			ball.getVelocity().y = (float)Math.sin(angle) * speed * (1 - DEC_PERCENT);
 			
 			_balls.add(ball);
 		}
@@ -78,11 +78,8 @@ public class SHDecBallSpeedBonus extends SHBonus
 				angle = 2 * Math.PI - angle;
 			}
 
-			ball.getVelocity().x += Math.cos(angle) * INC_PERCENT;
-			ball.getVelocity().y += Math.sin(angle) * INC_PERCENT;
-			
-			int a = 2;
-			a++;
+			ball.getVelocity().x = (float)Math.cos(angle) * speed / (1 - DEC_PERCENT);
+			ball.getVelocity().y = (float)Math.sin(angle) * speed / (1 - DEC_PERCENT);
 		}
 		_balls.clear();
 	}

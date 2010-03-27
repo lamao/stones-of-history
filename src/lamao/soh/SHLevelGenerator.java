@@ -162,7 +162,7 @@ public class SHLevelGenerator
 		ms.setEmissive(ColorRGBA.green);
 		box.setRenderState(ms);
 		
-		//return new SHIncPaddleWidthBonus(box);
+//		return new SHIncPaddleWidthBonus(box);
 		return new SHIncBallSpeedBonus(box);
 	}
 	

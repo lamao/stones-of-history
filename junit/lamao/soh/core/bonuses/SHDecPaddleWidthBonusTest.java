@@ -39,7 +39,15 @@ private SHLevel sharedLevel = SHCoreTestHelper.createDefaultLevel();
 		Spatial paddleModel = sharedLevel.getPaddle().getModel();
 		
 		bonus.apply(sharedLevel);
-		assertTrue(SHUtils.areEqual(new Vector3f(0.9f, 1, 1), 
+		assertTrue(SHUtils.areEqual(new Vector3f(0.8f, 1, 1), 
+				paddleModel.getLocalScale(), 0.001f));
+		
+		bonus.apply(sharedLevel);
+		assertTrue(SHUtils.areEqual(new Vector3f(0.64f, 1, 1), 
+				paddleModel.getLocalScale(), 0.001f));
+		
+		bonus.cleanup(sharedLevel);
+		assertTrue(SHUtils.areEqual(new Vector3f(0.8f, 1, 1), 
 				paddleModel.getLocalScale(), 0.001f));
 		
 		bonus.cleanup(sharedLevel);

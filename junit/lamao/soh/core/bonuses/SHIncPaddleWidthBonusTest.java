@@ -39,11 +39,19 @@ public class SHIncPaddleWidthBonusTest
 		Spatial paddleModel = sharedLevel.getPaddle().getModel();
 		
 		bonus.apply(sharedLevel);
-		assertTrue(SHUtils.areEqual(new Vector3f(1.1f, 1, 1), 
+		assertTrue(SHUtils.areEqual(new Vector3f(1.2f, 1, 1), 
+				paddleModel.getLocalScale(), 0.001f));
+		
+		bonus.apply(sharedLevel);
+		assertTrue(SHUtils.areEqual(new Vector3f(1.44f, 1, 1), 
 				paddleModel.getLocalScale(), 0.001f));
 		
 		bonus.cleanup(sharedLevel);
-		assertTrue(SHUtils.areEqual(new Vector3f(1, 1, 1), 
+		assertTrue(SHUtils.areEqual(new Vector3f(1.2f, 1, 1), 
+				paddleModel.getLocalScale(), 0.001f));
+		
+		bonus.cleanup(sharedLevel);
+		assertTrue(SHUtils.areEqual(new Vector3f(1f, 1, 1), 
 				paddleModel.getLocalScale(), 0.001f));
 		
 	}

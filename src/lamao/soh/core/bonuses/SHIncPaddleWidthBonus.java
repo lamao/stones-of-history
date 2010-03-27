@@ -17,7 +17,7 @@ import lamao.soh.core.SHLevel;
  */
 public class SHIncPaddleWidthBonus extends SHBonus
 {
-	public final static float INCREASE_PERCENT = 0.1f;
+	public final static float INCREASE_PERCENT = 0.2f;
 	public final static float DURATION = 5;
 
 	
@@ -39,7 +39,7 @@ public class SHIncPaddleWidthBonus extends SHBonus
 	public void apply(SHLevel level)
 	{
 		Spatial paddle = level.getPaddle().getModel();
-		paddle.getLocalScale().x += INCREASE_PERCENT;
+		paddle.getLocalScale().x *= (1 + INCREASE_PERCENT);
 		paddle.updateModelBound();
 	}
 
@@ -50,7 +50,7 @@ public class SHIncPaddleWidthBonus extends SHBonus
 	public void cleanup(SHLevel level)
 	{
 		Spatial paddle = level.getPaddle().getModel();
-		paddle.getLocalScale().x -= INCREASE_PERCENT;
+		paddle.getLocalScale().x /= (1 + INCREASE_PERCENT);
 		paddle.updateModelBound();
 	}
 	

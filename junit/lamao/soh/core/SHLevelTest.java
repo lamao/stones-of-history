@@ -546,7 +546,7 @@ public class SHLevelTest
 				bonus.getLocation(), 0.001f));
 		assertEquals(0, bonusNode.getChildren().size());
 		assertTrue(Math.abs(level.getPaddle().getModel().getLocalScale().x 
-				- 1.1f) < 0.001f);
+				- 1.0f) > 0.001f);
 		assertEquals(1, listener.bonusActivated);
 		assertEquals(1, level.getActiveBonuses().size());
 		
@@ -555,7 +555,7 @@ public class SHLevelTest
 		level.update(SHIncPaddleWidthBonus.DURATION - 1);
 		assertEquals(1, level.getActiveBonuses().size());
 		assertTrue(Math.abs(level.getPaddle().getModel().getLocalScale().x 
-				- 1.1f) < 0.001f);
+				- 1) > 0.001f);
 		assertEquals(0, listener.bonusDeactivated);
 		
 		level.update(1);
