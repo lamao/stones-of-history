@@ -27,6 +27,9 @@ import lamao.soh.core.SHPaddle;
 import lamao.soh.core.SHPaddleInputHandler;
 import lamao.soh.core.SHPaddleSticker;
 import lamao.soh.core.SHLevel.SHWallType;
+import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.core.bonuses.SHDecPaddleWidthBonus;
+import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
 
 /**
  * Generates level. Designed for testing purposes. 
@@ -81,11 +84,9 @@ public class SHLevelGenerator
 		Random random = new Random();
 		for (int i = 0; i < 10; i++)
 		{
-			Box box = new Box("brick" + i, 
-					new Vector3f(random.nextFloat() * 16 - 8, 
-								 random.nextFloat() * 8, 
-								 0), 
-					1, 0.5f, 0.5f);
+			Box box = new Box("brick" + i, Vector3f.ZERO.clone(), 1, 0.5f, 0.5f);
+			box.setLocalTranslation(new Vector3f(random.nextFloat() * 16 - 8, 
+								 random.nextFloat() * 8, 0));
 			box.setModelBound(new BoundingBox());
 			box.updateModelBound();
 			SHBrick brick = new SHBrick(box);
@@ -104,6 +105,18 @@ public class SHLevelGenerator
 			if (brick.isGlass())
 			{
 				brick.getModel().setRenderState(glassMs);
+			}
+			
+			if (brick.getStrength() != Integer.MAX_VALUE)
+			{
+				if (brick.isGlass())
+				{
+					level.getBonuses().put(brick, createIncBonus("bonus" + i));
+				}
+				else
+				{
+					level.getBonuses().put(brick, createDecBonus("bonus" + i));
+				}
 			}
 			
 			level.addBrick(brick);
@@ -134,6 +147,34 @@ public class SHLevelGenerator
 		{
 			level.getInputHandler().addAction(new SHMouseBallLauncher(ball, input));
 		}
+	}
+	
+	private static SHBonus createIncBonus(String name)
+	{
+		Box box = new Box(name, new Vector3f(0, 0, 0), 0.25f, 0.25f, 0.25f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		
+		MaterialState ms = DisplaySystem.getDisplaySystem().getRenderer()
+				.createMaterialState();
+		ms.setEmissive(ColorRGBA.green);
+		box.setRenderState(ms);
+		
+		return new SHIncPaddleWidthBonus(box);
+	}
+	
+	private static SHBonus createDecBonus(String name)
+	{
+		Box box = new Box(name, new Vector3f(0, 0, 0), 0.25f, 0.25f, 0.25f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		
+		MaterialState ms = DisplaySystem.getDisplaySystem().getRenderer()
+				.createMaterialState();
+		ms.setEmissive(ColorRGBA.red);
+		box.setRenderState(ms);
+
+		return new SHDecPaddleWidthBonus(box);
 	}
 	
 }

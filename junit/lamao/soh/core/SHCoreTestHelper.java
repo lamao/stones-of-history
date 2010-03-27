@@ -7,6 +7,8 @@
 package lamao.soh.core;
 
 import lamao.soh.core.SHLevel.SHWallType;
+import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
 
 import org.junit.Test;
 
@@ -27,7 +29,7 @@ import static org.junit.Assert.*;
 public class SHCoreTestHelper
 {
 	/** Creates default box brick dimension (1, 1, 1) located at (0, 0, 0) */ 
-	static SHBrick createDefaultBrick(String id)
+	public static SHBrick createDefaultBrick(String id)
 	{
 		SHBrick brick = new SHBrick(new Box(id, new Vector3f(0, 0, 0), 
 				2, 1, 1));
@@ -37,7 +39,7 @@ public class SHCoreTestHelper
 	}
 	
 	/** Creates same box as in {@link #createDefaultBrick()} but it is glass */
-	static SHBrick createGlassBrick(String id)
+	public static SHBrick createGlassBrick(String id)
 	{
 		SHBrick brick = createDefaultBrick(id);
 		brick.setGlass(true);
@@ -48,7 +50,7 @@ public class SHCoreTestHelper
 	 * Creates same box as in {@link #createDefaultBrick()} but it is 
 	 * superbrick 
 	 */
-	static SHBrick createSuperBrick(String id)
+	public static SHBrick createSuperBrick(String id)
 	{
 		SHBrick brick = createDefaultBrick(id);
 		brick.setStrength(Integer.MAX_VALUE);
@@ -56,7 +58,7 @@ public class SHCoreTestHelper
 	}
 	
 	/** Creates default ball with radius 1 located at (0, 0, 0)*/
-	static SHBall createDefaultBall(String id)
+	public static SHBall createDefaultBall(String id)
 	{
 		Sphere model = new Sphere(id, 15, 15, 1);
 		model.setModelBound(new BoundingSphere());
@@ -64,7 +66,7 @@ public class SHCoreTestHelper
 		return new SHBall(model);
 	}
 	
-	static SHBall createDefaultBall()
+	public static SHBall createDefaultBall()
 	{
 		return createDefaultBall("ball");
 	}
@@ -73,7 +75,7 @@ public class SHCoreTestHelper
 	 * Creates default paddle which have size (4, 2, 2) and located at
 	 * (0, 0, 0)
 	 */
-	static SHPaddle createDefaultPaddle()
+	public static SHPaddle createDefaultPaddle()
 	{
 		SHPaddle paddle = new SHPaddle(new Box("paddle", 
 				new Vector3f(0, 0, 0), 2, 1, 1));
@@ -89,7 +91,7 @@ public class SHCoreTestHelper
 	 * default brick location (-5, 0, 0), glass brick - (0, 0, 0),
 	 * super brick (5, 0, 0) 
 	 */
-	static SHLevel createDefaultLevel()
+	public static SHLevel createDefaultLevel()
 	{
 		SHLevel level = new SHLevel();
 		
@@ -120,6 +122,21 @@ public class SHCoreTestHelper
 	}
 	
 	/**
+	 *  Creates default level with <code>SHIncPaddleWidthBonus</code> attached
+	 * to left (default) brick. 
+	 */
+	public static SHLevel createLevelWithBonus()
+	{
+		SHLevel level = createDefaultLevel();
+		
+		SHBrick brick = level.getBricks().get(0);
+		SHBonus bonus = SHCoreTestHelper.createDefaultBonus();
+		level.getBonuses().put(brick, bonus);
+		
+		return level;
+	}
+	
+	/**
 	 * Create walls for the given level. Walls are boxes.<br>
 	 * @param level
 	 */
@@ -145,6 +162,20 @@ public class SHCoreTestHelper
 		bottomWall.updateModelBound();
 		level.setWall(bottomWall, SHWallType.BOTTOM);
 	}
+	
+	/**
+	 * Creates <code>SHIncPaddleWidthBonus</code> with default duration and
+	 * box model (0.5, 0.5, 0.5) dimensions
+	 */
+	public static SHBonus createDefaultBonus()
+	{
+		Box box = new Box("bonus model", Vector3f.ZERO.clone(), 0.25f, 0.25f, 0.25f);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		SHBonus bonus = new SHIncPaddleWidthBonus(box);
+		return bonus;
+	}
+	
 	
 	@Test
 	public void testDefaultBrick()
@@ -226,11 +257,34 @@ public class SHCoreTestHelper
 		assertEquals(3, level.getBricks().size());
 		assertEquals(1, level.getBalls().size());
 		assertNotNull(level.getPaddle());
-		assertEquals(7, level.getRootNode().getChildren().size());
+		assertEquals(8, level.getRootNode().getChildren().size());
 		for (SHWallType type : SHLevel.SHWallType.values())
 		{
 			assertNotNull(level.getWall(type));
 		}
+		assertEquals(0, level.getBonuses().size());
+	}
+	
+	@Test
+	public void testDefaultBonus()
+	{
+		SHBonus bonus = createDefaultBonus();
+		assertNotNull(bonus.getModel());
+		assertTrue(SHUtils.areEqual(Vector3f.ZERO, bonus.getModel()
+				.getLocalTranslation(), 0.001f));
+		BoundingBox bound = (BoundingBox)bonus.getModel().getWorldBound();
+		assertTrue(SHUtils.areEqual(new Vector3f(0.25f, 0.25f, 0.25f), 
+				bound.getExtent(null), 0.001f));
+	}
+	
+	@Test
+	public void testLevelWithBonus()
+	{
+		SHLevel level = createLevelWithBonus();
+		assertEquals(1, level.getBonuses().size());
+		
+		SHBrick brick = level.getBricks().get(0);
+		assertNotNull(level.getBonuses().get(brick));
 	}
 	
 }

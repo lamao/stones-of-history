@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import lamao.soh.core.SHLevel.SHWallType;
+import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
 
 import org.junit.Test;
 
@@ -26,13 +28,16 @@ import static org.junit.Assert.*;
 public class SHLevelTest
 {
 	/** Stub for level listener */
-	private class SHTestLevelListner implements SHLevelListener
+	private class SHTestLevelListner implements ISHLevelListener
 	{
 		public int wallHit = 0;
 		public int brickHit = 0;
 		public int completed = 0;
 		public int numDeletebleBricks = 0;
 		public int bricksDeleted = 0;
+		public int bonusShowed = 0;
+		public int bonusActivated = 0;
+		public int bonusDeactivated = 0;
 
 		@Override
 		public void wallHit(SHWallType wall)
@@ -57,6 +62,24 @@ public class SHLevelTest
 		{
 			bricksDeleted++;
 		}
+		
+		@Override
+		public void bonusShowed(SHBonus bonus)
+		{
+			bonusShowed++;
+		}
+		
+		@Override
+		public void bonusActivated(SHBonus bonus)
+		{
+			bonusActivated++;
+		}
+		
+		@Override
+		public void bonusDeactivated(SHBonus bonus)
+		{
+			bonusDeactivated++;
+		}
 	}
 	
 	private SHTestLevelListner listener = new SHTestLevelListner();
@@ -70,8 +93,10 @@ public class SHLevelTest
 		assertNotNull(level.getBricks());
 		assertNull(level.getPaddle());
 		assertNotNull(level.getRootNode());
-		assertEquals(1, level.getRootNode().getChildren().size());
+		assertEquals(2, level.getRootNode().getChildren().size());
 		assertNull(level.getInputHandler());
+		assertEquals(0, level.getBonuses().size());
+		assertEquals(0, level.getActiveBonuses().size());
 	}
 	
 	@Test
@@ -107,26 +132,30 @@ public class SHLevelTest
 	{
 		SHLevel level = new SHLevel();
 		SHBall ball = SHCoreTestHelper.createDefaultBall("ball");
+		int children = level.getRootNode().getChildren().size();
 		level.addBall(ball);
-		assertEquals(2, level.getRootNode().getChildren().size());
+		assertEquals(children + 1, level.getRootNode().getChildren().size());
 		assertEquals(1, level.getBalls().size());
 		
 		List<SHBall> balls = new LinkedList<SHBall>();
+		children = level.getRootNode().getChildren().size();
 		for (int i = 0; i < 3; i++)
 		{
 			balls.add(SHCoreTestHelper.createDefaultBall("ball"  + i));
 		}
 		level.addBalls(balls);
-		assertEquals(5, level.getRootNode().getChildren().size());
+		assertEquals(children + 3, level.getRootNode().getChildren().size());
 		assertEquals(4, level.getBalls().size());
 		
+		children = level.getRootNode().getChildren().size();
 		level.deleteBall(ball);
-		assertEquals(4, level.getRootNode().getChildren().size());
+		assertEquals(children - 1, level.getRootNode().getChildren().size());
 		assertEquals(3, level.getBalls().size());
 		
+		children = level.getRootNode().getChildren().size();
 		balls.remove(1);
 		level.deleteBalls(balls);
-		assertEquals(2, level.getRootNode().getChildren().size());
+		assertEquals(children - 2, level.getRootNode().getChildren().size());
 		assertEquals(1, level.getBalls().size());
 		
 	}
@@ -136,44 +165,51 @@ public class SHLevelTest
 	{
 		SHLevel level = new SHLevel();
 		
+		int children = level.getRootNode().getChildren().size();
 		level.setPaddle(SHCoreTestHelper.createDefaultPaddle());
 		assertNotNull(level.getPaddle());
-		assertEquals(2, level.getRootNode().getChildren().size());
+		assertEquals(children + 1, level.getRootNode().getChildren().size());
 		
+		children = level.getRootNode().getChildren().size();
 		level.setPaddle(SHCoreTestHelper.createDefaultPaddle());
 		assertNotNull(level.getPaddle());
-		assertEquals(2, level.getRootNode().getChildren().size());
+		assertEquals(children, level.getRootNode().getChildren().size());
 	}
 	
 	@Test
 	public void testWallSetup()
 	{
 		SHLevel level = new SHLevel();
+		int children = level.getRootNode().getChildren().size();
 
 		Box wall = new Box("left wall", Vector3f.ZERO.clone(), 1, 1, 1);
 		level.setWall(wall, SHLevel.SHWallType.LEFT);
 		assertNotNull(level.getWall(SHLevel.SHWallType.LEFT));
-		assertEquals(2, level.getRootNode().getChildren().size());
+		assertEquals(children + 1, level.getRootNode().getChildren().size());
 		
+		children = level.getRootNode().getChildren().size();
 		wall = new Box("right wall", Vector3f.ZERO.clone(), 1, 1, 1);
 		level.setWall(wall, SHLevel.SHWallType.RIGHT);
 		assertNotNull(level.getWall(SHLevel.SHWallType.RIGHT));
-		assertEquals(3, level.getRootNode().getChildren().size());
+		assertEquals(children + 1, level.getRootNode().getChildren().size());
 		
+		children = level.getRootNode().getChildren().size();
 		wall = new Box("top wall", Vector3f.ZERO.clone(), 1, 1, 1);
 		level.setWall(wall, SHLevel.SHWallType.TOP);
 		assertNotNull(level.getWall(SHLevel.SHWallType.TOP));
-		assertEquals(4, level.getRootNode().getChildren().size());
+		assertEquals(children + 1, level.getRootNode().getChildren().size());
 		
+		children = level.getRootNode().getChildren().size();
 		wall = new Box("bottom wall", Vector3f.ZERO.clone(), 1, 1, 1);
 		level.setWall(wall, SHLevel.SHWallType.BOTTOM);
 		assertNotNull(level.getWall(SHLevel.SHWallType.BOTTOM));
-		assertEquals(5, level.getRootNode().getChildren().size());
+		assertEquals(children + 1, level.getRootNode().getChildren().size());
 		
+		children = level.getRootNode().getChildren().size();
 		wall = new Box("other bottom wall", Vector3f.ZERO.clone(), 1, 1, 1);
 		level.setWall(wall, SHLevel.SHWallType.BOTTOM);
 		assertNotNull(level.getWall(SHLevel.SHWallType.BOTTOM));
-		assertEquals(5, level.getRootNode().getChildren().size());
+		assertEquals(children, level.getRootNode().getChildren().size());
 	}
 	
 	@Test 
@@ -379,7 +415,7 @@ public class SHLevelTest
 		{
 			assertNotNull(level.getWall(type));
 		}
-		assertEquals(6, level.getRootNode().getChildren().size());
+		assertEquals(7, level.getRootNode().getChildren().size());
 	}
 	
 	@Test
@@ -472,6 +508,90 @@ public class SHLevelTest
 		ball.setLocation(8, 0, 0);
 		level.update(1);
 		assertEquals(6, listener.wallHit);
+	}
+	
+	@Test
+	public void testBonuses()
+	{
+		SHLevel level = SHCoreTestHelper.createLevelWithBonus();
+		
+		SHBall ball = level.getBalls().get(0);
+		ball.setLocation(-5, -2, 0);
+		level.addBall(ball);
+		
+		SHBrick brick = level.getBricks().get(0);
+		SHBonus bonus = SHCoreTestHelper.createDefaultBonus();
+		level.getBonuses().put(brick, bonus);
+
+		level.addListener(listener);
+		listener.bonusShowed = 0;
+		level.update(1);
+		assertEquals(0, level.getBonuses().size());
+		assertEquals(8, level.getRootNode().getChildren().size());
+		assertTrue(SHUtils.areEqual(new Vector3f(-5, 0, 0), bonus.getLocation(), 
+				0.001f));
+		assertEquals(1, listener.bonusShowed);
+		
+		// test bonus moving
+		Node bonusNode = (Node)level.getRootNode().getChild(1);
+		assertEquals(1, bonusNode.getChildren().size());
+		
+		// test bonus activation
+		listener.bonusActivated = 0;
+		level.getPaddle().setLocation(-5, -7, 0);
+		level.getRootNode().updateGeometricState(7, true);
+		level.update(7);
+		
+		assertTrue(SHUtils.areEqual(new Vector3f(-5, -7, 0), 
+				bonus.getLocation(), 0.001f));
+		assertEquals(0, bonusNode.getChildren().size());
+		assertTrue(Math.abs(level.getPaddle().getModel().getLocalScale().x 
+				- 1.1f) < 0.001f);
+		assertEquals(1, listener.bonusActivated);
+		assertEquals(1, level.getActiveBonuses().size());
+		
+		//test bonus deactivation
+		listener.bonusDeactivated = 0;
+		level.update(SHIncPaddleWidthBonus.DURATION - 1);
+		assertEquals(1, level.getActiveBonuses().size());
+		assertTrue(Math.abs(level.getPaddle().getModel().getLocalScale().x 
+				- 1.1f) < 0.001f);
+		assertEquals(0, listener.bonusDeactivated);
+		
+		level.update(1);
+		assertEquals(0, level.getActiveBonuses().size());
+		assertTrue(Math.abs(level.getPaddle().getModel().getLocalScale().x 
+				- 1f) < 0.001f);
+		assertEquals(1, listener.bonusDeactivated);
 		
 	}
+	
+	@Test
+	public void testBonusCollisionWidthBottomWall()
+	{
+		SHLevel level = SHCoreTestHelper.createLevelWithBonus();
+		
+		SHBall ball = level.getBalls().get(0);
+		ball.setLocation(-5, -2, 0);
+		level.addBall(ball);
+		
+		SHBrick brick = level.getBricks().get(0);
+		SHBonus bonus = SHCoreTestHelper.createDefaultBonus();
+		level.getBonuses().put(brick, bonus);
+		
+		// break brick and extract bonus
+		level.update(1);
+		
+		// move bonus to bottom wall
+		level.getRootNode().updateGeometricState(9, true);
+		level.update(9);
+		
+		Node bonusNode = (Node)level.getRootNode().getChild(1);
+		assertTrue(SHUtils.areEqual(new Vector3f(-5, -9, 0), 
+				bonus.getLocation(), 0.001f));
+		assertEquals(0, bonusNode.getChildren().size());
+		assertTrue(Math.abs(level.getPaddle().getModel().getLocalScale().x 
+				- 1) < 0.001f);
+	}
+	
 }

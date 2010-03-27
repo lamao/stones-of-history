@@ -6,8 +6,14 @@
  */
 package lamao.soh.core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.core.bonuses.SHDefaultMover;
 
 import com.jme.input.InputHandler;
 import com.jme.scene.Node;
@@ -40,13 +46,10 @@ public class SHLevel
 	
 	
 	/** All brick in current level */ 
-	private List<SHBrick> _bricks = new LinkedList<SHBrick>();
+	private List<SHBrick> _bricks = new ArrayList<SHBrick>();
 	
 	/** Number of bricks that can be destroyed (e.i. they are not superbricks */
 	private int _numDeletebleBricks = 0;
-	
-	/** Bricks to delete from level */
-	private List<SHBrick> _bricksToDelete = new LinkedList<SHBrick>();
 	
 	/** All balls in current level */
 	private List<SHBall> _balls = new LinkedList<SHBall>();
@@ -71,11 +74,24 @@ public class SHLevel
 	/** Input handler for level */
 	private InputHandler _input = null;
 	
-	private List<SHLevelListener> _listeners = new LinkedList<SHLevelListener>();
+	private List<ISHLevelListener> _listeners = new LinkedList<ISHLevelListener>();
+	
+	/** Bonuses */
+	private Map<SHBrick, SHBonus> _bonuses = new HashMap<SHBrick, SHBonus>();
+	
+	/** Node that contains bonuses */
+	private Node _bonusNode = new Node("bonuses");
+	
+	/** Showed bonuses */
+	private List<SHBonus> _showedBonuses = new ArrayList<SHBonus>();
+	
+	/** Active bonuses */
+	private List<SHBonus> _activeBonuses = new ArrayList<SHBonus>();
 	
 	public SHLevel()
 	{
 		_rootNode.attachChild(_bricksRoot);
+		_rootNode.attachChild(_bonusNode);
 	}
 	
 	
@@ -240,22 +256,38 @@ public class SHLevel
 		return _input;
 	}
 	
-	public List<SHLevelListener> getListeners()
+	public List<ISHLevelListener> getListeners()
 	{
 		return _listeners;
 	}
 	
-	public void addListener(SHLevelListener listener)
+	public void addListener(ISHLevelListener listener)
 	{
 		_listeners.add(listener);
 	}
 	
-	public void removeListener(SHLevelListener listener)
+	public void removeListener(ISHLevelListener listener)
 	{
 		_listeners.remove(listener);
 	}
 
+	
+	public Map<SHBrick, SHBonus> getBonuses()
+	{
+		return _bonuses;
+	}
 
+
+	public void setBonuses(Map<SHBrick, SHBonus> bonuses)
+	{
+		_bonuses = bonuses;
+	}
+	
+	public List<SHBonus> getActiveBonuses()
+	{
+		return _activeBonuses;
+	}
+	
 	/** 
 	 * Deletes all bricks and balls from level. Changes paddle state to default. 
 	 * Does not effects on walls.
@@ -280,6 +312,23 @@ public class SHLevel
 		{
 			_input.update(tpf);
 		}
+		processActiveBonuses(tpf);
+		
+		processCollisions();
+		
+		if (_numDeletebleBricks == 0)
+		{
+			fireComplete();
+		}
+		
+	}
+	
+	/** 
+	 * Process all collisions (ball with walls, ball with bricks, ball with
+	 * paddle
+	 */
+	private void processCollisions()
+	{
 		for (SHBall ball : _balls)
 		{
 			if (ball.getModel().hasCollision(_walls[SHWallType.LEFT.intValue()], 
@@ -309,16 +358,22 @@ public class SHLevel
 				}
 				fireWallHit(SHWallType.BOTTOM);
 			}
-			
-			for (SHBrick brick : _bricks)
+
+			SHBrick brick = null;
+			for (int i = 0; i < _bricks.size(); i++)
 			{
+				brick = _bricks.get(i);
 				if (ball.getModel().hasCollision(brick.getModel(), false))
 				{
 					fireBrickHit(brick);
 					ball.onHit(brick);
 					if (brick.getStrength() <= 0)
 					{
-						_bricksToDelete.add(brick);
+						_numDeletebleBricks--;
+						deleteBrick(brick);
+						i--;
+						fireBrickDeleted(brick);
+						showBonusIfPresent(brick);
 					}
 				}
 			}
@@ -328,28 +383,71 @@ public class SHLevel
 			}
 		}
 		
-		processDeleteQueues();
-		
-		if (_numDeletebleBricks == 0)
+		SHBonus bonus = null;
+		for (int i = 0; i < _showedBonuses.size(); i++)
 		{
-			fireComplete();
+			bonus = _showedBonuses.get(i);
+			if (bonus.getModel().hasCollision(_paddle.getModel(), false))
+			{
+				_bonusNode.detachChild(bonus.getModel());
+				_showedBonuses.remove(bonus);
+				i--;
+				_activeBonuses.add(bonus);
+				bonus.apply(this);
+				fireBonusActivated(bonus);
+			} 
+			else if (bonus.getModel().hasCollision(
+					_walls[SHWallType.BOTTOM.intValue()], false))
+			{
+				_bonusNode.detachChild(bonus.getModel());
+				_showedBonuses.remove(bonus);
+				i--;
+			}
+			
 		}
-		
 	}
 	
-	/** Process all delete queues and removes entities in them */
-	private void processDeleteQueues()
+	/** 
+	 * Decrease duration of bonus by <code>tpf</code>. If duration < 0
+	 * bonus is deactivated and removed.
+	 */
+	private void processActiveBonuses(float tpf)
 	{
-		for (SHBrick brick : _bricksToDelete)
+		SHBonus bonus = null;
+		for (int i = 0; i < _activeBonuses.size(); i++)
 		{
-			if (brick.getStrength() != Integer.MAX_VALUE)
+			bonus = _activeBonuses.get(i);
+			bonus.decreaseDuration(tpf);
+			if (bonus.getDuration() <= 0)
 			{
-				_numDeletebleBricks--;
-				fireBrickDeleted(brick);
+				_activeBonuses.remove(i);
+				bonus.cleanup(this);
+				fireBonusDeactivated(bonus);
 			}
 		}
-		deleteBricks(_bricksToDelete);
-		_bricksToDelete.clear();
+	}
+	
+	/**
+	 * If some bonus is associated with given brick it is attached to 
+	 * <code>_bonusNode</code> and starts its falling down.
+	 * @param brick
+	 */
+	private void showBonusIfPresent(SHBrick brick)
+	{
+		SHBonus bonus = _bonuses.get(brick);
+		if (bonus != null)
+		{
+			_bonuses.remove(brick);
+			_showedBonuses.add(bonus);
+			fireBonusShowed(bonus);
+			
+			bonus.setLocation(brick.getLocation().clone());
+			bonus.getModel().addController(new SHDefaultMover(bonus.getModel()));
+
+			_bonusNode.attachChild(bonus.getModel());
+			_bonusNode.updateModelBound();
+			_bonusNode.updateRenderState();
+		}
 	}
 	
 	/** 
@@ -364,14 +462,14 @@ public class SHLevel
 		{
 			if (brick.getStrength() != Integer.MAX_VALUE)
 			{
-				_numDeletebleBricks ++;
+				_numDeletebleBricks++;
 			}
 		}
 	}
 	
 	private void fireComplete()
 	{
-		for (SHLevelListener listener : _listeners)
+		for (ISHLevelListener listener : _listeners)
 		{
 			listener.completed();
 		}
@@ -380,7 +478,7 @@ public class SHLevel
 	
 	private void fireBrickHit(SHBrick brick)
 	{
-		for (SHLevelListener listener : _listeners)
+		for (ISHLevelListener listener : _listeners)
 		{
 			listener.brickHit(brick);
 		}
@@ -388,7 +486,7 @@ public class SHLevel
 	
 	private void fireWallHit(SHWallType wall)
 	{
-		for (SHLevelListener listener : _listeners)
+		for (ISHLevelListener listener : _listeners)
 		{
 			listener.wallHit(wall);
 		}
@@ -396,9 +494,33 @@ public class SHLevel
 	
 	private void fireBrickDeleted(SHBrick brick)
 	{
-		for (SHLevelListener listener : _listeners)
+		for (ISHLevelListener listener : _listeners)
 		{
 			listener.brickDeleted(brick);
+		}
+	}
+	
+	private void fireBonusShowed(SHBonus bonus)
+	{
+		for (ISHLevelListener listener : _listeners)
+		{
+			listener.bonusShowed(bonus);
+		}
+	}
+	
+	private void fireBonusActivated(SHBonus bonus)
+	{
+		for (ISHLevelListener listener : _listeners)
+		{
+			listener.bonusActivated(bonus);
+		}
+	}
+	
+	private void fireBonusDeactivated(SHBonus bonus)
+	{
+		for (ISHLevelListener listener : _listeners)
+		{
+			listener.bonusDeactivated(bonus);
 		}
 	}
 	

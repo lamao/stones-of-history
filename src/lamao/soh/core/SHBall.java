@@ -74,14 +74,14 @@ public class SHBall extends SHEntity
 		// if ball hits left or right side change velocity.x component
 		// else ball hits in corner repulse it back
 		if (SHUtils.inRange(getModel().getLocalTranslation().x, 
-							box.getCenter().x - box.xExtent,
-							box.getCenter().x + box.xExtent))
+							brick.getLocation().x - box.xExtent,
+							brick.getLocation().x + box.xExtent))
 		{
 			_velocity.y = -_velocity.y;
 		}
 		else if (SHUtils.inRange(getModel().getLocalTranslation().y, 
-							box.getCenter().y - box.yExtent,
-							box.getCenter().y + box.yExtent))
+							brick.getLocation().y - box.yExtent,
+							brick.getLocation().y + box.yExtent))
 		{
 			_velocity.x = -_velocity.x;
 		}

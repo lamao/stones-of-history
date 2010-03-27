@@ -10,8 +10,9 @@ import lamao.soh.console.SHConsoleState;
 import lamao.soh.console.SHWireFrameCommand;
 import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHLevel;
-import lamao.soh.core.SHLevelListener;
+import lamao.soh.core.ISHLevelListener;
 import lamao.soh.core.SHLevel.SHWallType;
+import lamao.soh.core.bonuses.SHBonus;
 
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
@@ -155,7 +156,7 @@ public class SHLevelState extends BasicGameState
 		super.setActive(active);
 	}
 	
-	private class SHDefaultLevelListener implements SHLevelListener
+	private class SHDefaultLevelListener implements ISHLevelListener
 	{
 		@Override
 		public void completed()
@@ -185,6 +186,25 @@ public class SHLevelState extends BasicGameState
 		{
 			_events.print("Brick deleted");
 			_info.print(Integer.toString(_level.getNumDeletebleBricks()));
+		}
+		
+		@Override
+		public void bonusShowed(SHBonus bonus)
+		{
+			_events.print("Bonus " + bonus.getClass());
+		}
+		
+		@Override
+		public void bonusActivated(SHBonus bonus)
+		{
+			_events.print("Bonus activated" + bonus.getClass());
+		}
+		
+		@Override
+		public void bonusDeactivated(SHBonus bonus)
+		{
+			_events.print("Bonus deactivated" + bonus.getClass());
+			
 		}
 	}
 	
