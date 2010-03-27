@@ -28,7 +28,9 @@ import lamao.soh.core.SHPaddleInputHandler;
 import lamao.soh.core.SHPaddleSticker;
 import lamao.soh.core.SHLevel.SHWallType;
 import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.core.bonuses.SHDecBallSpeedBonus;
 import lamao.soh.core.bonuses.SHDecPaddleWidthBonus;
+import lamao.soh.core.bonuses.SHIncBallSpeedBonus;
 import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
 
 /**
@@ -160,7 +162,8 @@ public class SHLevelGenerator
 		ms.setEmissive(ColorRGBA.green);
 		box.setRenderState(ms);
 		
-		return new SHIncPaddleWidthBonus(box);
+		//return new SHIncPaddleWidthBonus(box);
+		return new SHIncBallSpeedBonus(box);
 	}
 	
 	private static SHBonus createDecBonus(String name)
@@ -174,7 +177,8 @@ public class SHLevelGenerator
 		ms.setEmissive(ColorRGBA.red);
 		box.setRenderState(ms);
 
-		return new SHDecPaddleWidthBonus(box);
+//		return new SHDecPaddleWidthBonus(box);
+		return new SHDecBallSpeedBonus(box);
 	}
 	
 }
