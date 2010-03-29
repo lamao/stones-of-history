@@ -62,6 +62,37 @@ public class SHUtilsTest
 		assertTrue(SHUtils.inRange(-1.1f, -1.3f, -1.1f));
 		assertTrue(SHUtils.inRange(-1.3f, -1.3f, -1.1f));
 		assertFalse(SHUtils.inRange(-1.2f, -1.3f, -1.21f));
-
+	}
+	
+	@Test
+	public void testAngle()
+	{
+		Vector3f v = new Vector3f(1, 0, 0);
+		
+		assertTrue(Math.abs(SHUtils.angle(v) - 0) < 0.001f);
+		
+		v.set(1, 1, 0);
+		assertTrue(Math.abs(SHUtils.angle(v) - Math.PI / 4) < 0.001f);
+		
+		v.set(0, 1, 0);
+		assertTrue(Math.abs(SHUtils.angle(v) - Math.PI / 2) < 0.001f);
+		
+		v.set(-1, 1, 0);
+		assertTrue(Math.abs(SHUtils.angle(v) - 3 * Math.PI / 4) < 0.001f);
+		
+		v.set(-1, 0, 0);
+		assertTrue(Math.abs(SHUtils.angle(v) - Math.PI) < 0.001f);
+		
+		v.set(-1, -1, 0);
+		assertTrue(Math.abs(SHUtils.angle(v) - 5 * Math.PI / 4) < 0.001f);
+		
+		v.set(0, -1, 0);
+		assertTrue(Math.abs(SHUtils.angle(v) - 3 * Math.PI / 2) < 0.001f);
+		
+		v.set(1, -1, 0);
+		assertTrue(Math.abs(SHUtils.angle(v) - 7 * Math.PI / 4) < 0.001f);
+		
+		v.set(1, -0.00000000000000000001f, 0);
+		assertTrue(Math.abs(SHUtils.angle(v) - 2 * Math.PI) < 0.001f);
 	}
 }

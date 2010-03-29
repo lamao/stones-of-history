@@ -13,6 +13,7 @@ import com.jme.bounding.BoundingSphere;
 import com.jme.input.InputHandler;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
+import com.jme.scene.SharedMesh;
 import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Sphere;
 import com.jme.scene.state.MaterialState;
@@ -28,11 +29,7 @@ import lamao.soh.core.SHPaddleInputHandler;
 import lamao.soh.core.SHPaddleSticker;
 import lamao.soh.core.SHLevel.SHWallType;
 import lamao.soh.core.bonuses.SHBonus;
-import lamao.soh.core.bonuses.SHBottomWallBonus;
-import lamao.soh.core.bonuses.SHDecBallSpeedBonus;
-import lamao.soh.core.bonuses.SHDecPaddleWidthBonus;
-import lamao.soh.core.bonuses.SHIncBallSpeedBonus;
-import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
+import lamao.soh.core.bonuses.SHDoubleBallBonus;
 import lamao.soh.core.bonuses.SHStickyPaddleBonus;
 
 /**
@@ -133,9 +130,10 @@ public class SHLevelGenerator
 		paddle.setLocation(0, -7, 0);
 		level.setPaddle(paddle);
 		
-		SHBall ball = new SHBall(new Sphere("ball", 15, 15, 0.25f));
-		ball.getModel().setModelBound(new BoundingSphere());
-		ball.getModel().updateModelBound();
+		Sphere ballModel = new Sphere("ball", 15, 15, 0.25f);
+		ballModel.setModelBound(new BoundingSphere());
+		ballModel.updateModelBound();
+		SHBall ball = new SHBall(ballModel);
 		ball.setLocation(-0, -6.5f, 0);
 		ball.setVelocity(-3 ,3 ,0);
 		ball.getModel().addController(new SHPaddleSticker(ball, paddle.getModel()));
@@ -147,10 +145,7 @@ public class SHLevelGenerator
 	{
 		InputHandler input = new SHPaddleInputHandler(level.getPaddle().getModel());
 		level.setInputHandler(input);
-		for (SHBall ball : level.getBalls())
-		{
-			level.getInputHandler().addAction(new SHMouseBallLauncher(level));
-		}
+		level.getInputHandler().addAction(new SHMouseBallLauncher(level));
 	}
 	
 	private static SHBonus createIncBonus(String name)
@@ -167,7 +162,8 @@ public class SHLevelGenerator
 //		return new SHIncPaddleWidthBonus(box);
 //		return new SHIncBallSpeedBonus(box);
 //		return new SHBottomWallBonus(box);
-		return new SHStickyPaddleBonus(box);
+//		return new SHStickyPaddleBonus(box);
+		return new SHDoubleBallBonus(box);
 	}
 	
 	private static SHBonus createDecBonus(String name)

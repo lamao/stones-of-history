@@ -9,7 +9,10 @@ package lamao.soh.core;
 import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
+import com.jme.scene.SharedMesh;
+import com.jme.scene.SharedNode;
 import com.jme.scene.Spatial;
+import com.jme.scene.TriMesh;
 
 /**
  * Ball entity.
@@ -18,6 +21,11 @@ import com.jme.scene.Spatial;
  */
 public class SHBall extends SHEntity
 {
+	/** Number of created shared objects within class. Used internally for 
+	 * naming 
+	 */
+	private static int numSharedObjects = 0;
+	
 	/** Ball velocity */
 	private Vector3f _velocity;
 	
@@ -116,6 +124,29 @@ public class SHBall extends SHEntity
 		Vector3f newPosition = getLocation().add(_velocity.mult(0.001f));
 		return newPosition.distance(brick.getLocation()) < 
 				getLocation().distance(brick.getLocation());
+	}
+	
+	@Override
+	public SHBall clone()
+	{
+		Spatial model = getModel();
+		Spatial newModel = getModel();
+		if (model instanceof TriMesh)
+		{
+			newModel = new SharedMesh("ball" + numSharedObjects++, 
+					(TriMesh)model);
+		}
+		else if (model instanceof Node)
+		{
+			newModel = new SharedNode("ball" + numSharedObjects++, 
+					(Node)model);
+		}
+		
+		newModel.setLocalTranslation(model.getLocalTranslation().clone());
+		newModel.setModelBound(model.getWorldBound().clone(null));
+		newModel.updateModelBound();
+			
+		return new SHBall(newModel, _velocity.clone());
 	}
 	
 }

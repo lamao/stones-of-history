@@ -27,4 +27,19 @@ public class SHUtils
 	{
 		return (p1 <= value && value <= p2) || (p2 <= value && value <= p1);
 	}
+	
+	/** 
+	 * Calculates angle between vector and (1, 0, 0), using only X and Y. 
+	 * Angle can be from 0 to 2 * PI.
+	 */
+	public static float angle(Vector3f vector)
+	{
+		float angle = (float)Math.acos(vector.x / Math.abs(vector.length()));
+		if (vector.y < 0)
+		{
+			angle = (float)(2 * Math.PI - angle);
+		}
+		return angle;
+	}
+	
 }

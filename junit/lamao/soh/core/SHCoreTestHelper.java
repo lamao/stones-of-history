@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
 import com.jme.math.Vector3f;
+import com.jme.scene.SharedMesh;
 import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Sphere;
 
@@ -63,6 +64,7 @@ public class SHCoreTestHelper
 		Sphere model = new Sphere(id, 15, 15, 1);
 		model.setModelBound(new BoundingSphere());
 		model.updateModelBound();
+		
 		return new SHBall(model);
 	}
 	

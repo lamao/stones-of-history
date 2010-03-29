@@ -32,6 +32,7 @@ public class SHBallTest
 	{
 		SHBall ball = new SHBall();
 		assertNotNull(ball);
+		assertNull(ball.getModel());
 		assertEquals(Vector3f.UNIT_Y, ball.getVelocity());
 	}
 	
@@ -252,4 +253,21 @@ public class SHBallTest
 		assertEquals(Integer.MAX_VALUE, sharedBrick.getStrength());
 	}
 
+	@Test
+	public void testClone()
+	{
+		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		ball.setLocation(1, 2, 3);
+		SHBall anotherBall = ball.clone();
+		
+		assertNotSame(ball.getVelocity(), anotherBall.getVelocity());
+		assertEquals(ball.getVelocity(), anotherBall.getVelocity());
+		assertNotSame(ball.getModel(), anotherBall.getModel());
+		assertTrue(SHUtils.areEqual(ball.getLocation(), 
+				anotherBall.getLocation(), 0.001f));
+		assertNotNull(anotherBall.getModel().getWorldBound());
+		assertEquals(ball.getModel().getWorldBound().getType(), 
+				anotherBall.getModel().getWorldBound().getType());
+		assertEquals(0, anotherBall.getModel().getControllerCount());
+	}
 }

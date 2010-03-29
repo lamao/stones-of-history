@@ -13,6 +13,7 @@ import com.jme.scene.Spatial;
 
 import lamao.soh.core.SHBall;
 import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHUtils;
 
 /**
  * Increases ball speed.
@@ -48,11 +49,7 @@ public class SHIncBallSpeedBonus extends SHBonus
 		for (SHBall ball : level.getBalls())
 		{
 			speed = ball.getVelocity().length();			
-			angle = Math.acos(ball.getVelocity().x / Math.abs(speed));
-			if (ball.getVelocity().y < 0)
-			{
-				angle = 2 * Math.PI - angle;
-			}
+			angle = SHUtils.angle(ball.getVelocity());
 			
 			ball.getVelocity().x = (float)Math.cos(angle) * speed * (1 + INC_PERCENT);
 			ball.getVelocity().y = (float)Math.sin(angle) * speed * (1 + INC_PERCENT);
