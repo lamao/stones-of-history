@@ -6,6 +6,8 @@
  */
 package lamao.soh.states;
 
+import lamao.soh.SHLevelGenerator;
+import lamao.soh.console.ISHCommandHandler;
 import lamao.soh.console.SHConsoleState;
 import lamao.soh.console.SHGenerateCommand;
 import lamao.soh.console.SHWireFrameCommand;
@@ -102,7 +104,18 @@ public class SHLevelState extends BasicGameState
 		SHConsoleState console = (SHConsoleState)GameStateManager.getInstance()
 				.getChild(SHConsoleState.STATE_NAME);
 		console.add("wired", new SHWireFrameCommand(rootNode));
-		console.add("generate", new SHGenerateCommand(_level, rootNode));
+		console.add("generate", new ISHCommandHandler() 
+		{
+			@Override
+			public String execute(String[] args)
+			{
+				_level.clear();
+				SHLevelGenerator.generate(_level);
+				_statNode.detachChildNamed("win");
+				rootNode.updateRenderState();
+				return null;
+			}
+		});
 		
 	}
 	

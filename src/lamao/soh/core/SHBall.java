@@ -78,19 +78,20 @@ public class SHBall extends SHEntity
 			return;
 		
 		BoundingBox box = (BoundingBox)brick.getModel().getWorldBound();
+		Vector3f boxLoc = brick.getModel().getLocalTranslation();
 		
 		// if ball hits up or bottom side change velocity.y component
 		// if ball hits left or right side change velocity.x component
 		// else ball hits in corner repulse it back
 		if (SHUtils.inRange(getModel().getLocalTranslation().x, 
-							brick.getLocation().x - box.xExtent,
-							brick.getLocation().x + box.xExtent))
+							boxLoc.x - box.xExtent,
+							boxLoc.x + box.xExtent))
 		{
 			_velocity.y = -_velocity.y;
 		}
 		else if (SHUtils.inRange(getModel().getLocalTranslation().y, 
-							brick.getLocation().y - box.yExtent,
-							brick.getLocation().y + box.yExtent))
+							boxLoc.y - box.yExtent,
+							boxLoc.y + box.yExtent))
 		{
 			_velocity.x = -_velocity.x;
 		}
@@ -98,13 +99,46 @@ public class SHBall extends SHEntity
 		{
 			_velocity.multLocal(-1);
 		}
-		else if (Math.abs(_velocity.y) > Math.abs(_velocity.x))
-		{ // from up or from down
-			_velocity.y = -_velocity.y;
-		}
 		else 
-		{ // from left or from right
-			_velocity.x = -_velocity.x;
+		{
+			float boxLeft = boxLoc.x - box.xExtent;
+			float boxRight = boxLoc.x + box.xExtent;
+			float boxUp = boxLoc.y + box.yExtent;
+			float boxDown = boxLoc.y - box.yExtent;
+			
+			if (getLocation().y < boxLoc.y)
+			{
+				if (Math.abs(boxLeft - getLocation().x) < Math.abs(boxDown - getLocation().y) ||
+					Math.abs(boxRight - getLocation().x) < Math.abs(boxDown - getLocation().y))
+				{
+					_velocity.y = -_velocity.y;
+				}
+				else
+				{
+					_velocity.x = -_velocity.x;
+				}
+			}
+			else
+			{
+				if (Math.abs(boxLeft - getLocation().x) < Math.abs(boxUp - getLocation().y) ||
+					Math.abs(boxRight - getLocation().x) < Math.abs(boxUp - getLocation().y))
+				{
+					_velocity.y = -_velocity.y;
+				}
+				else
+				{
+					_velocity.x = -_velocity.x;
+				}
+			}
+			
+//			if (Math.abs(_velocity.y) > Math.abs(_velocity.x))
+//			{ // from up or from down
+//				_velocity.y = -_velocity.y;
+//			}
+//			else 
+//			{ // from left or from right
+//				_velocity.x = -_velocity.x;
+//			}
 		}
 	}
 	
