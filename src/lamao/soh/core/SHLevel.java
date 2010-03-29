@@ -318,7 +318,6 @@ public class SHLevel
 			_input.update(tpf);
 		}
 		processActiveBonuses(tpf);
-		
 		processCollisions();
 		
 		if (_numDeletebleBricks == 0)
@@ -334,10 +333,18 @@ public class SHLevel
 	 */
 	private void processCollisions()
 	{
+		processBallWallsCollisions();
+		processBallBricksCollisions();
+		processBallPaddleCollisions();
+		processBonusPaddleCollisions();
+	}
+	
+	private void processBallWallsCollisions()
+	{
 		for (SHBall ball : _balls)
 		{
 			if (ball.getModel().hasCollision(_walls[SHWallType.LEFT.intValue()], 
-				false))
+					false))
 			{
 				ball.getVelocity().x = -ball.getVelocity().x;
 				fireWallHit(SHWallType.LEFT);
@@ -349,7 +356,7 @@ public class SHLevel
 				fireWallHit(SHWallType.RIGHT);
 			}
 			if (ball.getModel().hasCollision(_walls[SHWallType.TOP.intValue()], 
-				false)) 
+					false)) 
 			{
 				ball.getVelocity().y = -ball.getVelocity().y;
 				fireWallHit(SHWallType.TOP);
@@ -363,7 +370,13 @@ public class SHLevel
 				}
 				fireWallHit(SHWallType.BOTTOM);
 			}
-
+		}
+	}
+	
+	private void processBallBricksCollisions()
+	{
+		for (SHBall ball : _balls)
+		{
 			SHBrick brick = null;
 			for (int i = 0; i < _bricks.size(); i++)
 			{
@@ -382,12 +395,22 @@ public class SHLevel
 					}
 				}
 			}
+		}
+	}
+	
+	private void processBallPaddleCollisions()
+	{
+		for (SHBall ball : _balls)
+		{
 			if (ball.getModel().hasCollision(_paddle.getModel(), false))
 			{
 				_paddle.onHit(ball);
 			}
 		}
-		
+	}
+	
+	private void processBonusPaddleCollisions()
+	{
 		SHBonus bonus = null;
 		for (int i = 0; i < _showedBonuses.size(); i++)
 		{
@@ -397,23 +420,7 @@ public class SHLevel
 				_bonusNode.detachChild(bonus.getModel());
 				_showedBonuses.remove(bonus);
 				i--;
-				boolean needAdd = true;
-				
-				if (bonus.isAddictive())
-				{
-					SHBonus activeBonus = findSuchActiveBonus(bonus);
-					if (activeBonus != null)
-					{
-						needAdd = false;
-						activeBonus.increaseDuration(bonus.getDuration());
-					}
-				}
-				if (needAdd)
-				{
-					_activeBonuses.add(bonus);
-					bonus.apply(this);
-					fireBonusActivated(bonus);
-				}
+				activateBonus(bonus);
 			} 
 			else if (bonus.getModel().hasCollision(
 					_walls[SHWallType.BOTTOM.intValue()], false))
@@ -440,9 +447,36 @@ public class SHLevel
 			if (bonus.getDuration() <= 0)
 			{
 				_activeBonuses.remove(i);
+				i--;
 				bonus.cleanup(this);
 				fireBonusDeactivated(bonus);
 			}
+		}
+	}
+	
+	/**
+	 * Activates bonus when paddle catch it. If bonus is addictive method
+	 * checks if such bonus is already activated.
+	 * @param bonus bonus
+	 */
+	private void activateBonus(SHBonus bonus)
+	{
+		boolean needAdd = true;
+		
+		if (bonus.isAddictive())
+		{
+			SHBonus activeBonus = findSuchActiveBonus(bonus);
+			if (activeBonus != null)
+			{
+				needAdd = false;
+				activeBonus.increaseDuration(bonus.getDuration());
+			}
+		}
+		if (needAdd)
+		{
+			_activeBonuses.add(bonus);
+			bonus.apply(this);
+			fireBonusActivated(bonus);
 		}
 	}
 	
