@@ -300,6 +300,10 @@ public class SHLevel
 		{
 			_paddle.setHitHandler(new SHDefaultPaddleHitHandler());
 		}
+		_bonusNode.detachAllChildren();
+		_showedBonuses.clear();
+		_activeBonuses.clear();
+		
 	}
 	
 	/** Update cycle for level. Checks collisions, removes bricks, activates

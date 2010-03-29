@@ -7,6 +7,7 @@
 package lamao.soh.states;
 
 import lamao.soh.console.SHConsoleState;
+import lamao.soh.console.SHGenerateCommand;
 import lamao.soh.console.SHWireFrameCommand;
 import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHLevel;
@@ -101,6 +102,7 @@ public class SHLevelState extends BasicGameState
 		SHConsoleState console = (SHConsoleState)GameStateManager.getInstance()
 				.getChild(SHConsoleState.STATE_NAME);
 		console.add("wired", new SHWireFrameCommand(rootNode));
+		console.add("generate", new SHGenerateCommand(_level, rootNode));
 		
 	}
 	

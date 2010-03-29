@@ -416,6 +416,9 @@ public class SHLevelTest
 			assertNotNull(level.getWall(type));
 		}
 		assertEquals(7, level.getRootNode().getChildren().size());
+		
+		assertEquals(0, level.getActiveBonuses().size());
+		assertEquals(0, level.getBonuses().size());
 	}
 	
 	@Test
