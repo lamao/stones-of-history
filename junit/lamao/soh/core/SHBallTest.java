@@ -51,6 +51,22 @@ public class SHBallTest
 		assertTrue(SHUtils.areEqual(new Vector3f(2, -1, 0), 
 									ball.getVelocity(), 
 									0.001f));
+		
+		// near left corner 
+		ball.setVelocity(new Vector3f(1, 2, 0));
+		ball.setLocation(new Vector3f(-2.5f, -2, 0));
+		ball.onHit(sharedBrick);
+		assertTrue(ball.getVelocity().toString(), 
+				SHUtils.areEqual(new Vector3f(1, -2, 0), 
+				ball.getVelocity(), 0.001f));
+		
+		// near right corner 
+		ball.setVelocity(new Vector3f(-1, 2, 0));
+		ball.setLocation(new Vector3f(2.5f, -2, 0));
+		ball.onHit(sharedBrick);
+		assertTrue(ball.getVelocity().toString(), 
+				SHUtils.areEqual(new Vector3f(-1, -2, 0), 
+				ball.getVelocity(), 0.001f));
 	}
 	
 	@Test
@@ -64,12 +80,28 @@ public class SHBallTest
 									ball.getVelocity(), 
 									0.001f));
 		
-		ball.setVelocity(new Vector3f(-1, -2, 0));
+		ball.setVelocity(new Vector3f(2, -1, 0));
 		ball.setLocation(new Vector3f(0.5f, 2, 0));
 		ball.onHit(sharedBrick);
-		assertTrue(SHUtils.areEqual(new Vector3f(-1, 2, 0), 
+		assertTrue(SHUtils.areEqual(new Vector3f(2, 1, 0), 
 									ball.getVelocity(), 
 									0.001f));
+		
+		// near left corner 
+		ball.setVelocity(new Vector3f(1, -2, 0));
+		ball.setLocation(new Vector3f(-2.5f, 2, 0));
+		ball.onHit(sharedBrick);
+		assertTrue(ball.getVelocity().toString(), 
+				SHUtils.areEqual(new Vector3f(1, 2, 0), 
+				ball.getVelocity(), 0.001f));
+		
+		// near right corner 
+		ball.setVelocity(new Vector3f(-1, -2, 0));
+		ball.setLocation(new Vector3f(2.5f, 2, 0));
+		ball.onHit(sharedBrick);
+		assertTrue(ball.getVelocity().toString(), 
+				SHUtils.areEqual(new Vector3f(-1, 2, 0), 
+				ball.getVelocity(), 0.001f));
 	}
 	
 	@Test
@@ -83,12 +115,28 @@ public class SHBallTest
 									ball.getVelocity(), 
 									0.001f));
 		
-		ball.setVelocity(new Vector3f(1, 1, 0));
+		ball.setVelocity(new Vector3f(1, 2, 0));
 		ball.setLocation(new Vector3f(-3, -0.5f, 0));
 		ball.onHit(sharedBrick);
-		assertTrue(SHUtils.areEqual(new Vector3f(-1, 1, 0), 
+		assertTrue(SHUtils.areEqual(new Vector3f(-1, 2, 0), 
 									ball.getVelocity(), 
 									0.001f));
+		
+		// near up corner 
+		ball.setVelocity(new Vector3f(2, -1, 0));
+		ball.setLocation(new Vector3f(-3f, 1.5f, 0));
+		ball.onHit(sharedBrick);
+		assertTrue(ball.getVelocity().toString(), 
+				SHUtils.areEqual(new Vector3f(-2, -1, 0), 
+				ball.getVelocity(), 0.001f));
+		
+		// near bottom corner 
+		ball.setVelocity(new Vector3f(2, 1, 0));
+		ball.setLocation(new Vector3f(-3f, -2.5f, 0));
+		ball.onHit(sharedBrick);
+		assertTrue(ball.getVelocity().toString(), 
+				SHUtils.areEqual(new Vector3f(-2, 1, 0), 
+				ball.getVelocity(), 0.001f));
 	}
 	
 	@Test
@@ -108,6 +156,22 @@ public class SHBallTest
 		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), 
 									ball.getVelocity(), 
 									0.001f));
+		
+		// near up corner 
+		ball.setVelocity(new Vector3f(-2, -1, 0));
+		ball.setLocation(new Vector3f(3f, 1.5f, 0));
+		ball.onHit(sharedBrick);
+		assertTrue(ball.getVelocity().toString(), 
+				SHUtils.areEqual(new Vector3f(2, -1, 0), 
+				ball.getVelocity(), 0.001f));
+		
+		// near bottom corner 
+		ball.setVelocity(new Vector3f(-2, 1, 0));
+		ball.setLocation(new Vector3f(3f, -2.5f, 0));
+		ball.onHit(sharedBrick);
+		assertTrue(ball.getVelocity().toString(), 
+				SHUtils.areEqual(new Vector3f(2, 1, 0), 
+				ball.getVelocity(), 0.001f));
 		
 	}
 	
@@ -139,12 +203,20 @@ public class SHBallTest
 									0.001f));
 		
 		// bottom right
-		ball.setLocation(-3, 2, 0);
+		ball.setLocation(3, -2, 0);
 		ball.setVelocity(-1, 1, 0);
 		ball.onHit(sharedBrick);
 		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), 
 									ball.getVelocity(), 
 									0.001f));
+		
+		// ball just slid the corner (velocity is not to the center of brick)
+		ball.setLocation(-3, 2, 0);
+		ball.setVelocity(-1, -1, 0);
+		ball.onHit(sharedBrick);
+		assertTrue(ball.getVelocity().toString(),
+				SHUtils.areEqual(new Vector3f(1, 1, 0), 
+				ball.getVelocity(),	0.001f));
 		
 	}
 	

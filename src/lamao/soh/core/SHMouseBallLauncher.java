@@ -15,25 +15,27 @@ import com.jme.input.action.MouseInputAction;
 import com.jme.scene.Controller;
 
 /**
- * Launches ball by mouse click. It removes sticker ball controller and 
- * adds default mover. 
+ * Launches ball by mouse click. It removes <code>SHPaddleSticker</code> 
+ * controller from ball controllers and adds <code>SHDefaultMover</code> to
+ * it.<br> 
+ * <b>NOTE:</b> is does not removes itself from InputHandler
  * @author lamao
  *
  */
 public class SHMouseBallLauncher extends MouseInputAction
 {
-	/** Ball to launch */
-	private SHBall _ball;
+	/** Level where find balls to launch */
+	private SHLevel _level = null;
 	
-	/** Input handler to which this action is attached */
-	private InputHandler _input;
+	// TODO: Remove this variable
+	/** Class for calculation ball velocity after launching */
+	private SHDefaultPaddleHitHandler _handler = new SHDefaultPaddleHitHandler();
 	
-	public SHMouseBallLauncher(SHBall ball, InputHandler input)
+	public SHMouseBallLauncher(SHLevel level)
 	{
-		_ball = ball;
-		_input = input;
+		_level = level;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.jme.input.action.InputActionInterface#performAction(com.jme.input.action.InputActionEvent)
 	 */
@@ -42,17 +44,20 @@ public class SHMouseBallLauncher extends MouseInputAction
 	{
 		if (MouseInput.get().isButtonDown(SHOptions.ReleaseBallButton))
 		{
-			for (Controller controller : _ball.getModel().getControllers())
+			for (SHBall ball : _level.getBalls())
 			{
-				if (controller instanceof SHPaddleSticker)
+				for (Controller controller : ball.getModel().getControllers())
 				{
-					_ball.getModel().removeController(controller);
-					break;
+					if (controller instanceof SHPaddleSticker)
+					{
+						ball.getModel().removeController(controller);
+						ball.getModel().addController(new SHDefaultBallMover(ball));
+						_handler.execute(ball, _level.getPaddle());
+						break;
+					}
 				}
 			}
 			
-			_ball.getModel().addController(new SHDefaultBallMover(_ball));
-			_input.removeAction(this);
 		}
 	}
 	

@@ -392,9 +392,23 @@ public class SHLevel
 				_bonusNode.detachChild(bonus.getModel());
 				_showedBonuses.remove(bonus);
 				i--;
-				_activeBonuses.add(bonus);
-				bonus.apply(this);
-				fireBonusActivated(bonus);
+				boolean needAdd = true;
+				
+				if (bonus.isAddictive())
+				{
+					SHBonus activeBonus = findSuchActiveBonus(bonus);
+					if (activeBonus != null)
+					{
+						needAdd = false;
+						activeBonus.increaseDuration(bonus.getDuration());
+					}
+				}
+				if (needAdd)
+				{
+					_activeBonuses.add(bonus);
+					bonus.apply(this);
+					fireBonusActivated(bonus);
+				}
 			} 
 			else if (bonus.getModel().hasCollision(
 					_walls[SHWallType.BOTTOM.intValue()], false))
@@ -465,6 +479,24 @@ public class SHLevel
 				_numDeletebleBricks++;
 			}
 		}
+	}
+	
+	/**
+	 * Finds such type of bonus which is already activated
+	 * @return
+	 */
+	private SHBonus findSuchActiveBonus(SHBonus bonus)
+	{
+		SHBonus result = null;
+		for (SHBonus activeBonus : _activeBonuses)
+		{
+			if (activeBonus.getClass() == bonus.getClass())
+			{
+				result = activeBonus;
+				break;
+			}
+		}
+		return result;
 	}
 	
 	private void fireComplete()

@@ -8,6 +8,7 @@ package lamao.soh.core;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
+import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
 /**
@@ -85,11 +86,36 @@ public class SHBall extends SHEntity
 		{
 			_velocity.x = -_velocity.x;
 		}
-		else 
+		else if (Math.abs(Math.abs(_velocity.x) - Math.abs(_velocity.y)) < 0.001f)
 		{
 			_velocity.multLocal(-1);
 		}
-			
+		else if (Math.abs(_velocity.y) > Math.abs(_velocity.x))
+		{ // from up or from down
+			_velocity.y = -_velocity.y;
+		}
+		else 
+		{ // from left or from right
+			_velocity.x = -_velocity.x;
+		}
+	}
+	
+	private boolean isCornerHit(SHBrick brick)
+	{
+		Vector3f location = new Vector3f(
+				Math.abs(getLocation().x - brick.getLocation().x), 
+				Math.abs(getLocation().y - brick.getLocation().y), 0);
+		BoundingBox bound = (BoundingBox)brick.getModel().getWorldBound();
+		location.subtractLocal(bound.xExtent, bound.yExtent, 0);
+		
+		return Math.abs(location.x - location.y) < 0.001f;
+	}
+	
+	private boolean movesToBrickCenter(SHBrick brick)
+	{
+		Vector3f newPosition = getLocation().add(_velocity.mult(0.001f));
+		return newPosition.distance(brick.getLocation()) < 
+				getLocation().distance(brick.getLocation());
 	}
 	
 }

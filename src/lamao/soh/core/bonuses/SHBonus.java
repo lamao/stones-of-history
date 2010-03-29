@@ -18,8 +18,13 @@ import lamao.soh.core.SHLevel;
  */
 public abstract class SHBonus extends SHEntity
 {
-	/** Duration of bonus */
+	/** Duration of bonus. NaN for persistent bonus (e.g. additional life) */
 	float _duration = 0;
+	
+	/** Defines whether bonus duration is added or new bonus should be 
+	 * created.
+	 */
+	boolean _addictive = false;
 	
 	public SHBonus(Spatial model)
 	{
@@ -46,6 +51,21 @@ public abstract class SHBonus extends SHEntity
 		_duration -= time;
 	}
 	
+	public void increaseDuration(float time)
+	{
+		_duration += time;
+	}
+	
+	public boolean isAddictive()
+	{
+		return _addictive;
+	}
+
+	public void setAddictive(boolean addictive)
+	{
+		_addictive = addictive;
+	}
+
 	/** Apply (activate) this bonus */
 	public abstract void apply(SHLevel level);
 	

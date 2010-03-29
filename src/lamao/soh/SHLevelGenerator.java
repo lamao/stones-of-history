@@ -28,10 +28,12 @@ import lamao.soh.core.SHPaddleInputHandler;
 import lamao.soh.core.SHPaddleSticker;
 import lamao.soh.core.SHLevel.SHWallType;
 import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.core.bonuses.SHBottomWallBonus;
 import lamao.soh.core.bonuses.SHDecBallSpeedBonus;
 import lamao.soh.core.bonuses.SHDecPaddleWidthBonus;
 import lamao.soh.core.bonuses.SHIncBallSpeedBonus;
 import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
+import lamao.soh.core.bonuses.SHStickyPaddleBonus;
 
 /**
  * Generates level. Designed for testing purposes. 
@@ -147,7 +149,7 @@ public class SHLevelGenerator
 		level.setInputHandler(input);
 		for (SHBall ball : level.getBalls())
 		{
-			level.getInputHandler().addAction(new SHMouseBallLauncher(ball, input));
+			level.getInputHandler().addAction(new SHMouseBallLauncher(level));
 		}
 	}
 	
@@ -163,7 +165,9 @@ public class SHLevelGenerator
 		box.setRenderState(ms);
 		
 //		return new SHIncPaddleWidthBonus(box);
-		return new SHIncBallSpeedBonus(box);
+//		return new SHIncBallSpeedBonus(box);
+//		return new SHBottomWallBonus(box);
+		return new SHStickyPaddleBonus(box);
 	}
 	
 	private static SHBonus createDecBonus(String name)
@@ -178,7 +182,8 @@ public class SHLevelGenerator
 		box.setRenderState(ms);
 
 //		return new SHDecPaddleWidthBonus(box);
-		return new SHDecBallSpeedBonus(box);
+//		return new SHDecBallSpeedBonus(box);
+		return new SHStickyPaddleBonus(box);
 	}
 	
 }
