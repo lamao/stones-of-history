@@ -167,14 +167,20 @@ public class SHCoreTestHelper
 	 * Creates <code>SHIncPaddleWidthBonus</code> with default duration and
 	 * box model (0.5, 0.5, 0.5) dimensions
 	 */
-	public static SHBonus createDefaultBonus()
+	public static SHBonus createDefaultBonus(String name)
 	{
-		Box box = new Box("bonus model", Vector3f.ZERO.clone(), 0.25f, 0.25f, 0.25f);
+		Box box = new Box(name, Vector3f.ZERO.clone(), 0.25f, 0.25f, 0.25f);
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		SHBonus bonus = new SHIncPaddleWidthBonus(box);
 		return bonus;
 	}
+	
+	public static SHBonus createDefaultBonus()
+	{
+		return createDefaultBonus("bonus model");
+	}
+	
 	
 	
 	@Test

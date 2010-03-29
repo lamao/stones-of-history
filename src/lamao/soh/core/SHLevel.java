@@ -301,6 +301,7 @@ public class SHLevel
 			_paddle.setHitHandler(new SHDefaultPaddleHitHandler());
 		}
 		_bonusNode.detachAllChildren();
+		_bonuses.clear();
 		_showedBonuses.clear();
 		_activeBonuses.clear();
 		

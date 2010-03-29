@@ -406,7 +406,28 @@ public class SHLevelTest
 	@Test
 	public void testClearLevel()
 	{
-		SHLevel level = SHCoreTestHelper.createDefaultLevel();
+		SHLevel level = SHCoreTestHelper.createLevelWithBonus();
+		SHBonus bonus = SHCoreTestHelper.createDefaultBonus("bonus #2");
+		level.getBonuses().put(level.getBricks().get(1), bonus);
+		
+		// extract first bonus
+		level.getBalls().get(0).setLocation(0, -2, 0);
+		level.getRootNode().updateGeometricState(1, true);
+		level.update(1);
+		
+		// put and extract another bonus 
+		bonus = SHCoreTestHelper.createDefaultBonus("bonus #3");
+		level.getBonuses().put(level.getBricks().get(1), bonus);		
+		level.getBalls().get(0).setLocation(0, -2, 0);
+		level.getRootNode().updateGeometricState(1, true);
+		level.update(1);
+		
+		// activate first extracted bonus
+		level.getRootNode().updateGeometricState(6, true);
+		level.update(6);
+		assertEquals(1, level.getActiveBonuses().size());
+		
+		// clear level
 		level.clear();
 		assertEquals(0, level.getBalls().size());
 		assertEquals(0, level.getBricks().size());
