@@ -97,6 +97,9 @@
 	</target>
 	
 	<target name="run.testes" depends="compile.testes">
+		<copy todir="${build.testes.dir}/data">
+			<fileset dir="${testes.dir}/data" />
+		</copy>
 		<junit fork="yes" haltonfailure="yes">
 	    	<batchtest>
 	        	<fileset dir="${build.testes.dir}">

@@ -8,7 +8,6 @@ package lamao.soh.core;
 
 import lamao.soh.SHOptions;
 
-import com.jme.input.InputHandler;
 import com.jme.input.MouseInput;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.MouseInputAction;

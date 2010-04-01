@@ -9,7 +9,6 @@ package lamao.soh.states;
 import lamao.soh.SHLevelGenerator;
 import lamao.soh.console.ISHCommandHandler;
 import lamao.soh.console.SHConsoleState;
-import lamao.soh.console.SHGenerateCommand;
 import lamao.soh.console.SHWireFrameCommand;
 import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHLevel;
@@ -145,7 +144,7 @@ public class SHLevelState extends BasicGameState
 		_input.update(tpf);
 		super.update(tpf);
 		_level.update(tpf);
-		_fps.print(Float.toString(Timer.getTimer().getFrameRate()));
+		_fps.print("FPS: " + Math.round(Timer.getTimer().getFrameRate()));
 	}
 	
 	/* (non-Javadoc)

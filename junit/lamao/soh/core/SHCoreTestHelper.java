@@ -15,7 +15,6 @@ import org.junit.Test;
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
 import com.jme.math.Vector3f;
-import com.jme.scene.SharedMesh;
 import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Sphere;
 

@@ -26,6 +26,7 @@ public class SHMain
 	{
 		GAME = new StandardGame("Stones of History");
 		GAME.setConfigShowMode(ConfigShowMode.AlwaysShow);
+		GAME.getSettings().setFramerate(Integer.MAX_VALUE);
 		GAME.start();
 		
 		SHConsoleState console = new SHConsoleState(SHConsoleState.STATE_NAME);
