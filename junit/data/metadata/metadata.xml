@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="metadata.xsd">
+	<bonuses>
+		<bonus type="IncPaddleWidth" brick="brick2" />
+		<bonus type="DoubleBall" brick="brick3" />
+	</bonuses>
+	<bricks>
+		<brick name="brick1" super="true" glass="true" />
+		<brick name="brick3" strength="3" />
+	</bricks>
+</metadata>
