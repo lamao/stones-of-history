@@ -16,6 +16,7 @@ import lamao.soh.core.ISHLevelListener;
 import lamao.soh.core.SHLevel.SHWallType;
 import lamao.soh.core.bonuses.SHBonus;
 
+import com.jme.input.FirstPersonHandler;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
 import com.jme.input.action.InputActionEvent;
@@ -23,11 +24,13 @@ import com.jme.input.action.KeyInputAction;
 import com.jme.light.PointLight;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.Text;
 import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.Timer;
+import com.jme.util.geom.Debugger;
 import com.jmex.game.state.BasicGameState;
 import com.jmex.game.state.GameStateManager;
 
@@ -58,6 +61,9 @@ public class SHLevelState extends BasicGameState
 	private DisplaySystem _display = DisplaySystem.getDisplaySystem();
 	
 	private InputHandler _input = new InputHandler();
+	
+	/** Indicates where draw bounding volumes or not */
+	private boolean drawBounds = false;
 	
 	public SHLevelState()
 	{
@@ -116,6 +122,16 @@ public class SHLevelState extends BasicGameState
 			}
 		});
 		
+		console.add("bounds", new ISHCommandHandler() 
+		{
+			@Override
+			public String execute(String[] args)
+			{
+				drawBounds = Boolean.parseBoolean(args[1]);
+				return null;
+			}
+		});
+		
 	}
 	
 	public void bindKeys()
@@ -154,7 +170,14 @@ public class SHLevelState extends BasicGameState
 	public void render(float tpf)
 	{
 		super.render(tpf);
-		DisplaySystem.getDisplaySystem().getRenderer().draw(_statNode);
+		
+		Renderer renderer = DisplaySystem.getDisplaySystem().getRenderer();
+		renderer.draw(_statNode);
+		
+		if (drawBounds)
+		{
+			Debugger.drawBounds(rootNode, renderer);
+		}
 	}
 	
 	/* (non-Javadoc)

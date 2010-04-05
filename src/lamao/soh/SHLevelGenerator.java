@@ -14,8 +14,9 @@ import com.jme.input.InputHandler;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.SharedMesh;
+import com.jme.scene.Spatial;
+import com.jme.scene.TriMesh;
 import com.jme.scene.shape.Box;
-import com.jme.scene.shape.Sphere;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.WireframeState;
 import com.jme.system.DisplaySystem;
@@ -31,6 +32,7 @@ import lamao.soh.core.SHLevel.SHWallType;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.bonuses.SHDoubleBallBonus;
 import lamao.soh.core.bonuses.SHStickyPaddleBonus;
+import lamao.soh.utils.SHResourceManager;
 
 /**
  * Generates level. Designed for testing purposes. 
@@ -39,6 +41,8 @@ import lamao.soh.core.bonuses.SHStickyPaddleBonus;
  */
 public class SHLevelGenerator
 {
+	public static SHResourceManager manager = SHResourceManager.getInstance();
+	
 	public static void generate(SHLevel level)
 	{
 		createWalls(level);
@@ -51,62 +55,42 @@ public class SHLevelGenerator
 	
 	private static void createWalls(SHLevel level)
 	{
-		Box leftWall = new Box("left wall", new Vector3f(-10, 0, 0), 1, 10, 1);
-		leftWall.setModelBound(new BoundingBox());
-		leftWall.updateModelBound();
+		Spatial leftWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "leftwall");
+		leftWall.setLocalTranslation(-10, 0, 0);
 		level.setWall(leftWall, SHWallType.LEFT);
 		
-		Box rightWall = new Box("right wall", new Vector3f(10, 0, 0), 1, 10, 1);
-		rightWall.setModelBound(new BoundingBox());
-		rightWall.updateModelBound();
+		Spatial rightWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "rightwall");
+		rightWall.setLocalTranslation(10, 0, 0);
 		level.setWall(rightWall, SHWallType.RIGHT);
 		
-		Box topWall = new Box("top wall", new Vector3f(0, 10, 0), 10, 1, 1);
-		topWall.setModelBound(new BoundingBox());
-		topWall.updateModelBound();
+		Spatial topWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "topwall");
+		topWall.setLocalTranslation(0, 10, 0);
 		level.setWall(topWall, SHWallType.TOP);
 		
-		Box bottomWall = new Box("bottom wall", new Vector3f(0, -10, 0), 10, 1, 1);
-		bottomWall.setModelBound(new BoundingBox());
-		bottomWall.updateModelBound();
+		Spatial bottomWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "bottomwall");
+		bottomWall.setLocalTranslation(0, -10, 0);
 		level.setWall(bottomWall, SHWallType.BOTTOM);
 	}
 	private static void createEntities(SHLevel level)
 	{
 		DisplaySystem display = DisplaySystem.getDisplaySystem();
-		MaterialState superMs = display.getRenderer().createMaterialState();
-		superMs.setEmissive(ColorRGBA.black);
-		MaterialState defaultMs = display.getRenderer().createMaterialState();
-		defaultMs.setEmissive(ColorRGBA.green);
 		WireframeState glassMs = display.getRenderer().createWireframeState();
 		glassMs.setEnabled(true);
-		
 		
 		Random random = new Random();
 		for (int i = 0; i < 10; i++)
 		{
-			Box box = new Box("brick" + i, Vector3f.ZERO.clone(), 1, 0.5f, 0.5f);
-			box.setLocalTranslation(new Vector3f(random.nextFloat() * 16 - 8, 
-								 random.nextFloat() * 8, 0));
-			box.setModelBound(new BoundingBox());
-			box.updateModelBound();
-			SHBrick brick = new SHBrick(box);
+			SHBrick brick = new SHBrick(null);
 			
 			if (random.nextBoolean())
 			{
 				brick.setStrength(Integer.MAX_VALUE);
-				brick.getModel().setRenderState(superMs);
 			}
 			else
 			{
 				brick.setStrength(random.nextInt(5));
-				brick.getModel().setRenderState(defaultMs);
 			}
 			brick.setGlass(random.nextBoolean());
-			if (brick.isGlass())
-			{
-				brick.getModel().setRenderState(glassMs);
-			}
 			
 			if (brick.getStrength() != Integer.MAX_VALUE)
 			{
@@ -120,21 +104,46 @@ public class SHLevelGenerator
 				}
 			}
 			
+			Spatial model = null;
+			if (brick.isGlass())
+			{
+				model = new SharedMesh("brick" + i, (TriMesh)manager
+						.get(SHResourceManager.TYPE_MODEL, "glassbrick"));
+				if (brick.getStrength() != Integer.MAX_VALUE)
+				{
+					model.setRenderState(glassMs);
+				}
+			}
+			else if (brick.getStrength() == Integer.MAX_VALUE)
+			{
+				model = new SharedMesh("brick" + i, (TriMesh)manager
+						.get(SHResourceManager.TYPE_MODEL, "superbrick"));
+			}
+			else 
+			{
+				model = new SharedMesh("brick" + i, (TriMesh)manager
+						.get(SHResourceManager.TYPE_MODEL, "brick"));
+			}
+			Vector3f location = new Vector3f(random.nextFloat() * 16 - 8, 
+					 random.nextFloat() * 8, 0);
+			model.setLocalTranslation(location);
+			brick.setModel(model);
+			
 			level.addBrick(brick);
 		}
 		
-		Box box = new Box("paddle", new Vector3f(0, 0, 0), 2, 0.25f, 0.25f);
-		box.setModelBound(new BoundingBox());
-		box.updateModelBound();
-		SHPaddle paddle = new SHPaddle(box);
+		SHPaddle paddle = new SHPaddle((Spatial)manager
+				.get(SHResourceManager.TYPE_MODEL, "paddle"));
 		paddle.setLocation(0, -7, 0);
 		level.setPaddle(paddle);
 		
-		Sphere ballModel = new Sphere("ball", 15, 15, 0.25f);
+		Spatial ballModel = (Spatial)manager
+				.get(SHResourceManager.TYPE_MODEL, "ball");
+		ballModel = new SharedMesh("ball mesh", (TriMesh)ballModel);
 		ballModel.setModelBound(new BoundingSphere());
 		ballModel.updateModelBound();
 		SHBall ball = new SHBall(ballModel);
-		ball.setLocation(-0, -6.5f, 0);
+		ball.setLocation(-0, -6.3f, 0);
 		ball.setVelocity(-3 ,3 ,0);
 		ball.getModel().addController(new SHPaddleSticker(ball, paddle.getModel()));
 		level.addBall(ball);
