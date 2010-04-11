@@ -120,7 +120,12 @@ public class SHUtilsTest
 		Point point = new Point();
 		Spatial sharedOther = SHUtils.createSharedModel("shared-other", point);
 		assertNull(sharedOther);
-		
-		
+	}
+	
+	@Test
+	public void testGetClassName()
+	{
+		assertEquals("lamao.soh.bonuses.SHDoubleBallBonus", 
+				SHUtils.getClassName("lamao.soh.bonuses.SH", "double-ball", "Bonus"));
 	}
 }

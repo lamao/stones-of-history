@@ -16,7 +16,6 @@ import lamao.soh.core.ISHLevelListener;
 import lamao.soh.core.SHLevel.SHWallType;
 import lamao.soh.core.bonuses.SHBonus;
 
-import com.jme.input.FirstPersonHandler;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
 import com.jme.input.action.InputActionEvent;
@@ -64,6 +63,9 @@ public class SHLevelState extends BasicGameState
 	
 	/** Indicates where draw bounding volumes or not */
 	private boolean drawBounds = false;
+	
+	/** Indicates whether draw normals for scene */
+	private boolean drawNormals = false;
 	
 	public SHLevelState()
 	{
@@ -129,6 +131,16 @@ public class SHLevelState extends BasicGameState
 			}
 		});
 		
+		console.add("normals", new ISHCommandHandler() 
+		{
+			@Override
+			public String execute(String[] args)
+			{
+				drawNormals = Boolean.parseBoolean(args[1]);
+				return null;
+			}
+		});
+		
 	}
 	
 	public void bindKeys()
@@ -187,6 +199,11 @@ public class SHLevelState extends BasicGameState
 		if (drawBounds)
 		{
 			Debugger.drawBounds(rootNode, renderer);
+		}
+		
+		if (drawNormals)
+		{
+			Debugger.drawNormals(rootNode, renderer);
 		}
 	}
 	

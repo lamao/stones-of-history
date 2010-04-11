@@ -35,9 +35,7 @@ import lamao.soh.utils.xmlparser.SHDocXMLParser;
 
 import com.jme.input.InputHandler;
 import com.jme.scene.Node;
-import com.jme.scene.SharedMesh;
 import com.jme.scene.Spatial;
-import com.jme.scene.TriMesh;
 
 /**
  * Builds level from models and metadata (bonuses associations, parameters 
@@ -183,11 +181,13 @@ public class SHLevelLoader implements SHConstants
 		SHBonus bonus = null;
 		try
 		{
-			Class<?> klass = Class.forName(getClassName(name));
+			String className = SHUtils.getClassName("lamao.soh.core.bonuses.SH", 
+					name, "Bonus");
+			Class<?> klass = Class.forName(className);
 			bonus = (SHBonus)klass.newInstance();
 			Spatial model = (Spatial)SHResourceManager.getInstance()
 					.get(SHResourceManager.TYPE_MODEL, name);
-			bonus.setModel(new SharedMesh(bonus + "bonus", (TriMesh)model));
+			bonus.setModel(SHUtils.createSharedModel(bonus + "bonus", model));
 		}
 		catch (ClassNotFoundException e)
 		{
@@ -208,29 +208,6 @@ public class SHLevelLoader implements SHConstants
 		return bonus;
 	}
 	
-	/**
-	 * Converts name of bonus from config file to class name
-	 * @param name
-	 * @return
-	 */
-	private String getClassName(String name)
-	{
-		StringBuffer buffer = new StringBuffer(name);
-		buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
-	
-		for (int i = 0; i < buffer.length(); i++)
-		{
-			if (buffer.charAt(i) == '-')
-			{
-				buffer.deleteCharAt(i);
-				buffer.setCharAt(i, Character.toUpperCase(buffer.charAt(i)));
-				i--;
-			}
-		}
-		buffer.insert(0, "lamao.soh.core.bonuses.SH");
-		buffer.append("Bonus");
-		return buffer.toString();
-	}
 	
 	/**
 	 * Parses metadata and apply it to level (e.g. setup bonuses or brick

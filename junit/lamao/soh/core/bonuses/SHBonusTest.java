@@ -85,7 +85,7 @@ public class SHBonusTest
 	@Test
 	public void testDefaultBonus()
 	{
-		ball.setLocation(-5, -2, 0);
+		ball.setLocation(-5, -1.99f, 0);
 		level.getPaddle().setLocation(-5, -3, 0);
 		level.update(0);		
 		assertEquals(0, level.getActiveBonuses().size());
@@ -117,7 +117,7 @@ public class SHBonusTest
 		level.getBonuses().put(level.getBricks().get(1), extraBonus);
 		
 		// extract first bonus
-		ball.setLocation(-5, -2, 0);
+		ball.setLocation(-5, -1.99f, 0);
 		level.getPaddle().setLocation(-5, -3, 0);
 		level.update(0);	
 		
@@ -126,7 +126,7 @@ public class SHBonusTest
 		level.update(3);
 		
 		// extract second bonus
-		ball.setLocation(0, -2, 0);
+		ball.setLocation(0, -1.99f, 0);
 		level.getPaddle().setLocation(0, -3, 0);
 		level.update(0);
 		

@@ -67,4 +67,29 @@ public class SHUtils
 		return result;
 	}
 	
+	/**
+	 * Converts string name of format 'first-second-other' to class name of 
+	 * format [prefix]FirstSecondOther[suffix]
+	 * @param prefix - prefix, typically packet name and begin of class name
+	 * @param name - name, typically class name
+	 * @param suffix - suffix, typically end of class name 
+	 */ 
+	public static String getClassName(String prefix, String name, String suffix)
+	{
+		StringBuffer buffer = new StringBuffer(name);
+		buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
+	
+		for (int i = 0; i < buffer.length(); i++)
+		{
+			if (buffer.charAt(i) == '-')
+			{
+				buffer.deleteCharAt(i);
+				buffer.setCharAt(i, Character.toUpperCase(buffer.charAt(i)));
+				i--;
+			}
+		}
+		buffer.insert(0, prefix);
+		buffer.append(suffix);
+		return buffer.toString();
+	}
 }

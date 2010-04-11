@@ -238,8 +238,8 @@ public class SHLevelTest
 			assertEquals("i = " + i, 3, level.getBricks().size());
 		}
 		
-		level.getRootNode().updateGeometricState(0.5f, true);
-		level.update(0.5f);
+		level.getRootNode().updateGeometricState(0.51f, true);
+		level.update(0.51f);
 		assertTrue(SHUtils.areEqual(Vector3f.UNIT_Y, ball.getVelocity(), 
 				0.001f));
 		assertEquals(2, level.getBricks().size());
@@ -248,7 +248,7 @@ public class SHLevelTest
 	
 	private void testBallCollisionWithDefaultBrick(SHLevel level, SHBall ball)
 	{
-		ball.setLocation(0, -5, 0);
+		ball.setLocation(-1, -5f, 0);
 		Vector3f velocity = new Vector3f(-1, 1, 0);
 		ball.setVelocity(velocity.clone());
 		
@@ -262,9 +262,10 @@ public class SHLevelTest
 			assertEquals("i = " + i, 2, level.getBricks().size());
 		}
 		
-		level.getRootNode().updateGeometricState(0.5f, true);
-		level.update(0.5f);
-		assertTrue(SHUtils.areEqual(new Vector3f(-1, -1, 0), ball.getVelocity(), 
+		level.getRootNode().updateGeometricState(0.51f, true);
+		level.update(0.51f);
+		assertTrue(ball.getVelocity().toString(), 
+				SHUtils.areEqual(new Vector3f(-1, -1, 0), ball.getVelocity(), 
 				0.001f));
 		assertEquals(1, level.getBricks().size());
 		assertEquals(1, ((Node)level.getRootNode().getChild(0)).getChildren().size());
@@ -272,7 +273,7 @@ public class SHLevelTest
 	
 	private void testBallCollisionWithSuperBrick(SHLevel level, SHBall ball)
 	{
-		ball.setLocation(0, -5, 0);
+		ball.setLocation(1, -5f, 0);
 		Vector3f velocity = new Vector3f(1, 1, 0);
 		ball.setVelocity(velocity.clone());
 		
@@ -286,9 +287,10 @@ public class SHLevelTest
 			assertEquals("i = " + i, 1, level.getBricks().size());
 		}
 		
-		level.getRootNode().updateGeometricState(0.5f, true);
-		level.update(0.5f);
-		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 
+		level.getRootNode().updateGeometricState(0.51f, true);
+		level.update(0.51f);
+		assertTrue(ball.getVelocity().toString(),
+				SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 
 				0.001f));
 		assertEquals(1, level.getBricks().size());
 		assertEquals(1, ((Node)level.getRootNode().getChild(0)).getChildren().size());
@@ -411,16 +413,16 @@ public class SHLevelTest
 		level.getBonuses().put(level.getBricks().get(1), bonus);
 		
 		// extract first bonus
-		level.getBalls().get(0).setLocation(0, -2, 0);
-		level.getRootNode().updateGeometricState(1, true);
-		level.update(1);
+		level.getBalls().get(0).setLocation(0, -1.99f, 0);
+		level.getRootNode().updateGeometricState(1f, true);
+		level.update(1f);
 		
 		// put and extract another bonus 
 		bonus = SHCoreTestHelper.createDefaultBonus("bonus #3");
 		level.getBonuses().put(level.getBricks().get(1), bonus);		
-		level.getBalls().get(0).setLocation(0, -2, 0);
-		level.getRootNode().updateGeometricState(1, true);
-		level.update(1);
+		level.getBalls().get(0).setLocation(0, -1.99f, 0);
+		level.getRootNode().updateGeometricState(1f, true);
+		level.update(1f);
 		
 		// activate first extracted bonus
 		level.getRootNode().updateGeometricState(6, true);
@@ -540,7 +542,7 @@ public class SHLevelTest
 		SHLevel level = SHCoreTestHelper.createLevelWithBonus();
 		
 		SHBall ball = level.getBalls().get(0);
-		ball.setLocation(-5, -2, 0);
+		ball.setLocation(-5, -1.99f, 0);
 		level.addBall(ball);
 		
 		SHBrick brick = level.getBricks().get(0);
@@ -591,12 +593,12 @@ public class SHLevelTest
 	}
 	
 	@Test
-	public void testBonusCollisionWidthBottomWall()
+	public void testBonusCollisionWithBottomWall()
 	{
 		SHLevel level = SHCoreTestHelper.createLevelWithBonus();
 		
 		SHBall ball = level.getBalls().get(0);
-		ball.setLocation(-5, -2, 0);
+		ball.setLocation(-5, -1.99f, 0);
 		level.addBall(ball);
 		
 		SHBrick brick = level.getBricks().get(0);
@@ -611,7 +613,8 @@ public class SHLevelTest
 		level.update(9);
 		
 		Node bonusNode = (Node)level.getRootNode().getChild(1);
-		assertTrue(SHUtils.areEqual(new Vector3f(-5, -9, 0), 
+		assertTrue(bonus.getLocation().toString(),
+				SHUtils.areEqual(new Vector3f(-5, -9f, 0), 
 				bonus.getLocation(), 0.001f));
 		assertEquals(0, bonusNode.getChildren().size());
 		assertTrue(Math.abs(level.getPaddle().getModel().getLocalScale().x 

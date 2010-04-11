@@ -381,7 +381,7 @@ public class SHLevel
 			for (int i = 0; i < _bricks.size(); i++)
 			{
 				brick = _bricks.get(i);
-				if (ball.getModel().hasCollision(brick.getModel(), false))
+				if (ball.getModel().hasCollision(brick.getModel(), true))
 				{
 					fireBrickHit(brick);
 					ball.onHit(brick);

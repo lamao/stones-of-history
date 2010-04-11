@@ -6,13 +6,19 @@
  */
 package lamao.soh.core;
 
-import com.jme.bounding.BoundingBox;
+import java.nio.FloatBuffer;
+
+import com.jme.intersection.CollisionData;
+import com.jme.intersection.CollisionResults;
+import com.jme.intersection.TriangleCollisionResults;
+import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.SharedMesh;
 import com.jme.scene.SharedNode;
 import com.jme.scene.Spatial;
 import com.jme.scene.TriMesh;
+import com.jme.util.geom.BufferUtils;
 
 /**
  * Ball entity.
@@ -77,87 +83,45 @@ public class SHBall extends SHEntity
 		if (brick.isGlass())
 			return;
 		
-		BoundingBox box = (BoundingBox)brick.getModel().getWorldBound();
-		Vector3f boxLoc = brick.getModel().getLocalTranslation();
-		
-		// if ball hits up or bottom side change velocity.y component
-		// if ball hits left or right side change velocity.x component
-		// else ball hits in corner repulse it back
-		if (SHUtils.inRange(getModel().getLocalTranslation().x, 
-							boxLoc.x - box.xExtent,
-							boxLoc.x + box.xExtent))
+		CollisionResults results = new TriangleCollisionResults();
+		getModel().findCollisions(brick.getModel(), results);
+		if (results.getNumber() > 0 && 
+			results.getCollisionData(0).getTargetTris().size() > 0)
 		{
-			_velocity.y = -_velocity.y;
-		}
-		else if (SHUtils.inRange(getModel().getLocalTranslation().y, 
-							boxLoc.y - box.yExtent,
-							boxLoc.y + box.yExtent))
-		{
-			_velocity.x = -_velocity.x;
-		}
-		else if (Math.abs(Math.abs(_velocity.x) - Math.abs(_velocity.y)) < 0.001f)
-		{
-			_velocity.multLocal(-1);
-		}
-		else 
-		{
-			float boxLeft = boxLoc.x - box.xExtent;
-			float boxRight = boxLoc.x + box.xExtent;
-			float boxUp = boxLoc.y + box.yExtent;
-			float boxDown = boxLoc.y - box.yExtent;
+			CollisionData data = results.getCollisionData(0);
+			TriMesh target = (TriMesh)data.getTargetMesh();
 			
-			if (getLocation().y < boxLoc.y)
+			Vector3f totalNormal = new Vector3f();
+			Vector3f normal = new Vector3f();
+			FloatBuffer normals = target.getNormalBuffer();
+			int[] indexBuffer = new int[3];
+			int index = 0;
+			for (int i = 0; i < data.getTargetTris().size(); i++)
 			{
-				if (Math.abs(boxLeft - getLocation().x) < Math.abs(boxDown - getLocation().y) ||
-					Math.abs(boxRight - getLocation().x) < Math.abs(boxDown - getLocation().y))
-				{
-					_velocity.y = -_velocity.y;
-				}
-				else
-				{
-					_velocity.x = -_velocity.x;
-				}
-			}
-			else
-			{
-				if (Math.abs(boxLeft - getLocation().x) < Math.abs(boxUp - getLocation().y) ||
-					Math.abs(boxRight - getLocation().x) < Math.abs(boxUp - getLocation().y))
-				{
-					_velocity.y = -_velocity.y;
-				}
-				else
-				{
-					_velocity.x = -_velocity.x;
-				}
+				index = data.getTargetTris().get(i);
+				target.getTriangle(index, indexBuffer);
+				BufferUtils.populateFromBuffer(normal, normals, indexBuffer[0]);
+				totalNormal.addLocal(normal);
+				BufferUtils.populateFromBuffer(normal, normals, indexBuffer[1]);
+				totalNormal.addLocal(normal);
+				BufferUtils.populateFromBuffer(normal, normals, indexBuffer[2]);
+				totalNormal.addLocal(normal);
 			}
 			
-//			if (Math.abs(_velocity.y) > Math.abs(_velocity.x))
-//			{ // from up or from down
-//				_velocity.y = -_velocity.y;
-//			}
-//			else 
-//			{ // from left or from right
-//				_velocity.x = -_velocity.x;
-//			}
+			totalNormal.divideLocal(data.getSourceTris().size() * 3);
+			totalNormal.z = 0;
+			
+			
+			float velocityAngle = SHUtils.angle(_velocity.mult(-1));
+			float normalAngle = SHUtils.angle(totalNormal);
+			float resultAngle = velocityAngle + 2 * (normalAngle - velocityAngle);
+			float speed = _velocity.length();
+			_velocity.x = FastMath.cos(resultAngle) * speed;
+			_velocity.y = FastMath.sin(resultAngle) * speed;
+			
+			
 		}
-	}
-	
-	private boolean isCornerHit(SHBrick brick)
-	{
-		Vector3f location = new Vector3f(
-				Math.abs(getLocation().x - brick.getLocation().x), 
-				Math.abs(getLocation().y - brick.getLocation().y), 0);
-		BoundingBox bound = (BoundingBox)brick.getModel().getWorldBound();
-		location.subtractLocal(bound.xExtent, bound.yExtent, 0);
 		
-		return Math.abs(location.x - location.y) < 0.001f;
-	}
-	
-	private boolean movesToBrickCenter(SHBrick brick)
-	{
-		Vector3f newPosition = getLocation().add(_velocity.mult(0.001f));
-		return newPosition.distance(brick.getLocation()) < 
-				getLocation().distance(brick.getLocation());
 	}
 	
 	@Override
