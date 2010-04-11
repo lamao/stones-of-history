@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import lamao.soh.utils.parsers.ISHResourceParser;
+import lamao.soh.utils.resparser.ISHResourceParser;
 
 import org.junit.Test;
 

@@ -4,7 +4,7 @@
  * Copyright 2010 Stones of History
  * All rights reserved. 
  */
-package lamao.soh.utils.parsers;
+package lamao.soh.utils.resparser;
 
 import java.awt.Font;
 import java.awt.FontFormatException;

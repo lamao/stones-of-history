@@ -68,9 +68,6 @@ public class SHLevelState extends BasicGameState
 	public SHLevelState()
 	{
 		super(NAME);
-		_level = new SHLevel();
-		_level.addListener(new SHDefaultLevelListener());
-		rootNode.attachChild(_level.getRootNode());
 		
 		PointLight light = new  PointLight();
 		light.setEnabled(true);
@@ -149,6 +146,19 @@ public class SHLevelState extends BasicGameState
 	public SHLevel getLevel()
 	{
 		return _level;
+	}
+	
+	public void setLevel(SHLevel level)
+	{
+		if (_level != null && _level != level)
+		{
+			_level.getListeners().clear();
+			rootNode.detachChild(_level.getRootNode());
+		}
+		_level = level;
+		_level.addListener(new SHDefaultLevelListener());
+		rootNode.attachChild(_level.getRootNode());
+		rootNode.updateRenderState();
 	}
 
 	/* (non-Javadoc)

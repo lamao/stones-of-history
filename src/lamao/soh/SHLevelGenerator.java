@@ -55,19 +55,19 @@ public class SHLevelGenerator
 	
 	private static void createWalls(SHLevel level)
 	{
-		Spatial leftWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "leftwall");
+		Spatial leftWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "left-wall");
 		leftWall.setLocalTranslation(-10, 0, 0);
 		level.setWall(leftWall, SHWallType.LEFT);
 		
-		Spatial rightWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "rightwall");
+		Spatial rightWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "right-wall");
 		rightWall.setLocalTranslation(10, 0, 0);
 		level.setWall(rightWall, SHWallType.RIGHT);
 		
-		Spatial topWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "topwall");
+		Spatial topWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "top-wall");
 		topWall.setLocalTranslation(0, 10, 0);
 		level.setWall(topWall, SHWallType.TOP);
 		
-		Spatial bottomWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "bottomwall");
+		Spatial bottomWall = (Spatial)manager.get(SHResourceManager.TYPE_MODEL, "bottom-wall");
 		bottomWall.setLocalTranslation(0, -10, 0);
 		level.setWall(bottomWall, SHWallType.BOTTOM);
 	}

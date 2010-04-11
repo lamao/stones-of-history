@@ -10,7 +10,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Attr;
@@ -20,16 +19,25 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import lamao.soh.SHConstants;
+import lamao.soh.core.SHBall;
 import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHMouseBallLauncher;
+import lamao.soh.core.SHPaddle;
+import lamao.soh.core.SHPaddleInputHandler;
+import lamao.soh.core.SHPaddleSticker;
+import lamao.soh.core.SHUtils;
 import lamao.soh.core.SHLevel.SHWallType;
 import lamao.soh.core.bonuses.SHBonus;
-import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
+import lamao.soh.utils.xmlparser.ISHXmlParser;
+import lamao.soh.utils.xmlparser.SHDocXMLParser;
 
-import com.jme.math.Vector3f;
+import com.jme.input.InputHandler;
 import com.jme.scene.Node;
+import com.jme.scene.SharedMesh;
 import com.jme.scene.Spatial;
-import com.jme.scene.shape.Box;
+import com.jme.scene.TriMesh;
 
 /**
  * Builds level from models and metadata (bonuses associations, parameters 
@@ -37,35 +45,56 @@ import com.jme.scene.shape.Box;
  * @author lamao
  *
  */
-public class SHLevelLoader
+public class SHLevelLoader implements SHConstants
 {
-	public final static String NAME_BRICK = "brick";
-	public final static String NAME_LEFT_WALL = "left_wall";
-	public final static String NAME_RIGHT_WALL = "right_wall";
-	public final static String NAME_TOP_WALL = "top_wall";
-	public final static String NAME_BOTTOM_WALL = "bottom_wall";
-	public final static String NAME_DECORATION = "decoration";
-	
-	
-	private static Map<String, org.w3c.dom.Element> _bricks = new HashMap<String, Element>();
-	private static Map<String, org.w3c.dom.Element> _bonuses = new HashMap<String, Element>();
-	
+	private Map<String, org.w3c.dom.Element> _bricks = new HashMap<String, Element>();
 	
 	/**
 	 * Creates level and fills new content based on <code>models</code> and
 	 * set bonuses and parameters of brick based on <code>metadata</code>
 	 * and sets paddle and ball from resource manager.
+	 * @param theme - shared resources for current epoch (models, sounds)
 	 * @param models - models for level (bricks, decorations)
 	 * @param metadata - bonuses, bricks parameters.
 	 */
-	public static SHLevel load(Node models, File metadata)
+	public SHLevel load(SHResourceManager theme, Node models, File metadata)
 	{
 		SHLevel level = new SHLevel();
 		
 		loadMetadata(metadata);
 		loadModels(level, models);
+		setupSharedEntities(level, theme);
+		
+		level.getRootNode().updateRenderState();
+		
 		
 		return level;
+	}
+	
+	/** Adds ball and paddle */
+	private void setupSharedEntities(SHLevel level, SHResourceManager theme)
+	{
+		SHBall ball = new SHBall();
+		Spatial model = (Spatial)theme.get(SHResourceManager.TYPE_MODEL, BALL);
+		model = SHUtils.createSharedModel("ball" + ball, model);
+		ball.setModel(model);
+		
+		SHPaddle paddle = new SHPaddle(model);
+		model = (Spatial)theme.get(SHResourceManager.TYPE_MODEL, PADDLE);
+		model = SHUtils.createSharedModel("paddle" + paddle, model);
+		paddle.setModel(model);
+		level.setPaddle(paddle);
+		
+		paddle.setLocation(0, -7, 0);
+		
+		ball.setLocation(-0, -6.3f, 0);
+		ball.setVelocity(-3 ,3 ,0);
+		ball.getModel().addController(new SHPaddleSticker(ball, paddle.getModel()));
+		level.addBall(ball);
+		
+		InputHandler input = new SHPaddleInputHandler(level.getPaddle().getModel());
+		level.setInputHandler(input);
+		level.getInputHandler().addAction(new SHMouseBallLauncher(level));
 	}
 	
 	/**
@@ -73,36 +102,35 @@ public class SHLevelLoader
 	 * @param level
 	 * @param models
 	 */
-	public static void loadModels(SHLevel level, Node models)
+	public void loadModels(SHLevel level, Node models)
 	{
 		Spatial spatial = null;
 		while (models.getChildren().size() > 0)
 		{
 			spatial = models.getChild(0);
-			if (spatial.getName().startsWith(NAME_BRICK))
+			if (spatial.getName().startsWith(BRICK))
 			{
 				SHBrick brick = new SHBrick(spatial);
-				setUpBrick(brick);
-				checkBonus(level, brick);
+				setUpBrick(level, brick);
 				level.addBrick(brick);
 			}
-			else if (spatial.getName().startsWith(NAME_LEFT_WALL))
+			else if (spatial.getName().startsWith(LEFT_WALL))
 			{
 				level.setWall(spatial, SHWallType.LEFT);
 			}
-			else if (spatial.getName().startsWith(NAME_RIGHT_WALL))
+			else if (spatial.getName().startsWith(RIGHT_WALL))
 			{
 				level.setWall(spatial, SHWallType.RIGHT);
 			}
-			else if (spatial.getName().startsWith(NAME_TOP_WALL))
+			else if (spatial.getName().startsWith(TOP_WALL))
 			{
 				level.setWall(spatial, SHWallType.TOP);
 			}
-			else if (spatial.getName().startsWith(NAME_BOTTOM_WALL))
+			else if (spatial.getName().startsWith(BOTTOM_WALL))
 			{
 				level.setWall(spatial, SHWallType.BOTTOM);
 			}
-			else if (spatial.getName().startsWith(NAME_DECORATION))
+			else if (spatial.getName().startsWith(DECORATION))
 			{
 				level.getRootNode().attachChild(spatial);
 			}
@@ -113,7 +141,7 @@ public class SHLevelLoader
 		}
 	}
 	
-	private static void setUpBrick(SHBrick brick)
+	private void setUpBrick(SHLevel level, SHBrick brick)
 	{
 		String value = null;
 		Element metadata = _bricks.get(brick.getModel().getName());
@@ -134,22 +162,74 @@ public class SHLevelLoader
 			{
 				brick.setStrength(Integer.parseInt(value));
 			}
+			
+			value = metadata.getAttribute("bonus");
+			if (value.length() > 0)
+			{
+				SHBonus bonus = createBonus(value);
+				level.getBonuses().put(brick, bonus);
+			}
 		}
 	}
 	
-	private static void checkBonus(SHLevel level, SHBrick brick)
+	/**
+	 * Creates bonus from its name like 'inc-paddle-width' = 
+	 * SHIncPaddleWidthBonus
+	 * @param name
+	 * @return
+	 */
+	private SHBonus createBonus(String name)
 	{
-		String value = null;
-		Element metadata = _bonuses.get(brick.getModel().getName());
-		if (metadata != null)
+		SHBonus bonus = null;
+		try
 		{
-			value = metadata.getAttribute("type");
-			
-			// TODO: Implement this
-			SHBonus bonus = new SHIncPaddleWidthBonus(new Box("bonus box", 
-					new Vector3f(0, 0, 0), 0.25f, 0.25f, 0.25f));
-			level.getBonuses().put(brick, bonus);
+			Class<?> klass = Class.forName(getClassName(name));
+			bonus = (SHBonus)klass.newInstance();
+			Spatial model = (Spatial)SHResourceManager.getInstance()
+					.get(SHResourceManager.TYPE_MODEL, name);
+			bonus.setModel(new SharedMesh(bonus + "bonus", (TriMesh)model));
 		}
+		catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (InstantiationException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return bonus;
+	}
+	
+	/**
+	 * Converts name of bonus from config file to class name
+	 * @param name
+	 * @return
+	 */
+	private String getClassName(String name)
+	{
+		StringBuffer buffer = new StringBuffer(name);
+		buffer.setCharAt(0, Character.toUpperCase(buffer.charAt(0)));
+	
+		for (int i = 0; i < buffer.length(); i++)
+		{
+			if (buffer.charAt(i) == '-')
+			{
+				buffer.deleteCharAt(i);
+				buffer.setCharAt(i, Character.toUpperCase(buffer.charAt(i)));
+				i--;
+			}
+		}
+		buffer.insert(0, "lamao.soh.core.bonuses.SH");
+		buffer.append("Bonus");
+		return buffer.toString();
 	}
 	
 	/**
@@ -158,13 +238,13 @@ public class SHLevelLoader
 	 * @param level
 	 * @param metadata
 	 */
-	public static void loadMetadata(File metadata)
+	public void loadMetadata(File metadata)
 	{
 		Document doc = null;
 		try
 		{
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			factory.setValidating(true);
+			factory.setValidating(false);
 			factory.setIgnoringElementContentWhitespace(true);
 			factory.setNamespaceAware(true);
 			final String JAXP_SCHEMA_LANGUAGE =
@@ -183,47 +263,14 @@ public class SHLevelLoader
 		
 		removeWhitespaces(doc.getDocumentElement());
 		
-		_bonuses.clear();
 		_bricks.clear();
-		org.w3c.dom.Node root = doc.getDocumentElement();
-		NodeList items = root.getChildNodes();
-		for (int i = 0; i < items.getLength(); i++)
-		{
-			org.w3c.dom.Node child = items.item(i);
-			if (child.getNodeName().equals("bonuses") && child.hasChildNodes())
-			{
-				parseBonuses(child.getChildNodes());
-			}
-			else if (child.getNodeName().equals("bricks") && child.hasChildNodes())
-			{	
-				parseBricks(child.getChildNodes());
-				
-			}
-		}
+		SHDocXMLParser parser = new SHDocXMLParser();
+		parser.addParser("metadata.bricks", new SHBricksXmlParser());
+		parser.parse(doc.getDocumentElement());
 
 	}
 	
-	private static void parseBonuses(NodeList bonuses)
-	{
-		org.w3c.dom.Element bonus = null;
-		for (int i = 0; i < bonuses.getLength(); i++)
-		{
-			bonus = (Element)(bonuses.item(i));
-			_bonuses.put(bonus.getAttribute("brick"), bonus);
-		}
-	}
-	
-	private static void parseBricks(NodeList bricks)
-	{
-		org.w3c.dom.Element brick = null;
-		for (int i = 0; i < bricks.getLength(); i++)
-		{
-			brick = (Element)(bricks.item(i));
-			_bricks.put(brick.getAttribute("name"), brick);
-		}
-	}
-	
-	public static void printDomTree(org.w3c.dom.Node node) 
+	public void printDomTree(org.w3c.dom.Node node) 
 	{
 	  int type = node.getNodeType();
 	  switch (type)
@@ -278,19 +325,17 @@ public class SHLevelLoader
 	 * Removes all unused characters (spaces, empty lines) from XML node.
 	 * @param node
 	 */
-	private static void removeWhitespaces(org.w3c.dom.Node node)
+	private void removeWhitespaces(org.w3c.dom.Node node)
 	{
 		NodeList children = node.getChildNodes();
 		if (children.getLength() > 0)
 		{
-			int count = 0;
 			for (int i = children.getLength() - 1; i >= 0; i--)
 			{
 				org.w3c.dom.Node child = children.item(i);
 				if (child instanceof Text && ((Text) child).getData().trim().length() == 0)
 				{
 					node.removeChild(child);
-					count++;
 				}
 				else if (child instanceof Element)
 				{
@@ -299,4 +344,25 @@ public class SHLevelLoader
 			}
 		}
 	} 
+	
+	private class SHBricksXmlParser implements ISHXmlParser
+	{
+		/* (non-Javadoc)
+		 * @see lamao.soh.utils.xmlparser.ISHXmlParser#parse(org.w3c.dom.Node)
+		 */
+		@Override
+		public void parse(org.w3c.dom.Node node)
+		{
+			NodeList bricks = node.getChildNodes();
+			org.w3c.dom.Element brick = null;
+			for (int i = 0; i < bricks.getLength(); i++)
+			{
+				brick = (Element)(bricks.item(i));
+				if (brick.getNodeType() != org.w3c.dom.Node.TEXT_NODE)
+				{
+					_bricks.put(brick.getAttribute("name"), brick);
+				}
+			}
+		}
+	}
 }

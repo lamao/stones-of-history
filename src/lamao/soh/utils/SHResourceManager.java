@@ -19,12 +19,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import lamao.soh.utils.parsers.ISHResourceParser;
-import lamao.soh.utils.parsers.SHBmFontParser;
-import lamao.soh.utils.parsers.SHModelParser;
-import lamao.soh.utils.parsers.SHSoundParser;
-import lamao.soh.utils.parsers.SHTextureParser;
-import lamao.soh.utils.parsers.SHTtFontParser;
+import lamao.soh.utils.resparser.ISHResourceParser;
+import lamao.soh.utils.resparser.SHBmFontParser;
+import lamao.soh.utils.resparser.SHModelParser;
+import lamao.soh.utils.resparser.SHSoundParser;
+import lamao.soh.utils.resparser.SHTextureParser;
+import lamao.soh.utils.resparser.SHTtFontParser;
 
 /**
  * Class for managing and loading all game resources (sounds, textures).

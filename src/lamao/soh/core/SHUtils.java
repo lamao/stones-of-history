@@ -7,6 +7,11 @@
 package lamao.soh.core;
 
 import com.jme.math.Vector3f;
+import com.jme.scene.Node;
+import com.jme.scene.SharedMesh;
+import com.jme.scene.SharedNode;
+import com.jme.scene.Spatial;
+import com.jme.scene.TriMesh;
 
 /**
  * Different utility methods
@@ -40,6 +45,26 @@ public class SHUtils
 			angle = (float)(2 * Math.PI - angle);
 		}
 		return angle;
+	}
+	
+	/**
+	 * Creates shared mesh or shared node using <code>source</code>
+	 * @param name - name of shared spatial
+	 * @param source - source model
+	 * @return shared spatial
+	 */
+	public static Spatial createSharedModel(String name, Spatial source)
+	{
+		Spatial result = null;
+		if (source instanceof TriMesh)
+		{
+			result = new SharedMesh(name, (TriMesh)source);
+		}
+		else if (source instanceof Node)
+		{
+			result = new SharedNode(name, (Node)source);
+		}
+		return result;
 	}
 	
 }

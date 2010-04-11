@@ -10,6 +10,13 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.jme.math.Vector3f;
+import com.jme.scene.Node;
+import com.jme.scene.Point;
+import com.jme.scene.SharedMesh;
+import com.jme.scene.SharedNode;
+import com.jme.scene.Spatial;
+import com.jme.scene.shape.Box;
+import com.jme.scene.shape.Sphere;
 
 /**
  * @author lamao
@@ -94,5 +101,26 @@ public class SHUtilsTest
 		
 		v.set(1, -0.00000000000000000001f, 0);
 		assertTrue(Math.abs(SHUtils.angle(v) - 2 * Math.PI) < 0.001f);
+	}
+	
+	@Test
+	public void testCreateSharedModel()
+	{
+		Box box = new Box("box", new Vector3f(0, 0, 0), 1, 1, 1);
+		Spatial sharedMesh = SHUtils.createSharedModel("shared-mesh", box);
+		assertTrue(sharedMesh instanceof SharedMesh);
+		assertEquals("shared-mesh", sharedMesh.getName());
+		
+		Node node = new Node("node");
+		node.attachChild(new Sphere("sphere", 15, 15, 1));
+		Spatial sharedNode = SHUtils.createSharedModel("shared-node", node);
+		assertTrue(sharedNode instanceof SharedNode);
+		assertEquals("shared-node", sharedNode.getName());
+		
+		Point point = new Point();
+		Spatial sharedOther = SHUtils.createSharedModel("shared-other", point);
+		assertNull(sharedOther);
+		
+		
 	}
 }
