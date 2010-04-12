@@ -9,9 +9,7 @@ package lamao.soh;
 import java.io.File;
 
 import lamao.soh.console.SHConsoleState;
-import lamao.soh.core.SHBall;
 import lamao.soh.core.SHLevel;
-import lamao.soh.core.SHPaddle;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.SHLevelLoader;
 import lamao.soh.utils.SHModelLoader;
@@ -19,7 +17,6 @@ import lamao.soh.utils.SHResourceManager;
 
 import com.jme.app.AbstractGame.ConfigShowMode;
 import com.jme.scene.Node;
-import com.jme.scene.Spatial;
 import com.jmex.game.StandardGame;
 import com.jmex.game.state.GameStateManager;
 

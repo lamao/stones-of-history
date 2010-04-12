@@ -245,7 +245,8 @@ public class SHResourceManager
 	}
 	
 	/** 
-	 * Loads all resources denoted in file
+	 * Loads all resources denoted in file. Paths in config are interpreted as
+	 * relative to <code>file</code>.
 	 * 
 	 * @param file - file where resources are described.
 	 * @return number of resources has been loaded.
@@ -254,7 +255,13 @@ public class SHResourceManager
 	{
 		try
 		{
-			return loadAll(new FileInputStream(file));
+			String userDir = System.getProperty("user.dir");
+			String fileDir = file.getAbsolutePath();
+			fileDir = fileDir.substring(0, fileDir.lastIndexOf(File.separatorChar));
+			System.setProperty("user.dir", fileDir);
+			int loaded  = loadAll(new FileInputStream(file));
+			System.setProperty("user.dir", userDir);
+			return loaded;
 		}
 		catch (FileNotFoundException e)
 		{
@@ -264,7 +271,8 @@ public class SHResourceManager
 	}
 	
 	/** 
-	 * Loads all resources denoted in stream
+	 * Loads all resources denoted in stream. All paths in config
+	 * are interpreted as relative to program directory.
 	 * @param is - stream where resources are desribed
 	 * @return number of resources has been loaded
 	 */

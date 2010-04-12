@@ -1,7 +1,7 @@
 # this appearence config for testing epoch
 
-type=model label=ball path="data/epochs/test_epoch/models/ball.obj"
-type=model label=paddle path="data/epochs/test_epoch/models/paddle.obj"
-type=model label=inc-paddle-width path="data/epochs/test_epoch/models/inc-paddle-width.obj"
-type=model label=dec-paddle-width path="data/epochs/test_epoch/models/dec-paddle-width.obj"
-type=model label=double-ball path="data/epochs/test_epoch/models/double-ball.obj"
+type=model label=ball path="models/ball.obj"
+type=model label=paddle path="models/paddle.obj"
+type=model label=inc-paddle-width path="models/inc-paddle-width.obj"
+type=model label=dec-paddle-width path="models/dec-paddle-width.obj"
+type=model label=double-ball path="models/double-ball.obj"

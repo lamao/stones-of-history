@@ -6,9 +6,14 @@
  */
 package lamao.soh.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import lamao.soh.utils.resparser.ISHResourceParser;
 
@@ -40,6 +45,8 @@ public class SHResourceManagerTest
 	static
 	{
 		DisplaySystem.setSystemProvider(new DummySystemProvider());
+		Logger logger = Logger.getLogger("");
+		logger.setLevel(Level.OFF);
 		
 		String type = SHResourceManager.TYPE_MODEL;
 		String path = SHResourceManagerTest.class
@@ -122,5 +129,17 @@ public class SHResourceManagerTest
 		manager.parseConfig(config);
 		assertEquals(1, manager.get(SHResourceManager.TYPE_MODEL).size());
 		assertEquals(1, manager.get(SHResourceManager.TYPE_TEXTURE).size());
+	}
+	
+	@Test
+	public void testLoadAll() throws FileNotFoundException
+	{
+		manager.remove(SHResourceManager.TYPE_MODEL);
+		manager.loadAll(new File("data/model_test.txt"));
+		
+		assertEquals(9, manager.get(SHResourceManager.TYPE_MODEL).size());
+		
+		manager.loadAll(new FileInputStream(new File("data/model_test2.txt")));
+		assertEquals(10, manager.get(SHResourceManager.TYPE_MODEL).size());
 	}
 }
