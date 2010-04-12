@@ -16,5 +16,9 @@
 	<classpathentry kind="lib" path="lib/jme/jme-model.jar" sourcepath="libsource/jme.zip"/>
 	<classpathentry kind="lib" path="lib/jme/jme-font.jar" sourcepath="libsource/jme.zip"/>
 	<classpathentry kind="lib" path="lib/jorbis/jorbis-0.0.17.jar"/>
+	<classpathentry kind="lib" path="lib/scenemonitor/jmejtree_jme2.jar"/>
+	<classpathentry kind="lib" path="lib/scenemonitor/propertytable.jar"/>
+	<classpathentry kind="lib" path="lib/scenemonitor/scenemonitor_jme2.jar"/>
+	<classpathentry kind="lib" path="lib/scenemonitor/sm_properties_jme2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

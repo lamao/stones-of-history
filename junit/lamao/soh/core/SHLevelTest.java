@@ -93,10 +93,11 @@ public class SHLevelTest
 		assertNotNull(level.getBricks());
 		assertNull(level.getPaddle());
 		assertNotNull(level.getRootNode());
-		assertEquals(2, level.getRootNode().getChildren().size());
+		assertEquals(3, level.getRootNode().getChildren().size());
 		assertNull(level.getInputHandler());
 		assertEquals(0, level.getBonuses().size());
 		assertEquals(0, level.getActiveBonuses().size());
+		assertEquals(0, level.getBullets().size());
 	}
 	
 	@Test
@@ -438,10 +439,11 @@ public class SHLevelTest
 		{
 			assertNotNull(level.getWall(type));
 		}
-		assertEquals(7, level.getRootNode().getChildren().size());
+		assertEquals(8, level.getRootNode().getChildren().size());
 		
 		assertEquals(0, level.getActiveBonuses().size());
 		assertEquals(0, level.getBonuses().size());
+		assertEquals(0, level.getBullets().size());
 	}
 	
 	@Test
@@ -553,7 +555,7 @@ public class SHLevelTest
 		listener.bonusShowed = 0;
 		level.update(1);
 		assertEquals(0, level.getBonuses().size());
-		assertEquals(8, level.getRootNode().getChildren().size());
+//		assertEquals(9, level.getRootNode().getChildren().size());
 		assertTrue(SHUtils.areEqual(new Vector3f(-5, 0, 0), bonus.getLocation(), 
 				0.001f));
 		assertEquals(1, listener.bonusShowed);
@@ -619,6 +621,53 @@ public class SHLevelTest
 		assertEquals(0, bonusNode.getChildren().size());
 		assertTrue(Math.abs(level.getPaddle().getModel().getLocalScale().x 
 				- 1) < 0.001f);
+	}
+	
+	@Test
+	public void testBulletsAddRemove()
+	{
+		SHLevel level = SHCoreTestHelper.createDefaultLevel();
+		Node bulletsNode = (Node) level.getRootNode().getChild("bullets");
+		
+		SHBall bullet = SHCoreTestHelper.createDefaultBall("bullet");
+		
+		level.addBullet(bullet);
+		assertEquals(1, level.getBullets().size());
+		assertEquals(1, bulletsNode.getChildren().size());
+		
+		level.deleteBullet(bullet);
+		assertEquals(0, level.getBullets().size());
+		assertEquals(0, bulletsNode.getChildren().size());
+	}
+	
+	@Test
+	public void testBulletsInAction()
+	{
+		SHLevel level = SHCoreTestHelper.createDefaultLevel();
+		Node bulletsNode = (Node) level.getRootNode().getChild("bullets");
+		
+		SHBall bullet = SHCoreTestHelper.createDefaultBall("bullet");
+		bullet.setSuper(true);
+		bullet.setVelocity(0, 2, 0);
+		bullet.setLocation(-5, -3, 0);
+		bullet.getModel().addController(new SHDefaultBallMover(bullet));
+		
+		level.addBullet(bullet);
+		level.getRootNode().updateGeometricState(1.1f, true);
+		level.update(1.1f);
+		
+		assertEquals(2, level.getBricks().size());
+		assertEquals(0, bulletsNode.getChildren().size());
+		assertEquals(0, level.getBullets().size());
+
+		bullet.setLocation(0, 8, 0);
+		level.addBullet(bullet);
+		level.getRootNode().updateGeometricState(2f, true);
+		level.update(2f);
+		
+		assertEquals(0, bulletsNode.getChildren().size());
+		assertEquals(0, level.getBullets().size());
+		
 	}
 	
 }

@@ -152,7 +152,7 @@ public class SHLevelGenerator
 	
 	private static void setupInputHandler(SHLevel level)
 	{
-		InputHandler input = new SHPaddleInputHandler(level.getPaddle().getModel());
+		InputHandler input = new SHPaddleInputHandler(level.getPaddle());
 		level.setInputHandler(input);
 		level.getInputHandler().addAction(new SHMouseBallLauncher(level));
 	}

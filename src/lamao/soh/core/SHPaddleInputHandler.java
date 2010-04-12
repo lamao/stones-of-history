@@ -24,7 +24,7 @@ import com.jme.scene.Spatial;
 public class SHPaddleInputHandler extends InputHandler
 {
 	/** Controlled spatial */
-	private Spatial _model;
+	private SHEntity _entity;
 	
 	/** Mouse used for handling events */
 	private RelativeMouse _mouse = null;
@@ -32,9 +32,9 @@ public class SHPaddleInputHandler extends InputHandler
 	private float _leftConstraint = -10;
 	private float _rightConstraint = 10;
 	
-	public SHPaddleInputHandler(Spatial model)
+	public SHPaddleInputHandler(SHEntity entity)
 	{
-		_model = model;
+		_entity = entity;
 		_mouse = new RelativeMouse("rel mouse");
 		_mouse.registerWithInputHandler(this);
 		
@@ -42,22 +42,22 @@ public class SHPaddleInputHandler extends InputHandler
 		mouseAction.setMouse(_mouse);
 		addAction(mouseAction);
 		
-		addAction(new KeyNodeStrafeRightAction(model, 
-				SHOptions.PaddleKeyboardSensitivity),
-				"paddle left", SHOptions.PaddleLeftKey, true);
-		addAction(new KeyNodeStrafeLeftAction(model, 
-				SHOptions.PaddleKeyboardSensitivity), 
-				"paddle right", SHOptions.PaddleRightKey, true);
+//		addAction(new KeyNodeStrafeRightAction(entity, 
+//				SHOptions.PaddleKeyboardSensitivity),
+//				"paddle left", SHOptions.PaddleLeftKey, true);
+//		addAction(new KeyNodeStrafeLeftAction(entity, 
+//				SHOptions.PaddleKeyboardSensitivity), 
+//				"paddle right", SHOptions.PaddleRightKey, true);
 	}
 
-	public Spatial getModel()
+	public SHEntity getModel()
 	{
-		return _model;
+		return _entity;
 	}
 
-	public void setModel(Spatial model)
+	public void setModel(SHEntity entity)
 	{
-		_model = model;
+		_entity = entity;
 	}
 	
 	
@@ -79,7 +79,7 @@ public class SHPaddleInputHandler extends InputHandler
 		@Override
 		public void performAction(InputActionEvent evt)
 		{
-			float newX = _model.getLocalTranslation().x 
+			float newX = _entity.getModel().getLocalTranslation().x 
 							+ mouse.getLocalTranslation().x 
 							* SHOptions.PaddleMouseSensitivity;
 			if (newX > _rightConstraint)
@@ -91,7 +91,7 @@ public class SHPaddleInputHandler extends InputHandler
 				newX = _leftConstraint;
 			}
 			
-			_model.getLocalTranslation().x = newX;
+			_entity.getModel().getLocalTranslation().x = newX;
 
 		}
 	}

@@ -16,6 +16,7 @@ import lamao.soh.core.ISHLevelListener;
 import lamao.soh.core.SHLevel.SHWallType;
 import lamao.soh.core.bonuses.SHBonus;
 
+import com.acarter.scenemonitor.SceneMonitor;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
 import com.jme.input.action.InputActionEvent;
@@ -67,6 +68,8 @@ public class SHLevelState extends BasicGameState
 	/** Indicates whether draw normals for scene */
 	private boolean drawNormals = false;
 	
+	private boolean _pause = false;
+	
 	public SHLevelState()
 	{
 		super(NAME);
@@ -86,6 +89,9 @@ public class SHLevelState extends BasicGameState
 		
 		rootNode.updateRenderState();
 		_statNode.updateRenderState();
+		
+		 SceneMonitor.getMonitor().registerNode(rootNode, "Root Node");
+         SceneMonitor.getMonitor().showViewer(true); 
 	}
 	
 	public void initTextLabels()
@@ -153,6 +159,14 @@ public class SHLevelState extends BasicGameState
 				console.setActive(true);
 			}
 		}, "show console", KeyInput.KEY_GRAVE, false);
+		
+		_input.addAction(new KeyInputAction()
+		{
+			public void performAction(InputActionEvent evt)
+			{
+				_pause = !_pause;
+			}
+		}, "pause", KeyInput.KEY_PAUSE, false);
 	}
 
 	public SHLevel getLevel()
@@ -180,9 +194,14 @@ public class SHLevelState extends BasicGameState
 	public void update(float tpf)
 	{
 		_input.update(tpf);
-		super.update(tpf);
-		_level.update(tpf);
+		if (!_pause)
+		{
+			super.update(tpf);
+			_level.update(tpf);
+		}
 		_fps.print("FPS: " + Math.round(Timer.getTimer().getFrameRate()));
+		
+		 SceneMonitor.getMonitor().updateViewer(tpf);
 	}
 	
 	/* (non-Javadoc)
@@ -205,6 +224,8 @@ public class SHLevelState extends BasicGameState
 		{
 			Debugger.drawNormals(rootNode, renderer);
 		}
+		
+		SceneMonitor.getMonitor().renderViewer(renderer);
 	}
 	
 	/* (non-Javadoc)
@@ -270,6 +291,17 @@ public class SHLevelState extends BasicGameState
 			_events.print("Bonus deactivated" + bonus.getClass());
 			
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.jmex.game.state.BasicGameState#cleanup()
+	 */
+	@Override
+	public void cleanup()
+	{
+		super.cleanup();
+		
+		SceneMonitor.getMonitor().cleanup();
 	}
 	
 	

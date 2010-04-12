@@ -35,6 +35,11 @@ public class SHBall extends SHEntity
 	/** Ball velocity */
 	private Vector3f _velocity;
 	
+	/** Ball is super (e.i. it destroys all bricks which can be destroyed by
+	 * on hit and does not change its direction when hit them)
+	 */
+	private boolean _super = false;
+	
 	public SHBall(Spatial model, Vector3f velocity)
 	{
 		super(model);
@@ -67,6 +72,16 @@ public class SHBall extends SHEntity
 	{
 		_velocity.set(x, y, z);
 	}
+	
+	public boolean isSuper()
+	{
+		return _super;
+	}
+
+	public void setSuper(boolean value)
+	{
+		_super = value;
+	}
 
 	/** 
 	 * Reacts on collision with brick. If brick is glass ball does not change
@@ -79,9 +94,22 @@ public class SHBall extends SHEntity
 	 */
 	public void onHit(SHBrick brick)
 	{
+		if (isSuper())
+		{
+			if (brick.getStrength() != Integer.MAX_VALUE)
+			{
+				brick.setStrength(0);
+				return;
+			}
+		}
+		
 		brick.hit();
 		if (brick.isGlass())
+		{
 			return;
+		}
+		
+		
 		
 		CollisionResults results = new TriangleCollisionResults();
 		getModel().findCollisions(brick.getModel(), results);

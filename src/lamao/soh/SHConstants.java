@@ -22,6 +22,8 @@ public interface SHConstants
 	public String BRICK = "brick";
 	public String BALL = "ball";
 	public String PADDLE = "paddle";
+	public String PADDLE_GUN = "paddle-gun-model";
 	public String DECORATION = "decoration";
+	public String BULLET = "bullet";
 
 }

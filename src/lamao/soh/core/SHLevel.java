@@ -88,10 +88,17 @@ public class SHLevel
 	/** Active bonuses */
 	private List<SHBonus> _activeBonuses = new ArrayList<SHBonus>();
 	
+	/** Bullets and other dynamic object that can destroy bricks */
+	private List<SHBall> _bullets = new ArrayList<SHBall>();
+	
+	/** Node that contains all bullets */
+	private Node _bulletsNode = new Node("bullets");
+	
 	public SHLevel()
 	{
 		_rootNode.attachChild(_bricksRoot);
 		_rootNode.attachChild(_bonusNode);
+		_rootNode.attachChild(_bulletsNode);
 	}
 	
 	
@@ -288,6 +295,29 @@ public class SHLevel
 		return _activeBonuses;
 	}
 	
+	public List<SHBall> getBullets()
+	{
+		return _bullets;
+	}
+	
+	public void addBullet(SHBall bullet)
+	{
+		_bullets.add(bullet);
+		_bulletsNode.attachChild(bullet.getModel());
+		_bulletsNode.updateRenderState();
+		_bulletsNode.updateModelBound();
+		
+	}
+	
+	public void deleteBullet(SHBall bullet)
+	{
+		_bullets.remove(bullet);
+		_bulletsNode.detachChild(bullet.getModel());
+		_bulletsNode.updateRenderState();
+		_bulletsNode.updateModelBound();
+	}
+	
+	
 	/** 
 	 * Deletes all bricks and balls from level. Changes paddle state to default. 
 	 * Does not effects on walls.
@@ -334,6 +364,8 @@ public class SHLevel
 	private void processCollisions()
 	{
 		processBallWallsCollisions();
+		processBulletBricksCollisions();
+		processBulletWallsCollisions();
 		processBallBricksCollisions();
 		processBallPaddleCollisions();
 		processBonusPaddleCollisions();
@@ -369,6 +401,54 @@ public class SHLevel
 					ball.getVelocity().y = -ball.getVelocity().y;
 				}
 				fireWallHit(SHWallType.BOTTOM);
+			}
+		}
+	}
+	
+	private void processBulletBricksCollisions()
+	{
+		SHBall bullet = null;
+		SHBrick brick = null;
+		for (int i = _bullets.size() - 1; i >= 0; i--)
+		{
+			bullet = _bullets.get(i);
+			for (int k = 0; k < _bricks.size(); k++)
+			{
+				brick = _bricks.get(k);
+				if (bullet.getModel().hasCollision(brick.getModel(), true))
+				{
+					fireBrickHit(brick);
+					bullet.onHit(brick);
+					if (brick.getStrength() <= 0)
+					{
+						_numDeletebleBricks--;
+						deleteBrick(brick);
+						k--;
+						fireBrickDeleted(brick);
+						showBonusIfPresent(brick);
+					}
+					deleteBullet(bullet);
+				}
+			}
+		}
+	}
+	
+	private void processBulletWallsCollisions()
+	{
+		SHBall bullet = null;
+		for (int i = _bullets.size() - 1; i >= 0; i--)
+		{
+			bullet = _bullets.get(i);
+			if (bullet.getModel().hasCollision(_walls[SHWallType.LEFT.intValue()], 
+				false) || 
+				bullet.getModel().hasCollision(_walls[SHWallType.RIGHT.intValue()], 
+				false) || 
+				bullet.getModel().hasCollision(_walls[SHWallType.TOP.intValue()], 
+				false) || 
+				bullet.getModel().hasCollision(_walls[SHWallType.BOTTOM.intValue()], 
+				false))
+			{
+				deleteBullet(bullet);
 			}
 		}
 	}

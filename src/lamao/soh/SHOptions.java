@@ -15,7 +15,7 @@ import com.jme.input.KeyInput;
  */
 public class SHOptions
 {
-	public static float PaddleMouseSensitivity = 0.025f;
+	public static float PaddleMouseSensitivity = 0.05f;
 	public static float PaddleKeyboardSensitivity = 20f;
 	
 	public static int PaddleLeftKey = KeyInput.KEY_LEFT;
@@ -25,4 +25,7 @@ public class SHOptions
 	 * of the level
 	 */
 	public static int ReleaseBallButton = 0;
+	
+	/** Mouse button for firing from gun */
+	public static int FireButton = 0;
 }

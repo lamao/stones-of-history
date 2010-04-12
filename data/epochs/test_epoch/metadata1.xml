@@ -3,6 +3,6 @@
 		<brick name="brick1" strength="3" bonus="inc-paddle-width" />
 		<brick name="brick2" glass="true" super="true" />
 		<brick name="brick3" bonus="dec-paddle-width" />
-		<brick name="brick4" bonus="double-ball" />
+		<brick name="brick4" bonus="paddle-gun" />
 	</bricks>
 </metadata>

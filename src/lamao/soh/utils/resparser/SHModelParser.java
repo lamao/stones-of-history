@@ -41,6 +41,7 @@ public class SHModelParser implements ISHResourceParser
 		String label = args.get(LABEL_KEY);
 		if (model != null && label != null)
 		{
+			model.setName(label);
 			manager.add(args.get(TYPE_KEY), label, model);
 		}
 		else

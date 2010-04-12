@@ -85,7 +85,7 @@ public class SHLevelLoaderTest implements SHConstants
 		assertNotNull(level.getWall(SHWallType.BOTTOM));
 		assertEquals(BOTTOM_WALL, level.getWall(SHWallType.BOTTOM).getName());
 		
-		assertEquals(8, level.getRootNode().getChildren().size());
+		assertEquals(9, level.getRootNode().getChildren().size());
 	}
 	
 	@Test

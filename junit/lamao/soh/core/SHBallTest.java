@@ -36,6 +36,7 @@ public class SHBallTest
 		assertNotNull(ball);
 		assertNull(ball.getModel());
 		assertEquals(Vector3f.UNIT_Y, ball.getVelocity());
+		assertFalse(ball.isSuper());
 	}
 	
 	@Test
@@ -345,5 +346,38 @@ public class SHBallTest
 		assertTrue(ball.getVelocity().toString(),
 				SHUtils.areEqual(new Vector3f(-1, -1, 0), ball.getVelocity(), 
 				0.001f));
+	}
+	
+	@Test
+	public void testSuperBall()
+	{
+		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		ball.setSuper(true);
+		ball.setLocation(0, -1.99f, 0);
+		
+		SHBrick brick = SHCoreTestHelper.createDefaultBrick("brick");
+		brick.setStrength(15);
+		
+		ball.onHit(brick);
+		
+		assertEquals(0, brick.getStrength());
+		assertTrue(SHUtils.areEqual(new Vector3f(0, 1, 0), ball.getVelocity(), 
+				0.001f));
+		
+		brick.setGlass(true);
+		brick.setStrength(10);
+		ball.onHit(brick);		
+		assertEquals(0, brick.getStrength());
+		assertTrue(SHUtils.areEqual(new Vector3f(0, 1, 0), ball.getVelocity(), 
+				0.001f));
+		
+		brick.setGlass(false);
+		brick.setStrength(Integer.MAX_VALUE);
+		ball.onHit(brick);		
+		assertEquals(Integer.MAX_VALUE, brick.getStrength());
+		assertTrue(ball.getVelocity().toString(),
+				SHUtils.areEqual(new Vector3f(0, -1, 0), ball.getVelocity(), 
+				0.001f));
+		
 	}
 }

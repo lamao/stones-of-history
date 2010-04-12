@@ -79,7 +79,6 @@ public class SHLevelLoader implements SHConstants
 		
 		SHPaddle paddle = new SHPaddle(model);
 		model = (Spatial)theme.get(SHResourceManager.TYPE_MODEL, PADDLE);
-		model = SHUtils.createSharedModel("paddle" + paddle, model);
 		paddle.setModel(model);
 		level.setPaddle(paddle);
 		
@@ -90,7 +89,7 @@ public class SHLevelLoader implements SHConstants
 		ball.getModel().addController(new SHPaddleSticker(ball, paddle.getModel()));
 		level.addBall(ball);
 		
-		InputHandler input = new SHPaddleInputHandler(level.getPaddle().getModel());
+		InputHandler input = new SHPaddleInputHandler(level.getPaddle());
 		level.setInputHandler(input);
 		level.getInputHandler().addAction(new SHMouseBallLauncher(level));
 	}
