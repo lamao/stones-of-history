@@ -142,7 +142,10 @@ public class SHLevelState extends BasicGameState
 			@Override
 			public String execute(String[] args)
 			{
-				drawNormals = Boolean.parseBoolean(args[1]);
+				if (args.length > 2)
+				{
+					drawNormals = Boolean.parseBoolean(args[1]);
+				}
 				return null;
 			}
 		});

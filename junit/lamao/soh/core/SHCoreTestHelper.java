@@ -1,5 +1,5 @@
 /* 
- * SHCoreTestHelper.java 24 бер. 2010
+ * SHCoreTestHelper.java 24.03.2010
  * 
  * Copyright 2010 Stones of History
  * All rights reserved. 

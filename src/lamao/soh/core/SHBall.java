@@ -120,23 +120,24 @@ public class SHBall extends SHEntity
 			TriMesh target = (TriMesh)data.getTargetMesh();
 			
 			Vector3f totalNormal = new Vector3f();
-			Vector3f normal = new Vector3f();
-			FloatBuffer normals = target.getNormalBuffer();
+			Vector3f v1 = new Vector3f();
+			Vector3f v2 = new Vector3f();
+			Vector3f v3 = new Vector3f();
+			FloatBuffer vertices = target.getVertexBuffer();
 			int[] indexBuffer = new int[3];
 			int index = 0;
 			for (int i = 0; i < data.getTargetTris().size(); i++)
 			{
 				index = data.getTargetTris().get(i);
 				target.getTriangle(index, indexBuffer);
-				BufferUtils.populateFromBuffer(normal, normals, indexBuffer[0]);
-				totalNormal.addLocal(normal);
-				BufferUtils.populateFromBuffer(normal, normals, indexBuffer[1]);
-				totalNormal.addLocal(normal);
-				BufferUtils.populateFromBuffer(normal, normals, indexBuffer[2]);
-				totalNormal.addLocal(normal);
+				BufferUtils.populateFromBuffer(v1, vertices, indexBuffer[0]);
+				BufferUtils.populateFromBuffer(v2, vertices, indexBuffer[1]);
+				BufferUtils.populateFromBuffer(v3, vertices, indexBuffer[2]);
+				
+				totalNormal.addLocal(computeTriNormal(v1, v2, v3));
 			}
 			
-			totalNormal.divideLocal(data.getSourceTris().size() * 3);
+			totalNormal.divideLocal(data.getSourceTris().size());
 			totalNormal.z = 0;
 			
 			
@@ -150,6 +151,15 @@ public class SHBall extends SHEntity
 			
 		}
 		
+	}
+	
+	private Vector3f computeTriNormal(Vector3f v1, Vector3f v2, Vector3f v3)
+	{
+		
+		Vector3f result = v1.subtractLocal(v2);
+		result = v1.cross(v3.subtract(v2));
+		result.normalizeLocal();//.multLocal(-1);
+		return result;
 	}
 	
 	@Override
