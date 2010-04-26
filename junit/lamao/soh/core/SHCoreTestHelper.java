@@ -162,6 +162,7 @@ public class SHCoreTestHelper
 		bottomWall.setModelBound(new BoundingBox());
 		bottomWall.updateModelBound();
 		level.setWall(bottomWall, SHWallType.BOTTOM);
+		level.setBottomWallActive(true);
 	}
 	
 	/**
@@ -264,7 +265,8 @@ public class SHCoreTestHelper
 		assertEquals(3, level.getBricks().size());
 		assertEquals(1, level.getBalls().size());
 		assertNotNull(level.getPaddle());
-		assertEquals(8, level.getRootNode().getChildren().size());
+		assertTrue(level.isBottomWallActive());
+		assertEquals(9, level.getRootNode().getChildren().size());
 		for (SHWallType type : SHLevel.SHWallType.values())
 		{
 			assertNotNull(level.getWall(type));

@@ -8,3 +8,8 @@ type=model label=double-ball path="models/double-ball.obj"
 type=model label=paddle-gun path="models/paddle-gun-bonus.obj"
 type=model label=paddle-gun-model path="models/paddle-gun.obj"
 type=model label=bullet path="models/bullet.obj"
+
+type=model label=inc-ball-speed path="models/inc-ball-speed-bonus.obj"
+type=model label=dec-ball-speed path="models/dec-ball-speed-bonus.obj"
+type=model label=double-ball path="models/double-ball-bonus.obj"
+type=model label=sticky-paddle path="models/sticky-paddle-bonus.obj"

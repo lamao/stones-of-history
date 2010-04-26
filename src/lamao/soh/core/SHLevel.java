@@ -52,7 +52,7 @@ public class SHLevel
 	private int _numDeletebleBricks = 0;
 	
 	/** All balls in current level */
-	private List<SHBall> _balls = new LinkedList<SHBall>();
+	private List<SHBall> _balls = new ArrayList<SHBall>();
 	
 	/** Paddle for current level */
 	private SHPaddle _paddle = null;
@@ -373,8 +373,10 @@ public class SHLevel
 	
 	private void processBallWallsCollisions()
 	{
-		for (SHBall ball : _balls)
+		SHBall ball = null;
+		for (int i = _balls.size() - 1; i >= 0; i--)
 		{
+			ball = _balls.get(i);
 			if (ball.getModel().hasCollision(_walls[SHWallType.LEFT.intValue()], 
 					false))
 			{
@@ -399,6 +401,14 @@ public class SHLevel
 				if (isBottomWallActive())
 				{
 					ball.getVelocity().y = -ball.getVelocity().y;
+				}
+				else
+				{
+					deleteBall(ball);
+					if (_balls.size() == 0)
+					{
+						fireFailed();
+					}
 				}
 				fireWallHit(SHWallType.BOTTOM);
 			}
@@ -624,7 +634,15 @@ public class SHLevel
 		{
 			listener.completed();
 		}
-		_numDeletebleBricks--;
+		_numDeletebleBricks--; // to avoid method call in future
+	}
+	
+	private void fireFailed()
+	{
+		for (ISHLevelListener listener : _listeners)
+		{
+			listener.failed();
+		}
 	}
 	
 	private void fireBrickHit(SHBrick brick)

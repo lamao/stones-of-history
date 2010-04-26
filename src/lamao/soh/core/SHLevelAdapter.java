@@ -50,5 +50,12 @@ public class SHLevelAdapter implements ISHLevelListener
 	public void wallHit(SHWallType wall)
 	{
 	}
+	
+	@Override
+	public void failed()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 
 }

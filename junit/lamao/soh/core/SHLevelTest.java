@@ -38,6 +38,7 @@ public class SHLevelTest
 		public int bonusShowed = 0;
 		public int bonusActivated = 0;
 		public int bonusDeactivated = 0;
+		public int failed = 0;
 
 		@Override
 		public void wallHit(SHWallType wall)
@@ -79,6 +80,12 @@ public class SHLevelTest
 		public void bonusDeactivated(SHBonus bonus)
 		{
 			bonusDeactivated++;
+		}
+		
+		@Override
+		public void failed()
+		{
+			failed++;
 		}
 	}
 	
@@ -351,11 +358,11 @@ public class SHLevelTest
 		//|
 		//|-------
 		ball.setVelocity(-1, -1, 0);
-		ball.setLocation(-7, -6, 0);
+		ball.setLocation(-7, -5, 0);
 		
 		level.getRootNode().updateGeometricState(1f, true);
 		level.update(1f);
-		assertTrue(SHUtils.areEqual(new Vector3f(-8, -7, 0), ball.getLocation(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(-8, -6, 0), ball.getLocation(), 
 				0.001f));
 		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 
 				0.001f));
@@ -366,26 +373,43 @@ public class SHLevelTest
 		//|-------
 		level.getRootNode().updateGeometricState(1f, true);
 		level.update(1f);
-		assertTrue(SHUtils.areEqual(new Vector3f(-7, -8, 0), ball.getLocation(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(-7, -7, 0), ball.getLocation(), 
 				0.001f));
-		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 
+		assertTrue(ball.getVelocity().toString(),
+				SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 
 				0.001f));
 		
 		//|		
 		//| o 
 		//|
 		//|-------
-		level.setBottomWallActive(true);
 		ball.setVelocity(1, -1, 0);
 		ball.setLocation(-8, -7, 0);
 		
 		level.getRootNode().updateGeometricState(1f, true);
 		level.update(1f);
-		assertTrue(SHUtils.areEqual(new Vector3f(-7, -8, 0), ball.getLocation(), 
+		assertTrue(ball.getLocation().toString(),
+				SHUtils.areEqual(new Vector3f(-7, -8, 0), ball.getLocation(), 
 				0.001f));
 		assertTrue(SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
 				0.001f));
 		
+	}
+	
+	@Test
+	public void testCollisionWithBottomWall()
+	{
+		SHLevel level = SHCoreTestHelper.createDefaultLevel();
+		SHBall ball = level.getBalls().get(0);
+		ball.setLocation(0, -8, 0);
+		
+		level.setBottomWallActive(true);
+		level.update(1);
+		assertEquals(1, level.getBalls().size());
+		
+		level.setBottomWallActive(false);
+		level.update(1);
+		assertEquals(0, level.getBalls().size());
 	}
 	
 	@Test
@@ -536,6 +560,13 @@ public class SHLevelTest
 		ball.setLocation(8, 0, 0);
 		level.update(1);
 		assertEquals(6, listener.wallHit);
+		
+		ball.setLocation(0, -8, 0);
+		level.setBottomWallActive(false);
+		level.update(1);
+		assertEquals(7, listener.wallHit);
+		assertEquals(1, listener.failed);
+		
 	}
 	
 	@Test

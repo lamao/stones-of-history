@@ -258,6 +258,17 @@ public class SHLevelState extends BasicGameState
 		}
 		
 		@Override
+		public void failed()
+		{
+			_events.print("Defeat");
+			Text win = Text.createDefaultTextLabel("fail", "YOU ARE LOOSER");
+			win.setLocalTranslation(_display.getWidth() / 2 - win.getWidth() / 2,
+					_display.getHeight() / 2 - win.getHeight(), 0);
+			_statNode.attachChild(win);
+			_statNode.updateRenderState();
+		}
+		
+		@Override
 		public void brickHit(SHBrick brick)
 		{
 			_events.print("Brick hit");

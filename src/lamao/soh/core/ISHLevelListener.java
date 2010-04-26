@@ -36,4 +36,7 @@ public interface ISHLevelListener
 	
 	/** Level is cleared */
 	public void completed();
+	
+	/** Level is failed (e.i. all balls have been lost */
+	public void failed();
 }

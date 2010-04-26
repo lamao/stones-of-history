@@ -1,8 +1,14 @@
 <metadata>
-	<bricks>
-		<brick name="brick1" strength="3" bonus="inc-paddle-width" />
-		<brick name="brick2" glass="true" super="true" />
-		<brick name="brick3" bonus="dec-paddle-width" />
-		<brick name="brick4" bonus="paddle-gun" />
-	</bricks>
+    <bricks>
+        <brick name="brick1" strength="3" bonus="inc-paddle-width" />
+        <brick name="brick2" glass="true" super="true" />
+        <brick name="brick3" bonus="dec-paddle-width" />
+        <brick name="brick4" bonus="paddle-gun" />
+        <brick name="brick-tank" bonus="sticky-paddle" strength="5" />
+        <brick name="brick-column1" bonus="inc-ball-speed" strength="2"/>
+        <brick name="brick-column2" bonus="dec-ball-speed" strength="2"/>
+        <brick name="brick-column3" bonus="inc-ball-speed" strength="2"/>
+        <brick name="brick-boxes1" bonus="double-ball" />
+        <brick name="brick-boxes2" bonus="double-ball" />
+    </bricks>
 </metadata>
