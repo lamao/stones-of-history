@@ -9,8 +9,10 @@ package lamao.soh.utils.xmlparser;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 /**
  * Parses part of XML document. Uses preset <code>IXMLParser</code> for 
@@ -91,4 +93,28 @@ public class SHDocXMLParser implements ISHXmlParser
 	{
 		_parsers = parsers;
 	}
+	
+	/**
+	 * Removes all unused characters (spaces, empty lines) from XML node.
+	 * @param node
+	 */
+	public void removeWhitespaces(org.w3c.dom.Node node)
+	{
+		NodeList children = node.getChildNodes();
+		if (children.getLength() > 0)
+		{
+			for (int i = children.getLength() - 1; i >= 0; i--)
+			{
+				org.w3c.dom.Node child = children.item(i);
+				if (child instanceof Text && ((Text) child).getData().trim().length() == 0)
+				{
+					node.removeChild(child);
+				}
+				else if (child instanceof Element)
+				{
+					removeWhitespaces((Element) child);
+				}
+			}
+		}
+	} 
 }

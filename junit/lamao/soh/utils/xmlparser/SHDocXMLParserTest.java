@@ -14,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import static org.junit.Assert.*;
@@ -79,6 +80,42 @@ public class SHDocXMLParserTest
 		assertEquals(1, parser1.numChildren);
 		assertEquals(2, parser2.numChildren);
 		assertEquals(2, rootParser.numChildren);
+	}
+	
+	@Test
+	public void testRemoveWhiteSpaces() throws SAXException, IOException, 
+			ParserConfigurationException
+	{
+		SHDocXMLParser parser = new SHDocXMLParser();
+		Node node = getTestXML();
+
+		assertTrue(hasTextNodes(node));
+		parser.removeWhitespaces(node);
+		assertFalse(hasTextNodes(node));
 		
+	}
+	
+	private boolean hasTextNodes(Node node)
+	{
+		boolean result = false;
+		NodeList children = node.getChildNodes();
+		Node current = null;
+		for (int i = 0; i < children.getLength(); i++)
+		{
+			current = children.item(i);
+			if (current.getNodeType() == Node.TEXT_NODE)
+			{
+				result = true;
+			}
+			else if (current.getNodeType() == Node.ELEMENT_NODE)
+			{
+				result = hasTextNodes(current);
+			}
+			if (result)
+			{
+				break;
+			}
+		}
+		return result;
 	}
 }

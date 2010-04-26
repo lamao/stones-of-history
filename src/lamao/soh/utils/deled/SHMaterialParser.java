@@ -80,7 +80,10 @@ class SHMaterialParser extends SHDocXMLParser
 					Integer.parseInt(color.getAttribute("b")),
 					Integer.parseInt(color.getAttribute("a"))));
 			_lastMaterial.m.getDiffuse().multLocal(1.0f / 255);
-			_lastMaterial.m.setShininess(96f);
+			_lastMaterial.m.setShininess(96);
+//			_lastMaterial.m.setAmbient(new ColorRGBA(.2f, .2f, .2f, 1));
+//			_lastMaterial.m.setSpecular(ColorRGBA.white.clone());
+//			_lastMaterial.m.setEnabled(true);
 //			_lastMS.setSpecular(new ColorRGBA(0.5f, 0.5f, 0.5f, 1));
 //			_lastMS.setAmbient(ColorRGBA.black.clone());
 		}

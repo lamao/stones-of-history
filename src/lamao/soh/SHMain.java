@@ -40,8 +40,6 @@ public class SHMain
 		//SHResourceManager.getInstance().loadAll(new File("data/model_test.txt"));
 		SHResourceManager.getInstance().loadAll(new File(
 				"data/epochs/test_epoch/appearence.txt"));
-//		Node models = (Node)SHModelLoader.load(new File(
-//				"data/epochs/test_epoch/level1.obj"));
 		Node models = new SHSceneLoader().loadScene(
 				new File("data/test/test-level.dps"));
 		

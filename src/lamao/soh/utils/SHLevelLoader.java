@@ -237,11 +237,11 @@ public class SHLevelLoader implements SHConstants
 			return;
 		}
 		
-		removeWhitespaces(doc.getDocumentElement());
-		
 		_bricks.clear();
 		SHDocXMLParser parser = new SHDocXMLParser();
 		parser.addParser("metadata.bricks", new SHBricksXmlParser());
+		
+		parser.removeWhitespaces(doc.getDocumentElement());
 		parser.parse(doc.getDocumentElement());
 
 	}
@@ -297,29 +297,7 @@ public class SHLevelLoader implements SHConstants
 	  }
 	}
 	
-	/**
-	 * Removes all unused characters (spaces, empty lines) from XML node.
-	 * @param node
-	 */
-	private void removeWhitespaces(org.w3c.dom.Node node)
-	{
-		NodeList children = node.getChildNodes();
-		if (children.getLength() > 0)
-		{
-			for (int i = children.getLength() - 1; i >= 0; i--)
-			{
-				org.w3c.dom.Node child = children.item(i);
-				if (child instanceof Text && ((Text) child).getData().trim().length() == 0)
-				{
-					node.removeChild(child);
-				}
-				else if (child instanceof Element)
-				{
-					removeWhitespaces((Element) child);
-				}
-			}
-		}
-	} 
+	
 	
 	private class SHBricksXmlParser implements ISHXmlParser
 	{

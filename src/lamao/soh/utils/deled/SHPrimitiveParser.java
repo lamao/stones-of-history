@@ -54,6 +54,13 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 	/** Materials to be used for constructed meshes. Injected by client */
 	private Map<String, SHMaterialGroup> _materials = null;
 	
+	/** Buffer used for storing indexes of vertices for each polygon.
+	 * Can be stored the same vertex several times (e.i. it have to be copied 
+	 * like in default box, where each side has its own vertices and each
+	 * corner has three vertices)
+	 */
+	private List<Integer> _faceVertices = new LinkedList<Integer>();
+	
 	public SHPrimitiveParser(Map<String, SHMaterialGroup> materials)
 	{
 		_materials = materials;
@@ -67,6 +74,7 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 		_meshVertices.clear();
 		_meshFaces.clear();
 		_texCoords.clear();
+		_faceVertices.clear();
 		Element primitive = (Element)node;
 		
 		super.parse(node);
@@ -75,7 +83,6 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 		spatial.setName(primitive.getAttribute("name"));
 		
 		spatialConstructed(node, spatial);
-//		scene.attachChild(spatial);
 	}
 
 	/**
@@ -150,6 +157,16 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 			List<Vector2f> texCoords, SHMaterialGroup material)
 	{
 		int i = 0;
+		
+		// create array of vertices from _faceVertices
+		Vector3f[] v = new Vector3f[_faceVertices.size()];
+		for (Integer index : _faceVertices)
+		{
+			v[i++] = vertices[index];
+		}
+		
+		
+		i = 0;
 		// create faces array
 		int[] f = new int[faces.size()];
 		i = 0;
@@ -170,13 +187,13 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 		}
 
 		TriMesh mesh = new TriMesh();
-//		FloatBuffer normals = computeNormals(vertices, f);
+		FloatBuffer normals = computeNormals(v, f);
 		// create trimesh
-		mesh.reconstruct(BufferUtils.createFloatBuffer(vertices), null, null, 
+		mesh.reconstruct(BufferUtils.createFloatBuffer(v), normals, null, 
 				TexCoords.makeNew(tex), 
 				BufferUtils.createIntBuffer(f));
 
-		_normalGenerator.generateNormals(mesh, FastMath.PI / 4);
+//		_normalGenerator.generateNormals(mesh, FastMath.PI / 4);
 		applyMaterial(mesh, material);
 		mesh.updateRenderState();
 
@@ -242,7 +259,10 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 	
 	private void applyMaterial(TriMesh mesh, SHMaterialGroup m)
 	{
-		mesh.setRenderState(m.m);
+		if (m.m != null)
+		{
+			mesh.setRenderState(m.m);
+		}
 		if (m.as != null)
 		{
 			mesh.setRenderState(m.as);
@@ -261,19 +281,15 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 		public void parse(Node node)
 		{
 			NodeList vertices = node.getChildNodes();
-			Node vertexNode = null;
+			Element vertex = null;
 			for (int i = 0; i < vertices.getLength(); i++)
 			{
-				vertexNode = vertices.item(i);
-				if (vertexNode.getNodeType() != Node.TEXT_NODE)
-				{
-					Element vertex = (Element)vertexNode;
-					Vector3f vertexCoord = new Vector3f(
-							Float.parseFloat(vertex.getAttribute("x")) / 100,
-							Float.parseFloat(vertex.getAttribute("y")) / 100,
-							Float.parseFloat(vertex.getAttribute("z")) / 100);
-					_meshVertices.add(vertexCoord);
-				}
+				vertex = (Element)vertices.item(i);
+				Vector3f vertexCoord = new Vector3f(
+						Float.parseFloat(vertex.getAttribute("x")) / 100,
+						Float.parseFloat(vertex.getAttribute("y")) / 100,
+						Float.parseFloat(vertex.getAttribute("z")) / 100);
+				_meshVertices.add(vertexCoord);
 			}
 			
 		}
@@ -307,54 +323,40 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 		/** Add new faces and perform triangulation */
 		private void addTriangulatedFace(NodeList vertexList)
 		{
-			// pivot for tiangulation
-			Element pivot = null;
-			// second vertex of triangle
-			Element second = null;				
-			// third vertex of triangle
-			Element third = null;
-			
-			int i = 0;
-			Node vertexNode = null;
-			// setup pivot
-			do
-			{
-				vertexNode = vertexList.item(i++);
-			}
-			while (vertexNode.getNodeType() == Node.TEXT_NODE);
-			pivot = (Element)vertexNode;				
-			third = (Element)vertexList.item(i + 1);
-			i += 2; // to the third vertex
+			// copy vertices for this polygon
+			int firstVertex = _faceVertices.size(); // index of first vertex for polygon
+			copyVertices(vertexList);
 			
 			// Walk through all vertex of current face (poly)
-			while (i < vertexList.getLength())
+			List<Integer> faces = _meshFaces.get(_faceMaterial);
+			for (int i = 2; i < vertexList.getLength(); i++)
 			{
-				vertexNode = vertexList.item(i);
-				if (vertexNode.getNodeType() != Node.TEXT_NODE)
+				// store indices of vertex in _faceVertices
+				// reverse order
+				faces.add(firstVertex + i);
+				faces.add(firstVertex + i - 1);
+				faces.add(firstVertex);
+			}
+		}
+		
+		/**
+		 * Copies vertices for this polygon and store texture coordinates
+		 * @param polygon
+		 */
+		private void copyVertices(NodeList polygon)
+		{
+			List<Vector2f> texCoords = _texCoords.get(_faceMaterial);
+			Element vertex = null;
+			for (int i = 0; i < polygon.getLength(); i++)
+			{
+				vertex = (Element)polygon.item(i);
+				_faceVertices.add(Integer.parseInt(vertex.getAttribute("vid")));
+				if (_faceMaterial.ts != null)
 				{
-					second = third;
-					third = (Element)vertexNode;
-					// reverse order
-					List<Integer> faces = _meshFaces.get(_faceMaterial);
-					faces.add(Integer.parseInt(third.getAttribute("vid")));
-					faces.add(Integer.parseInt(second.getAttribute("vid")));
-					faces.add(Integer.parseInt(pivot.getAttribute("vid")));
-					
-					if (_faceMaterial.ts != null)
-					{
-						List<Vector2f> texCoords = _texCoords.get(_faceMaterial);
-						texCoords.add(new Vector2f(
-								Float.parseFloat(third.getAttribute("u0")),
-								Float.parseFloat(third.getAttribute("v0"))));
-						texCoords.add(new Vector2f(
-								Float.parseFloat(second.getAttribute("u0")),
-								Float.parseFloat(second.getAttribute("v0"))));
-						texCoords.add(new Vector2f(
-								Float.parseFloat(pivot.getAttribute("u0")),
-								Float.parseFloat(pivot.getAttribute("v0"))));
-					}
+					texCoords.add(new Vector2f(
+							Float.parseFloat(vertex.getAttribute("u0")),
+							Float.parseFloat(vertex.getAttribute("v0"))));
 				}
-				i++;
 			}
 		}
 	}

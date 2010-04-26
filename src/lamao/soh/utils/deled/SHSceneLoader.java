@@ -117,7 +117,10 @@ public class SHSceneLoader
 	{
 		resetLoader();
 		SHDocXMLParser parser = buildSceneParser();
-		parser.parse(getDocumentRoot(is));
+		
+		Node docRoot = getDocumentRoot(is);
+		parser.removeWhitespaces(docRoot);
+		parser.parse(docRoot);
 		return scene;
 	}
 	
@@ -200,8 +203,8 @@ public class SHSceneLoader
 //				rootNode.attachChild(SHModelLoader.load(new File("data/epochs/test_epoch/level1.obj")));
 				SHSceneLoader loader = new SHSceneLoader();
 				rootNode.attachChild(loader.loadScene(new File(
-//						"data/test/test-level.dps")));
-						"d:/1.dps")));
+						"data/test/test-level.dps")));
+//						"d:/2.dps")));
 				
 				
 				CullState cs = display.getRenderer().createCullState();
