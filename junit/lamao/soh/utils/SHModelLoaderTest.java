@@ -26,6 +26,7 @@ public class SHModelLoaderTest
 {
 	private final static String TEST_JME = "/data/models/monkey.jme";
 	private final static String TEST_OBJ = "/data/models/monkey.obj";
+	private final static String TEST_DPS = "/data/models/monkey.dps";
 	
 	static 
 	{
@@ -68,6 +69,22 @@ public class SHModelLoaderTest
 	}
 	
 	@Test
+	public void testLoadDps()
+	{
+		Spatial model = SHModelLoader.loadDps(SHModelLoaderTest.class
+				.getResource(TEST_DPS));
+		assertNotNull(model);
+		assertTrue(model instanceof Node);
+		assertEquals(2, ((Node)model).getChildren().size());
+		
+		model = SHModelLoader.loadDps(new File(SHModelLoaderTest.class
+				.getResource(TEST_DPS).getFile()));
+		assertNotNull(model);
+		assertTrue(model instanceof Node);
+		assertEquals(2, ((Node)model).getChildren().size());
+	}
+	
+	@Test
 	public void testLoad()
 	{
 		Spatial model = SHModelLoader.load(SHModelLoaderTest.class
@@ -78,6 +95,12 @@ public class SHModelLoaderTest
 		
 		model = SHModelLoader.load(new File(SHModelLoader.class
 				.getResource(TEST_OBJ).getFile()));
+		assertNotNull(model);
+		assertTrue(model instanceof Node);
+		assertEquals(2, ((Node)model).getChildren().size());
+		
+		model = SHModelLoader.load(new File(SHModelLoader.class
+				.getResource(TEST_DPS).getFile()));
 		assertNotNull(model);
 		assertTrue(model instanceof Node);
 		assertEquals(2, ((Node)model).getChildren().size());

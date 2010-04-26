@@ -23,6 +23,7 @@ import com.jme.bounding.BoundingBox;
 import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
+import com.jme.renderer.Renderer;
 import com.jme.scene.Spatial;
 import com.jme.scene.TexCoords;
 import com.jme.scene.TriMesh;
@@ -37,8 +38,8 @@ import com.jme.util.geom.NormalGenerator;
  */
 abstract class SHPrimitiveParser extends SHDocXMLParser
 {
-	/** Normal generator used for generating vertex normals */
-	private NormalGenerator _normalGenerator = new NormalGenerator();
+//	/** Normal generator used for generating vertex normals */
+//	private NormalGenerator _normalGenerator = new NormalGenerator();
 	
 	/** Vertices for current trimesh */
 	private List<Vector3f> _meshVertices = new LinkedList<Vector3f>();
@@ -266,6 +267,7 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 		if (m.as != null)
 		{
 			mesh.setRenderState(m.as);
+			mesh.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
 		}
 		if (m.ts != null)
 		{

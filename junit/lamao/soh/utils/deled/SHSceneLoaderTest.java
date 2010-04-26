@@ -36,12 +36,12 @@ public class SHSceneLoaderTest
 	@Test
 	public void testLoading()
 	{
-		SHSceneLoader loader = new SHSceneLoader();
+		SHDpsToJme loader = new SHDpsToJme();
 		
-		Node scene = loader.loadScene(new File("data/test/non-existent.dps"));		
+		Node scene = (Node)loader.load(new File("data/test/non-existent.dps"));		
 		assertNull(scene);
 		
-		scene = loader.loadScene(new File("data/test/test-level.dps"));		
+		scene = (Node)loader.load(new File("data/test/test-level.dps"));		
 		assertNotNull(scene);
 		assertEquals(14, scene.getChildren().size());
 		assertNotNull(scene.getChild("left-wall"));
@@ -67,7 +67,7 @@ public class SHSceneLoaderTest
 		
 		assertNotNull(scene.getChild("decoration").getRenderState(StateType.Texture));
 		
-		scene = loader.loadScene(new File("data/test/non-existent.dps"));		
+		scene = (Node)loader.load(new File("data/test/non-existent.dps"));		
 		assertNull(scene);
 	}
 }

@@ -21,7 +21,6 @@ import com.jme.image.Texture;
 import com.jme.image.Texture.MagnificationFilter;
 import com.jme.image.Texture.MinificationFilter;
 import com.jme.renderer.ColorRGBA;
-import com.jme.renderer.Renderer;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 
@@ -37,9 +36,6 @@ class SHMaterialParser extends SHDocXMLParser
 	
 	/** Last loaded material state */
 	private SHMaterialGroup _lastMaterial = null;
-	
-	/** Renderer used for creating renderer states */
-	private Renderer _renderer = DisplaySystem.getDisplaySystem().getRenderer();
 	
 	/** Storage for loaded materials. Injected from outside (client) */
 	private Map<String, SHMaterialGroup> _materials = null;
@@ -86,6 +82,10 @@ class SHMaterialParser extends SHDocXMLParser
 //			_lastMaterial.m.setEnabled(true);
 //			_lastMS.setSpecular(new ColorRGBA(0.5f, 0.5f, 0.5f, 1));
 //			_lastMS.setAmbient(ColorRGBA.black.clone());
+			if (((Element)node.getParentNode()).getAttribute("blend").equals("alphablend"))
+			{
+				_lastMaterial.createBlendState();
+			}
 		}
 	}
 	

@@ -12,9 +12,8 @@ import lamao.soh.console.SHConsoleState;
 import lamao.soh.core.SHLevel;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.SHLevelLoader;
-import lamao.soh.utils.SHModelLoader;
 import lamao.soh.utils.SHResourceManager;
-import lamao.soh.utils.deled.SHSceneLoader;
+import lamao.soh.utils.deled.SHDpsToJme;
 
 import com.jme.app.AbstractGame.ConfigShowMode;
 import com.jme.scene.Node;
@@ -40,7 +39,7 @@ public class SHMain
 		//SHResourceManager.getInstance().loadAll(new File("data/model_test.txt"));
 		SHResourceManager.getInstance().loadAll(new File(
 				"data/epochs/test_epoch/appearence.txt"));
-		Node models = new SHSceneLoader().loadScene(
+		Node models = (Node)new SHDpsToJme().load(
 				new File("data/epochs/test_epoch/level1.dps"));
 		
 		SHLevel level = new SHLevelLoader().load(

@@ -11,7 +11,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+
+import lamao.soh.utils.deled.SHDpsToJme;
 
 import com.jme.scene.Spatial;
 import com.jme.util.export.binary.BinaryImporter;
@@ -52,6 +55,10 @@ public class SHModelLoader
 		else if (extension.equals("OBJ"))
 		{
 			result = loadObj(modelURL);
+		}
+		else if (extension.equals("DPS"))
+		{
+			result = loadDps(modelURL);
 		}
 		return result;
 	}
@@ -118,5 +125,27 @@ public class SHModelLoader
         }
         return model;
     }
+	
+	public static Spatial loadDps(File file)
+	{
+		Spatial model = null;
+		SHDpsToJme converter = new SHDpsToJme();
+		model = converter.load(file);
+		return model;
+	}
+	
+	public static Spatial loadDps(URL modelURL)
+	{
+		Spatial result = null;
+		try
+		{
+			result = loadDps(new File(modelURL.toURI()));
+		}
+		catch (URISyntaxException e)
+		{
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 }
