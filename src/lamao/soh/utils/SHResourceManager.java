@@ -57,9 +57,6 @@ public class SHResourceManager
 	/** Logger fot this class */
 	private static Logger _logger = Logger.getLogger(SHResourceManager.class.getName());
 	
-	/** List of supported by this manager types */
-	private List<String> _supportedTypes = new LinkedList<String>();;
-	
 	/** Map of loader for each supported type. There may be no parser for
 	 * particular type. So it can be only stored but not loaded.
 	 */
@@ -93,15 +90,18 @@ public class SHResourceManager
 		return _instance;
 	}
 	
-	public List<String> getSupportedTypes()
-	{
-		return _supportedTypes;
-	}
-	
-	public boolean isSupported(String type)
-	{
-		return _supportedTypes.contains(type);
-	}
+//	public List<String> getSupportedTypes()
+//	{
+//		Set<String> result = _parsers.keySet();
+//		result.addAll(_resources.keySet());
+//		return new ArrayList<String>(result);
+//	}
+//	
+//	public boolean isSupported(String type)
+//	{
+//		return _parsers.get(type) != null || 
+//			   _resources.get(type) != null;
+//	}
 	
 	public ISHResourceParser getParser(String type)
 	{
@@ -118,10 +118,6 @@ public class SHResourceManager
 	public void setParser(String type, ISHResourceParser parser)
 	{
 		_parsers.put(type, parser);
-		if (!isSupported(type))
-		{
-			_supportedTypes.add(type);
-		}
 	}
 	
 	public void removeParser(String type)
@@ -150,11 +146,6 @@ public class SHResourceManager
 			_resources.put(type, _map);
 		}
 		_map.put(label, resource);
-		
-		if (!isSupported(type))
-		{
-			_supportedTypes.add(type);
-		}
 		
 	}
 	
@@ -307,7 +298,7 @@ public class SHResourceManager
 		{
 			Map<String, String> args = split(line);
 			String type = args.get(ISHResourceParser.TYPE_KEY);
-			if (!isSupported(type) || getParser(type) == null)
+			if (getParser(type) == null)
 			{
 				_logger.warning("Type <" + args.get(type) + 
 						"> is not supported");

@@ -63,9 +63,18 @@ public class SHResourceManagerTest
 	public void testConstructor()
 	{
 		assertNotNull(manager);
-		assertEquals(5, manager.getSupportedTypes().size());
 		assertEquals(5, manager.getParsers().size());
 		assertNotNull(manager.getParser(SHResourceManager.TYPE_MODEL));
+		assertNotNull(manager.getParser(SHResourceManager.TYPE_TEXTURE));
+		assertNotNull(manager.getParser(SHResourceManager.TYPE_SOUND));
+		assertNotNull(manager.getParser(SHResourceManager.TYPE_TTFONT));
+		assertNotNull(manager.getParser(SHResourceManager.TYPE_BMFONT));
+		
+		assertNull(manager.get(SHResourceManager.TYPE_MODEL));
+		assertNull(manager.get(SHResourceManager.TYPE_TEXTURE));
+		assertNull(manager.get(SHResourceManager.TYPE_SOUND));
+		assertNull(manager.get(SHResourceManager.TYPE_TTFONT));
+		assertNull(manager.get(SHResourceManager.TYPE_BMFONT));
 	}
 	
 	@Test
@@ -77,23 +86,21 @@ public class SHResourceManagerTest
 		manager.setParser("Dummy type", new DummyParser());
 		assertEquals(numParsers + 1, manager.getParsers().size());
 		assertNotNull(manager.getParser("Dummy type"));
-		assertTrue(manager.getSupportedTypes().contains("Dummy type"));
+		assertNull(manager.get("Dummy type"));
 		
 		manager.removeParser("Dummy type");
 		assertEquals(numParsers, manager.getParsers().size());
 		assertNull(manager.getParser("Dummy type"));
-		assertTrue(manager.getSupportedTypes().contains("Dummy type"));
+		assertNull(manager.get("Dummy type"));
 	}
 	
 	@Test
 	public void testAddRemoveResource()
 	{
-		manager.getSupportedTypes().remove("string");
-		
 		assertNull(manager.get("string", "1"));
 		manager.add("string", "1", "one");
 		assertEquals("one", manager.get("string", "1"));
-		assertTrue(manager.isSupported("string"));
+		assertNotNull(manager.get("string"));
 		
 		manager.remove("string", "1");
 		assertNull(manager.get("string", "1"));
