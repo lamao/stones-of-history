@@ -1,5 +1,5 @@
 /* 
- * SHSoundParserTest.java 1 квіт. 2010
+ * SHSoundParserTest.java 1.04.2010
  * 
  * Copyright 2010 Stones of History
  * All rights reserved. 
@@ -33,6 +33,7 @@ public static String TEXTURE_PATH = "/data/sounds/line.ogg";
 	@Test
 	public void testParser()
 	{
+		// XXX: JVM error in C code (OpenAL32.dll+0xc059)
 //		SHDummyResManager manager = new SHDummyResManager();
 //		SHSoundParser parser = new SHSoundParser();
 //		

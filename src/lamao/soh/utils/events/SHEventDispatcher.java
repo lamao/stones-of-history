@@ -9,10 +9,12 @@ package lamao.soh.utils.events;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
- * Dispatcher for all game events. Plays as a singleton.
+ * Dispatcher for all game events. Plays as a singleton, but clients can create
+ * have their own local dispatchers.
  * @author lamao
  *
  */
@@ -33,7 +35,7 @@ public class SHEventDispatcher
 		return _instance;
 	}
 	
-	protected SHEventDispatcher()
+	public SHEventDispatcher()
 	{		
 	}
 	
@@ -47,6 +49,10 @@ public class SHEventDispatcher
 		return _handlers.get(type);
 	}
 	
+	public Set<String> getHandledEvents()
+	{
+		return _handlers.keySet();
+	}
 	
 	/** Resets dispatcher by removing all events and handlers */
 	public void reset()
@@ -106,7 +112,17 @@ public class SHEventDispatcher
 		if (handlers != null)
 		{
 			handlers.remove(handler);
+			if (handlers.size() == 0)
+			{
+				_handlers.remove(type);
+			}
 		}
+	}
+	
+	public boolean hasHandler(String type)
+	{
+		List<ISHEventHandler> handlers = getHandlers(type);
+		return handlers != null && handlers.size() > 0;
 	}
 
 }

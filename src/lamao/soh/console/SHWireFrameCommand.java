@@ -6,6 +6,9 @@
  */
 package lamao.soh.console;
 
+import lamao.soh.utils.events.ISHEventHandler;
+import lamao.soh.utils.events.SHEvent;
+
 import com.jme.scene.Spatial;
 import com.jme.scene.state.WireframeState;
 import com.jme.system.DisplaySystem;
@@ -14,7 +17,7 @@ import com.jme.system.DisplaySystem;
  * Command for switching between normal view and wireframe.
  * @author lamao
  */
-public class SHWireFrameCommand implements ISHCommandHandler
+public class SHWireFrameCommand implements ISHEventHandler
 {
 	/** Spatial for applying command */
 	private Spatial _spatial = null;
@@ -36,19 +39,12 @@ public class SHWireFrameCommand implements ISHCommandHandler
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see com.sdatetris.console.ISDACommandHandler#execute(java.lang.String)
-	 */
 	@Override
-	public String execute(String[] args)
+	public void processEvent(SHEvent event)
 	{
-		String result = null;
-		if (_spatial == null)
+		if (_spatial != null)
 		{
-			result = "No spatial was assigned";
-		}
-		else
-		{
+			String[] args = (String[])event.params.get("args");
 			boolean wired = Boolean.parseBoolean(args[1]);
 			WireframeState ws = DisplaySystem.getDisplaySystem().getRenderer()
 					.createWireframeState();
@@ -56,7 +52,6 @@ public class SHWireFrameCommand implements ISHCommandHandler
 			_spatial.setRenderState(ws);
 			_spatial.updateRenderState();
 		}
-		return result;
 	}
 
 }

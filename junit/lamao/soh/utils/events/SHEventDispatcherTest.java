@@ -49,26 +49,37 @@ public class SHEventDispatcherTest
 		SHDummyEventHandler handler = new SHDummyEventHandler(); 
 		_dispatcher.addHandler("1", handler);
 		assertEquals(1, _dispatcher.getHandlers().size());
+		assertTrue(_dispatcher.hasHandler("1"));
 		assertEquals(1, _dispatcher.getHandlers("1").size());
+		assertEquals(1, _dispatcher.getHandledEvents().size());
 		
 		_dispatcher.addHandler("1", handler);
 		assertEquals(1, _dispatcher.getHandlers().size());
 		assertEquals(2, _dispatcher.getHandlers("1").size());
+		assertEquals(1, _dispatcher.getHandledEvents().size());
 		
 		_dispatcher.addHandler("2", handler);
 		assertEquals(2, _dispatcher.getHandlers().size());
+		assertTrue(_dispatcher.hasHandler("2"));
 		assertEquals(1, _dispatcher.getHandlers("2").size());
+		assertEquals(2, _dispatcher.getHandledEvents().size());
 		
 		_dispatcher.removeHandler("1", handler);
 		assertEquals(2, _dispatcher.getHandlers().size());
+		assertTrue(_dispatcher.hasHandler("1"));
 		assertEquals(1, _dispatcher.getHandlers("1").size());
+		assertEquals(2, _dispatcher.getHandledEvents().size());
 		
 		_dispatcher.removeHandler("2", handler);
-		assertEquals(2, _dispatcher.getHandlers().size());
-		assertEquals(0, _dispatcher.getHandlers("2").size());
+		assertEquals(1, _dispatcher.getHandlers().size());
+		assertFalse(_dispatcher.hasHandler("2"));
+		assertNull(_dispatcher.getHandlers("2"));
+		assertEquals(1, _dispatcher.getHandledEvents().size());
 		
-		assertEquals(2, _dispatcher.getHandlers().size());
-		assertEquals(0, _dispatcher.getHandlers("2").size());
+		assertEquals(1, _dispatcher.getHandlers().size());
+		assertFalse(_dispatcher.hasHandler("2"));
+		assertNull(_dispatcher.getHandlers("2"));
+		assertEquals(1, _dispatcher.getHandledEvents().size());
 		
 	}
 	
@@ -95,4 +106,5 @@ public class SHEventDispatcherTest
 		_dispatcher.addEvent(new SHEvent("2", null, null));
 		assertEquals(2, handler.eventsArrived);
 	}
+	
 }

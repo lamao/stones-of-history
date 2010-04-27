@@ -6,8 +6,6 @@
  */
 package lamao.soh.states;
 
-import lamao.soh.SHLevelGenerator;
-import lamao.soh.console.ISHCommandHandler;
 import lamao.soh.console.SHConsoleState;
 import lamao.soh.console.SHWireFrameCommand;
 import lamao.soh.core.SHBrick;
@@ -15,6 +13,8 @@ import lamao.soh.core.SHLevel;
 import lamao.soh.core.ISHLevelListener;
 import lamao.soh.core.SHLevel.SHWallType;
 import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.utils.events.ISHEventHandler;
+import lamao.soh.utils.events.SHEvent;
 
 import com.acarter.scenemonitor.SceneMonitor;
 import com.jme.input.InputHandler;
@@ -114,39 +114,27 @@ public class SHLevelState extends BasicGameState
 		SHConsoleState console = (SHConsoleState)GameStateManager.getInstance()
 				.getChild(SHConsoleState.STATE_NAME);
 		console.add("wired", new SHWireFrameCommand(rootNode));
-		console.add("generate", new ISHCommandHandler() 
-		{
-			@Override
-			public String execute(String[] args)
-			{
-				_level.clear();
-				SHLevelGenerator.generate(_level);
-				_statNode.detachChildNamed("win");
-				rootNode.updateRenderState();
-				return null;
-			}
-		});
 		
-		console.add("bounds", new ISHCommandHandler() 
+		console.add("bounds", new ISHEventHandler() 
 		{
 			@Override
-			public String execute(String[] args)
+			public void processEvent(SHEvent event)
 			{
+				String[] args = (String[])event.params.get("args");
 				drawBounds = Boolean.parseBoolean(args[1]);
-				return null;
 			}
 		});
 		
-		console.add("normals", new ISHCommandHandler() 
+		console.add("normals", new ISHEventHandler() 
 		{
 			@Override
-			public String execute(String[] args)
+			public void processEvent(SHEvent event)
 			{
+				String args[] = (String[])event.params.get("args");
 				if (args.length > 2)
 				{
 					drawNormals = Boolean.parseBoolean(args[1]);
 				}
-				return null;
 			}
 		});
 		

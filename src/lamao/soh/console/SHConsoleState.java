@@ -8,6 +8,11 @@ package lamao.soh.console;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import lamao.soh.utils.events.ISHEventHandler;
+import lamao.soh.utils.events.SHEvent;
+import lamao.soh.utils.events.SHEventDispatcher;
+
 import com.jme.input.KeyInput;
 import com.jme.input.KeyInputListener;
 import com.jme.scene.Text;
@@ -41,8 +46,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	private final static String PROMT = "> ";
 	
 	/** Registered commands */
-	Map<String, ISHCommandHandler> _commands = 
-		new HashMap<String, ISHCommandHandler>();
+	private SHEventDispatcher _commands = new SHEventDispatcher();
 
 	/** Visual text components for displaying commands */
 	Text _console = null;
@@ -54,7 +58,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		initGUI();
 		bindKeys();
 		
-		add("exit", new SDAExitHandler());
+		add("exit", new SHExitHandler());
 		
 		rootNode.updateRenderState();
 	}
@@ -75,9 +79,9 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		KeyInput.get().addListener(this);
 	}
 	
-	public void add(String command, ISHCommandHandler handler)
+	public void add(String command, ISHEventHandler handler)
 	{
-		_commands.put(command, handler);
+		_commands.addHandler(command, handler);
 	}
 	
 	/**
@@ -92,9 +96,8 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		String name = cmd.substring(PROMT.length(), 
 				spaceIndex != -1 ? spaceIndex : cmd.length()); 
 			
-		ISHCommandHandler handler = _commands.get(name);
 		String result = null;
-		if (handler == null)
+		if (!_commands.hasHandler(name))
 		{
 			result = "Command <" + name +"> is not supported";
 		}
@@ -102,14 +105,13 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		{
 			String[] arguments = cmd.substring(PROMT.length(), cmd.length())
 					.split(SPLITTERS);
-			result = handler.execute(arguments);
+			Map<String, Object> args = new HashMap<String, Object>();
+			args.put("args", arguments);
+			_commands.addEvent(name, this, args);
 		}
 		return result;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.jme.input.KeyInputListener#onKey(char, int, boolean)
-	 */
 	@Override
 	public void onKey(char character, int keyCode, boolean pressed)
 	{
@@ -152,9 +154,6 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 				(ch == '-') || (ch == ' ');
 	}
 
-	/* (non-Javadoc)
-	 * @see com.jmex.game.state.GameState#setActive(boolean)
-	 */
 	@Override
 	public void setActive(boolean active)
 	{
@@ -166,13 +165,12 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	}
 	
 	/** Default handler of 'exit' command */ 
-	private class SDAExitHandler implements ISHCommandHandler
+	private class SHExitHandler implements ISHEventHandler
 	{
 		@Override
-		public String execute(String[] args)
+		public void processEvent(SHEvent event)
 		{
 			setActive(false);
-			return null;
 		}
 	}
 
