@@ -12,7 +12,10 @@ import java.util.List;
 import lamao.soh.core.SHLevel.SHWallType;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
+import lamao.soh.utils.events.SHEventCounter;
+import lamao.soh.utils.events.SHEventDispatcher;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.jme.math.Vector3f;
@@ -27,69 +30,15 @@ import static org.junit.Assert.*;
  */
 public class SHLevelTest
 {
-	/** Stub for level listener */
-	private class SHTestLevelListner implements ISHLevelListener
-	{
-		public int wallHit = 0;
-		public int brickHit = 0;
-		public int completed = 0;
-		public int numDeletebleBricks = 0;
-		public int bricksDeleted = 0;
-		public int bonusShowed = 0;
-		public int bonusActivated = 0;
-		public int bonusDeactivated = 0;
-		public int failed = 0;
-
-		@Override
-		public void wallHit(SHWallType wall)
-		{
-			wallHit++;
-		}
-		
-		@Override
-		public void completed()
-		{
-			completed++;
-		}
-
-		@Override
-		public void brickHit(SHBrick brick)
-		{
-			brickHit++;
-		}
-		
-		@Override
-		public void brickDeleted(SHBrick brick)
-		{
-			bricksDeleted++;
-		}
-		
-		@Override
-		public void bonusShowed(SHBonus bonus)
-		{
-			bonusShowed++;
-		}
-		
-		@Override
-		public void bonusActivated(SHBonus bonus)
-		{
-			bonusActivated++;
-		}
-		
-		@Override
-		public void bonusDeactivated(SHBonus bonus)
-		{
-			bonusDeactivated++;
-		}
-		
-		@Override
-		public void failed()
-		{
-			failed++;
-		}
-	}
+	private SHEventCounter counter = new SHEventCounter();
 	
-	private SHTestLevelListner listener = new SHTestLevelListner();
+	@Before
+	public void setUp()
+	{
+		counter.reset();
+		SHEventDispatcher.getInstance().reset();
+		SHEventDispatcher.getInstance().addHandler("all", counter);
+	}
 	
 	@Test
 	public void testContstructors()
@@ -508,21 +457,19 @@ public class SHLevelTest
 	{
 		SHLevel level = SHCoreTestHelper.createDefaultLevel();
 		SHBall ball = level.getBalls().get(0);
-		level.addListener(listener);
-		listener.completed = 0;
 		
 		ball.setLocation(0, -1, 0);
 		level.update(1);
-		assertEquals(0, listener.completed);
+		assertNull(counter.numEvents.get("level-completed"));
 		
 		ball.setLocation(-5, -1, 0);
 		level.update(1);
-		assertEquals(1, listener.completed);
+		assertTrue(1 == counter.numEvents.get("level-completed"));
 		
 		level.update(1f);
-		assertEquals(1, listener.completed);
+		assertTrue(1 == counter.numEvents.get("level-completed"));
 		level.update(1f);
-		assertEquals(1, listener.completed);
+		assertTrue(1 == counter.numEvents.get("level-completed"));
 	}
 	
 	@Test
@@ -530,42 +477,38 @@ public class SHLevelTest
 	{
 		SHLevel level = SHCoreTestHelper.createDefaultLevel();
 		SHBall ball = level.getBalls().get(0);
-		level.addListener(listener);
-		listener.brickHit = 0;
-		listener.wallHit = 0;
-		listener.bricksDeleted = 0;
 		
 		ball.setLocation(5, -1, 0);
 		level.update(1);
-		assertEquals(1, listener.brickHit);
-		assertEquals(0, listener.bricksDeleted);
+		assertTrue(1 == counter.numEvents.get("level-brick-hit"));
+		assertNull(counter.numEvents.get("level-brick-deleted"));
 		
 		ball.setLocation(0, -1, 0);
 		level.update(1);
-		assertEquals(2, listener.brickHit);
-		assertEquals(1, listener.bricksDeleted);
+		assertTrue(2 == counter.numEvents.get("level-brick-hit"));
+		assertTrue(1 == counter.numEvents.get("level-brick-deleted"));
 		
 		ball.setLocation(-8, -8, 0);
 		level.update(1);
-		assertEquals(2, listener.wallHit);
+		assertTrue(2 == counter.numEvents.get("level-wall-hit"));
 		
 		ball.setLocation(0, 8, 0);
 		level.update(1);
-		assertEquals(3, listener.wallHit);
+		assertTrue(3 == counter.numEvents.get("level-wall-hit"));
 		
 		ball.setLocation(8, 8, 0);
 		level.update(1);
-		assertEquals(5, listener.wallHit);
+		assertTrue(5 == counter.numEvents.get("level-wall-hit"));
 		
 		ball.setLocation(8, 0, 0);
 		level.update(1);
-		assertEquals(6, listener.wallHit);
+		assertTrue(6 == counter.numEvents.get("level-wall-hit"));
 		
 		ball.setLocation(0, -8, 0);
 		level.setBottomWallActive(false);
 		level.update(1);
-		assertEquals(7, listener.wallHit);
-		assertEquals(1, listener.failed);
+		assertTrue(7 == counter.numEvents.get("level-wall-hit"));
+		assertTrue(1 == counter.numEvents.get("level-failed"));
 		
 	}
 	
@@ -582,21 +525,18 @@ public class SHLevelTest
 		SHBonus bonus = SHCoreTestHelper.createDefaultBonus();
 		level.getBonuses().put(brick, bonus);
 
-		level.addListener(listener);
-		listener.bonusShowed = 0;
 		level.update(1);
 		assertEquals(0, level.getBonuses().size());
 //		assertEquals(9, level.getRootNode().getChildren().size());
 		assertTrue(SHUtils.areEqual(new Vector3f(-5, 0, 0), bonus.getLocation(), 
 				0.001f));
-		assertEquals(1, listener.bonusShowed);
+		assertTrue(1 == counter.numEvents.get("level-bonus-showed"));
 		
 		// test bonus moving
 		Node bonusNode = (Node)level.getRootNode().getChild(1);
 		assertEquals(1, bonusNode.getChildren().size());
 		
 		// test bonus activation
-		listener.bonusActivated = 0;
 		level.getPaddle().setLocation(-5, -7, 0);
 		level.getRootNode().updateGeometricState(7, true);
 		level.update(7);
@@ -606,22 +546,21 @@ public class SHLevelTest
 		assertEquals(0, bonusNode.getChildren().size());
 		assertTrue(Math.abs(level.getPaddle().getModel().getLocalScale().x 
 				- 1.0f) > 0.001f);
-		assertEquals(1, listener.bonusActivated);
+		assertTrue(1 == counter.numEvents.get("level-bonus-activated"));
 		assertEquals(1, level.getActiveBonuses().size());
 		
 		//test bonus deactivation
-		listener.bonusDeactivated = 0;
 		level.update(SHIncPaddleWidthBonus.DURATION - 1);
 		assertEquals(1, level.getActiveBonuses().size());
 		assertTrue(Math.abs(level.getPaddle().getModel().getLocalScale().x 
 				- 1) > 0.001f);
-		assertEquals(0, listener.bonusDeactivated);
+		assertNull(counter.numEvents.get("level-bonus-deactivated"));
 		
 		level.update(1);
 		assertEquals(0, level.getActiveBonuses().size());
 		assertTrue(Math.abs(level.getPaddle().getModel().getLocalScale().x 
 				- 1f) < 0.001f);
-		assertEquals(1, listener.bonusDeactivated);
+		assertTrue(1 == counter.numEvents.get("level-bonus-deactivated"));
 		
 	}
 	

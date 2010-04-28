@@ -6,6 +6,7 @@
  */
 package lamao.soh.utils.events;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +89,28 @@ public class SHEventDispatcher
 	public void addEvent(String type, Object sender, Map<String, Object> params)
 	{
 		addEvent(new SHEvent(type, sender, params));
+	}
+	
+	/**
+	 * Add event. <code>params</code> must have length = n pow 2 and must
+	 * consist of pairs <code>[String key, Object value, ..., 
+	 * String key, Object value]</code>
+	 * @param type
+	 * @param sender
+	 * @param params
+	 */
+	public void addEventEx(String type, Object sender, Object... params)
+	{
+		Map<String, Object> parameters = null;
+		if (params != null && params.length % 2 == 0)
+		{
+			parameters = new HashMap<String, Object>();
+			for (int i = 0; i < params.length; i += 2)
+			{
+				parameters.put((String)params[i], params[i + 1]);
+			}
+		}
+		addEvent(type, sender, parameters);
 	}
 	
 	/**

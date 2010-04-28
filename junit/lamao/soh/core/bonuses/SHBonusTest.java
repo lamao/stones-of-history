@@ -19,7 +19,8 @@ import lamao.soh.core.SHBall;
 import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHCoreTestHelper;
 import lamao.soh.core.SHLevel;
-import lamao.soh.core.SHLevelAdapter;
+import lamao.soh.utils.events.SHEventCounter;
+import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao
@@ -55,20 +56,11 @@ public class SHBonusTest
 		}
 	}
 	
-	private class SHStubLevelListener extends SHLevelAdapter
-	{
-		public int bonusActivated = 0;
-		@Override
-		public void bonusActivated(SHBonus bonus)
-		{
-			bonusActivated++;
-		}
-	}
-	
 	SHLevel level;
 	SHBrick brick;
 	SHBall ball;
 	SHStubBonus bonus;
+	SHEventCounter counter = new SHEventCounter();
 	
 	@Before
 	public void setUp()
@@ -80,6 +72,10 @@ public class SHBonusTest
 		bonus = new SHStubBonus("1");
 		bonus.setDuration(5);
 		level.getBonuses().put(brick, bonus);
+		
+		counter.reset();
+		SHEventDispatcher.getInstance().reset();
+		SHEventDispatcher.getInstance().addHandler("all", counter);
 	}
 	
 	@Test
@@ -107,8 +103,6 @@ public class SHBonusTest
 	@Test
 	public void testAddictiveBonus()
 	{
-		SHStubLevelListener listener = new SHStubLevelListener();
-		level.addListener(listener);
 		bonus.setAddictive(true);
 		
 		SHStubBonus extraBonus = new SHStubBonus("2");
@@ -137,7 +131,7 @@ public class SHBonusTest
 		assertEquals(1, level.getActiveBonuses().size());
 		assertTrue(Float.toString(bonus.getDuration()), 
 				Math.abs(bonus.getDuration() - 7 ) < 0.001f);
-		assertEquals(1, listener.bonusActivated);
+		assertTrue(1 == counter.numEvents.get("level-bonus-activated"));
 		
 		level.getRootNode().updateGeometricState(7, true);
 		level.update(7);

@@ -14,6 +14,8 @@ import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.SHLevelLoader;
 import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.deled.SHDpsToJme;
+import lamao.soh.utils.events.SHEventDispatcher;
+import lamao.soh.utils.events.SHEventLogger;
 
 import com.jme.app.AbstractGame.ConfigShowMode;
 import com.jme.scene.Node;
@@ -36,6 +38,7 @@ public class SHMain
 		GAME.getSettings().setFramerate(2000);
 		GAME.start();
 		
+		SHEventDispatcher.getInstance().addHandler("all", new SHEventLogger());
 		//SHResourceManager.getInstance().loadAll(new File("data/model_test.txt"));
 		SHResourceManager.getInstance().loadAll(new File(
 				"data/epochs/test_epoch/appearence.txt"));
@@ -53,7 +56,6 @@ public class SHMain
 		SHLevelState levelState = new SHLevelState();
 		levelState.setLevel(level);
 		
-//		SHLevelGenerator.generate(level.getLevel());
 		GameStateManager.getInstance().attachChild(levelState);
 		levelState.setActive(true);
 	}

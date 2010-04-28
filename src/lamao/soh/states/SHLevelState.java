@@ -8,13 +8,10 @@ package lamao.soh.states;
 
 import lamao.soh.console.SHConsoleState;
 import lamao.soh.console.SHWireFrameCommand;
-import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHLevel;
-import lamao.soh.core.ISHLevelListener;
-import lamao.soh.core.SHLevel.SHWallType;
-import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
+import lamao.soh.utils.events.SHEventDispatcher;
 
 import com.acarter.scenemonitor.SceneMonitor;
 import com.jme.input.InputHandler;
@@ -85,6 +82,7 @@ public class SHLevelState extends BasicGameState
 		
 		initTextLabels();
 		initConsole();
+		setupHandlers();
 		bindKeys();
 		
 		rootNode.updateRenderState();
@@ -169,11 +167,9 @@ public class SHLevelState extends BasicGameState
 	{
 		if (_level != null && _level != level)
 		{
-			_level.getListeners().clear();
 			rootNode.detachChild(_level.getRootNode());
 		}
 		_level = level;
-		_level.addListener(new SHDefaultLevelListener());
 		rootNode.attachChild(_level.getRootNode());
 		rootNode.updateRenderState();
 	}
@@ -232,67 +228,78 @@ public class SHLevelState extends BasicGameState
 		super.setActive(active);
 	}
 	
-	private class SHDefaultLevelListener implements ISHLevelListener
+	private void setupHandlers()
 	{
-		@Override
-		public void completed()
+		SHEventDispatcher dispatcher = SHEventDispatcher.getInstance();
+		dispatcher.addHandler("level-completed", new ISHEventHandler()
 		{
-			_events.print("Victory");
-			Text win = Text.createDefaultTextLabel("win", "YOU ARE WINNER");
-			win.setLocalTranslation(_display.getWidth() / 2 - win.getWidth() / 2,
-					_display.getHeight() / 2 - win.getHeight(), 0);
-			_statNode.attachChild(win);
-			_statNode.updateRenderState();
-		}
+			@Override
+			public void processEvent(SHEvent event)
+			{
+				_events.print("Victory");
+				Text win = Text.createDefaultTextLabel("win", "YOU ARE WINNER");
+				win.setLocalTranslation(_display.getWidth() / 2 - win.getWidth() / 2,
+						_display.getHeight() / 2 - win.getHeight(), 0);
+				_statNode.attachChild(win);
+				_statNode.updateRenderState();
+			}
+		});
 		
-		@Override
-		public void failed()
+		dispatcher.addHandler("level-failed", new ISHEventHandler()
 		{
-			_events.print("Defeat");
-			Text win = Text.createDefaultTextLabel("fail", "YOU ARE LOOSER");
-			win.setLocalTranslation(_display.getWidth() / 2 - win.getWidth() / 2,
-					_display.getHeight() / 2 - win.getHeight(), 0);
-			_statNode.attachChild(win);
-			_statNode.updateRenderState();
-		}
+			@Override
+			public void processEvent(SHEvent event)
+			{
+				_events.print("Defeat");
+				Text win = Text.createDefaultTextLabel("fail", "YOU ARE LOOSER");
+				win.setLocalTranslation(_display.getWidth() / 2 - win.getWidth() / 2,
+						_display.getHeight() / 2 - win.getHeight(), 0);
+				_statNode.attachChild(win);
+				_statNode.updateRenderState();
+			}
+		});
 		
-		@Override
-		public void brickHit(SHBrick brick)
+		dispatcher.addHandler("level-brick-hit", new ISHEventHandler()
 		{
-			_events.print("Brick hit");
-		}
+			@Override
+			public void processEvent(SHEvent event)
+			{
+				_events.print("Brick hit");
+			}
+		});
 		
-		@Override
-		public void wallHit(SHWallType wall)
+		dispatcher.addHandler("level-wall-hit", new ISHEventHandler()
 		{
-			_events.print("Wall hit: " + wall.toString());
-		}
+			@Override
+			public void processEvent(SHEvent event)
+			{
+				_events.print("Wall hit: " + event.params.get("wall-type"));
+			}
+		});
 		
-		@Override
-		public void brickDeleted(SHBrick brick)
+		dispatcher.addHandler("level-brick-deleted", new ISHEventHandler()
 		{
-			_events.print("Brick deleted");
-			_info.print(Integer.toString(_level.getNumDeletebleBricks()));
-		}
+			@Override
+			public void processEvent(SHEvent event)
+			{
+				_events.print("Brick deleted");
+				_info.print(Integer.toString(_level.getNumDeletebleBricks()));
+			}
+		});
 		
-		@Override
-		public void bonusShowed(SHBonus bonus)
+		ISHEventHandler bonusHandler = new ISHEventHandler()
 		{
-			_events.print("Bonus " + bonus.getClass());
-		}
-		
-		@Override
-		public void bonusActivated(SHBonus bonus)
-		{
-			_events.print("Bonus activated" + bonus.getClass());
-		}
-		
-		@Override
-		public void bonusDeactivated(SHBonus bonus)
-		{
-			_events.print("Bonus deactivated" + bonus.getClass());
+			@Override
+			public void processEvent(SHEvent event)
+			{
+				_events.print(event.type + event.params.get("bonus")
+						.getClass());
+			}
 			
-		}
+		};
+		dispatcher.addHandler("level-bonus-activated", bonusHandler);
+		dispatcher.addHandler("level-bonus-deactivated", bonusHandler);		
+		dispatcher.addHandler("level-bonus-showed", bonusHandler);
 	}
 	
 	/* (non-Javadoc)
