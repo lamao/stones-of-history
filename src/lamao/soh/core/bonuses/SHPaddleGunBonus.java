@@ -100,7 +100,7 @@ public class SHPaddleGunBonus extends SHBonus
 	{
 		private SHLevel _level = null;
 		
-		private float _timeSinceLastFire = 0;
+		private float _timeSinceLastFire = 1000000;
 		
 		
 		public SHMouseGunAction(SHLevel level)
