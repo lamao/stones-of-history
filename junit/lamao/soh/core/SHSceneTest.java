@@ -13,11 +13,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.jme.bounding.BoundingBox;
-import com.jme.intersection.CollisionData;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
 
 import static org.junit.Assert.*;
@@ -56,93 +56,105 @@ public class SHSceneTest
 		assertEquals(1, scene.getModels().size());
 		assertEquals(1, scene.getModels("box").size());
 		assertEquals(1, scene.getRootNode().getChildren().size());
-		assertEquals(1, ((Node)scene.getRootNode().getChild("box"))
-				.getChildren().size());
+		assertEquals(1, ((Node)scene.getRootNode().getChild("box")).getQuantity());
 		
 		scene.addModel("box", new Node("box2"));		
 		assertEquals(1, scene.getModels().size());
 		assertEquals(2, scene.getModels("box").size());
 		assertEquals(1, scene.getRootNode().getChildren().size());
-		assertEquals(2, ((Node)scene.getRootNode().getChild("box"))
-				.getChildren().size());
+		assertEquals(2, ((Node)scene.getRootNode().getChild("box")).getQuantity());
 		
 		scene.addModel("cone", new Node("cone"));		
 		assertEquals(2, scene.getModels().size());
 		assertEquals(1, scene.getModels("cone").size());
 		assertEquals(2, scene.getRootNode().getChildren().size());
-		assertEquals(1, ((Node)scene.getRootNode().getChild("cone"))
-				.getChildren().size());
+		assertEquals(1, ((Node)scene.getRootNode().getChild("cone")).getQuantity());
 		
 		scene.removeModel("box", scene.getModels("box").get(0));
 		assertEquals(2, scene.getModels().size());
 		assertEquals(1, scene.getModels("box").size());
-		assertEquals(2, scene.getRootNode().getChildren().size());
-		assertEquals(1, ((Node)scene.getRootNode().getChild("box"))
-				.getChildren().size());
+		assertEquals(2, scene.getRootNode().getQuantity());
+		assertEquals(1, ((Node)scene.getRootNode().getChild("box")).getQuantity());
 		
 		scene.removeModel("box", scene.getModels("box").get(0));
 		assertEquals(1, scene.getModels().size());
 		assertNull(scene.getModels("box"));
-		assertEquals(1, scene.getRootNode().getChildren().size());
+		assertEquals(1, scene.getRootNode().getQuantity());
 		assertNull(scene.getRootNode().getChild("box"));
 		
 		scene.removeModel("asdfas", null);
 		assertEquals(1, scene.getModels().size());
 		assertEquals(1, scene.getModels("cone").size());
-		assertEquals(1, scene.getRootNode().getChildren().size());
-		assertEquals(1, ((Node)scene.getRootNode().getChild("cone"))
-				.getChildren().size());
+		assertEquals(1, scene.getRootNode().getQuantity());
+		assertEquals(1, ((Node)scene.getRootNode().getChild("cone")).getQuantity());
 	}
 	
 	@Test
 	public void testAddRemoveEntity()
 	{
-		scene.addEntity(new SHEntity("box", new Node("box1")));
+		SHEntity entity = new SHEntity("box", "box1", new Node("box1"));
+		Spatial model = null;
+		
+		scene.addEntity(entity);
 		assertEquals(1, scene.getEntities().size());
 		assertEquals(1, scene.getEntities("box").size());
 		assertEquals(1, scene.getModels("box").size());
-		assertEquals(1, scene.getRootNode().getChildren().size());
-		assertEquals(1, ((Node)scene.getRootNode().getChild("box"))
-				.getChildren().size());
+		assertEquals(1, scene.getRootNode().getQuantity());
+		assertEquals(1, ((Node)scene.getRootNode().getChild("box")).getQuantity());
+		model = ((Node)scene.getRootNode().getChild("box")).getChild(0);
+		assertSame(model, entity.getRoot());
 		
-		scene.addEntity(new SHEntity("box", new Node("box2")));
+		entity = new SHEntity("box", "box2", new Node("box2"));
+		scene.addEntity(entity);
 		assertEquals(1, scene.getEntities().size());
 		assertEquals(2, scene.getEntities("box").size());
 		assertEquals(2, scene.getModels("box").size());
-		assertEquals(1, scene.getRootNode().getChildren().size());
-		assertEquals(2, ((Node)scene.getRootNode().getChild("box"))
-				.getChildren().size());
+		assertEquals(1, scene.getRootNode().getQuantity());
+		assertEquals(2, ((Node)scene.getRootNode().getChild("box")).getQuantity());
+		model = ((Node)scene.getRootNode().getChild("box")).getChild(1);
+		assertSame(model, entity.getRoot());
 		
-		scene.addEntity(new SHEntity("cone", new Node("cone1")));
+		
+		scene.addEntity(new SHEntity("cone", "cone1", new Node("cone1")));
 		assertEquals(2, scene.getEntities().size());
 		assertEquals(1, scene.getEntities("cone").size());
 		assertEquals(1, scene.getModels("cone").size());
-		assertEquals(2, scene.getRootNode().getChildren().size());
-		assertEquals(1, ((Node)scene.getRootNode().getChild("cone"))
-				.getChildren().size());
+		assertEquals(2, scene.getRootNode().getQuantity());
+		assertEquals(1, ((Node)scene.getRootNode().getChild("cone")).getQuantity());
 		
+		model = scene.getEntities("box").get(0).getRoot();
 		scene.removeEntity(scene.getEntities("box").get(0));
 		assertEquals(2, scene.getEntities().size());
 		assertEquals(1, scene.getEntities("box").size());
 		assertEquals(1, scene.getModels("box").size());
-		assertEquals(2, scene.getRootNode().getChildren().size());
-		assertEquals(1, ((Node)scene.getRootNode().getChild("box"))
-				.getChildren().size());
+		assertEquals(2, scene.getRootNode().getQuantity());
+		assertEquals(1, ((Node)scene.getRootNode().getChild("box")).getQuantity());
 		
 		scene.removeEntity(scene.getEntities("box").get(0));
 		assertEquals(1, scene.getEntities().size());
 		assertNull(scene.getEntities("box"));
 		assertNull(scene.getModels("box"));
-		assertEquals(1, scene.getRootNode().getChildren().size());
+		assertEquals(1, scene.getRootNode().getQuantity());
 		assertNull(scene.getRootNode().getChild("box"));
 		
-		scene.removeEntity(new SHEntity("asdfas", null));
+		scene.removeEntity(new SHEntity("asdfas", null, null));
 		assertEquals(1, scene.getEntities().size());
 		assertEquals(1, scene.getEntities("cone").size());
 		assertEquals(1, scene.getEntities("cone").size());
-		assertEquals(1, scene.getRootNode().getChildren().size());
-		assertEquals(1, ((Node)scene.getRootNode().getChild("cone"))
-				.getChildren().size());
+		assertEquals(1, scene.getRootNode().getQuantity());
+		assertEquals(1, ((Node)scene.getRootNode().getChild("cone")).getQuantity());
+	}
+	
+	@Test
+	public void testSearchMap()
+	{
+		SHEntity entity = new SHEntity("type", "name", null);
+		
+		scene.addEntity(entity);		
+		assertSame(entity, scene.getEntity(entity.getRoot()));
+		
+		scene.removeEntity(entity);
+		assertSame(null, scene.getEntity(entity.getRoot()));
 	}
 	
 	
@@ -174,14 +186,16 @@ public class SHSceneTest
 	{
 		Box box1 = new Box("box1", new Vector3f(0, 0, 0), 1, 1, 1);
 		box1.setModelBound(new BoundingBox());
-		box1.updateModelBound();		
-		scene.addEntity(new SHEntity("type1", box1));
+		box1.updateModelBound();
+		SHEntity entity1 = new SHEntity("type1", "box1", box1);
+		scene.addEntity(entity1);
 		
 		Box box2 = new Box("box2", new Vector3f(0, 0, 0), 1, 1, 1);
 		box2.setModelBound(new BoundingBox());
 		box2.updateModelBound();
 		box2.setLocalTranslation(2, 0, 0);
-		scene.addEntity(new SHEntity("type2", box2));
+		SHEntity entity2 = new SHEntity("type2", "box2", box2);
+		scene.addEntity(entity2);
 		
 		scene.addCollisionTask(new SHCollisionTask("type1", "type2", false));
 
@@ -189,6 +203,8 @@ public class SHSceneTest
 		scene.getRootNode().updateGeometricState(0, true);
 		scene.update(0);
 		assertTrue(1 == counter.numEvents.get("scene-collision-type1-type2"));
+		assertSame(entity1, counter.lastEvent.params.get("src"));
+		assertSame(entity2, counter.lastEvent.params.get("dst"));
 		
 		// bounding collision
 		box2.setLocalRotation(new Quaternion(new float[] {0, 0, FastMath.PI / 4}));
@@ -197,16 +213,22 @@ public class SHSceneTest
 		scene.getRootNode().updateGeometricState(0, true);
 		scene.update(0);
 		assertTrue(2 == counter.numEvents.get("scene-collision-type1-type2"));
+		assertSame(entity1, counter.lastEvent.params.get("src"));
+		assertSame(entity2, counter.lastEvent.params.get("dst"));
 		
 		// triangle collision
 		scene.getCollisionTasks().remove(0);
 		scene.addCollisionTask(new SHCollisionTask("type1", "type2", true));
 		scene.update(0);
 		assertTrue(2 == counter.numEvents.get("scene-collision-type1-type2"));
+		assertSame(entity1, counter.lastEvent.params.get("src"));
+		assertSame(entity2, counter.lastEvent.params.get("dst"));
 		
 		box2.setLocalTranslation(2, 1f, 0);
 		scene.update(0);
 		assertTrue(3 == counter.numEvents.get("scene-collision-type1-type2"));
+		assertSame(entity1, counter.lastEvent.params.get("src"));
+		assertSame(entity2, counter.lastEvent.params.get("dst"));
 		
 	}
 }

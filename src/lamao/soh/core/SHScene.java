@@ -6,11 +6,13 @@
  */
 package lamao.soh.core;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 import com.jme.app.SimpleGame;
@@ -58,6 +60,9 @@ public class SHScene
 	
 	private SHEventDispatcher _dispatcher = SHEventDispatcher.getInstance();
 	
+	/** Map for fast searching entities for models */
+	private Map<Spatial, SHEntity> _searchMap = new HashMap<Spatial, SHEntity>();
+	
 	
 	public Node getRootNode()
 	{
@@ -95,7 +100,8 @@ public class SHScene
 			_entities.put(entity.getType(), entityGroup);
 		}
 		entityGroup.add(entity);
-		addModel(entity.getType(), entity.getModel());
+		addModel(entity.getType(), entity.getRoot());
+		_searchMap.put(entity.getRoot(), entity);
 	}
 	
 	/**
@@ -114,7 +120,8 @@ public class SHScene
 			{
 				_entities.remove(entity.getType());
 			}
-			removeModel(entity.getType(), entity.getModel());
+			removeModel(entity.getType(), entity.getRoot());
+			_searchMap.remove(entity.getRoot());
 		}
 	}
 	
@@ -183,6 +190,10 @@ public class SHScene
 		_collisionTasks.remove(task);
 	}
 	
+	public SHEntity getEntity(Spatial model)
+	{
+		return _searchMap.get(model);
+	}
 	
 	/**
 	 * Updates the scene. It includes node updates, collision detection
@@ -195,6 +206,7 @@ public class SHScene
 	
 	private void processCollisions()
 	{
+		List<SHEvent> eventsToSend = new LinkedList<SHEvent>();
 		Node source = null;
 		Node dest = null;
 		for (SHCollisionTask task : _collisionTasks)
@@ -203,24 +215,42 @@ public class SHScene
 			dest = (Node)_rootNode.getChild(task.destType);
 			if (source != null && dest != null)
 			{
-				CollisionResults results = task.checkTris ? 
-						new TriangleCollisionResults() :
-						new BoundingCollisionResults();
-				source.findCollisions(dest, results);
-				CollisionData data = null;
-				for (int i = 0; i < results.getNumber(); i++)
+				for (Spatial sourceModel : source.getChildren())
 				{
-					data = results.getCollisionData(i);
-					if (!task.checkTris || (data.getSourceTris().size() > 0 && 
-						data.getTargetTris().size() > 0))
+					for (Spatial destModel : dest.getChildren())
 					{
-						String event = "scene-collision-" + task.sourceType 
-								+ "-" + task.destType; 
-						_dispatcher.addEventEx(event, this, 
-								"data", results.getCollisionData(i));
+						CollisionResults results = task.checkTris ? 
+								new TriangleCollisionResults() :
+								new BoundingCollisionResults();
+						source.findCollisions(dest, results);
+						
+						SHEntity sourceEntity = getEntity(sourceModel);
+						SHEntity destEntity = getEntity(destModel);
+						CollisionData data = null;
+						for (int i = 0; i < results.getNumber(); i++)
+						{
+							data = results.getCollisionData(i);
+							if (!task.checkTris || (data.getSourceTris().size() > 0 && 
+								data.getTargetTris().size() > 0))
+							{
+								String event = "scene-collision-" 
+										+ task.sourceType 
+										+ "-" + task.destType;
+								Map<String, Object> params = new HashMap<String, Object>();
+								params.put("data", results.getCollisionData(i));
+								params.put("src", sourceEntity);
+								params.put("dst", destEntity);
+								eventsToSend.add(new SHEvent(event, this, params));
+							}
+						}
 					}
 				}
 			}
+		}
+		
+		for (SHEvent event : eventsToSend)
+		{
+			_dispatcher.addEvent(event);
 		}
 	}
 	
@@ -235,27 +265,28 @@ public class SHScene
 				Box box1 = new Box("box1", new Vector3f(0, 0, 0), 1, 1, 1);
 				box1.setModelBound(new BoundingBox());
 				box1.updateModelBound();		
-				scene.addEntity(new SHEntity("type1", box1));
+				scene.addEntity(new SHEntity("type1", "box1", box1));
 				
 				box1 = new Box("box4", new Vector3f(-1, -3, -4), 1, 1, 1);
 				box1.setModelBound(new BoundingBox());
 				box1.updateModelBound();		
-				scene.addEntity(new SHEntity("type1", box1));
+				scene.addEntity(new SHEntity("type1", "box4", box1));
 				
 				Box box2 = new Box("box2", new Vector3f(0, 0, 0), 1, 1, 1);
 				box2.setModelBound(new BoundingBox());
 				box2.updateModelBound();
 				box2.setLocalRotation(new Quaternion(new float[] {0, 0, FastMath.PI / 4}));
 				box2.setLocalTranslation(2, 1.5f, 0);
-				scene.addEntity(new SHEntity("type2", box2));
+				scene.addEntity(new SHEntity("type2", "box2", box2));
 				
 				Box box3 = new Box("box3", new Vector3f(3, 2, 0), 1, 1, 1);
 				box3.setModelBound(new BoundingBox());
 				box3.updateModelBound();
-				scene.addEntity(new SHEntity("type2", box3));
+				scene.addEntity(new SHEntity("type2", "box3", box3));
 				
 				rootNode.attachChild(scene.getRootNode());
 				rootNode.updateRenderState();
+				
 			}
 		};
 		game.setConfigShowMode(ConfigShowMode.AlwaysShow);

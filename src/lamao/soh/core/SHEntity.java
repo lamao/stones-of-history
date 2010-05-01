@@ -7,6 +7,7 @@
 package lamao.soh.core;
 
 import com.jme.math.Vector3f;
+import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
 /**
@@ -16,20 +17,43 @@ import com.jme.scene.Spatial;
  */
 public class SHEntity
 {
+	/** Type of the entity */
+	private String _type = "default";
 
-	/** Model for ball */
-	private Spatial _model;
+	/** Root node for entity */
+	private Node _root = new Node("");
+	
+	/** Collidable model for this root. Other spatials attached to the root
+	 * node are treated as decoration, effect etc. 
+	 */
+	private Spatial _model = null;
+	
+	/** Name of this entity */
+	private String _name = null;
+	
+	public SHEntity(String type, String name, Spatial model)
+	{
+		this(model);
+		_type = type;
+		setName(name);
+	}
 	
 	public SHEntity(Spatial model)
 	{
+		this();
 		_model = model;
+		_root.attachChild(model);
 	}
 	
 	public SHEntity()
 	{
-		this(null);
 	}
 
+	public Node getRoot()
+	{
+		return _root;
+	}
+	
 	public Spatial getModel()
 	{
 		return _model;
@@ -37,7 +61,12 @@ public class SHEntity
 
 	public void setModel(Spatial model)
 	{
+		if (_model != null)
+		{
+			_root.detachChild(_model);
+		}
 		_model = model;
+		_root.attachChild(model);
 	}
 	
 	/** 
@@ -46,8 +75,8 @@ public class SHEntity
 	 */
 	public void setLocation(Vector3f location)
 	{
-		_model.setLocalTranslation(location);
-		_model.updateModelBound();
+		_root.setLocalTranslation(location);
+		_root.updateModelBound();
 	}
 	
 	/** 
@@ -55,13 +84,34 @@ public class SHEntity
 	 */
 	public void setLocation(float x, float y, float z)
 	{
-		_model.setLocalTranslation(x, y, z);
-		_model.updateModelBound();
+		_root.setLocalTranslation(x, y, z);
+		_root.updateModelBound();
 	}
 	
 	public Vector3f getLocation()
 	{
-		return _model.getLocalTranslation();
+		return _root.getLocalTranslation();
+	}
+
+	public String getType()
+	{
+		return _type;
+	}
+
+	public void setType(String type)
+	{
+		_type = type;
+	}
+	
+	public void setName(String name)
+	{
+		_name = name;
+		_root.setName(name);
+	}
+	
+	public String getName()
+	{
+		return _name;
 	}
 
 }
