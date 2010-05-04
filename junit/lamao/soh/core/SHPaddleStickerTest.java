@@ -23,7 +23,7 @@ public class SHPaddleStickerTest
 	{
 		SHPaddleSticker sticker = new SHPaddleSticker(
 				SHCoreTestHelper.createDefaultBall(),
-				SHCoreTestHelper.createDefaultPaddle().getModel());
+				SHCoreTestHelper.createDefaultPaddle().getRoot());
 		assertNotNull(sticker.getBall());
 		assertNotNull(sticker.getTarget());
 	}
@@ -35,20 +35,19 @@ public class SHPaddleStickerTest
 		SHPaddle paddle = SHCoreTestHelper.createDefaultPaddle();
 		
 		ball.setLocation(-1, 2, 0);
-		ball.getModel().addController(new SHPaddleSticker(
-				ball, paddle.getModel()));
+		SHPaddleSticker sticker = new SHPaddleSticker(ball, paddle.getRoot());
 		
-		ball.getModel().updateGeometricState(1, true);
+		sticker.update(1);
 		assertTrue(SHUtils.areEqual(new Vector3f(-1, 2, 0), ball.getLocation(),
 				0.001f));
 		
 		paddle.setLocation(2, 0, 0);
-		ball.getModel().updateGeometricState(1, true);
+		sticker.update(1);
 		assertTrue(SHUtils.areEqual(new Vector3f(1, 2, 0), ball.getLocation(),
 				0.001f));
 		
 		paddle.setLocation(-3, 0, 0);
-		ball.getModel().updateGeometricState(0.5f, true);
+		sticker.update(1);
 		assertTrue(SHUtils.areEqual(new Vector3f(-4, 2, 0), ball.getLocation(),
 				0.001f));
 		

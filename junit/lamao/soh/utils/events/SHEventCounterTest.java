@@ -31,9 +31,13 @@ public class SHEventCounterTest
 		assertEquals(0, counter.lastEvent.params.size());
 		
 		assertTrue(3 == counter.numEvents.get("1"));
+		assertEquals(3, counter.getNumEvents("1"));
 		assertTrue(1 == counter.numEvents.get("2"));
+		assertEquals(1, counter.getNumEvents("2"));
 		assertTrue(1 == counter.numEvents.get("3"));
+		assertEquals(1, counter.getNumEvents("3"));
 		assertNull(counter.numEvents.get("4"));
+		assertEquals(0, counter.getNumEvents("4"));
 		
 		counter.reset();
 		assertNull(counter.numEvents.get("1"));

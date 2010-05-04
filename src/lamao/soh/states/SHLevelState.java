@@ -8,6 +8,7 @@ package lamao.soh.states;
 
 import lamao.soh.console.SHConsoleState;
 import lamao.soh.console.SHWireFrameCommand;
+import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHLevel;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
@@ -230,7 +231,7 @@ public class SHLevelState extends BasicGameState
 	
 	private void setupHandlers()
 	{
-		SHEventDispatcher dispatcher = SHEventDispatcher.getInstance();
+		SHEventDispatcher dispatcher = SHGamePack.dispatcher;
 		dispatcher.addHandler("level-completed", new ISHEventHandler()
 		{
 			@Override

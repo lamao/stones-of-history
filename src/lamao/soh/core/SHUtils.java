@@ -6,6 +6,9 @@
  */
 package lamao.soh.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.SharedMesh;
@@ -91,5 +94,39 @@ public class SHUtils
 		buffer.insert(0, prefix);
 		buffer.append(suffix);
 		return buffer.toString();
+	}
+	
+	/**
+	 * Builds map from string 'key value|key value|...'
+	 * @param data
+	 * @return
+	 */
+	public static Map<String, String> buildMap(String data)
+	{
+		String items[] = data.split("[\\s|]");
+		Map<String, String> result = null;
+		if (items.length > 1)
+		{
+			result = new HashMap<String, String>();
+			for (int i = 0; i < items.length; i += 2)
+			{
+				result.put(items[i], items[i + 1]);
+			}
+		}
+		return result;
+	}
+	
+	public static Map<String, Object> buildEventMap(Object... data)
+	{
+		Map<String, Object> parameters = null;
+		if (data != null && data.length % 2 == 0)
+		{
+			parameters = new HashMap<String, Object>();
+			for (int i = 0; i < data.length; i += 2)
+			{
+				parameters.put((String)data[i], data[i + 1]);
+			}
+		}
+		return parameters;
 	}
 }

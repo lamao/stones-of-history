@@ -112,7 +112,7 @@ public class SHBall extends SHEntity
 		
 		
 		CollisionResults results = new TriangleCollisionResults();
-		getModel().findCollisions(brick.getModel(), results);
+		getRoot().findCollisions(brick.getRoot(), results);
 		if (results.getNumber() > 0 && 
 			results.getCollisionData(0).getTargetTris().size() > 0)
 		{
@@ -178,11 +178,13 @@ public class SHBall extends SHEntity
 					(Node)model);
 		}
 		
-		newModel.setLocalTranslation(model.getLocalTranslation().clone());
 		newModel.setModelBound(model.getWorldBound().clone(null));
 		newModel.updateModelBound();
 			
-		return new SHBall(newModel, _velocity.clone());
+		SHBall result = new SHBall(newModel, _velocity.clone());
+		result.setLocation(getLocation().clone());
+		
+		return result;
 	}
 	
 }

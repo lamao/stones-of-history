@@ -16,6 +16,7 @@ import lamao.soh.utils.events.SHEventCounter;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.jme.math.Vector3f;
@@ -28,16 +29,13 @@ import static org.junit.Assert.*;
  * @author lamao
  *
  */
-public class SHLevelTest
+@Ignore
+public class SHLevelTest extends SHEventDispatcher
 {
 	private SHEventCounter counter = new SHEventCounter();
 	
-	@Before
-	public void setUp()
 	{
-		counter.reset();
-		SHEventDispatcher.getInstance().reset();
-		SHEventDispatcher.getInstance().addHandler("all", counter);
+		
 	}
 	
 	@Test

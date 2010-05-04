@@ -8,6 +8,10 @@ package lamao.soh.utils.events;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.jme.util.GameTaskQueue;
+import com.jme.util.GameTaskQueueManager;
+
 import static org.junit.Assert.*;
 
 /**
@@ -27,11 +31,12 @@ public class SHEventDispatcherTest
 	}
 	
 	
-	private SHEventDispatcher _dispatcher = SHEventDispatcher.getInstance();
+	private SHEventDispatcher _dispatcher = null;
 	
 	@Before
 	public void setUp()
 	{
+		_dispatcher = new SHEventDispatcher();
 		_dispatcher.reset();
 	}
 	
@@ -128,6 +133,76 @@ public class SHEventDispatcherTest
 		_dispatcher.addEvent(new SHEvent("1", null, null));
 		_dispatcher.addEvent(new SHEvent("2", null, null));
 		assertEquals(2, handler.eventsArrived);
+	}
+	
+	@Test
+	public void testTimeEvents() throws InterruptedException
+	{
+		SHEventCounter counter = new SHEventCounter();
+		_dispatcher.addHandler("all", counter);
+		
+		_dispatcher.addTimeEvent(new SHTimeEvent("type", "sender", null, 400));
+		_dispatcher.addTimeEvent(new SHTimeEvent("type1", "sender", null, 200));
+		_dispatcher.addTimeEvent(new SHTimeEvent("type2", null, null, 300));
+		Thread.sleep(100);
+		assertEquals(0, counter.getNumEvents("type"));
+		assertEquals(0, counter.getNumEvents("type1"));
+		assertEquals(0, counter.getNumEvents("type2"));
+		Thread.sleep(150);
+		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
+		assertEquals(0, counter.getNumEvents("type"));
+		assertEquals(1, counter.getNumEvents("type1"));
+		assertEquals(0, counter.getNumEvents("type2"));
+		Thread.sleep(100);
+		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
+		assertEquals(0, counter.getNumEvents("type"));
+		assertEquals(1, counter.getNumEvents("type1"));
+		assertEquals(1, counter.getNumEvents("type2"));
+		Thread.sleep(100);
+		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
+		assertEquals(1, counter.getNumEvents("type"));
+		assertEquals(1, counter.getNumEvents("type1"));
+		assertEquals(1, counter.getNumEvents("type2"));
+	}
+	
+	@Test
+	public void testReset() throws InterruptedException
+	{
+		SHDummyEventHandler handler = new SHDummyEventHandler();
+		_dispatcher.addHandler("all", handler);
+		
+		_dispatcher.addEvent("type", "name", null);
+		_dispatcher.addTimeEvent("type1", "name1", null, 100);
+		_dispatcher.reset();
+		
+		assertEquals(0, _dispatcher.getHandlers().size());
+		assertEquals(0, _dispatcher.getNumberOfTimeEvents());
+		
+		handler.eventsArrived = 0;
+		_dispatcher.addHandler("all", handler);
+		Thread.sleep(150);		
+		assertEquals(0, handler.eventsArrived);
+	}
+	
+	@Test
+	public void testPrologEvent() throws InterruptedException
+	{
+		SHEventCounter counter = new SHEventCounter();
+		_dispatcher.addHandler("all", counter);
+		
+		_dispatcher.addTimeEvent(new SHTimeEvent("type", "sender", null, 300));
+		_dispatcher.addTimeEvent(new SHTimeEvent("type1", "sender", null, 200));
+		Thread.sleep(100);
+		_dispatcher.prolongTimeEvent("type1", 200);
+		Thread.sleep(250);
+		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
+		assertEquals(1, counter.getNumEvents("type"));
+		assertEquals(0, counter.getNumEvents("type1"));
+		Thread.sleep(100);
+		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
+		assertEquals(1, counter.getNumEvents("type"));
+		assertEquals(1, counter.getNumEvents("type1"));
+		
 	}
 	
 }

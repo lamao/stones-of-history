@@ -9,6 +9,7 @@ package lamao.soh;
 import java.io.File;
 
 import lamao.soh.console.SHConsoleState;
+import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHLevel;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.SHLevelLoader;
@@ -38,7 +39,8 @@ public class SHMain
 		GAME.getSettings().setFramerate(2000);
 		GAME.start();
 		
-		SHEventDispatcher.getInstance().addHandler("all", new SHEventLogger());
+		SHGamePack.dispatcher = new SHEventDispatcher();
+		SHGamePack.dispatcher.addHandler("all", new SHEventLogger());
 		//SHResourceManager.getInstance().loadAll(new File("data/model_test.txt"));
 		SHResourceManager.getInstance().loadAll(new File(
 				"data/epochs/test_epoch/appearence.txt"));

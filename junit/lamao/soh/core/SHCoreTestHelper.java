@@ -58,9 +58,9 @@ public class SHCoreTestHelper
 	}
 	
 	/** Creates default ball with radius 1 located at (0, 0, 0)*/
-	public static SHBall createDefaultBall(String id)
+	public static SHBall createDefaultBall(String name)
 	{
-		Sphere model = new Sphere(id, 15, 15, 1);
+		Sphere model = new Sphere(name, 15, 15, 1);
 		model.setModelBound(new BoundingSphere());
 		model.updateModelBound();
 		

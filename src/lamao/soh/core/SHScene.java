@@ -58,8 +58,6 @@ public class SHScene
 	private List<SHCollisionTask> _collisionTasks = 
 			new LinkedList<SHCollisionTask>();
 	
-	private SHEventDispatcher _dispatcher = SHEventDispatcher.getInstance();
-	
 	/** Map for fast searching entities for models */
 	private Map<Spatial, SHEntity> _searchMap = new HashMap<Spatial, SHEntity>();
 	
@@ -77,6 +75,22 @@ public class SHScene
 	public List<SHEntity> getEntities(String type)
 	{
 		return _entities.get(type);
+	}
+	
+	public SHEntity getEntity(String type, String name)
+	{
+		List<SHEntity> entities = getEntities(type);
+		if (entities != null)
+		{
+			for (SHEntity entity : entities)
+			{
+				if (entity.getName().equals(name))
+				{
+					return entity;
+				}
+			}
+		}
+		return null;
 	}
 
 	public Map<String, List<Spatial>> getModels()
@@ -250,8 +264,17 @@ public class SHScene
 		
 		for (SHEvent event : eventsToSend)
 		{
-			_dispatcher.addEvent(event);
+			SHGamePack.dispatcher.addEvent(event);
 		}
+	}
+	
+	public void reset()
+	{
+		_collisionTasks.clear();
+		_entities.clear();
+		_rootNode.detachAllChildren();
+		_models.clear();
+		_searchMap.clear();
 	}
 	
 	public static void main(String[] args)

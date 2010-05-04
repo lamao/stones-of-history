@@ -7,6 +7,7 @@
 package lamao.soh.core.bonuses;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.jme.bounding.BoundingBox;
@@ -15,6 +16,7 @@ import com.jme.scene.shape.Box;
 
 import static org.junit.Assert.*;
 
+import lamao.junit.common.SHEventTestCase;
 import lamao.soh.core.SHBall;
 import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHCoreTestHelper;
@@ -26,7 +28,8 @@ import lamao.soh.utils.events.SHEventDispatcher;
  * @author lamao
  *
  */
-public class SHBonusTest
+@Ignore
+public class SHBonusTest extends SHEventTestCase
 {
 	
 	private class SHStubBonus extends SHBonus
@@ -72,10 +75,6 @@ public class SHBonusTest
 		bonus = new SHStubBonus("1");
 		bonus.setDuration(5);
 		level.getBonuses().put(brick, bonus);
-		
-		counter.reset();
-		SHEventDispatcher.getInstance().reset();
-		SHEventDispatcher.getInstance().addHandler("all", counter);
 	}
 	
 	@Test

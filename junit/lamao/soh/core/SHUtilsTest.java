@@ -7,6 +7,9 @@
 package lamao.soh.core;
 
 import static org.junit.Assert.*;
+
+import java.util.Map;
+
 import org.junit.Test;
 
 import com.jme.math.Vector3f;
@@ -127,5 +130,52 @@ public class SHUtilsTest
 	{
 		assertEquals("lamao.soh.bonuses.SHDoubleBallBonus", 
 				SHUtils.getClassName("lamao.soh.bonuses.SH", "double-ball", "Bonus"));
+	}
+	
+	@Test
+	public void testBuildMap()
+	{
+		Map<String, String> map = SHUtils.buildMap("key value");
+		assertEquals(1, map.size());
+		assertEquals("value", map.get("key"));
+		
+		map = SHUtils.buildMap("");
+		assertNull(map);
+		
+		map = SHUtils.buildMap("key\tvalue|");
+		assertEquals(1, map.size());
+		assertEquals("value", map.get("key"));
+		
+		map = SHUtils.buildMap("key value|key2 value2");
+		assertEquals(2, map.size());
+		assertEquals("value", map.get("key"));
+		assertEquals("value2", map.get("key2"));
+		
+		map = SHUtils.buildMap("key value|key2 value2|");
+		assertEquals(2, map.size());
+		assertEquals("value", map.get("key"));
+		assertEquals("value2", map.get("key2"));
+	}
+	
+	@Test
+	public void testBuildEventMap()
+	{
+		Map<String, Object> map = SHUtils.buildEventMap("key", 1);
+		assertEquals(1, map.get("key"));
+		
+		map = SHUtils.buildEventMap((Object[])null);
+		assertNull(map);
+		
+		map = SHUtils.buildEventMap("key");
+		assertNull(map);
+		
+		map = SHUtils.buildEventMap("key", 1, "key2");
+		assertNull(map);
+		
+		map = SHUtils.buildEventMap("key", 1, "key2", 1.45f, "key3", "value");
+		assertEquals(1, map.get("key"));
+		assertEquals(1.45f, map.get("key2"));
+		assertEquals("value", map.get("key3"));
+		
 	}
 }

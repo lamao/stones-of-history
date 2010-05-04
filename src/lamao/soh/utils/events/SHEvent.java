@@ -32,4 +32,10 @@ public class SHEvent
 	
 	public SHEvent()
 	{}
+	
+	@Override
+	public String toString()
+	{
+		return type;
+	}
 }

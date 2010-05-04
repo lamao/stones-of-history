@@ -6,6 +6,7 @@
  */
 package lamao.soh.core;
 
+import lamao.junit.common.SHEventTestCase;
 import lamao.soh.utils.events.SHEventCounter;
 import lamao.soh.utils.events.SHEventDispatcher;
 
@@ -26,21 +27,18 @@ import static org.junit.Assert.*;
  * @author lamao
  *
  */
-public class SHSceneTest
+public class SHSceneTest extends SHEventTestCase
 {
 	
 	private SHScene scene = null;
-	private SHEventDispatcher dispatcher = SHEventDispatcher.getInstance();
-	private SHEventCounter counter = new SHEventCounter();
 	
 	@Before
 	public void setUp()
 	{
+		super.setUp();
 		scene = new SHScene();
-		dispatcher.reset();
-		counter.reset();
-		dispatcher.addHandler("all", counter);
 	}
+	
 	@Test
 	public void testConstructors()
 	{
@@ -202,7 +200,7 @@ public class SHSceneTest
 		// general collision
 		scene.getRootNode().updateGeometricState(0, true);
 		scene.update(0);
-		assertTrue(1 == counter.numEvents.get("scene-collision-type1-type2"));
+		assertEquals(1, counter.getNumEvents("scene-collision-type1-type2"));
 		assertSame(entity1, counter.lastEvent.params.get("src"));
 		assertSame(entity2, counter.lastEvent.params.get("dst"));
 		
@@ -229,6 +227,31 @@ public class SHSceneTest
 		assertTrue(3 == counter.numEvents.get("scene-collision-type1-type2"));
 		assertSame(entity1, counter.lastEvent.params.get("src"));
 		assertSame(entity2, counter.lastEvent.params.get("dst"));
+	}
+	
+	@Test
+	public void testGetEntity()
+	{
+		scene.addEntity(new SHEntity("type", "name", null));
 		
+		assertNotNull(scene.getEntity("type", "name"));
+		assertNull(scene.getEntity("type", "name2"));
+		assertNull(scene.getEntity("type2", "name"));
+	}
+	
+	@Test
+	public void testReset()
+	{
+		scene.addEntity(new SHEntity("type", "name", null));
+		Box box = new Box("box", new Vector3f(0, 0, 0), 1, 1, 1);
+		scene.addModel("type1", box);
+		scene.addCollisionTask(new SHCollisionTask("type", "type1", false));
+		scene.reset();
+		
+		assertEquals(0, scene.getCollisionTasks().size());
+		assertEquals(0, scene.getEntities().size());
+		assertEquals(0, scene.getModels().size());
+		assertEquals(0, scene.getRootNode().getQuantity());
+		assertNull(scene.getEntity(box));
 	}
 }

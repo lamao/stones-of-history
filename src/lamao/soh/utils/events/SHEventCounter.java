@@ -31,6 +31,12 @@ public class SHEventCounter implements ISHEventHandler
 		lastEvent = event;
 	}
 	
+	public int getNumEvents(String type)
+	{
+		Integer num = numEvents.get(type);
+		return num == null ? 0 : num;
+	}
+	
 	public void reset()
 	{
 		numEvents.clear();

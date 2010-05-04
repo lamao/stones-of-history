@@ -97,7 +97,7 @@ public class SHLevel
 	
 	public SHLevel()
 	{
-		this(SHEventDispatcher.getInstance());
+		this(SHGamePack.dispatcher);
 	}
 	
 	public SHLevel(SHEventDispatcher dispatcher)
