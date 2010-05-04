@@ -38,10 +38,12 @@ public class SHDpsToJmeTest
 	{
 		SHDpsToJme loader = new SHDpsToJme();
 		
-		Node scene = (Node)loader.load(new File("data/test/non-existent.dps"));		
+		loader.load(new File("data/test/non-existent.dps"));
+		Node scene = (Node)loader.getResult();		
 		assertNull(scene);
 		
-		scene = (Node)loader.load(new File("data/test/test-level.dps"));		
+		loader.load(new File("data/test/test-level.dps"));
+		scene = (Node)loader.getResult();		
 		assertNotNull(scene);
 		assertEquals(21, scene.getChildren().size());
 		assertNotNull(scene.getChild("pyramid22"));
@@ -86,7 +88,8 @@ public class SHDpsToJmeTest
 		assertSame(scene.getChild("brick-column1").getRenderState(StateType.Texture),
 				scene.getChild("brick-column3").getRenderState(StateType.Texture));
 		
-		scene = (Node)loader.load(new File("data/test/non-existent.dps"));		
+		loader.load(new File("data/test/non-existent.dps"));
+		scene = (Node)loader.getResult();		
 		assertNull(scene);
 	}
 }

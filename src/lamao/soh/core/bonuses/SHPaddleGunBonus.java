@@ -16,6 +16,7 @@ import lamao.soh.SHConstants;
 import lamao.soh.SHOptions;
 import lamao.soh.core.SHBall;
 import lamao.soh.core.SHDefaultBallMover;
+import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHPaddle;
 import lamao.soh.core.SHUtils;
@@ -32,7 +33,6 @@ public class SHPaddleGunBonus extends SHBonus
 {
 	public final static float DURATION = 5; 
 	public final static float FIRE_INTERVAL = 1;
-	private final static SHResourceManager _manager = SHResourceManager.getInstance();
 	
 	/** Fire action which will be added after ball activation */
 	private SHMouseGunAction _action = null;
@@ -58,7 +58,7 @@ public class SHPaddleGunBonus extends SHBonus
 		SHPaddle paddle = level.getPaddle();
 		level.getRootNode().detachChild(paddle.getModel());		
 		
-		Spatial gunModel = (Spatial)_manager.get(SHResourceManager.TYPE_MODEL, 
+		Spatial gunModel = (Spatial)SHGamePack.manager.get(SHResourceManager.TYPE_MODEL, 
 				SHConstants.PADDLE_GUN);
 		gunModel.setLocalTranslation(paddle.getModel().getLocalTranslation().clone());
 		level.getPaddle().setModel(gunModel);
@@ -81,7 +81,7 @@ public class SHPaddleGunBonus extends SHBonus
 		SHPaddle paddle = level.getPaddle();
 		level.getRootNode().detachChild(paddle.getModel());
 		
-		Spatial model = (Spatial)_manager.get(SHResourceManager.TYPE_MODEL, 
+		Spatial model = (Spatial)SHGamePack.manager.get(SHResourceManager.TYPE_MODEL, 
 				SHConstants.PADDLE);
 		model.setLocalTranslation(paddle.getModel().getLocalTranslation().clone());
 		level.getPaddle().setModel(model);
@@ -128,7 +128,7 @@ public class SHPaddleGunBonus extends SHBonus
 				bullet.setVelocity(0, 2, 0);
 				Spatial bulletModel = SHUtils.createSharedModel(
 						"bullet" + bullet, 
-						(Spatial)_manager.get(SHResourceManager.TYPE_MODEL, 
+						(Spatial)SHGamePack.manager.get(SHResourceManager.TYPE_MODEL, 
 						SHConstants.BULLET));
 				bullet.setModel(bulletModel);
 				bullet.setLocation(paddle.getLocation().x, 

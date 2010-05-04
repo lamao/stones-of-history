@@ -35,10 +35,10 @@ public class SHSceneLoaderTest
 	@Test
 	public void testLoading()
 	{
-		SHSceneLoader loader = new SHSceneLoader();
 		SHScene scene = new SHScene();
+		SHSceneLoader loader = new SHSceneLoader(scene);
 		
-		loader.load(new File("data/test/test-level.dps"), scene);
+		loader.load(new File("data/test/test-level.dps"));
 		
 		assertNull(scene.getEntities("decoration"));
 		assertEquals(2, scene.getModels("decoration").size());
@@ -46,9 +46,6 @@ public class SHSceneLoaderTest
 		assertEquals(3, scene.getModels("wall").size());
 		assertEquals(1, scene.getEntities("bottom-wall").size());
 		assertEquals(15, scene.getEntities("brick").size());
-		
-		assertEquals(1, scene.getEntities("paddle").size());
-		assertEquals(1, scene.getEntities("ball").size());
 		
 		SHBrick brick = (SHBrick)scene.getEntity("brick", "brick-tank");
 		assertEquals(Integer.MAX_VALUE, brick.getStrength());

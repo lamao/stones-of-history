@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import lamao.soh.utils.resparser.ISHResourceParser;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.jme.system.DisplaySystem;
@@ -38,7 +39,7 @@ public class SHResourceManagerTest
 		}
 	}
 	
-	private SHResourceManager manager = SHResourceManager.getInstance();
+	private SHResourceManager manager = null;
 	private static String line = null;
 	private static String line2 = null;
 	
@@ -57,6 +58,12 @@ public class SHResourceManagerTest
 		path = SHResourceManagerTest.class
 			.getResource("/data/textures/bubble.jpg").getPath();
 		line2 = "type=" + type + " label=texture1 path='" + path + "'";
+	}
+	
+	@Before
+	public void setUp()
+	{
+		manager = new SHResourceManager();
 	}
 
 	@Test
@@ -80,8 +87,6 @@ public class SHResourceManagerTest
 	@Test
 	public void testSetRemoveParser()
 	{
-		manager.removeParser("Dummy type");
-		
 		int numParsers = manager.getParsers().size();
 		manager.setParser("Dummy type", new DummyParser());
 		assertEquals(numParsers + 1, manager.getParsers().size());
@@ -125,9 +130,6 @@ public class SHResourceManagerTest
 	@Test
 	public void testParseConfig()
 	{
-		manager.getConfig().clear();
-		manager.remove(SHResourceManager.TYPE_MODEL);
-
 		List<String> config = new LinkedList<String>();
 		config.add("#comment line");
 		config.add(line);
@@ -141,7 +143,6 @@ public class SHResourceManagerTest
 	@Test
 	public void testLoadAll() throws FileNotFoundException
 	{
-		manager.remove(SHResourceManager.TYPE_MODEL);
 		manager.loadAll(new File("data/model_test.txt"));
 		
 		assertEquals(9, manager.get(SHResourceManager.TYPE_MODEL).size());

@@ -21,6 +21,7 @@ import org.w3c.dom.NodeList;
 import lamao.soh.SHConstants;
 import lamao.soh.core.SHBall;
 import lamao.soh.core.SHBrick;
+import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHMouseBallLauncher;
 import lamao.soh.core.SHPaddle;
@@ -183,7 +184,7 @@ public class SHLevelLoader implements SHConstants
 					name, "Bonus");
 			Class<?> klass = Class.forName(className);
 			bonus = (SHBonus)klass.newInstance();
-			Spatial model = (Spatial)SHResourceManager.getInstance()
+			Spatial model = (Spatial)SHGamePack.manager
 					.get(SHResourceManager.TYPE_MODEL, name);
 			bonus.setModel(SHUtils.createSharedModel(bonus + "bonus", model));
 		}

@@ -6,6 +6,7 @@
  */
 package lamao.soh.core;
 
+import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
@@ -19,5 +20,13 @@ public class SHGamePack
 	public static SHEventDispatcher dispatcher = null;
 	public static SHScene scene = null;
 	public static ISHGameContext context = null;
+	public static SHResourceManager manager = null;
+	
+	public static void initDefaults()
+	{
+		dispatcher = new SHEventDispatcher();
+		scene = new SHScene();
+		manager = new SHResourceManager();
+	}
 
 }

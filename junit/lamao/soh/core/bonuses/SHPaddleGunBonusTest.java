@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import lamao.soh.SHConstants;
+import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHPaddle;
 import lamao.soh.core.SHPaddleInputHandler;
@@ -49,9 +50,8 @@ public class SHPaddleGunBonusTest implements SHConstants
 		assertTrue(Math.abs(bonus.getDuration() - SHPaddleGunBonus.DURATION) < 
 				0.001f);
 		
-		
-		
-		SHResourceManager manager = SHResourceManager.getInstance();
+		SHGamePack.manager = new SHResourceManager();
+		SHResourceManager manager = SHGamePack.manager;
 		manager.add(SHResourceManager.TYPE_MODEL, PADDLE, new Box(PADDLE,
 				new Vector3f(0, 0, 0), 2, 1, 1));
 		manager.add(SHResourceManager.TYPE_MODEL, PADDLE_GUN, new Box(PADDLE_GUN,

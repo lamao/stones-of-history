@@ -130,7 +130,8 @@ public class SHModelLoader
 	{
 		Spatial model = null;
 		SHDpsToJme converter = new SHDpsToJme();
-		model = converter.load(file);
+		converter.load(file);
+		model = converter.getResult();
 		return model;
 	}
 	

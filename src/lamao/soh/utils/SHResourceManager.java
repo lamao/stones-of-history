@@ -52,7 +52,7 @@ public class SHResourceManager
 	private static String STRING_CHARS = "\"\'";
 	
 	/** Instance of this class */
-	private static SHResourceManager _instance = null;
+//	private static SHResourceManager _instance = null;
 	
 	/** Logger fot this class */
 	private static Logger _logger = Logger.getLogger(SHResourceManager.class.getName());
@@ -69,7 +69,7 @@ public class SHResourceManager
 	/** List which represents resource file to parse */
 	private List<String> _config = new LinkedList<String>();
 	
-	protected SHResourceManager()
+	public SHResourceManager()
 	{
 		setParser(TYPE_MODEL, new SHModelParser());
 		setParser(TYPE_TEXTURE, new SHTextureParser());
@@ -81,14 +81,14 @@ public class SHResourceManager
 	/**
 	 * Returns instance of class
 	 */
-	public static SHResourceManager getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new SHResourceManager();
-		}
-		return _instance;
-	}
+//	public static SHResourceManager getInstance()
+//	{
+//		if (_instance == null)
+//		{
+//			_instance = new SHResourceManager();
+//		}
+//		return _instance;
+//	}
 	
 //	public List<String> getSupportedTypes()
 //	{

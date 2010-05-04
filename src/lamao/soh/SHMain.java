@@ -39,16 +39,16 @@ public class SHMain
 		GAME.getSettings().setFramerate(2000);
 		GAME.start();
 		
-		SHGamePack.dispatcher = new SHEventDispatcher();
+		SHGamePack.initDefaults();
 		SHGamePack.dispatcher.addHandler("all", new SHEventLogger());
 		//SHResourceManager.getInstance().loadAll(new File("data/model_test.txt"));
-		SHResourceManager.getInstance().loadAll(new File(
+		SHGamePack.manager.loadAll(new File(
 				"data/epochs/test_epoch/appearence.txt"));
-		Node models = (Node)new SHDpsToJme().load(
-				new File("data/epochs/test_epoch/level1.dps"));
+		SHDpsToJme loader = new SHDpsToJme();
+		loader.load(new File("data/epochs/test_epoch/level1.dps"));
+		Node models = (Node)loader.getResult();
 		
-		SHLevel level = new SHLevelLoader().load(
-				SHResourceManager.getInstance(), models, 
+		SHLevel level = new SHLevelLoader().load(SHGamePack.manager, models, 
 				new File("data/epochs/test_epoch/metadata1.xml"));
 		level.updateDeletebleBricks();
 		

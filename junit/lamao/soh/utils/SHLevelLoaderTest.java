@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import lamao.soh.SHConstants;
+import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHPaddleSticker;
 import lamao.soh.core.SHLevel.SHWallType;
@@ -18,6 +19,7 @@ import lamao.soh.core.bonuses.SHDoubleBallBonus;
 import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -51,6 +53,8 @@ public class SHLevelLoaderTest implements SHConstants
 	@Before
 	public void setUp()
 	{
+		SHGamePack.manager = new SHResourceManager();
+		
 		models.attachChild(new Box(BRICK + "1", Vector3f.ZERO.clone(), 2, 1, 1));
 		models.attachChild(new Box(BRICK + "2", Vector3f.UNIT_Y.clone(), 2, 1, 1));
 		models.attachChild(new Box(BRICK + "3", Vector3f.UNIT_Y.clone(), 2, 1, 1));
@@ -91,7 +95,7 @@ public class SHLevelLoaderTest implements SHConstants
 	@Test
 	public void testLoadingAll()
 	{
-		SHResourceManager manager = SHResourceManager.getInstance();
+		SHResourceManager manager = SHGamePack.manager;
 		manager.add(SHResourceManager.TYPE_MODEL, BALL, new Sphere(BALL, 
 				15, 15, 1));
 		manager.add(SHResourceManager.TYPE_MODEL, PADDLE, new Box(BALL, 
