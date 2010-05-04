@@ -13,7 +13,7 @@ import lamao.soh.SHConstants;
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHPaddle;
-import lamao.soh.core.SHPaddleInputHandler;
+import lamao.soh.core.SHBreakoutInputHandler;
 import lamao.soh.core.SHUtils;
 import lamao.soh.utils.SHResourceManager;
 
@@ -62,7 +62,7 @@ public class SHPaddleGunBonusTest implements SHConstants
 				SHResourceManager.TYPE_MODEL, PADDLE));
 		paddle.setLocation(new Vector3f(2, 3, 4));
 		level.setPaddle(paddle);
-		SHPaddleInputHandler input = new SHPaddleInputHandler(paddle); 
+		SHBreakoutInputHandler input = new SHBreakoutInputHandler(paddle); 
 		level.setInputHandler(input);
 		
 		bonus.apply(level);

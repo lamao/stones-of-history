@@ -7,7 +7,6 @@
 package lamao.soh.core;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.jme.bounding.BoundingBox;
@@ -20,7 +19,6 @@ import static org.junit.Assert.*;
  * @author lamao
  *
  */
-@Ignore
 public class SHBallTest
 {
 	private SHBrick sharedBrick;
@@ -46,6 +44,7 @@ public class SHBallTest
 	{
 		SHBall ball = SHEntityCreator.createDefaultBall();
 		ball.setLocation(new Vector3f(0, -1.99f, 0));
+		ball.getRoot().updateWorldData(0);
 		ball.onHit(sharedBrick);
 		assertTrue(ball.getVelocity().toString(),
 				SHUtils.areEqual(new Vector3f(0, -1, 0), ball.getVelocity(), 
@@ -92,13 +91,14 @@ public class SHBallTest
 	@Test
 	public void testUpHit()
 	{
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		ball.setLocation(new Vector3f(0, 1.99f, 0));
+		ball.getRoot().updateWorldData(0);
 		ball.setVelocity(new Vector3f(0, -1, 0));
 		ball.onHit(sharedBrick);
-		assertTrue(SHUtils.areEqual(Vector3f.UNIT_Y, 
-									ball.getVelocity(), 
-									0.001f));
+		assertTrue(ball.getVelocity().toString(),
+				SHUtils.areEqual(Vector3f.UNIT_Y, 
+				ball.getVelocity(),	0.001f));
 		
 		ball.setVelocity(new Vector3f(2, -1, 0));
 		ball.setLocation(new Vector3f(0.5f, 1.99f, 0));
@@ -141,8 +141,9 @@ public class SHBallTest
 	@Test
 	public void testLeftHit()
 	{
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		ball.setLocation(new Vector3f(-3, 0, 0));
+		ball.getRoot().updateWorldData(0);
 		ball.setVelocity(new Vector3f(1, 0, 0));
 		ball.onHit(sharedBrick);
 		assertTrue(SHUtils.areEqual(new Vector3f(-1, 0, 0), 
@@ -190,8 +191,9 @@ public class SHBallTest
 	@Test
 	public void testRightHit()
 	{
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		ball.setLocation(new Vector3f(2.97f, 0, 0));
+		ball.getRoot().updateWorldData(0);
 		ball.setVelocity(new Vector3f(-1, 0, 0));
 		ball.onHit(sharedBrick);
 		assertTrue(ball.getVelocity().toString(),
@@ -240,8 +242,8 @@ public class SHBallTest
 	@Test
 	public void testGlassHit()
 	{
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
-		SHBrick brick = SHCoreTestHelper.createDefaultBrick("brick");
+		SHBall ball = SHEntityCreator.createDefaultBall();
+		SHBrick brick = SHEntityCreator.createDefaultBrick("brick");
 		
 		ball.setLocation(0, 2, 0);
 		brick.setGlass(true);
@@ -253,7 +255,7 @@ public class SHBallTest
 	public void testStrengthDecreasing()
 	{
 		sharedBrick.setStrength(10);
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		
 		ball.setLocation(0, 2, 0);
 		ball.onHit(sharedBrick);
@@ -272,7 +274,7 @@ public class SHBallTest
 	@Test
 	public void testClone()
 	{
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		ball.setLocation(1, 2, 3);
 		SHBall anotherBall = ball.clone();
 		
@@ -290,7 +292,7 @@ public class SHBallTest
 	@Test
 	public void testCollisionWithSphereBrick()
 	{
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		ball.setLocation(-2, 1, 0);
 		ball.setVelocity(new Vector3f(-1, -1, 0));
 		
@@ -308,11 +310,12 @@ public class SHBallTest
 	@Test
 	public void testSuperBall()
 	{
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		ball.setSuper(true);
 		ball.setLocation(0, -1.99f, 0);
+		ball.getRoot().updateWorldData(0);
 		
-		SHBrick brick = SHCoreTestHelper.createDefaultBrick("brick");
+		SHBrick brick = SHEntityCreator.createDefaultBrick("brick");
 		brick.setStrength(15);
 		
 		ball.onHit(brick);

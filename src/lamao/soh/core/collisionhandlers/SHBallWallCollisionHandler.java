@@ -34,7 +34,7 @@ public class SHBallWallCollisionHandler implements ISHEventHandler
 			ball.getVelocity().y = -ball.getVelocity().y;
 		}
 		
-		dispatcher.addEvent("level-wall-hit", this, null);
+		dispatcher.addEventEx("level-wall-hit", this, "wall-type", wall.getName());
 	}
 
 }

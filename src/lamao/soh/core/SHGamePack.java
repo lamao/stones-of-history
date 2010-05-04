@@ -6,6 +6,8 @@
  */
 package lamao.soh.core;
 
+import com.jme.input.InputHandler;
+
 import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.events.SHEventDispatcher;
 
@@ -21,6 +23,7 @@ public class SHGamePack
 	public static SHScene scene = null;
 	public static ISHGameContext context = null;
 	public static SHResourceManager manager = null;
+	public static InputHandler input = null;
 	
 	public static void initDefaults()
 	{

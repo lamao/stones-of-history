@@ -8,8 +8,10 @@ package lamao.soh.states;
 
 import lamao.soh.console.SHConsoleState;
 import lamao.soh.console.SHWireFrameCommand;
+import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHScene;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -44,7 +46,8 @@ public class SHLevelState extends BasicGameState
 	public final static String NAME = "Level state";
 
 	/** Level for playing */
-	private SHLevel _level = null;
+//	private SHLevel _level = null;
+	private SHScene _scene = null;
 	
 	/** Node for text objects */
 	private Node _statNode = new Node("stat node");
@@ -159,19 +162,20 @@ public class SHLevelState extends BasicGameState
 		}, "pause", KeyInput.KEY_PAUSE, false);
 	}
 
-	public SHLevel getLevel()
+	public SHScene getScene()
 	{
-		return _level;
+//		return _level;
+		return _scene;
 	}
 	
-	public void setLevel(SHLevel level)
+	public void setScene(SHScene scene)
 	{
-		if (_level != null && _level != level)
+		if (_scene != null && _scene != scene)
 		{
-			rootNode.detachChild(_level.getRootNode());
+			rootNode.detachChild(_scene.getRootNode());
 		}
-		_level = level;
-		rootNode.attachChild(_level.getRootNode());
+		_scene = scene;
+		rootNode.attachChild(_scene.getRootNode());
 		rootNode.updateRenderState();
 	}
 
@@ -185,7 +189,8 @@ public class SHLevelState extends BasicGameState
 		if (!_pause)
 		{
 			super.update(tpf);
-			_level.update(tpf);
+			SHGamePack.input.update(tpf);
+			_scene.update(tpf);
 		}
 		_fps.print("FPS: " + Math.round(Timer.getTimer().getFrameRate()));
 		
@@ -224,7 +229,8 @@ public class SHLevelState extends BasicGameState
 	{
 		if (active)
 		{
-			_info.print(Integer.toString(_level.getNumDeletebleBricks()));
+			SHBreakoutGameContext context = (SHBreakoutGameContext)SHGamePack.context;
+			_info.print(Integer.toString(context.getNumDeletableBricks()));
 		}
 		super.setActive(active);
 	}
@@ -284,7 +290,10 @@ public class SHLevelState extends BasicGameState
 			public void processEvent(SHEvent event)
 			{
 				_events.print("Brick deleted");
-				_info.print(Integer.toString(_level.getNumDeletebleBricks()));
+				
+				SHBreakoutGameContext context = (SHBreakoutGameContext)
+					SHGamePack.context;
+				_info.print(Integer.toString(context.getNumDeletableBricks()));
 			}
 		});
 		

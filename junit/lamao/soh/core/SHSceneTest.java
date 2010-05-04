@@ -228,6 +228,34 @@ public class SHSceneTest extends SHEventTestCase
 	}
 	
 	@Test
+	public void testSingleCollision()
+	{
+		SHEntity brick1 = SHEntityCreator.createDefaultBrick("brick1");
+		scene.addEntity(brick1);
+		
+		SHEntity brick2 = SHEntityCreator.createDefaultBrick("brick2");
+		brick2.setLocation(10, 10, 10);
+		brick2.getRoot().updateGeometricState(0, true);
+		scene.addEntity(brick2);
+		
+		SHBall ball = SHEntityCreator.createDefaultBall();
+		ball.setLocation(0, -1.99f, 0);
+		ball.getRoot().updateGeometricState(0, true);
+		scene.addEntity(ball);
+		
+		SHCollisionTask task = new SHCollisionTask("ball", "brick", false);
+		scene.addCollisionTask(task);
+		
+		scene.update(0);
+		assertEquals(1, counter.getNumEvents("scene-collision-ball-brick"));
+		
+		task.checkTris = true;
+		scene.update(0);
+		assertEquals(2, counter.getNumEvents("scene-collision-ball-brick"));
+		
+	}
+	
+	@Test
 	public void testGetEntity()
 	{
 		scene.addEntity(new SHEntity("type", "name", null));

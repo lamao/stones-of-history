@@ -113,6 +113,7 @@ public class SHUtilsTest
 		Spatial sharedMesh = SHUtils.createSharedModel("shared-mesh", box);
 		assertTrue(sharedMesh instanceof SharedMesh);
 		assertEquals("shared-mesh", sharedMesh.getName());
+		assertNotNull(((SharedMesh)sharedMesh).getTarget());
 		
 		Node node = new Node("node");
 		node.attachChild(new Sphere("sphere", 15, 15, 1));

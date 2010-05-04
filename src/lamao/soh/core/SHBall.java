@@ -8,6 +8,10 @@ package lamao.soh.core;
 
 import java.nio.FloatBuffer;
 
+import com.jme.app.SimpleGame;
+import com.jme.app.AbstractGame.ConfigShowMode;
+import com.jme.bounding.BoundingBox;
+import com.jme.bounding.BoundingSphere;
 import com.jme.intersection.CollisionData;
 import com.jme.intersection.CollisionResults;
 import com.jme.intersection.TriangleCollisionResults;
@@ -18,6 +22,9 @@ import com.jme.scene.SharedMesh;
 import com.jme.scene.SharedNode;
 import com.jme.scene.Spatial;
 import com.jme.scene.TriMesh;
+import com.jme.scene.shape.Box;
+import com.jme.scene.shape.Sphere;
+import com.jme.scene.state.MaterialState.ColorMaterial;
 import com.jme.util.geom.BufferUtils;
 
 /**
@@ -185,6 +192,50 @@ public class SHBall extends SHEntity
 		result.setLocation(getLocation().clone());
 		
 		return result;
+	}
+	
+	public static void main(String[] args)
+	{
+		SimpleGame game = new SimpleGame()
+		{
+			@Override
+			protected void simpleInitGame()
+			{
+//				Box box = new Box("1", new Vector3f(0, 0, 0), 2 ,1 ,1);
+//				box.setModelBound(new BoundingBox());
+//				box.updateModelBound();
+//				SHBrick boxEntity = new SHBrick(box);
+//				boxEntity.setName("box");
+//				boxEntity.getRoot().updateGeometricState(0, true);
+				SHBrick boxEntity = SHEntityCreator.createDefaultBrick("brick");
+				
+				Sphere sphere = new Sphere("2", 15, 15, 1);
+				SHBall sphereEntity = new SHBall(sphere);
+				sphereEntity.setName("sphere");
+				sphere.setModelBound(new BoundingSphere());
+				sphere.updateModelBound();
+				sphereEntity.getRoot().updateGeometricState(0, true);
+				sphereEntity.setLocation(0, -1.99f, 0);
+				sphereEntity.getRoot().updateWorldData(0);
+				
+				rootNode.attachChild(boxEntity.getRoot());
+				rootNode.attachChild(sphereEntity.getRoot());
+				
+				System.out.println(sphereEntity.getRoot().hasCollision(
+						boxEntity.getRoot(), true));
+				CollisionResults data = new TriangleCollisionResults();
+				sphereEntity.getRoot().findCollisions(boxEntity.getRoot(), data);
+				
+				System.out.println(data.getCollisionData(0).getTargetTris());
+				
+				sphereEntity.onHit(boxEntity);
+				System.out.println(sphereEntity.getVelocity().toString());
+				
+			}
+		};
+		
+		game.setConfigShowMode(ConfigShowMode.AlwaysShow);
+		game.start();
 	}
 	
 }

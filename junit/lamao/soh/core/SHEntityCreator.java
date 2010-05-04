@@ -70,6 +70,7 @@ public class SHEntityCreator
 		ball.getRoot().updateGeometricState(0, true);
 		ball.setType(type);
 		ball.setName(name);
+		
 		return ball;
 	}
 	

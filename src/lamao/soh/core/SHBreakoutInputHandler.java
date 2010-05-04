@@ -14,14 +14,13 @@ import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.KeyNodeStrafeLeftAction;
 import com.jme.input.action.KeyNodeStrafeRightAction;
 import com.jme.input.action.MouseInputAction;
-import com.jme.scene.Spatial;
 
 /**
  * Input handler for moving paddle along X-axis.
  * @author lamao
  *
  */
-public class SHPaddleInputHandler extends InputHandler
+public class SHBreakoutInputHandler extends InputHandler
 {
 	/** Controlled spatial */
 	private SHEntity _entity;
@@ -29,10 +28,10 @@ public class SHPaddleInputHandler extends InputHandler
 	/** Mouse used for handling events */
 	private RelativeMouse _mouse = null;
 	
-	private float _leftConstraint = -10;
-	private float _rightConstraint = 10;
+	private float _leftConstraint = -7;
+	private float _rightConstraint = 7;
 	
-	public SHPaddleInputHandler(SHEntity entity)
+	public SHBreakoutInputHandler(SHEntity entity)
 	{
 		_entity = entity;
 		_mouse = new RelativeMouse("rel mouse");
@@ -79,7 +78,7 @@ public class SHPaddleInputHandler extends InputHandler
 		@Override
 		public void performAction(InputActionEvent evt)
 		{
-			float newX = _entity.getModel().getLocalTranslation().x 
+			float newX = _entity.getLocation().x 
 							+ mouse.getLocalTranslation().x 
 							* SHOptions.PaddleMouseSensitivity;
 			if (newX > _rightConstraint)
@@ -91,7 +90,7 @@ public class SHPaddleInputHandler extends InputHandler
 				newX = _leftConstraint;
 			}
 			
-			_entity.getModel().getLocalTranslation().x = newX;
+			_entity.getLocation().x = newX;
 
 		}
 	}

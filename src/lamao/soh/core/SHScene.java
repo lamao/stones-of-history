@@ -14,10 +14,12 @@ import java.util.TreeMap;
 
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
+import lamao.soh.utils.events.SHEventLogger;
 
 import com.jme.app.SimpleGame;
 import com.jme.app.AbstractGame.ConfigShowMode;
 import com.jme.bounding.BoundingBox;
+import com.jme.input.KeyInput;
 import com.jme.intersection.BoundingCollisionResults;
 import com.jme.intersection.CollisionData;
 import com.jme.intersection.CollisionResults;
@@ -236,7 +238,7 @@ public class SHScene
 						CollisionResults results = task.checkTris ? 
 								new TriangleCollisionResults() :
 								new BoundingCollisionResults();
-						source.findCollisions(dest, results);
+						sourceModel.findCollisions(destModel, results);
 						
 						SHEntity sourceEntity = getEntity(sourceModel);
 						SHEntity destEntity = getEntity(destModel);
@@ -281,34 +283,48 @@ public class SHScene
 	{
 		SimpleGame game = new SimpleGame() 
 		{
+			SHScene scene; 
+			SHBall ball;
 			@Override
 			protected void simpleInitGame()
 			{
-				SHScene scene = new SHScene();
-				Box box1 = new Box("box1", new Vector3f(0, 0, 0), 1, 1, 1);
-				box1.setModelBound(new BoundingBox());
-				box1.updateModelBound();		
-				scene.addEntity(new SHEntity("type1", "box1", box1));
+				SHGamePack.dispatcher = new SHEventDispatcher();
+				SHGamePack.dispatcher.addHandler("all", new SHEventLogger());
 				
-				box1 = new Box("box4", new Vector3f(-1, -3, -4), 1, 1, 1);
-				box1.setModelBound(new BoundingBox());
-				box1.updateModelBound();		
-				scene.addEntity(new SHEntity("type1", "box4", box1));
+				scene = new SHScene();
+				SHEntity brick1 = SHEntityCreator.createDefaultBrick("brick1");
+				scene.addEntity(brick1);
 				
-				Box box2 = new Box("box2", new Vector3f(0, 0, 0), 1, 1, 1);
-				box2.setModelBound(new BoundingBox());
-				box2.updateModelBound();
-				box2.setLocalRotation(new Quaternion(new float[] {0, 0, FastMath.PI / 4}));
-				box2.setLocalTranslation(2, 1.5f, 0);
-				scene.addEntity(new SHEntity("type2", "box2", box2));
+				SHEntity brick2 = SHEntityCreator.createDefaultBrick("brick2");
+				brick2.setLocation(10, 10, 10);
+				brick2.getRoot().updateWorldData(0);
+				scene.addEntity(brick2);
 				
-				Box box3 = new Box("box3", new Vector3f(3, 2, 0), 1, 1, 1);
-				box3.setModelBound(new BoundingBox());
-				box3.updateModelBound();
-				scene.addEntity(new SHEntity("type2", "box3", box3));
+				ball = SHEntityCreator.createDefaultBall();
+				ball.setLocation(0, -2f, 0);
+				ball.getRoot().updateWorldData(0);
+				scene.addEntity(ball);
+				
+				SHCollisionTask task = new SHCollisionTask("ball", "brick", false);
+				scene.addCollisionTask(task);
 				
 				rootNode.attachChild(scene.getRootNode());
 				rootNode.updateRenderState();
+			}
+			
+			@Override
+			protected void simpleUpdate()
+			{
+				scene.update(0);
+				
+				if (KeyInput.get().isKeyDown(KeyInput.KEY_0))
+				{
+					ball.getLocation().y += 0.01f;
+				}
+				else if (KeyInput.get().isKeyDown(KeyInput.KEY_9))
+				{
+					ball.getLocation().y -= 0.01f;
+				}
 				
 			}
 		};

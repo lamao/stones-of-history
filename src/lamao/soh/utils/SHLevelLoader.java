@@ -25,7 +25,7 @@ import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHMouseBallLauncher;
 import lamao.soh.core.SHPaddle;
-import lamao.soh.core.SHPaddleInputHandler;
+import lamao.soh.core.SHBreakoutInputHandler;
 import lamao.soh.core.SHPaddleSticker;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.SHLevel.SHWallType;
@@ -89,9 +89,9 @@ public class SHLevelLoader implements SHConstants
 		ball.getModel().addController(new SHPaddleSticker(ball, paddle.getModel()));
 		level.addBall(ball);
 		
-		InputHandler input = new SHPaddleInputHandler(level.getPaddle());
+		InputHandler input = new SHBreakoutInputHandler(level.getPaddle());
 		level.setInputHandler(input);
-		level.getInputHandler().addAction(new SHMouseBallLauncher(level));
+//		level.getInputHandler().addAction(new SHMouseBallLauncher(level));
 	}
 	
 	/**

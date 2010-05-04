@@ -30,7 +30,7 @@ public class SHDefaultPaddleHitHandler implements ISHPaddleHitHandler
 		if (ball.getLocation().y > paddle.getLocation().y &&
 			ball.getVelocity().y <= 0)
 		{
-			BoundingBox paddleBound = (BoundingBox)paddle.getModel().getWorldBound();
+			BoundingBox paddleBound = (BoundingBox)paddle.getRoot().getWorldBound();
 			float ballPos = ball.getLocation().x - paddle.getLocation().x 
 					+ paddleBound.xExtent;
 			float paddleWidth = paddleBound.xExtent * 2;
