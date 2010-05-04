@@ -86,7 +86,7 @@
 		<mkdir dir="${build.testes.dir}" />
 	</target>
 	
-	<target name="compile" depends="prepare">
+	<target name="compile">
 		<javac srcdir="${source.dir}" destdir="${build.classes.dir}" 
 			classpathref="compile.classpath"/>
 	</target>
@@ -178,6 +178,7 @@
 	</target>
 	
 	<target name="build.create">
+		<antcall target="prepare" />
 		<antcall target="run.testes" />
 		<antcall target="pack.gui" />
 		<antcall target="jar.create.windows" />

@@ -15,7 +15,6 @@ import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
 import lamao.soh.utils.events.SHEventCounter;
 import lamao.soh.utils.events.SHEventDispatcher;
 
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 

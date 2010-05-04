@@ -19,7 +19,6 @@ import lamao.soh.core.bonuses.SHDoubleBallBonus;
 import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

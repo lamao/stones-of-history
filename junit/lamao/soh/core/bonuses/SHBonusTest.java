@@ -22,7 +22,6 @@ import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHCoreTestHelper;
 import lamao.soh.core.SHLevel;
 import lamao.soh.utils.events.SHEventCounter;
-import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao

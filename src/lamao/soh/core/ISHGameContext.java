@@ -6,7 +6,6 @@
  */
 package lamao.soh.core;
 
-import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * Context of game. Contains objects need for game (e.g. player).

@@ -7,8 +7,6 @@
 package lamao.soh.core;
 
 import lamao.junit.common.SHEventTestCase;
-import lamao.soh.utils.events.SHEventCounter;
-import lamao.soh.utils.events.SHEventDispatcher;
 
 import org.junit.Before;
 import org.junit.Test;
