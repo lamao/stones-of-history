@@ -252,6 +252,21 @@ public class SHEventDispatcher
 		}
 	}
 	
+	public boolean hasTimeEvent(String type)
+	{
+		synchronized (getTimeDispatcher())
+		{
+			for (SHTimeEvent event : _timedEvents)
+			{
+				if (event.type.equals(type))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Dispatcher for time events. Works in separate thread.
 	 * @author lamao

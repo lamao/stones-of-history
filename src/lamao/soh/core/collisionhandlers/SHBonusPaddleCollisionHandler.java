@@ -6,11 +6,11 @@
  */
 package lamao.soh.core.collisionhandlers;
 
-import lamao.soh.core.SHPaddle;
+import lamao.soh.core.SHGamePack;
 import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.core.eventhandlers.SHBonusTimeOverEventHandler;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
-import lamao.soh.utils.events.SHEventDispatcher;
 import static lamao.soh.core.SHGamePack.*;
 
 /**
@@ -23,15 +23,31 @@ public class SHBonusPaddleCollisionHandler implements ISHEventHandler
 	public void processEvent(SHEvent event)
 	{
 		SHBonus bonus = (SHBonus)event.params.get("src");
-		SHPaddle paddle = (SHPaddle)event.params.get("dst");
 		
-		dispatcher.addEventEx("level-bonus-activated", this, "bonus", bonus);
-		
-//		_bonusNode.detachChild(bonus.getModel());
-//		_showedBonuses.remove(bonus);
-//		i--;
-//		activateBonus(bonus);
-		
+		scene.removeEntity(bonus);
+		boolean needAdd = true;
+		if (bonus.isAddictive())
+		{
+			String eventName = "bonus-over-" + bonus.getType();
+			if (dispatcher.hasTimeEvent(eventName))
+			{
+				needAdd = false;
+				dispatcher.prolongTimeEvent(eventName, 
+						(int)bonus.getDuration());
+				dispatcher.addEventEx("level-bonus-prolongated", this, 
+						"bonus", bonus);
+			}
+		}
+		if (needAdd)
+		{
+			String eventType = "bonus-over-" + bonus;
+			dispatcher.addTimeEvent(eventType, this, (int)bonus.getDuration(), 
+					"bonus", bonus);
+			dispatcher.addHandler(eventType, new SHBonusTimeOverEventHandler());
+			bonus.apply(SHGamePack.scene);
+			dispatcher.addEventEx("level-bonus-activated", this, 
+					"bonus", bonus);
+		}
 	}
 
 }

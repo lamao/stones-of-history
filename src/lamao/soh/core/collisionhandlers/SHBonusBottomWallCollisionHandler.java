@@ -6,6 +6,8 @@
  */
 package lamao.soh.core.collisionhandlers;
 
+import lamao.soh.core.SHGamePack;
+import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
 
@@ -18,9 +20,10 @@ public class SHBonusBottomWallCollisionHandler implements ISHEventHandler
 	@Override
 	public void processEvent(SHEvent event)
 	{
-//		_bonusNode.detachChild(bonus.getModel());
-//		_showedBonuses.remove(bonus);
-//		i--;
+		SHBonus bonus = (SHBonus)event.params.get("src");
+		SHGamePack.scene.removeEntity(bonus);
+		SHGamePack.dispatcher.addEventEx("level-bonus-destroyed", this, 
+				"bonus", bonus); 
 	}
 
 }

@@ -189,53 +189,49 @@ public class SHBall extends SHEntity
 		newModel.updateModelBound();
 			
 		SHBall result = new SHBall(newModel, _velocity.clone());
+		result.setType(getType());
+		result.setName("ball" + this);
 		result.setLocation(getLocation().clone());
 		
 		return result;
 	}
 	
-	public static void main(String[] args)
-	{
-		SimpleGame game = new SimpleGame()
-		{
-			@Override
-			protected void simpleInitGame()
-			{
-//				Box box = new Box("1", new Vector3f(0, 0, 0), 2 ,1 ,1);
-//				box.setModelBound(new BoundingBox());
-//				box.updateModelBound();
-//				SHBrick boxEntity = new SHBrick(box);
-//				boxEntity.setName("box");
-//				boxEntity.getRoot().updateGeometricState(0, true);
-				SHBrick boxEntity = SHEntityCreator.createDefaultBrick("brick");
-				
-				Sphere sphere = new Sphere("2", 15, 15, 1);
-				SHBall sphereEntity = new SHBall(sphere);
-				sphereEntity.setName("sphere");
-				sphere.setModelBound(new BoundingSphere());
-				sphere.updateModelBound();
-				sphereEntity.getRoot().updateGeometricState(0, true);
-				sphereEntity.setLocation(0, -1.99f, 0);
-				sphereEntity.getRoot().updateWorldData(0);
-				
-				rootNode.attachChild(boxEntity.getRoot());
-				rootNode.attachChild(sphereEntity.getRoot());
-				
-				System.out.println(sphereEntity.getRoot().hasCollision(
-						boxEntity.getRoot(), true));
-				CollisionResults data = new TriangleCollisionResults();
-				sphereEntity.getRoot().findCollisions(boxEntity.getRoot(), data);
-				
-				System.out.println(data.getCollisionData(0).getTargetTris());
-				
-				sphereEntity.onHit(boxEntity);
-				System.out.println(sphereEntity.getVelocity().toString());
-				
-			}
-		};
-		
-		game.setConfigShowMode(ConfigShowMode.AlwaysShow);
-		game.start();
-	}
+//	public static void main(String[] args)
+//	{
+//		SimpleGame game = new SimpleGame()
+//		{
+//			@Override
+//			protected void simpleInitGame()
+//			{
+//				SHBrick boxEntity = SHEntityCreator.createDefaultBrick("brick");
+//				
+//				Sphere sphere = new Sphere("2", 15, 15, 1);
+//				SHBall sphereEntity = new SHBall(sphere);
+//				sphereEntity.setName("sphere");
+//				sphere.setModelBound(new BoundingSphere());
+//				sphere.updateModelBound();
+//				sphereEntity.getRoot().updateGeometricState(0, true);
+//				sphereEntity.setLocation(0, -1.99f, 0);
+//				sphereEntity.getRoot().updateWorldData(0);
+//				
+//				rootNode.attachChild(boxEntity.getRoot());
+//				rootNode.attachChild(sphereEntity.getRoot());
+//				
+//				System.out.println(sphereEntity.getRoot().hasCollision(
+//						boxEntity.getRoot(), true));
+//				CollisionResults data = new TriangleCollisionResults();
+//				sphereEntity.getRoot().findCollisions(boxEntity.getRoot(), data);
+//				
+//				System.out.println(data.getCollisionData(0).getTargetTris());
+//				
+//				sphereEntity.onHit(boxEntity);
+//				System.out.println(sphereEntity.getVelocity().toString());
+//				
+//			}
+//		};
+//		
+//		game.setConfigShowMode(ConfigShowMode.AlwaysShow);
+//		game.start();
+//	}
 	
 }

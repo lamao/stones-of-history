@@ -6,7 +6,7 @@
  */
 package lamao.soh.core.bonuses;
 
-import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHScene;
 
 import com.jme.scene.Spatial;
 
@@ -36,9 +36,9 @@ public class SHDecPaddleWidthBonus extends SHBonus
 	 * @see lamao.soh.core.bonuses.SHBonus#apply(lamao.soh.core.SHLevel)
 	 */
 	@Override
-	public void apply(SHLevel level)
+	public void apply(SHScene scene)
 	{
-		Spatial paddle = level.getPaddle().getModel();
+		Spatial paddle = scene.getEntity("paddle", "paddle").getModel();
 		paddle.getLocalScale().x *= (1 - DECREASE_PERCENT);
 		paddle.updateModelBound();
 	}
@@ -47,9 +47,9 @@ public class SHDecPaddleWidthBonus extends SHBonus
 	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
 	 */
 	@Override
-	public void cleanup(SHLevel level)
+	public void cleanup(SHScene scene)
 	{
-		Spatial paddle = level.getPaddle().getModel();
+		Spatial paddle = scene.getEntity("paddle", "paddle").getModel();
 		paddle.getLocalScale().x /= (1 - DECREASE_PERCENT);
 		paddle.updateModelBound();
 	}

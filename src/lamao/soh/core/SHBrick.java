@@ -6,6 +6,8 @@
  */
 package lamao.soh.core;
 
+import lamao.soh.core.bonuses.SHBonus;
+
 import com.jme.scene.Spatial;
 
 /**
@@ -22,6 +24,9 @@ public class SHBrick extends SHEntity
 	
 	/** true if ball can move thought the brick */
 	private boolean _glass;
+	
+	/** name of bonus. Null if brick doesn't have associated bonus */
+	private SHBonus _bonus = null;
 
 	
 	public SHBrick(Spatial model, int strength, boolean glass)
@@ -62,7 +67,17 @@ public class SHBrick extends SHEntity
 	{
 		_glass = glass;
 	}
-	
+
+	public SHBonus getBonus()
+	{
+		return _bonus;
+	}
+
+	public void setBonus(SHBonus bonus)
+	{
+		_bonus = bonus;
+	}
+
 	/** 
 	 * Invoked when brick is hit. Decreases its strength by one if it is not
 	 * Integer.MAX_VALUE (super brick).

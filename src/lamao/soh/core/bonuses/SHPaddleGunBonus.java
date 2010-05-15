@@ -17,8 +17,8 @@ import lamao.soh.SHOptions;
 import lamao.soh.core.SHBall;
 import lamao.soh.core.SHDefaultBallMover;
 import lamao.soh.core.SHGamePack;
-import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHPaddle;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.utils.SHResourceManager;
 
@@ -53,22 +53,19 @@ public class SHPaddleGunBonus extends SHBonus
 	 * @see lamao.soh.core.bonuses.SHBonus#apply(lamao.soh.core.SHLevel)
 	 */
 	@Override
-	public void apply(SHLevel level)
+	public void apply(SHScene scene)
 	{
-		SHPaddle paddle = level.getPaddle();
-		level.getRootNode().detachChild(paddle.getModel());		
+		SHPaddle paddle = (SHPaddle) scene.getEntity("paddle", "paddle");
 		
-		Spatial gunModel = (Spatial)SHGamePack.manager.get(SHResourceManager.TYPE_MODEL, 
-				SHConstants.PADDLE_GUN);
-		gunModel.setLocalTranslation(paddle.getModel().getLocalTranslation().clone());
-		level.getPaddle().setModel(gunModel);
+		Spatial gunModel = (Spatial)SHGamePack.manager.get(
+				SHResourceManager.TYPE_MODEL, SHConstants.PADDLE_GUN);
+		gunModel.setLocalTranslation(paddle.getLocation().clone());
 		
-		level.getRootNode().attachChild(gunModel);
-		gunModel.updateWorldVectors(true);
-		level.getRootNode().updateRenderState();
+		paddle.setModel(gunModel);
+		paddle.getRoot().updateGeometricState(0, true);
 		
-		_action = new SHMouseGunAction(level);
-		level.getInputHandler().addAction(_action);
+		_action = new SHMouseGunAction(scene);
+		SHGamePack.input.addAction(_action);
 		
 	}
 	
@@ -76,21 +73,18 @@ public class SHPaddleGunBonus extends SHBonus
 	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
 	 */
 	@Override
-	public void cleanup(SHLevel level)
+	public void cleanup(SHScene scene)
 	{
-		SHPaddle paddle = level.getPaddle();
-		level.getRootNode().detachChild(paddle.getModel());
+		SHPaddle paddle = (SHPaddle) scene.getEntity("paddle", "paddle");
 		
-		Spatial model = (Spatial)SHGamePack.manager.get(SHResourceManager.TYPE_MODEL, 
-				SHConstants.PADDLE);
+		Spatial model = (Spatial)SHGamePack.manager.get(
+				SHResourceManager.TYPE_MODEL, SHConstants.PADDLE);
 		model.setLocalTranslation(paddle.getModel().getLocalTranslation().clone());
-		level.getPaddle().setModel(model);
 		
-		level.getRootNode().attachChild(model);	
-		model.updateWorldVectors(true);
-		level.getRootNode().updateRenderState();
+		paddle.setModel(model);
+		paddle.getRoot().updateGeometricState(0, true);
 		
-		level.getInputHandler().removeAction(_action);
+		SHGamePack.input.removeAction(_action);
 		_action = null;
 	}
 	
@@ -98,15 +92,15 @@ public class SHPaddleGunBonus extends SHBonus
 	/** Class handler for fire-bullet action */
 	private class SHMouseGunAction extends MouseInputAction
 	{
-		private SHLevel _level = null;
+		private SHScene _scene = null;
 		
 		private float _timeSinceLastFire = 1000000;
 		
 		
-		public SHMouseGunAction(SHLevel level)
+		public SHMouseGunAction(SHScene scene)
 		{
 			super();
-			_level = level;
+			_scene = scene;
 		}
 
 		/* (non-Javadoc)
@@ -120,10 +114,12 @@ public class SHPaddleGunBonus extends SHBonus
 				_timeSinceLastFire > FIRE_INTERVAL)
 			{
 				_timeSinceLastFire = 0;
-				SHPaddle paddle = _level.getPaddle();
+				SHPaddle paddle = (SHPaddle) _scene.getEntity("paddle", "paddle");
 				BoundingBox bound = (BoundingBox)paddle.getModel().getWorldBound();
 				
 				SHBall bullet = new SHBall();
+				bullet.setType("bullet");
+				bullet.setName("bullet" + bullet);
 				bullet.setSuper(true);
 				bullet.setVelocity(0, 2, 0);
 				Spatial bulletModel = SHUtils.createSharedModel(
@@ -135,7 +131,7 @@ public class SHPaddleGunBonus extends SHBonus
 						paddle.getLocation().y + bound.yExtent, 0);
 				bullet.getModel().addController(new SHDefaultBallMover(bullet));
 
-				_level.addBullet(bullet);
+				_scene.addEntity(bullet);
 			}
 			
 		}

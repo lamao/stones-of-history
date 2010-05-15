@@ -32,6 +32,19 @@ public class SHBulletBrickCollisionHandler implements ISHEventHandler
 		{
 			scene.removeEntity(brick);
 			dispatcher.addEventEx("level-brick-deleted", this, "brick", brick);
+			// TODO: Implement
+			/*
+			 * copy from ball-brick bonus show section
+			 * 		SHEntity bonus = SHBreakoutEntityFactory.createEntity(
+			 * 			SHUtils.buildMap(brick.getBonus());
+			 * 		if (bonus != null)
+			 * 		{
+			 * 			bonus.getRootNode().addController(new mover);
+			 * 			scene.addEntity(bonus);
+			 * 			dispatcher.addEventEx("level-bonus-extracted", this, "bonus", bonus);
+			 *		}
+			 * } 
+			 */
 //			showBonusIfPresent(brick);
 		}
 		scene.removeEntity(bullet);

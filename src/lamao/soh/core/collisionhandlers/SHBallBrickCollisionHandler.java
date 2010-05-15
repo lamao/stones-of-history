@@ -9,6 +9,8 @@ package lamao.soh.core.collisionhandlers;
 import lamao.soh.core.SHBall;
 import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHScene;
+import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.core.bonuses.SHDefaultMover;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
 import static lamao.soh.core.SHGamePack.*;
@@ -32,7 +34,17 @@ public class SHBallBrickCollisionHandler implements ISHEventHandler
 			SHScene scene = (SHScene)event.sender;
 			scene.removeEntity(brick);
 			dispatcher.addEventEx("level-brick-deleted", this, "brick", brick);
-			// showBonusIfPresent(brick);
+			
+			SHBonus bonus = brick.getBonus();
+			if (bonus != null)
+			{
+				bonus.getRoot().addController(new SHDefaultMover(bonus.getRoot()));
+				bonus.setLocation(brick.getLocation());
+				bonus.getRoot().updateGeometricState(0, true);
+				scene.addEntity(bonus);
+				dispatcher.addEventEx("level-bonus-extracted", this, 
+						"bonus", bonus);
+			}
 		}
 	}
 

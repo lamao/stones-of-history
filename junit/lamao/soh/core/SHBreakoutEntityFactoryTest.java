@@ -6,7 +6,15 @@
  */
 package lamao.soh.core;
 
+import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.core.bonuses.SHDoubleBallBonus;
+import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
+import lamao.soh.utils.SHResourceManager;
+
 import org.junit.Test;
+
+import com.jme.scene.Node;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,7 +24,7 @@ import static org.junit.Assert.*;
 public class SHBreakoutEntityFactoryTest
 {
 	private SHBreakoutEntityFactory _factory = new SHBreakoutEntityFactory();
-	
+
 	@Test
 	public void testBricks()
 	{
@@ -38,6 +46,18 @@ public class SHBreakoutEntityFactoryTest
 	}
 	
 	@Test
+	public void testBricksWithBonus()
+	{
+		SHGamePack.manager = new SHResourceManager();
+		SHGamePack.manager.add(SHResourceManager.TYPE_MODEL, "double-ball", 
+				new Node("double-ball"));
+		
+		SHBrick brick = (SHBrick)_factory.createEntity(SHUtils.buildMap(
+				"type brick|bonus double-ball"));
+		assertNotNull(brick.getBonus());
+	}
+	
+	@Test
 	public void testWalls()
 	{
 		SHEntity wall = _factory.createEntity(SHUtils.buildMap("type wall"));
@@ -53,6 +73,26 @@ public class SHBreakoutEntityFactoryTest
 	{
 		assertNull(_factory.createEntity(SHUtils.buildMap("type some-type")));
 		assertNull(_factory.createEntity(null));
+	}
+	
+	@Test
+	public void testBonus()
+	{
+		SHGamePack.manager = new SHResourceManager();
+		SHGamePack.manager.add(SHResourceManager.TYPE_MODEL, "double-ball", 
+				new Node("double-ball"));
+		
+		SHBonus bonus = (SHBonus)_factory.createEntity(SHUtils
+				.buildMap("type bonus|name double-ball"));
+		assertTrue(bonus instanceof SHDoubleBallBonus);
+		
+		bonus = (SHBonus)_factory.createEntity(SHUtils
+				.buildMap("type bonus|name inc-paddle-width"));
+		assertTrue(bonus instanceof SHIncPaddleWidthBonus);
+		
+		bonus = (SHBonus)_factory.createEntity(SHUtils
+				.buildMap("type bonus|name non-existent"));
+		assertNull(bonus);
 	}
 
 }

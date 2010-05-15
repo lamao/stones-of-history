@@ -6,9 +6,14 @@
  */
 package lamao.soh.core.bonuses;
 
+import java.util.List;
+
 import lamao.soh.core.SHBall;
 import lamao.soh.core.SHCoreTestHelper;
+import lamao.soh.core.SHEntity;
+import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 
 import org.junit.Test;
@@ -28,37 +33,38 @@ public class SHDoubleBallBonusTest
 		assertTrue(Math.abs(bonus.getDuration() - SHDoubleBallBonus.DURATION) < 
 				0.001f);
 		
-		SHLevel level = new SHLevel();
-		level.addBall(SHCoreTestHelper.createDefaultBall());
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHScene scene = new SHScene();
+		scene.addEntity(SHEntityCreator.createDefaultBall());
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		ball.setVelocity(-1, 2, 0);
-		level.addBall(ball);
+		scene.addEntity(ball);
 		
 		// double balls
-		bonus.apply(level);
-		assertEquals(4, level.getBalls().size());
-		assertEquals(1, level.getBalls().get(2).getModel().getControllerCount());
-		assertEquals(1, level.getBalls().get(3).getModel().getControllerCount());
-		float angle = SHUtils.angle(level.getBalls().get(0).getVelocity()) - 
-				SHUtils.angle(level.getBalls().get(2).getVelocity());
+		bonus.apply(scene);
+		List<SHEntity> balls = scene.getEntities("ball");
+		assertEquals(4, balls.size());
+		assertEquals(1, balls.get(2).getRoot().getControllerCount());
+		assertEquals(1, balls.get(3).getRoot().getControllerCount());
+		float angle = SHUtils.angle(((SHBall)balls.get(0)).getVelocity()) - 
+				SHUtils.angle(((SHBall)balls.get(2)).getVelocity());
 		assertTrue(Math.abs(angle - Math.PI / 4) < 0.001f);
-		angle = SHUtils.angle(level.getBalls().get(1).getVelocity()) - 
-				SHUtils.angle(level.getBalls().get(3).getVelocity());
+		angle = SHUtils.angle(((SHBall)balls.get(1)).getVelocity()) - 
+				SHUtils.angle(((SHBall)balls.get(3)).getVelocity());
 		assertTrue(Float.toString(angle), Math.abs(angle - Math.PI / 4) < 0.001f);
 		
 		// add new ball to level and double balls
-		level.addBall(SHCoreTestHelper.createDefaultBall());
-		bonus.apply(level);
-		assertEquals(10, level.getBalls().size());
+		scene.addEntity(SHEntityCreator.createDefaultBall());
+		bonus.apply(scene);
+		assertEquals(10, balls.size());
 		
 		// first cleanup
-		bonus.cleanup(level);
-		assertEquals(5, level.getBalls().size());
+		bonus.cleanup(scene);
+		assertEquals(5, balls.size());
 		
 		// remove few balls and perform cleanup
-		level.getBalls().remove(0);
-		level.getBalls().remove(0);		
-		bonus.cleanup(level);
-		assertEquals(2, level.getBalls().size());
+		scene.removeEntity(balls.get(0));
+		scene.removeEntity(balls.get(0));		
+		bonus.cleanup(scene);
+		assertEquals(2, balls.size());
 	}
 }

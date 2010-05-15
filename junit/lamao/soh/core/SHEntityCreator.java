@@ -79,6 +79,23 @@ public class SHEntityCreator
 		return createDefaultBall("ball", "ball");
 	}
 	
+	/** 
+	 * Creates default paddle which have size (4, 2, 2) and located at
+	 * (0, 0, 0)
+	 */
+	public static SHPaddle createDefaultPaddle()
+	{
+		Box box = new Box("paddle", new Vector3f(0, 0, 0), 2, 1, 1);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		
+		SHPaddle paddle = new SHPaddle(box);
+		paddle.setType("paddle");
+		paddle.setName("paddle");
+		paddle.getRoot().updateGeometricState(0, true);
+		return paddle;
+	}
+	
 	@Test
 	public void testDefaultBrick()
 	{
@@ -118,6 +135,21 @@ public class SHEntityCreator
 		assertNotNull(ball.getModel().getWorldBound());
 		assertTrue(SHUtils.areEqual(Vector3f.UNIT_Y, ball.getVelocity(), 0.001f));
 		assertTrue(SHUtils.areEqual(Vector3f.ZERO, ball.getLocation(), 0.001f));
+	}
+	
+	@Test
+	public void testDefaultPaddle()
+	{
+		SHPaddle paddle = createDefaultPaddle();
+		assertEquals("paddle", paddle.getType());
+		assertEquals("paddle", paddle.getName());
+		assertNotNull(paddle.getRoot().getWorldBound());
+		assertNotNull(paddle.getModel());
+		assertNotNull(paddle.getModel().getWorldBound());
+		assertTrue(paddle.getModel().getWorldBound() instanceof BoundingBox);
+		BoundingBox box = (BoundingBox)paddle.getModel().getWorldBound();
+		assertTrue(SHUtils.areEqual(new Vector3f(2, 1, 1), box.getExtent(null), 0.001f));
+		assertTrue(SHUtils.areEqual(Vector3f.ZERO, paddle.getLocation(), 0.001f));
 	}
 	
 }

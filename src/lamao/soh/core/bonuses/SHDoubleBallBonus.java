@@ -6,11 +6,14 @@
  */
 package lamao.soh.core.bonuses;
 
+import java.util.List;
+
 import com.jme.scene.Spatial;
 
 import lamao.soh.core.SHBall;
 import lamao.soh.core.SHDefaultBallMover;
-import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHEntity;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 
 /**
@@ -37,22 +40,23 @@ public class SHDoubleBallBonus extends SHBonus
 	 * @see lamao.soh.core.bonuses.SHBonus#apply(lamao.soh.core.SHLevel)
 	 */
 	@Override
-	public void apply(SHLevel level)
+	public void apply(SHScene scene)
 	{
-		int n = level.getBalls().size();
+		List<SHEntity> balls = scene.getEntities("ball");
+		int n = balls.size();
 		SHBall ball = null;
 		SHBall newBall = null;
 		float angle;
 		for (int i = 0; i < n; i++)
 		{
-			ball = level.getBalls().get(i);
+			ball = (SHBall) balls.get(i);
 			newBall = ball.clone();
-			newBall.getModel().addController(new SHDefaultBallMover(newBall));
+			newBall.getRoot().addController(new SHDefaultBallMover(newBall));
 			
 			angle = SHUtils.angle(ball.getVelocity());
 			setVelocityAngle(ball, angle + (float)Math.PI / 8);
 			setVelocityAngle(newBall, angle - (float)Math.PI / 8);
-			level.addBall(newBall);
+			scene.addEntity(newBall);
 		}
 	}
 	
@@ -72,12 +76,13 @@ public class SHDoubleBallBonus extends SHBonus
 	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
 	 */
 	@Override
-	public void cleanup(SHLevel level)
+	public void cleanup(SHScene scene)
 	{
-		int n = level.getBalls().size() / 2;
+		List<SHEntity> balls = scene.getEntities("ball");
+		int n = balls.size() / 2;
 		for (int i = 0; i < n; i++)
 		{
-			level.deleteBall(level.getBalls().get(n - 1 - i));
+			scene.removeEntity(balls.get(n - 1 - i));
 		}
 	}
 	

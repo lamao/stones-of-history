@@ -11,11 +11,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import lamao.soh.core.SHBrick;
+import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
+import lamao.soh.utils.SHResourceManager;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import com.jme.scene.Node;
 import com.jme.system.DisplaySystem;
 import com.jme.system.dummy.DummySystemProvider;
 
@@ -35,6 +38,9 @@ public class SHSceneLoaderTest
 	@Test
 	public void testLoading()
 	{
+		SHGamePack.manager = new SHResourceManager();
+		SHGamePack.manager.add(SHResourceManager.TYPE_MODEL, "double-ball", 
+				new Node("ball"));
 		SHScene scene = new SHScene();
 		SHSceneLoader loader = new SHSceneLoader(scene);
 		

@@ -23,6 +23,7 @@ public class SHBrickTest
 		assertNotNull(brick);
 		assertEquals(1, brick.getStrength());
 		assertFalse(brick.isGlass());
+		assertNull(brick.getBonus());
 		
 		brick = new SHBrick(null);
 		assertEquals(1, brick.getStrength());

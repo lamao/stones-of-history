@@ -10,6 +10,7 @@ import com.jme.scene.Spatial;
 
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHScene;
 
 /**
  * Bonus game entity.
@@ -67,8 +68,8 @@ public abstract class SHBonus extends SHEntity
 	}
 
 	/** Apply (activate) this bonus */
-	public abstract void apply(SHLevel level);
+	public abstract void apply(SHScene scene);
 	
 	/** Cleanup (deactivate) this bonus */
-	public abstract void cleanup(SHLevel level);
+	public abstract void cleanup(SHScene scene);
 }

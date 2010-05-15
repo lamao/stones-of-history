@@ -28,8 +28,8 @@ public class SHDefaultPaddleHitHandlerTest
 	@Test
 	public void testOnHitWithUnitySpeed()
 	{
-		SHPaddle paddle = SHCoreTestHelper.createDefaultPaddle();
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		
 		// result velocity = -90 degrees
 		ball.setLocation(-2, 2, 0);

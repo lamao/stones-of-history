@@ -7,8 +7,9 @@
 package lamao.soh.core.bonuses;
 
 import static junit.framework.Assert.assertTrue;
-import lamao.soh.core.SHCoreTestHelper;
-import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHEntityCreator;
+import lamao.soh.core.SHPaddle;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 
 import org.junit.Test;
@@ -22,8 +23,6 @@ import com.jme.scene.Spatial;
  */
 public class SHDecPaddleWidthBonusTest
 {
-private SHLevel sharedLevel = SHCoreTestHelper.createDefaultLevel();
-	
 	@Test
 	public void testConstructors()
 	{
@@ -35,22 +34,26 @@ private SHLevel sharedLevel = SHCoreTestHelper.createDefaultLevel();
 	@Test
 	public void testBonus()
 	{
+		SHScene scene = new SHScene();
 		SHBonus bonus = new SHDecPaddleWidthBonus();
-		Spatial paddleModel = sharedLevel.getPaddle().getModel();
 		
-		bonus.apply(sharedLevel);
+		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
+		Spatial paddleModel = paddle.getModel();
+		scene.addEntity(paddle);
+		
+		bonus.apply(scene);
 		assertTrue(SHUtils.areEqual(new Vector3f(0.8f, 1, 1), 
 				paddleModel.getLocalScale(), 0.001f));
 		
-		bonus.apply(sharedLevel);
+		bonus.apply(scene);
 		assertTrue(SHUtils.areEqual(new Vector3f(0.64f, 1, 1), 
 				paddleModel.getLocalScale(), 0.001f));
 		
-		bonus.cleanup(sharedLevel);
+		bonus.cleanup(scene);
 		assertTrue(SHUtils.areEqual(new Vector3f(0.8f, 1, 1), 
 				paddleModel.getLocalScale(), 0.001f));
 		
-		bonus.cleanup(sharedLevel);
+		bonus.cleanup(scene);
 		assertTrue(SHUtils.areEqual(new Vector3f(1, 1, 1), 
 				paddleModel.getLocalScale(), 0.001f));
 		

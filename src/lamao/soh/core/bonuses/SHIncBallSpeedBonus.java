@@ -12,7 +12,8 @@ import java.util.List;
 import com.jme.scene.Spatial;
 
 import lamao.soh.core.SHBall;
-import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHEntity;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 
 /**
@@ -38,16 +39,15 @@ public class SHIncBallSpeedBonus extends SHBonus
 	{
 		this(null);
 	}
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#apply(lamao.soh.core.SHLevel)
-	 */
+	
 	@Override
-	public void apply(SHLevel level)
+	public void apply(SHScene scene)
 	{
 		float speed;
 		double angle;
-		for (SHBall ball : level.getBalls())
+		for (SHEntity entity : scene.getEntities("ball"))
 		{
+			SHBall ball = (SHBall)entity;
 			speed = ball.getVelocity().length();			
 			angle = SHUtils.angle(ball.getVelocity());
 			
@@ -62,7 +62,7 @@ public class SHIncBallSpeedBonus extends SHBonus
 	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
 	 */
 	@Override
-	public void cleanup(SHLevel level)
+	public void cleanup(SHScene scene)
 	{
 		float speed;
 		double angle;

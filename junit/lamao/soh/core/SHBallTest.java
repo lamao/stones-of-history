@@ -278,6 +278,8 @@ public class SHBallTest
 		ball.setLocation(1, 2, 3);
 		SHBall anotherBall = ball.clone();
 		
+		assertEquals(ball.getType(), anotherBall.getType());
+		assertFalse(ball.equals(anotherBall.getName()));
 		assertNotSame(ball.getVelocity(), anotherBall.getVelocity());
 		assertEquals(ball.getVelocity(), anotherBall.getVelocity());
 		assertNotSame(ball.getModel(), anotherBall.getModel());

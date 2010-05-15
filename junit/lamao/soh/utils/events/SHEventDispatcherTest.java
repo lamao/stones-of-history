@@ -205,4 +205,12 @@ public class SHEventDispatcherTest
 		
 	}
 	
+	@Test
+	public void testGetTimeEvent()
+	{
+		_dispatcher.addTimeEvent(new SHTimeEvent("type1", "sender", null, 200));
+		assertTrue(_dispatcher.hasTimeEvent("type1"));
+		assertFalse(_dispatcher.hasTimeEvent("type2"));
+	}
+	
 }

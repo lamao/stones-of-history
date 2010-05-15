@@ -53,9 +53,6 @@ public class SHDefaultMover extends Controller
 		_model = model;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.jme.scene.Controller#update(float)
-	 */
 	@Override
 	public void update(float time)
 	{

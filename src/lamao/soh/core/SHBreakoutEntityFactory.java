@@ -8,6 +8,11 @@ package lamao.soh.core;
 
 import java.util.Map;
 
+import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.utils.SHResourceManager;
+
+import com.jme.scene.Spatial;
+
 /**
  * @author lamao
  *
@@ -46,6 +51,15 @@ public class SHBreakoutEntityFactory implements ISHEntityFactory
 				{
 					brick.setGlass(Boolean.parseBoolean(value));
 				}
+				
+				value = metadata.get("bonus");
+				if (value != null)
+				{
+					SHBonus bonus = (SHBonus)createEntity(SHUtils.buildMap(
+							"type bonus|name " + value));
+					brick.setBonus(bonus);
+				}
+				
 				entity = brick;
 			}
 			else if (type.equals("bottom-wall"))
@@ -55,6 +69,30 @@ public class SHBreakoutEntityFactory implements ISHEntityFactory
 			else if (type.equals("wall"))
 			{
 				entity = new SHEntity();
+			}
+			else if (type.equals("bonus"))
+			{
+				try
+				{
+					String bonusName = metadata.get("name");
+					String className = SHUtils.getClassName(
+							"lamao.soh.core.bonuses.SH", bonusName, "Bonus"); 
+					Class<?> klass = Class.forName(className);
+					entity = (SHBonus)klass.newInstance();
+					Spatial model = (Spatial)SHGamePack.manager
+						.get(SHResourceManager.TYPE_MODEL, bonusName);
+					entity.setModel(SHUtils.createSharedModel(entity + "bonus", 
+							model));
+				}
+				catch (ClassNotFoundException e)
+				{
+				}
+				catch (InstantiationException e)
+				{
+				}
+				catch (IllegalAccessException e)
+				{
+				}
 			}
 			if (entity != null)
 			{

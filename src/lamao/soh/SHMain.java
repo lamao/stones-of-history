@@ -23,6 +23,8 @@ import lamao.soh.core.SHUtils;
 import lamao.soh.core.collisionhandlers.SHBallBrickCollisionHandler;
 import lamao.soh.core.collisionhandlers.SHBallPaddleCollisionHandler;
 import lamao.soh.core.collisionhandlers.SHBallWallCollisionHandler;
+import lamao.soh.core.collisionhandlers.SHBonusBottomWallCollisionHandler;
+import lamao.soh.core.collisionhandlers.SHBonusPaddleCollisionHandler;
 import lamao.soh.core.eventhandlers.SHBrickDeletedEventHandler;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.SHLevelLoader;
@@ -118,10 +120,14 @@ public class SHMain
 		scene.addCollisionTask(new SHCollisionTask("ball", "wall", false));
 		scene.addCollisionTask(new SHCollisionTask("ball", "paddle", false));
 		scene.addCollisionTask(new SHCollisionTask("ball", "brick", true));
+		scene.addCollisionTask(new SHCollisionTask("bonus", "bottom-wall", false));
+		scene.addCollisionTask(new SHCollisionTask("bonus", "paddle", false));
 		
 		dispatcher.addHandler("scene-collision-ball-wall", new SHBallWallCollisionHandler());
 		dispatcher.addHandler("scene-collision-ball-paddle", new SHBallPaddleCollisionHandler());
 		dispatcher.addHandler("scene-collision-ball-brick", new SHBallBrickCollisionHandler());
 		dispatcher.addHandler("level-brick-deleted", new SHBrickDeletedEventHandler());
+		dispatcher.addHandler("scene-collision-bonus-bottom-wall", new SHBonusBottomWallCollisionHandler());
+		dispatcher.addHandler("scene-collision-bonus-paddle", new SHBonusPaddleCollisionHandler());
 	}
 }

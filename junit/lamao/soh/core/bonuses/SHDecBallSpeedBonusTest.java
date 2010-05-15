@@ -9,8 +9,8 @@ package lamao.soh.core.bonuses;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import lamao.soh.core.SHBall;
-import lamao.soh.core.SHCoreTestHelper;
-import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHEntityCreator;
+import lamao.soh.core.SHScene;
 
 import org.junit.Test;
 
@@ -25,53 +25,59 @@ public class SHDecBallSpeedBonusTest
 	@Test
 	public void testBonus()
 	{
-		SHLevel level = new SHLevel();
+		SHScene scene = new SHScene();
 		
-		level.addBall(SHCoreTestHelper.createDefaultBall());
-		level.addBall(SHCoreTestHelper.createDefaultBall());
-		for (SHBall ball : level.getBalls())
-		{
-			ball.setVelocity(-1, -1, 0);
-		}
+		SHBall ball1 = SHEntityCreator.createDefaultBall();
+		ball1.setVelocity(-1, -1, 0);
+		SHBall ball2 = SHEntityCreator.createDefaultBall();
+		ball2.setVelocity(1, 1, 0);
+
+		scene.addEntity(ball1);
+		scene.addEntity(ball2);
 		
 		// first bonus
 		SHDecBallSpeedBonus bonus = new SHDecBallSpeedBonus();
 		assertNotNull(bonus);
-		bonus.apply(level);
-		for (SHBall ball : level.getBalls())
-		{
-			assertTrue(Math.abs(Math.abs(ball.getVelocity().length() / 
+		bonus.apply(scene);
+		assertTrue(Math.abs(Math.abs(ball1.getVelocity().length() / 
 					new Vector3f(-1, -1, 0).length()) - 
 					(1 - SHDecBallSpeedBonus.DEC_PERCENT)) < 0.001f);
-		}
+		assertTrue(Math.abs(Math.abs(ball2.getVelocity().length() / 
+				new Vector3f(1, 1, 0).length()) - 
+				(1 - SHDecBallSpeedBonus.DEC_PERCENT)) < 0.001f);
 		
 		SHDecBallSpeedBonus bonus2 = new SHDecBallSpeedBonus();
-		bonus2.apply(level);
-		for (SHBall ball : level.getBalls())
-		{
-			assertTrue(Math.abs(Math.abs(ball.getVelocity().length() / 
+		bonus2.apply(scene);
+		
+		assertTrue(Math.abs(Math.abs(ball1.getVelocity().length() / 
 					new Vector3f(-1, -1, 0).length()) - 
 					(1 - SHDecBallSpeedBonus.DEC_PERCENT) * 
 					(1 - SHDecBallSpeedBonus.DEC_PERCENT)) < 0.001f);
-		}
+		assertTrue(Math.abs(Math.abs(ball2.getVelocity().length() / 
+				new Vector3f(1, 1, 0).length()) - 
+				(1 - SHDecBallSpeedBonus.DEC_PERCENT) * 
+				(1 - SHDecBallSpeedBonus.DEC_PERCENT)) < 0.001f);
 		
-		level.addBall(SHCoreTestHelper.createDefaultBall());
-		level.getBalls().get(2).setVelocity(-1, -1, 0);
+		SHBall ball3 = SHEntityCreator.createDefaultBall();
+		ball3.setVelocity(1, -1, 0);
+		scene.addEntity(ball3);
 		
-		bonus.cleanup(level);
-		for (int i = 0; i < 2; i++)
-		{
-			SHBall ball = level.getBalls().get(i);
-			assertTrue(Math.abs(Math.abs(ball.getVelocity().length() / 
+		bonus.cleanup(scene);
+		assertTrue(Math.abs(Math.abs(ball1.getVelocity().length() / 
 					new Vector3f(-1, -1, 0).length()) - 
-					(1 - SHIncBallSpeedBonus.INC_PERCENT)) < 0.001f);
-		}
+					(1 - SHDecBallSpeedBonus.DEC_PERCENT)) < 0.001f);
+		assertTrue(Math.abs(Math.abs(ball2.getVelocity().length() / 
+				new Vector3f(1, 1, 0).length()) - 
+				(1 - SHDecBallSpeedBonus.DEC_PERCENT)) < 0.001f);
+		assertTrue(Math.abs(ball3.getVelocity().length() - 
+				new Vector3f(1, -1, 0).length()) < 0.001f);
 		
-		bonus2.cleanup(level);
-		for (SHBall ball : level.getBalls())
-		{
-			assertTrue(Math.abs(ball.getVelocity().length() - 
+		bonus2.cleanup(scene);
+		assertTrue(Math.abs(ball1.getVelocity().length() - 
 					new Vector3f(-1, -1, 0).length()) < 0.001f);
-		}
+		assertTrue(Math.abs(ball2.getVelocity().length() - 
+				new Vector3f(1, 1, 0).length()) < 0.001f);
+		assertTrue(Math.abs(ball3.getVelocity().length() - 
+				new Vector3f(1, -1, 0).length()) < 0.001f);
 	}
 }

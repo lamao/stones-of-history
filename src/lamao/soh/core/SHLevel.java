@@ -539,7 +539,7 @@ public class SHLevel
 			{
 				_activeBonuses.remove(i);
 				i--;
-				bonus.cleanup(this);
+//				bonus.cleanup(this);
 				_dispatcher.addEventEx("level-bonus-deactivated", this, 
 						"bonus", bonus);
 			}
@@ -567,7 +567,7 @@ public class SHLevel
 		if (needAdd)
 		{
 			_activeBonuses.add(bonus);
-			bonus.apply(this);
+//			bonus.apply(this);
 			_dispatcher.addEventEx("level-bonus-activated", this, 
 					"bonus", bonus);
 		}

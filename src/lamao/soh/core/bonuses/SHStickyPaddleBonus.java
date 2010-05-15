@@ -9,8 +9,10 @@ package lamao.soh.core.bonuses;
 import lamao.soh.core.SHBall;
 import lamao.soh.core.SHDefaultBallMover;
 import lamao.soh.core.SHDefaultPaddleHitHandler;
-import lamao.soh.core.SHLevel;
+import lamao.soh.core.SHEntity;
+import lamao.soh.core.SHPaddle;
 import lamao.soh.core.SHPaddleSticker;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.SHStickyPaddleHitHandler;
 
 import com.jme.scene.Controller;
@@ -41,20 +43,24 @@ public class SHStickyPaddleBonus extends SHBonus
 	 * @see lamao.soh.core.bonuses.SHBonus#apply(lamao.soh.core.SHLevel)
 	 */
 	@Override
-	public void apply(SHLevel level)
+	public void apply(SHScene scene)
 	{
-		level.getPaddle().setHitHandler(new SHStickyPaddleHitHandler());
+		SHPaddle paddle = (SHPaddle) scene.getEntity("paddle", "paddle");
+		paddle.setHitHandler(new SHStickyPaddleHitHandler());
 	}
 	
 	/* (non-Javadoc)
 	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
 	 */
 	@Override
-	public void cleanup(SHLevel level)
+	public void cleanup(SHScene scene)
 	{
-		level.getPaddle().setHitHandler(new SHDefaultPaddleHitHandler());
-		for (SHBall ball : level.getBalls())
+		SHPaddle paddle = (SHPaddle) scene.getEntity("paddle", "paddle");
+		paddle.setHitHandler(new SHDefaultPaddleHitHandler());
+		
+		for (SHEntity entity : scene.getEntities("ball"))
 		{
+			SHBall ball = (SHBall)entity;
 			for (Controller controller : ball.getModel().getControllers())
 			{
 				if (controller instanceof SHPaddleSticker)
