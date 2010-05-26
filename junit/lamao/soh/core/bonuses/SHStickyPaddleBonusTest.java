@@ -7,10 +7,8 @@
 package lamao.soh.core.bonuses;
 
 import lamao.soh.core.SHBall;
-import lamao.soh.core.SHCoreTestHelper;
 import lamao.soh.core.SHDefaultBallMover;
 import lamao.soh.core.SHDefaultPaddleHitHandler;
-import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHPaddleSticker;
 import lamao.soh.core.SHStickyPaddleHitHandler;
 

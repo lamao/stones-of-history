@@ -9,7 +9,6 @@ package lamao.soh.core.bonuses;
 import com.jme.scene.Spatial;
 
 import lamao.soh.core.SHEntity;
-import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHScene;
 
 /**

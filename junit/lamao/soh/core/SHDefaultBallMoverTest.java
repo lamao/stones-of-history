@@ -24,14 +24,14 @@ public class SHDefaultBallMoverTest
 		SHDefaultBallMover mover = new SHDefaultBallMover();
 		assertNull(mover.getBall());
 		
-		mover = new SHDefaultBallMover(SHCoreTestHelper.createDefaultBall());
+		mover = new SHDefaultBallMover(SHEntityCreator.createDefaultBall());
 		assertNotNull(mover.getBall());
 	}
 	
 	@Test
 	public void testMoving()
 	{
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		SHDefaultBallMover mover = new SHDefaultBallMover(ball);
 		mover.update(1);
 		assertTrue(SHUtils.areEqual(new Vector3f(0, 1, 0), ball.getLocation(), 

@@ -19,8 +19,8 @@ public class SHStickyPaddleHitHandlerTest
 	@Test
 	public void testHandler()
 	{
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
-		SHPaddle paddle = SHCoreTestHelper.createDefaultPaddle();
+		SHBall ball = SHEntityCreator.createDefaultBall();
+		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
 		SHStickyPaddleHitHandler handler = new SHStickyPaddleHitHandler();
 		
 		handler.execute(ball, paddle);

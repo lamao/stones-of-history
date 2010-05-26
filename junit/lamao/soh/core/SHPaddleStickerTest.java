@@ -22,8 +22,8 @@ public class SHPaddleStickerTest
 	public void testContstructors()
 	{
 		SHPaddleSticker sticker = new SHPaddleSticker(
-				SHCoreTestHelper.createDefaultBall(),
-				SHCoreTestHelper.createDefaultPaddle().getRoot());
+				SHEntityCreator.createDefaultBall(),
+				SHEntityCreator.createDefaultPaddle().getRoot());
 		assertNotNull(sticker.getBall());
 		assertNotNull(sticker.getTarget());
 	}
@@ -31,8 +31,8 @@ public class SHPaddleStickerTest
 	@Test
 	public void testMoving()
 	{
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
-		SHPaddle paddle = SHCoreTestHelper.createDefaultPaddle();
+		SHBall ball = SHEntityCreator.createDefaultBall();
+		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
 		
 		ball.setLocation(-1, 2, 0);
 		SHPaddleSticker sticker = new SHPaddleSticker(ball, paddle.getRoot());

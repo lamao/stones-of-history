@@ -10,7 +10,6 @@ import lamao.soh.console.SHConsoleState;
 import lamao.soh.console.SHWireFrameCommand;
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHGamePack;
-import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHScene;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
@@ -46,7 +45,6 @@ public class SHLevelState extends BasicGameState
 	public final static String NAME = "Level state";
 
 	/** Level for playing */
-//	private SHLevel _level = null;
 	private SHScene _scene = null;
 	
 	/** Node for text objects */

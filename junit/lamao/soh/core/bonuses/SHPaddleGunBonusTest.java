@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 import lamao.soh.SHConstants;
 import lamao.soh.core.SHGamePack;
-import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHPaddle;
 import lamao.soh.core.SHBreakoutInputHandler;
 import lamao.soh.core.SHUtils;

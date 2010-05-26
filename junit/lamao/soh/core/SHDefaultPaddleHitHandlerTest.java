@@ -69,8 +69,8 @@ public class SHDefaultPaddleHitHandlerTest
 	@Test
 	public void testOnHitWithCustomSpeed()
 	{
-		SHPaddle paddle = SHCoreTestHelper.createDefaultPaddle();
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		
 		// center of paddle
 		ball.setLocation(0, 2, 0);
@@ -89,8 +89,8 @@ public class SHDefaultPaddleHitHandlerTest
 	@Test
 	public void testCornerHits()
 	{
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
-		SHPaddle paddle = SHCoreTestHelper.createDefaultPaddle();
+		SHBall ball = SHEntityCreator.createDefaultBall();
+		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
 		
 		// left corner
 		ball.setLocation(-3, 2, 0);
@@ -139,8 +139,8 @@ public class SHDefaultPaddleHitHandlerTest
 	@Test
 	public void testOnHitStressTest()
 	{
-		SHPaddle paddle = SHCoreTestHelper.createDefaultPaddle();
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		
 		ball.setLocation(0.12355f, 2, 0);
 		ball.setVelocity(0, -2, 0);
@@ -155,8 +155,8 @@ public class SHDefaultPaddleHitHandlerTest
 	@Test
 	public void testBallWithUpVelocity()
 	{
-		SHPaddle paddle = SHCoreTestHelper.createDefaultPaddle();
-		SHBall ball = SHCoreTestHelper.createDefaultBall();
+		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
+		SHBall ball = SHEntityCreator.createDefaultBall();
 		
 		ball.setLocation(0, 2, 0);
 		ball.setVelocity(1, 1, 0);

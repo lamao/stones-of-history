@@ -9,10 +9,8 @@ package lamao.soh.core.bonuses;
 import java.util.List;
 
 import lamao.soh.core.SHBall;
-import lamao.soh.core.SHCoreTestHelper;
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHEntityCreator;
-import lamao.soh.core.SHLevel;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 
