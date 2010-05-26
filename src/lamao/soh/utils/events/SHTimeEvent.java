@@ -15,14 +15,14 @@ import java.util.Map;
 public class SHTimeEvent extends SHEvent
 {
 	/** Time left to fire event */
-	public long time = 0;
+	public float time = 0;
 	
 	public SHTimeEvent()
 	{
 	}
 	
 	public SHTimeEvent(String type, Object sender, Map<String, Object> params, 
-			long time)
+			float time)
 	{
 		super(type, sender, params);
 		this.time = time;

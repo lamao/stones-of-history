@@ -26,24 +26,10 @@ import com.jme.util.GameTaskQueueManager;
  */
 public class SHEventDispatcher
 {
-	
-//	private static SHEventDispatcher _instance = null;
-	
 	private Map<String, List<ISHEventHandler>> _handlers = 
 			new TreeMap<String, List<ISHEventHandler>>();
 	
 	private List<SHTimeEvent> _timedEvents = new LinkedList<SHTimeEvent>();
-	
-	private SHTimeEventDispatcher _timeDispatcher = null; 
-	
-//	public static SHEventDispatcher getInstance()
-//	{
-//		if (_instance == null)
-//		{
-//			_instance = new SHEventDispatcher();
-//		}
-//		return _instance;
-//	}
 	
 	public SHEventDispatcher()
 	{		
@@ -68,21 +54,16 @@ public class SHEventDispatcher
 	public void reset()
 	{
 		_handlers.clear();
-		if (_timeDispatcher != null)
-		{
-			synchronized (_timeDispatcher)
-			{
-				_timedEvents.clear();
-			}
-		}
+		_timedEvents.clear();
 	}
 	
-	public synchronized void addEvent(SHEvent event)
+	public void addEvent(SHEvent event)
 	{
 		notifySupervisors(event);
 		List<ISHEventHandler> handlers = getHandlers(event.type);
 		if (handlers != null)
 		{
+			handlers = new LinkedList<ISHEventHandler>(handlers);
 			for (ISHEventHandler handler : handlers)
 			{
 				handler.processEvent(event);
@@ -157,16 +138,6 @@ public class SHEventDispatcher
 	}
 	
 	
-	private SHTimeEventDispatcher getTimeDispatcher()
-	{
-		if (_timeDispatcher == null)
-		{
-			_timeDispatcher = new SHTimeEventDispatcher();
-			_timeDispatcher.start();
-		}
-		return _timeDispatcher;
-	}
-	
 	/**
 	 * Add time event. All events are sorted in descending order of their
 	 * <code>time</code> values.
@@ -174,22 +145,19 @@ public class SHEventDispatcher
 	 */
 	public void addTimeEvent(SHTimeEvent event)
 	{
-		synchronized (getTimeDispatcher())
+		Iterator<SHTimeEvent> it = _timedEvents.iterator();
+		SHTimeEvent e = null;
+		while (it.hasNext())
 		{
-			Iterator<SHTimeEvent> it = _timedEvents.iterator();
-			SHTimeEvent e = null;
-			while (it.hasNext())
+			e = it.next();
+			if (e.time >= event.time)
 			{
-				e = it.next();
-				if (e.time >= event.time)
-				{
-					_timedEvents.add(_timedEvents.indexOf(e), event);
-					return;
-				}
+				_timedEvents.add(_timedEvents.indexOf(e), event);
+				return;
 			}
-			
-			_timedEvents.add(event);
 		}
+
+		_timedEvents.add(event);
 	}
 	
 	public void addTimeEvent(String type, Object sender, 
@@ -198,7 +166,7 @@ public class SHEventDispatcher
 		addTimeEvent(new SHTimeEvent(type, sender, params, time));
 	}
 	
-	public void addTimeEvent(String type, Object sender, int time, Object... params)
+	public void addTimeEvent(String type, Object sender, float time, Object... params)
 	{
 		addTimeEvent(new SHTimeEvent(type, sender, 
 				SHUtils.buildEventMap(params), time));
@@ -215,157 +183,103 @@ public class SHEventDispatcher
 	 * @param type
 	 * @param time
 	 */
-	public void prolongTimeEvent(String type, int time)
+	public void prolongTimeEvent(String type, float time)
 	{
-		synchronized (getTimeDispatcher())
+		Iterator<SHTimeEvent> it = _timedEvents.iterator();
+		// find event of such type
+		SHTimeEvent event = null;
+		while (it.hasNext())
 		{
-			Iterator<SHTimeEvent> it = _timedEvents.iterator();
-			// find event of such type
-			SHTimeEvent event = null;
+			event = it.next();
+			if (event.type.equals(type))
+			{
+				event.time += time;
+				break;
+			}
+		}
+
+		// move event according its new time
+		if (it.hasNext())
+		{
+			SHTimeEvent laterEvent = null;
 			while (it.hasNext())
 			{
-				event = it.next();
-				if (event.type.equals(type))
+				laterEvent = it.next();
+				if (laterEvent.time >= event.time)
 				{
-					event.time += time;
-					break;
+					_timedEvents.remove(event);
+					_timedEvents.add(_timedEvents.indexOf(laterEvent), event);
+					return;
 				}
 			}
-			
-			// move event according its new time
-			if (it.hasNext())
-			{
-				SHTimeEvent laterEvent = null;
-				while (it.hasNext())
-				{
-					laterEvent = it.next();
-					if (laterEvent.time >= event.time)
-					{
-						_timedEvents.remove(event);
-						_timedEvents.add(_timedEvents.indexOf(laterEvent), event);
-						return;
-					}
-				}
-				_timedEvents.remove(event);
-				_timedEvents.add(event);
-			}
+			_timedEvents.remove(event);
+			_timedEvents.add(event);
 		}
 	}
 	
 	public boolean hasTimeEvent(String type)
 	{
-		synchronized (getTimeDispatcher())
+		for (SHTimeEvent event : _timedEvents)
 		{
-			for (SHTimeEvent event : _timedEvents)
+			if (event.type.equals(type))
 			{
-				if (event.type.equals(type))
-				{
-					return true;
-				}
+				return true;
 			}
 		}
 		return false;
 	}
 	
+	
 	/**
-	 * Dispatcher for time events. Works in separate thread.
-	 * @author lamao
-	 *
+	 * Updates all time events.
+	 * @param tpf - time since last frame
 	 */
-	private class SHTimeEventDispatcher extends Thread
+	public void update(float tpf)
 	{
-		public int TIME_RESOLUTION = 1000 / 60;
-		
-		private long lastTime = System.nanoTime() / 1000000;
-		
-		public void resetTimer()
-		{
-			lastTime = System.nanoTime() / 1000000;
-		}
-		
-		@Override
-		public void run()
-		{
-			while (true)
-			{
-				long time = System.nanoTime() / 1000000;
-				synchronized (this)
-				{
-					updateEventTime(time - lastTime);
-					checkEvents();
-				}
-				lastTime = time;
-				try
-				{
-					Thread.sleep(TIME_RESOLUTION);
-				}
-				catch (InterruptedException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		/** Decrease given time for all time events.		  
-		 * @param time
-		 */
-		private void updateEventTime(long time)
-		{
-			for (SHTimeEvent event : _timedEvents)
-			{
-				event.time -= time;
-			}
-		}
-		
-		/**
-		 * Send expired events.
-		 */
-		private void checkEvents()
-		{
-			List<SHEvent> eventsToSent = new LinkedList<SHEvent>();
-			SHTimeEvent event = null;
-			do
-			{
-				if (!_timedEvents.isEmpty())
-				{
-					event = _timedEvents.get(0);
-					if (event.time <= 0)
-					{
-						eventsToSent.add(event);
-//						addEvent(event);
-						_timedEvents.remove(event);
-					}
-				}
-			}
-			while (!_timedEvents.isEmpty() && event.time <= 0);
-			
-			if (!eventsToSent.isEmpty())
-			{
-				GameTaskQueueManager.getManager().update(
-						new SHAddEventTask(eventsToSent));
-			}
-		}
-		
+		updateEventTime(tpf);
+		checkEvents();
 	}
 	
-	/** Task for sending events */
-	private class SHAddEventTask implements Callable<Void>
+	/** Decrease given time for all time events.		  
+	 * @param time
+	 */
+	private void updateEventTime(float time)
 	{
-		private List<SHEvent> _tasks = null;
-		
-		public SHAddEventTask(List<SHEvent> tasks)
+		for (SHTimeEvent event : _timedEvents)
 		{
-			_tasks = tasks;
-		}
-		
-		@Override
-		public Void call() throws Exception
-		{
-			for (SHEvent event : _tasks)
-			{
-				addEvent(event);
-			}
-			return null;
+			event.time -= time;
 		}
 	}
+	
+	/**
+	 * Send expired events.
+	 */
+	private void checkEvents()
+	{
+		List<SHEvent> eventsToSent = new LinkedList<SHEvent>();
+		SHTimeEvent event = null;
+		do
+		{
+			if (!_timedEvents.isEmpty())
+			{
+				event = _timedEvents.get(0);
+				if (event.time <= 0)
+				{
+					eventsToSent.add(event);
+//					addEvent(event);
+					_timedEvents.remove(event);
+				}
+			}
+		}
+		while (!_timedEvents.isEmpty() && event.time <= 0);
+		
+		if (!eventsToSent.isEmpty())
+		{
+			for (SHEvent e : eventsToSent)
+			{
+				addEvent(e);
+			}
+		}
+	}
+	
 }

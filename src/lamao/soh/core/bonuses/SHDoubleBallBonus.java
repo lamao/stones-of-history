@@ -84,6 +84,7 @@ public class SHDoubleBallBonus extends SHBonus
 		{
 			scene.removeEntity(balls.get(n - 1 - i));
 		}
+		scene.getRootNode().updateRenderState();
 	}
 	
 }

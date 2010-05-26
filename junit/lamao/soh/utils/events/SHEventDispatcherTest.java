@@ -141,24 +141,24 @@ public class SHEventDispatcherTest
 		SHEventCounter counter = new SHEventCounter();
 		_dispatcher.addHandler("all", counter);
 		
-		_dispatcher.addTimeEvent(new SHTimeEvent("type", "sender", null, 400));
-		_dispatcher.addTimeEvent(new SHTimeEvent("type1", "sender", null, 200));
-		_dispatcher.addTimeEvent(new SHTimeEvent("type2", null, null, 300));
-		Thread.sleep(100);
+		_dispatcher.addTimeEvent(new SHTimeEvent("type", "sender", null, .4f));
+		_dispatcher.addTimeEvent(new SHTimeEvent("type1", "sender", null, .2f));
+		_dispatcher.addTimeEvent(new SHTimeEvent("type2", null, null, .3f));
+		_dispatcher.update(0.1f);
 		assertEquals(0, counter.getNumEvents("type"));
 		assertEquals(0, counter.getNumEvents("type1"));
 		assertEquals(0, counter.getNumEvents("type2"));
-		Thread.sleep(150);
+		_dispatcher.update(0.15f);
 		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
 		assertEquals(0, counter.getNumEvents("type"));
 		assertEquals(1, counter.getNumEvents("type1"));
 		assertEquals(0, counter.getNumEvents("type2"));
-		Thread.sleep(100);
+		_dispatcher.update(0.1f);
 		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
 		assertEquals(0, counter.getNumEvents("type"));
 		assertEquals(1, counter.getNumEvents("type1"));
 		assertEquals(1, counter.getNumEvents("type2"));
-		Thread.sleep(100);
+		_dispatcher.update(0.1f);
 		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
 		assertEquals(1, counter.getNumEvents("type"));
 		assertEquals(1, counter.getNumEvents("type1"));
@@ -190,19 +190,18 @@ public class SHEventDispatcherTest
 		SHEventCounter counter = new SHEventCounter();
 		_dispatcher.addHandler("all", counter);
 		
-		_dispatcher.addTimeEvent(new SHTimeEvent("type", "sender", null, 300));
-		_dispatcher.addTimeEvent(new SHTimeEvent("type1", "sender", null, 200));
-		Thread.sleep(100);
-		_dispatcher.prolongTimeEvent("type1", 200);
-		Thread.sleep(250);
+		_dispatcher.addTimeEvent(new SHTimeEvent("type", "sender", null, .3f));
+		_dispatcher.addTimeEvent(new SHTimeEvent("type1", "sender", null, .2f));
+		_dispatcher.update(0.1f);
+		_dispatcher.prolongTimeEvent("type1", .2f);
+		_dispatcher.update(0.25f);
 		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
 		assertEquals(1, counter.getNumEvents("type"));
 		assertEquals(0, counter.getNumEvents("type1"));
-		Thread.sleep(100);
+		_dispatcher.update(0.1f);
 		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
 		assertEquals(1, counter.getNumEvents("type"));
 		assertEquals(1, counter.getNumEvents("type1"));
-		
 	}
 	
 	@Test

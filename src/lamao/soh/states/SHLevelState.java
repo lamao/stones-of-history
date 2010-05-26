@@ -191,6 +191,7 @@ public class SHLevelState extends BasicGameState
 			super.update(tpf);
 			SHGamePack.input.update(tpf);
 			_scene.update(tpf);
+			SHGamePack.dispatcher.update(tpf);
 		}
 		_fps.print("FPS: " + Math.round(Timer.getTimer().getFrameRate()));
 		
