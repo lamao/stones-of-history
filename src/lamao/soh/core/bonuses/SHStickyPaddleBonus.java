@@ -61,12 +61,12 @@ public class SHStickyPaddleBonus extends SHBonus
 		for (SHEntity entity : scene.getEntities("ball"))
 		{
 			SHBall ball = (SHBall)entity;
-			for (Controller controller : ball.getModel().getControllers())
+			for (Controller controller : ball.getRoot().getControllers())
 			{
 				if (controller instanceof SHPaddleSticker)
 				{
-					ball.getModel().removeController(controller);
-					ball.getModel().addController(new SHDefaultBallMover(ball));
+					ball.getRoot().removeController(controller);
+					ball.getRoot().addController(new SHDefaultBallMover(ball));
 					break;
 				}
 			}

@@ -10,9 +10,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import lamao.soh.SHConstants;
+import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHPaddle;
 import lamao.soh.core.SHBreakoutInputHandler;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.utils.SHResourceManager;
 
@@ -21,7 +23,6 @@ import org.junit.Test;
 import com.jme.input.MouseInput;
 import com.jme.input.dummy.DummyMouseInput;
 import com.jme.math.Vector3f;
-import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
 import com.jme.system.DisplaySystem;
 import com.jme.system.dummy.DummySystemProvider;
@@ -32,7 +33,7 @@ import static org.junit.Assert.*;
  * @author lamao
  *
  */
-public class SHPaddleGunBonusTest implements SHConstants
+public class SHPaddleGunBonusTest
 {
 	static
 	{
@@ -46,39 +47,36 @@ public class SHPaddleGunBonusTest implements SHConstants
 	public void testBonus()
 	{
 		// TODO : Implement this
-//		SHPaddleGunBonus bonus = new SHPaddleGunBonus();
-//		assertTrue(Math.abs(bonus.getDuration() - SHPaddleGunBonus.DURATION) < 
-//				0.001f);
-//		
-//		SHGamePack.manager = new SHResourceManager();
-//		SHResourceManager manager = SHGamePack.manager;
-//		manager.add(SHResourceManager.TYPE_MODEL, PADDLE, new Box(PADDLE,
-//				new Vector3f(0, 0, 0), 2, 1, 1));
-//		manager.add(SHResourceManager.TYPE_MODEL, PADDLE_GUN, new Box(PADDLE_GUN,
-//				new Vector3f(0, 0, 0), 2, 1, 1));
-//		
-//		SHLevel level = new SHLevel();
-//		SHPaddle paddle = new SHPaddle((Spatial)manager.get(
-//				SHResourceManager.TYPE_MODEL, PADDLE));
-//		paddle.setLocation(new Vector3f(2, 3, 4));
-//		level.setPaddle(paddle);
-//		SHBreakoutInputHandler input = new SHBreakoutInputHandler(paddle); 
-//		level.setInputHandler(input);
-//		
-//		bonus.apply(level);
-//		assertNull(level.getRootNode().getChild(PADDLE));
-//		assertNotNull(level.getRootNode().getChild(PADDLE_GUN));
-//		assertEquals(PADDLE_GUN, paddle.getModel().getName());
-//		assertTrue(paddle.getLocation().toString(),
-//				SHUtils.areEqual(new Vector3f(2, 3, 4), paddle.getLocation(), 
-//				0.001f));
-//		
-//		bonus.cleanup(level);
-//		assertNull(level.getRootNode().getChild(PADDLE_GUN));
-//		assertNotNull(level.getRootNode().getChild(PADDLE));
-//		assertEquals(PADDLE, paddle.getModel().getName());
-//		assertTrue(SHUtils.areEqual(new Vector3f(2, 3, 4), paddle.getLocation(), 
-//				0.001f));
+		SHPaddleGunBonus bonus = new SHPaddleGunBonus();
+		assertTrue(Math.abs(bonus.getDuration() - SHPaddleGunBonus.DURATION) < 
+				0.001f);
+		
+		SHResourceManager manager = new SHResourceManager();
+		SHGamePack.manager = manager;
+		manager.add(SHResourceManager.TYPE_MODEL, SHConstants.PADDLE, 
+				new Box(SHConstants.PADDLE,
+				new Vector3f(0, 0, 0), 2, 1, 1));
+		manager.add(SHResourceManager.TYPE_MODEL, SHConstants.PADDLE_GUN, 
+				new Box(SHConstants.PADDLE_GUN,
+				new Vector3f(0, 0, 0), 2, 1, 1));
+		
+		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
+		paddle.setLocation(new Vector3f(2, 3, 4));
+		SHGamePack.input = new SHBreakoutInputHandler(paddle);
+
+		SHScene scene = new SHScene();
+		scene.addEntity(paddle);
+		
+		bonus.apply(scene);
+		assertEquals(SHConstants.PADDLE_GUN, paddle.getModel().getName());
+		assertTrue(paddle.getLocation().toString(),
+				SHUtils.areEqual(new Vector3f(2, 3, 4), paddle.getLocation(), 
+				0.001f));
+		
+		bonus.cleanup(scene);
+		assertEquals(SHConstants.PADDLE, paddle.getModel().getName());
+		assertTrue(SHUtils.areEqual(new Vector3f(2, 3, 4), paddle.getLocation(), 
+				0.001f));
 		
 	}
 

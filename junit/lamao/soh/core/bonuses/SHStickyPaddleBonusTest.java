@@ -9,7 +9,10 @@ package lamao.soh.core.bonuses;
 import lamao.soh.core.SHBall;
 import lamao.soh.core.SHDefaultBallMover;
 import lamao.soh.core.SHDefaultPaddleHitHandler;
+import lamao.soh.core.SHEntityCreator;
+import lamao.soh.core.SHPaddle;
 import lamao.soh.core.SHPaddleSticker;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.SHStickyPaddleHitHandler;
 
 import org.junit.Test;
@@ -24,26 +27,29 @@ public class SHStickyPaddleBonusTest
 	@Test
 	public void testBonus()
 	{
-		// TODO : IMplement this
-//		SHStickyPaddleBonus bonus = new SHStickyPaddleBonus();
-//		assertTrue(Math.abs(bonus.getDuration() - SHStickyPaddleBonus.DURATION) 
-//				< 0.001f);
-//		assertTrue(bonus.isAddictive());
-//		
-//		SHLevel level = SHCoreTestHelper.createDefaultLevel();
-//		SHBall ball = level.getBalls().get(0);
-//		ball.setVelocity(0, -1, 0);
-//		
-//		bonus.apply(level);
-//		level.getPaddle().onHit(ball);
-//		assertTrue(level.getPaddle().getHitHandler() instanceof 
-//				SHStickyPaddleHitHandler);
-//		assertTrue(ball.getModel().getController(0) instanceof SHPaddleSticker);
-//		
-//		bonus.cleanup(level);
-//		assertTrue(level.getPaddle().getHitHandler() instanceof
-//				SHDefaultPaddleHitHandler);
-//		assertTrue(ball.getModel().getController(0) instanceof SHDefaultBallMover);
+		SHStickyPaddleBonus bonus = new SHStickyPaddleBonus();
+		assertTrue(Math.abs(bonus.getDuration() - SHStickyPaddleBonus.DURATION) 
+				< 0.001f);
+		assertTrue(bonus.isAddictive());
+		
+		SHScene scene = new SHScene();
+		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
+		SHBall ball1 = SHEntityCreator.createDefaultBall("ball", "ball1");
+		
+		scene.addEntity(paddle);
+		scene.addEntity(ball1);
+		ball1.setVelocity(0, -1, 0);
+		
+		bonus.apply(scene);
+		paddle.onHit(ball1);
+		assertTrue(paddle.getHitHandler() instanceof 
+				SHStickyPaddleHitHandler);
+		assertTrue(ball1.getRoot().getController(0) instanceof SHPaddleSticker);
+		
+		bonus.cleanup(scene);
+		assertTrue(paddle.getHitHandler() instanceof
+				SHDefaultPaddleHitHandler);
+		assertTrue(ball1.getRoot().getController(0) instanceof SHDefaultBallMover);
 		
 		
 	}

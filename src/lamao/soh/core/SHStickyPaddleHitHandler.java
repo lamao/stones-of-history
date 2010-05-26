@@ -27,20 +27,20 @@ public class SHStickyPaddleHitHandler implements ISHPaddleHitHandler
 		if (ball.getVelocity().y < 0)
 		{
 			Controller controller = null;
-			int n = ball.getModel().getControllers().size();
+			int n = ball.getRoot().getControllers().size();
 			for (int i = 0; i < n; i++)
 			{
-				controller = ball.getModel().getController(i);
+				controller = ball.getRoot().getController(i);
 				if (controller instanceof SHDefaultBallMover)
 				{
-					ball.getModel().removeController(i);
+					ball.getRoot().removeController(i);
 				}
 				if (controller instanceof SHPaddleSticker)
 				{
 					return;
 				}
 			}
-			ball.getModel().addController(new SHPaddleSticker(ball, paddle.getModel()));
+			ball.getRoot().addController(new SHPaddleSticker(ball, paddle.getRoot()));
 		}
 	}
 	
