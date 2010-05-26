@@ -141,9 +141,9 @@ public class SHEventDispatcherTest
 		SHEventCounter counter = new SHEventCounter();
 		_dispatcher.addHandler("all", counter);
 		
-		_dispatcher.addTimeEvent(new SHTimeEvent("type", "sender", null, .4f));
-		_dispatcher.addTimeEvent(new SHTimeEvent("type1", "sender", null, .2f));
-		_dispatcher.addTimeEvent(new SHTimeEvent("type2", null, null, .3f));
+		_dispatcher.addEvent(new SHEvent("type", "sender", null, .4f));
+		_dispatcher.addEvent(new SHEvent("type1", "sender", null, .2f));
+		_dispatcher.addEvent(new SHEvent("type2", null, null, .3f));
 		_dispatcher.update(0.1f);
 		assertEquals(0, counter.getNumEvents("type"));
 		assertEquals(0, counter.getNumEvents("type1"));
@@ -172,7 +172,7 @@ public class SHEventDispatcherTest
 		_dispatcher.addHandler("all", handler);
 		
 		_dispatcher.addEvent("type", "name", null);
-		_dispatcher.addTimeEvent("type1", "name1", null, 100);
+		_dispatcher.addEventEx("type1", "name1", null, 100);
 		_dispatcher.reset();
 		
 		assertEquals(0, _dispatcher.getHandlers().size());
@@ -185,21 +185,22 @@ public class SHEventDispatcherTest
 	}
 	
 	@Test
-	public void testPrologEvent() throws InterruptedException
+	public void testProlongEvent() throws InterruptedException
 	{
 		SHEventCounter counter = new SHEventCounter();
 		_dispatcher.addHandler("all", counter);
 		
-		_dispatcher.addTimeEvent(new SHTimeEvent("type", "sender", null, .3f));
-		_dispatcher.addTimeEvent(new SHTimeEvent("type1", "sender", null, .2f));
+		_dispatcher.addEvent("type", "sender", 0.3f, null);
+		_dispatcher.addEvent("type1", "sender", 0.3f, null);
 		_dispatcher.update(0.1f);
+		
 		_dispatcher.prolongTimeEvent("type1", .2f);
 		_dispatcher.update(0.25f);
-		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
+		
 		assertEquals(1, counter.getNumEvents("type"));
 		assertEquals(0, counter.getNumEvents("type1"));
-		_dispatcher.update(0.1f);
-		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).execute();
+		
+		_dispatcher.update(0.2f);		
 		assertEquals(1, counter.getNumEvents("type"));
 		assertEquals(1, counter.getNumEvents("type1"));
 	}
@@ -207,7 +208,7 @@ public class SHEventDispatcherTest
 	@Test
 	public void testGetTimeEvent()
 	{
-		_dispatcher.addTimeEvent(new SHTimeEvent("type1", "sender", null, 200));
+		_dispatcher.addEvent("type1", "sender", 0.2f, null);
 		assertTrue(_dispatcher.hasTimeEvent("type1"));
 		assertFalse(_dispatcher.hasTimeEvent("type2"));
 	}

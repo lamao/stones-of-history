@@ -12,11 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.concurrent.Callable;
 
 import lamao.soh.core.SHUtils;
 
-import com.jme.util.GameTaskQueueManager;
 
 /**
  * Dispatcher for all game events. Plays as a singleton, but clients can create
@@ -29,7 +27,7 @@ public class SHEventDispatcher
 	private Map<String, List<ISHEventHandler>> _handlers = 
 			new TreeMap<String, List<ISHEventHandler>>();
 	
-	private List<SHTimeEvent> _timedEvents = new LinkedList<SHTimeEvent>();
+	private List<SHEvent> _timeEvents = new LinkedList<SHEvent>();
 	
 	public SHEventDispatcher()
 	{		
@@ -54,10 +52,28 @@ public class SHEventDispatcher
 	public void reset()
 	{
 		_handlers.clear();
-		_timedEvents.clear();
+		_timeEvents.clear();
 	}
 	
+	/**
+	 * Adds event. If event.time >= 0 than this is simple event and it will be sent
+	 * immediately. If event.tim < 0 this is time event and it will be added to
+	 * event queue.
+	 * @param event
+	 */
 	public void addEvent(SHEvent event)
+	{
+		if (event.time < 0)
+		{
+			addSimpleEvent(event);
+		}
+		else 
+		{
+			addTimeEvent(event);
+		}
+	}
+	
+	private void addSimpleEvent(SHEvent event)
 	{
 		notifySupervisors(event);
 		List<ISHEventHandler> handlers = getHandlers(event.type);
@@ -98,8 +114,17 @@ public class SHEventDispatcher
 	 */
 	public void addEventEx(String type, Object sender, Object... params)
 	{
-		
 		addEvent(type, sender, SHUtils.buildEventMap(params));
+	}
+	
+	public void addEvent(String type, Object sender, float time, Map<String, Object> params)
+	{
+		addEvent(new SHEvent(type, sender, params, time));
+	}
+	
+	public void addEventEx(String type, Object sender, float time, Object... params)
+	{
+		addEvent(type, sender, time, SHUtils.buildEventMap(params));
 	}
 	
 	/**
@@ -143,38 +168,38 @@ public class SHEventDispatcher
 	 * <code>time</code> values.
 	 * @param event
 	 */
-	public void addTimeEvent(SHTimeEvent event)
+	private void addTimeEvent(SHEvent event)
 	{
-		Iterator<SHTimeEvent> it = _timedEvents.iterator();
-		SHTimeEvent e = null;
+		Iterator<SHEvent> it = _timeEvents.iterator();
+		SHEvent e = null;
 		while (it.hasNext())
 		{
 			e = it.next();
 			if (e.time >= event.time)
 			{
-				_timedEvents.add(_timedEvents.indexOf(e), event);
+				_timeEvents.add(_timeEvents.indexOf(e), event);
 				return;
 			}
 		}
 
-		_timedEvents.add(event);
+		_timeEvents.add(event);
 	}
 	
-	public void addTimeEvent(String type, Object sender, 
-			Map<String, Object> params, int time)
-	{
-		addTimeEvent(new SHTimeEvent(type, sender, params, time));
-	}
-	
-	public void addTimeEvent(String type, Object sender, float time, Object... params)
-	{
-		addTimeEvent(new SHTimeEvent(type, sender, 
-				SHUtils.buildEventMap(params), time));
-	}
+//	private void addTimeEvent(String type, Object sender, 
+//			Map<String, Object> params, int time)
+//	{
+//		addTimeEvent(new SHEvent(type, sender, params, time));
+//	}
+//	
+//	private void addTimeEvent(String type, Object sender, float time, Object... params)
+//	{
+//		addTimeEvent(new SHEvent(type, sender, 
+//				SHUtils.buildEventMap(params), time));
+//	}
 	
 	int getNumberOfTimeEvents()
 	{
-		return _timedEvents.size();
+		return _timeEvents.size();
 	}
 	
 	/**
@@ -185,9 +210,9 @@ public class SHEventDispatcher
 	 */
 	public void prolongTimeEvent(String type, float time)
 	{
-		Iterator<SHTimeEvent> it = _timedEvents.iterator();
+		Iterator<SHEvent> it = _timeEvents.iterator();
 		// find event of such type
-		SHTimeEvent event = null;
+		SHEvent event = null;
 		while (it.hasNext())
 		{
 			event = it.next();
@@ -201,25 +226,25 @@ public class SHEventDispatcher
 		// move event according its new time
 		if (it.hasNext())
 		{
-			SHTimeEvent laterEvent = null;
+			SHEvent laterEvent = null;
 			while (it.hasNext())
 			{
 				laterEvent = it.next();
 				if (laterEvent.time >= event.time)
 				{
-					_timedEvents.remove(event);
-					_timedEvents.add(_timedEvents.indexOf(laterEvent), event);
+					_timeEvents.remove(event);
+					_timeEvents.add(_timeEvents.indexOf(laterEvent), event);
 					return;
 				}
 			}
-			_timedEvents.remove(event);
-			_timedEvents.add(event);
+			_timeEvents.remove(event);
+			_timeEvents.add(event);
 		}
 	}
 	
 	public boolean hasTimeEvent(String type)
 	{
-		for (SHTimeEvent event : _timedEvents)
+		for (SHEvent event : _timeEvents)
 		{
 			if (event.type.equals(type))
 			{
@@ -245,7 +270,7 @@ public class SHEventDispatcher
 	 */
 	private void updateEventTime(float time)
 	{
-		for (SHTimeEvent event : _timedEvents)
+		for (SHEvent event : _timeEvents)
 		{
 			event.time -= time;
 		}
@@ -257,27 +282,27 @@ public class SHEventDispatcher
 	private void checkEvents()
 	{
 		List<SHEvent> eventsToSent = new LinkedList<SHEvent>();
-		SHTimeEvent event = null;
+		SHEvent event = null;
 		do
 		{
-			if (!_timedEvents.isEmpty())
+			if (!_timeEvents.isEmpty())
 			{
-				event = _timedEvents.get(0);
+				event = _timeEvents.get(0);
 				if (event.time <= 0)
 				{
 					eventsToSent.add(event);
 //					addEvent(event);
-					_timedEvents.remove(event);
+					_timeEvents.remove(event);
 				}
 			}
 		}
-		while (!_timedEvents.isEmpty() && event.time <= 0);
+		while (!_timeEvents.isEmpty() && event.time <= 0);
 		
 		if (!eventsToSent.isEmpty())
 		{
 			for (SHEvent e : eventsToSent)
 			{
-				addEvent(e);
+				addSimpleEvent(e);
 			}
 		}
 	}

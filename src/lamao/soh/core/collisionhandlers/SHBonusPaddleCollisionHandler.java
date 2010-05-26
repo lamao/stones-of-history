@@ -32,8 +32,7 @@ public class SHBonusPaddleCollisionHandler implements ISHEventHandler
 			if (dispatcher.hasTimeEvent(eventName))
 			{
 				needAdd = false;
-				dispatcher.prolongTimeEvent(eventName, 
-						(int)bonus.getDuration());
+				dispatcher.prolongTimeEvent(eventName, bonus.getDuration());
 				dispatcher.addEventEx("level-bonus-prolongated", this, 
 						"bonus", bonus);
 			}
@@ -41,7 +40,7 @@ public class SHBonusPaddleCollisionHandler implements ISHEventHandler
 		if (needAdd)
 		{
 			String eventType = "bonus-over-" + bonus;
-			dispatcher.addTimeEvent(eventType, this, (int)bonus.getDuration(), 
+			dispatcher.addEventEx(eventType, this, bonus.getDuration(), 
 					"bonus", bonus);
 			dispatcher.addHandler(eventType, new SHBonusTimeOverEventHandler());
 			bonus.apply(SHGamePack.scene);

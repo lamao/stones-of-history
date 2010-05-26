@@ -23,15 +23,33 @@ public class SHEvent
 	/** Additional parameters of event (event specific) */
 	public Map<String, Object> params;
 	
+	/** Time to fire this event. time < 0 if event has to be fired immediately */
+	public float time;
+
+	/**
+	 * Constructs time event 
+	 */
+	public SHEvent(String type, Object sender, Map<String, Object> params, float time)
+	{
+		this(type, sender, params);
+		this.time = time;
+	}
+	
+	/**
+	 * Constructs immediately event
+	 */
 	public SHEvent(String type, Object sender, Map<String, Object> params)
 	{
+		this();
 		this.type = type;
 		this.sender = sender;
 		this.params = params;
 	}
 	
 	public SHEvent()
-	{}
+	{
+		time = -1;
+	}
 	
 	@Override
 	public String toString()
