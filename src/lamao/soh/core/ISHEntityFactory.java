@@ -10,7 +10,7 @@ import java.util.Map;
 
 
 /**
- * Factory for crating entities from metadata
+ * Factory for creating entities from metadata
  * @author lamao
  *
  */

@@ -156,6 +156,9 @@ public class SHBall extends SHEntity
 		
 	}
 	
+	/**
+	 * Computes normal for given triangle.
+	 */
 	private Vector3f computeTriNormal(Vector3f v1, Vector3f v2, Vector3f v3)
 	{
 		

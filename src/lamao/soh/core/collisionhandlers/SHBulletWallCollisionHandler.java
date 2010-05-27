@@ -6,7 +6,7 @@
  */
 package lamao.soh.core.collisionhandlers;
 
-import lamao.soh.core.SHScene;
+import lamao.soh.core.SHGamePack;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
@@ -20,8 +20,7 @@ public class SHBulletWallCollisionHandler implements ISHEventHandler
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHScene scene = (SHScene)event.sender;
 		SHBall bullet = (SHBall)event.params.get("src");
-		scene.removeEntity(bullet);
+		SHGamePack.scene.removeEntity(bullet);
 	}
 }

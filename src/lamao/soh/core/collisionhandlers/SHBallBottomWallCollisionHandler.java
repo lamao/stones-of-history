@@ -10,7 +10,7 @@ import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBottomWall;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
-import static lamao.soh.core.SHGamePack.*;
+import lamao.soh.core.SHGamePack;
 
 /**
  * Handler for ball collision with bottom wall
@@ -28,14 +28,14 @@ public class SHBallBottomWallCollisionHandler implements ISHEventHandler
 		if (wall.isActive())
 		{
 			ball.getVelocity().y = -ball.getVelocity().y;
-			dispatcher.addEvent("level-wall-hit", this, null);
+			SHGamePack.dispatcher.addEvent("level-wall-hit", this, null);
 		}
 		else
 		{
-			scene.removeEntity(ball);
-			if (scene.getEntities(ball.getType()) == null)
+			SHGamePack.scene.removeEntity(ball);
+			if (SHGamePack.scene.getEntities(ball.getType()) == null)
 			{
-				dispatcher.addEvent("level-failed", this, null);
+				SHGamePack.dispatcher.addEvent("level-failed", this, null);
 			}
 		}
 	}

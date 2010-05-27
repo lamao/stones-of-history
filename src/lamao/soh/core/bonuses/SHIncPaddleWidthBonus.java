@@ -32,9 +32,6 @@ public class SHIncPaddleWidthBonus extends SHBonus
 		this(null);
 	}
 	
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#apply(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void apply(SHScene scene)
 	{
@@ -43,9 +40,6 @@ public class SHIncPaddleWidthBonus extends SHBonus
 		paddle.updateModelBound();
 	}
 
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void cleanup(SHScene scene)
 	{

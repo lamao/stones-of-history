@@ -10,7 +10,7 @@ import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
-import static lamao.soh.core.SHGamePack.*;
+import lamao.soh.core.SHGamePack;
 
 /**
  * @author lamao
@@ -24,7 +24,7 @@ public class SHBallPaddleCollisionHandler implements ISHEventHandler
 		SHBall ball = (SHBall)event.params.get("src");
 		SHPaddle paddle = (SHPaddle)event.params.get("dst");
 		
-		dispatcher.addEvent("level-paddle-hit", this, null);
+		SHGamePack.dispatcher.addEvent("level-paddle-hit", this, null);
 		paddle.onHit(ball);
 	}
 

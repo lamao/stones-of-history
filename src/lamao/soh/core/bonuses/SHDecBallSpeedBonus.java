@@ -39,9 +39,7 @@ public class SHDecBallSpeedBonus extends SHBonus
 	{
 		this(null);
 	}
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#apply(lamao.soh.core.SHLevel)
-	 */
+	
 	@Override
 	public void apply(SHScene scene)
 	{
@@ -60,9 +58,6 @@ public class SHDecBallSpeedBonus extends SHBonus
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void cleanup(SHScene scene)
 	{

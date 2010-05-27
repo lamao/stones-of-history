@@ -58,9 +58,6 @@ public class SHIncBallSpeedBonus extends SHBonus
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void cleanup(SHScene scene)
 	{

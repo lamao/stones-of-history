@@ -11,7 +11,7 @@ import java.util.List;
 import lamao.soh.core.entities.SHBrick;
 
 /**
- * Game context for breakout
+ * Game context for Stones of History
  * @author lamao
  *
  */

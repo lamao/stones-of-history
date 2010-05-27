@@ -33,9 +33,6 @@ public class SHBottomWallBonus extends SHBonus
 		this(null);
 	}
 	
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#apply(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void apply(SHScene scene)
 	{
@@ -43,9 +40,6 @@ public class SHBottomWallBonus extends SHBonus
 		wall.setActive(true);
 	}
 
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void cleanup(SHScene scene)
 	{

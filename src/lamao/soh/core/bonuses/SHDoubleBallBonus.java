@@ -36,9 +36,6 @@ public class SHDoubleBallBonus extends SHBonus
 		this(null);
 	}
 
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#apply(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void apply(SHScene scene)
 	{
@@ -72,9 +69,6 @@ public class SHDoubleBallBonus extends SHBonus
 				(float)Math.sin(angle) * speed, 0);
 	}
 
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void cleanup(SHScene scene)
 	{

@@ -10,7 +10,7 @@ import lamao.soh.core.SHEntity;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
-import static lamao.soh.core.SHGamePack.*;
+import lamao.soh.core.SHGamePack;
 
 /**
  * @author lamao
@@ -34,7 +34,7 @@ public class SHBallWallCollisionHandler implements ISHEventHandler
 			ball.getVelocity().y = -ball.getVelocity().y;
 		}
 		
-		dispatcher.addEventEx("level-wall-hit", this, "wall-type", wall.getName());
+		SHGamePack.dispatcher.addEventEx("level-wall-hit", this, "wall-type", wall.getName());
 	}
 
 }

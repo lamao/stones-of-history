@@ -39,9 +39,6 @@ public class SHStickyPaddleBonus extends SHBonus
 		this(null);
 	}
 	
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#apply(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void apply(SHScene scene)
 	{
@@ -49,9 +46,6 @@ public class SHStickyPaddleBonus extends SHBonus
 		paddle.setHitHandler(new SHStickyPaddleHitHandler());
 	}
 	
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void cleanup(SHScene scene)
 	{

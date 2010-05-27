@@ -24,6 +24,9 @@ import com.jme.scene.TriMesh;
 public class SHUtils
 {
 
+	/**
+	 * Checks if two vectors are equal with specified accuracy.
+	 */
 	public static boolean areEqual(Vector3f v1, Vector3f v2, float accuracy)
 	{
 		return Math.abs(v1.x - v2.x) < accuracy &&
@@ -31,6 +34,9 @@ public class SHUtils
 			   Math.abs(v1.z - v2.z) < accuracy;
 	}
 	
+	/**
+	 * Checks if <code>value</code> is in rang p1..p2
+	 */
 	public static boolean inRange(float value, float p1, float p2)
 	{
 		return (p1 <= value && value <= p2) || (p2 <= value && value <= p1);
@@ -72,7 +78,7 @@ public class SHUtils
 	
 	/**
 	 * Converts string name of format 'first-second-other' to class name of 
-	 * format [prefix]FirstSecondOther[suffix]
+	 * format <code>[prefix]FirstSecondOther[suffix]</code>
 	 * @param prefix - prefix, typically packet name and begin of class name
 	 * @param name - name, typically class name
 	 * @param suffix - suffix, typically end of class name 
@@ -116,6 +122,13 @@ public class SHUtils
 		return result;
 	}
 	
+	/**
+	 * Builds map from array. The size of array must be 2 * n and 
+	 * 0, 2, 4, ..., 2 * i items must be strings.<br>
+	 * Designed to be used in event manager.
+	 * @param data - array key-vaule pairs.
+	 * @return map
+	 */
 	public static Map<String, Object> buildEventMap(Object... data)
 	{
 		Map<String, Object> parameters = null;

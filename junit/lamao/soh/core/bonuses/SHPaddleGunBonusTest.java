@@ -46,7 +46,6 @@ public class SHPaddleGunBonusTest
 	@Test
 	public void testBonus()
 	{
-		// TODO : Implement this
 		SHPaddleGunBonus bonus = new SHPaddleGunBonus();
 		assertTrue(Math.abs(bonus.getDuration() - SHPaddleGunBonus.DURATION) < 
 				0.001f);

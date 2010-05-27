@@ -7,6 +7,7 @@
 package lamao.soh.states;
 
 import lamao.soh.console.SHConsoleState;
+import lamao.soh.console.SHSetBonusCommand;
 import lamao.soh.console.SHWireFrameCommand;
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHGamePack;
@@ -137,6 +138,8 @@ public class SHLevelState extends BasicGameState
 				}
 			}
 		});
+		
+		console.add("set-bonus", new SHSetBonusCommand());
 		
 	}
 	

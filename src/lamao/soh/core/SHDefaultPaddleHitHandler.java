@@ -22,11 +22,6 @@ import com.jme.math.Vector3f;
  */
 public class SHDefaultPaddleHitHandler implements ISHPaddleHitHandler
 {
-
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.ISHPaddleHitHandler#execute(lamao.soh.core.SHBall, 
-	 * lamao.soh.core.SHPaddle)
-	 */
 	@Override
 	public void execute(SHBall ball, SHPaddle paddle)
 	{

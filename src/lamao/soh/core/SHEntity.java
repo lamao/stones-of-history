@@ -114,10 +114,4 @@ public class SHEntity
 		return _name;
 	}
 	
-//	@Override
-//	public String toString()
-//	{
-//		return "Entity <" + _type + ", " + _name + ">";
-//	}
-
 }

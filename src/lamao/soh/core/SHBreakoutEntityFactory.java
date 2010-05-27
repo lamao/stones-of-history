@@ -16,6 +16,7 @@ import lamao.soh.utils.SHResourceManager;
 import com.jme.scene.Spatial;
 
 /**
+ * Entity factory for stones of history.
  * @author lamao
  *
  */

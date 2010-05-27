@@ -65,15 +65,6 @@ public class SHMain
 				.getEntity("paddle", "paddle"));
 		SHGamePack.input.addAction(new SHMouseBallLauncher(SHGamePack.scene));
 		
-		
-//		SHDpsToJme loader = new SHDpsToJme();
-//		loader.load(new File("data/epochs/test_epoch/level1.dps"));
-//		Node models = (Node)loader.getResult();
-//		
-//		SHLevel level = new SHLevelLoader().load(SHGamePack.manager, models, 
-//				new File("data/epochs/test_epoch/metadata1.xml"));
-//		level.updateDeletebleBricks();
-		
 		SHConsoleState console = new SHConsoleState(SHConsoleState.STATE_NAME);
 		GameStateManager.getInstance().attachChild(console);
 		

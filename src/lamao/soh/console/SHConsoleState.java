@@ -1,5 +1,5 @@
 /* 
- * SDAConsoleCommand.java 26.03.2010
+ * SHConsoleCommand.java 26.03.2010
  * 
  * Copyright 2010 Stones of History
  * All rights reserved. 
