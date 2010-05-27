@@ -7,8 +7,8 @@
 package lamao.soh.core.bonuses;
 
 import static junit.framework.Assert.*;
-import lamao.soh.core.SHBottomWall;
 import lamao.soh.core.SHScene;
+import lamao.soh.core.entities.SHBottomWall;
 
 import org.junit.Test;
 

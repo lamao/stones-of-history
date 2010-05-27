@@ -8,9 +8,9 @@ package lamao.soh.core.bonuses;
 
 import static junit.framework.Assert.*;
 import lamao.soh.core.SHEntityCreator;
-import lamao.soh.core.SHPaddle;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
+import lamao.soh.core.entities.SHPaddle;
 
 import org.junit.Test;
 

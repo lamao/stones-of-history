@@ -4,7 +4,10 @@
  * Copyright 2010 Stones of History
  * All rights reserved. 
  */
-package lamao.soh.core;
+package lamao.soh.core.entities;
+
+
+import lamao.soh.core.SHEntity;
 
 import com.jme.scene.Spatial;
 

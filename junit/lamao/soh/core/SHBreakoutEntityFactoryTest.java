@@ -9,6 +9,8 @@ package lamao.soh.core;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.bonuses.SHDoubleBallBonus;
 import lamao.soh.core.bonuses.SHIncPaddleWidthBonus;
+import lamao.soh.core.entities.SHBottomWall;
+import lamao.soh.core.entities.SHBrick;
 import lamao.soh.utils.SHResourceManager;
 
 import org.junit.Test;

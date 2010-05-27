@@ -9,10 +9,10 @@ package lamao.soh;
 import java.util.LinkedList;
 import java.util.List;
 
-import lamao.soh.core.SHBall;
-import lamao.soh.core.SHBrick;
-import lamao.soh.core.SHDefaultBallMover;
-import lamao.soh.core.SHPaddle;
+import lamao.soh.core.controllers.SHDefaultBallMover;
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.entities.SHBrick;
+import lamao.soh.core.entities.SHPaddle;
 
 import com.jme.app.SimpleGame;
 import com.jme.bounding.BoundingBox;

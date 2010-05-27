@@ -4,7 +4,12 @@
  * Copyright 2010 Stones of History
  * All rights reserved. 
  */
-package lamao.soh.core;
+package lamao.soh.core.controllers;
+
+import lamao.soh.core.SHEntityCreator;
+import lamao.soh.core.SHUtils;
+import lamao.soh.core.controllers.SHDefaultBallMover;
+import lamao.soh.core.entities.SHBall;
 
 import org.junit.Test;
 

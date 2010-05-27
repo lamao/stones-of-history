@@ -4,9 +4,16 @@
  * Copyright 2010 Stones of History
  * All rights reserved. 
  */
-package lamao.soh.core;
+package lamao.soh.core.input;
 
 import lamao.soh.SHOptions;
+import lamao.soh.core.SHDefaultPaddleHitHandler;
+import lamao.soh.core.SHEntity;
+import lamao.soh.core.SHScene;
+import lamao.soh.core.controllers.SHDefaultBallMover;
+import lamao.soh.core.controllers.SHPaddleSticker;
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.entities.SHPaddle;
 
 import com.jme.input.MouseInput;
 import com.jme.input.action.InputActionEvent;

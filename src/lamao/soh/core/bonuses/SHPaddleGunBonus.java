@@ -14,12 +14,12 @@ import com.jme.scene.Spatial;
 
 import lamao.soh.SHConstants;
 import lamao.soh.SHOptions;
-import lamao.soh.core.SHBall;
-import lamao.soh.core.SHDefaultBallMover;
 import lamao.soh.core.SHGamePack;
-import lamao.soh.core.SHPaddle;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
+import lamao.soh.core.controllers.SHDefaultBallMover;
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.utils.SHResourceManager;
 
 

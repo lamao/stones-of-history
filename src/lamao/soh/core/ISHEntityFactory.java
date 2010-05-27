@@ -8,6 +8,7 @@ package lamao.soh.core;
 
 import java.util.Map;
 
+
 /**
  * Factory for crating entities from metadata
  * @author lamao

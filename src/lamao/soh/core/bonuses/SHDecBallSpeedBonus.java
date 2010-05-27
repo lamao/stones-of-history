@@ -9,10 +9,10 @@ package lamao.soh.core.bonuses;
 import java.util.LinkedList;
 import java.util.List;
 
-import lamao.soh.core.SHBall;
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
+import lamao.soh.core.entities.SHBall;
 
 import com.jme.scene.Spatial;
 

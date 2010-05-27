@@ -6,6 +6,9 @@
  */
 package lamao.soh.core;
 
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.entities.SHPaddle;
+
 /**
  * Interface for handlers ball hits with paddle. 
  * @author lamao

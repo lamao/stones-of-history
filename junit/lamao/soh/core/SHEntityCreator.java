@@ -10,6 +10,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.entities.SHBrick;
+import lamao.soh.core.entities.SHPaddle;
 
 import org.junit.Test;
 

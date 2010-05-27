@@ -4,7 +4,9 @@
  * Copyright 2010 Stones of History
  * All rights reserved. 
  */
-package lamao.soh.core;
+package lamao.soh.core.controllers;
+
+import lamao.soh.core.entities.SHBall;
 
 import com.jme.math.Vector3f;
 import com.jme.scene.Spatial;

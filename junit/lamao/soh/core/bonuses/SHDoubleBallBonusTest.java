@@ -8,11 +8,11 @@ package lamao.soh.core.bonuses;
 
 import java.util.List;
 
-import lamao.soh.core.SHBall;
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
+import lamao.soh.core.entities.SHBall;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

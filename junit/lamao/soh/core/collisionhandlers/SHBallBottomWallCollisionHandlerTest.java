@@ -10,11 +10,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import lamao.junit.common.SHEventTestCase;
-import lamao.soh.core.SHBall;
-import lamao.soh.core.SHBottomWall;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.entities.SHBottomWall;
 
 /**
  * @author lamao

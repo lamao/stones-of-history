@@ -12,10 +12,10 @@ import java.util.logging.Logger;
 import lamao.soh.SHConstants;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHGamePack;
-import lamao.soh.core.SHPaddle;
-import lamao.soh.core.SHBreakoutInputHandler;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
+import lamao.soh.core.entities.SHPaddle;
+import lamao.soh.core.input.SHBreakoutInputHandler;
 import lamao.soh.utils.SHResourceManager;
 
 import org.junit.Test;

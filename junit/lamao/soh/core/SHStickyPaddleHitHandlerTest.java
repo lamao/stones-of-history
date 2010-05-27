@@ -6,6 +6,10 @@
  */
 package lamao.soh.core;
 
+import lamao.soh.core.controllers.SHPaddleSticker;
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.entities.SHPaddle;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 

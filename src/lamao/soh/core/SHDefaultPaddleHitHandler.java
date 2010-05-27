@@ -6,6 +6,9 @@
  */
 package lamao.soh.core;
 
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.entities.SHPaddle;
+
 import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
 

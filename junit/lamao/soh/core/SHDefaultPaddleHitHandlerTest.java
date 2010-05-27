@@ -7,6 +7,8 @@
 package lamao.soh.core;
 
 import static org.junit.Assert.*;
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.entities.SHPaddle;
 
 import org.junit.Test;
 

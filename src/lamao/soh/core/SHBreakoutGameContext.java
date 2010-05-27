@@ -8,6 +8,8 @@ package lamao.soh.core;
 
 import java.util.List;
 
+import lamao.soh.core.entities.SHBrick;
+
 /**
  * Game context for breakout
  * @author lamao

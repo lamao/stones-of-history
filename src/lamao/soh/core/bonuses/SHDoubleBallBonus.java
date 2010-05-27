@@ -10,11 +10,11 @@ import java.util.List;
 
 import com.jme.scene.Spatial;
 
-import lamao.soh.core.SHBall;
-import lamao.soh.core.SHDefaultBallMover;
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
+import lamao.soh.core.controllers.SHDefaultBallMover;
+import lamao.soh.core.entities.SHBall;
 
 /**
  * Doubles number of balls

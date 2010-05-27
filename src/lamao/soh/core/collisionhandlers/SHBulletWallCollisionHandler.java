@@ -6,8 +6,8 @@
  */
 package lamao.soh.core.collisionhandlers;
 
-import lamao.soh.core.SHBall;
 import lamao.soh.core.SHScene;
+import lamao.soh.core.entities.SHBall;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
 

@@ -10,9 +10,9 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
+import lamao.soh.core.entities.SHBrick;
 import lamao.soh.utils.SHResourceManager;
 
 import org.junit.Test;

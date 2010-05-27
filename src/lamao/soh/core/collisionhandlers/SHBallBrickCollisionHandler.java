@@ -6,11 +6,11 @@
  */
 package lamao.soh.core.collisionhandlers;
 
-import lamao.soh.core.SHBall;
-import lamao.soh.core.SHBrick;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.bonuses.SHDefaultMover;
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.entities.SHBrick;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
 import static lamao.soh.core.SHGamePack.*;

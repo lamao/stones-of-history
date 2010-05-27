@@ -7,6 +7,7 @@
 package lamao.soh.core;
 
 import lamao.junit.common.SHEventTestCase;
+import lamao.soh.core.entities.SHBall;
 
 import org.junit.Before;
 import org.junit.Test;

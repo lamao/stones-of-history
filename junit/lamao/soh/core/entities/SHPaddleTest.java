@@ -4,9 +4,12 @@
  * Copyright 2010 Stones of History
  * All rights reserved. 
  */
-package lamao.soh.core;
+package lamao.soh.core.entities;
 
 import static org.junit.Assert.*;
+import lamao.soh.core.SHDefaultPaddleHitHandler;
+import lamao.soh.core.entities.SHPaddle;
+
 import org.junit.Test;
 
 import com.jme.math.Vector3f;

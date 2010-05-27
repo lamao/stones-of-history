@@ -15,9 +15,9 @@ import static org.junit.Assert.*;
 import com.jme.math.Vector3f;
 
 import lamao.junit.common.SHEventTestCase;
-import lamao.soh.core.SHBall;
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHUtils;
+import lamao.soh.core.entities.SHBall;
 import lamao.soh.utils.events.SHEvent;
 
 /**

@@ -6,14 +6,14 @@
  */
 package lamao.soh.core.bonuses;
 
-import lamao.soh.core.SHBall;
-import lamao.soh.core.SHDefaultBallMover;
 import lamao.soh.core.SHDefaultPaddleHitHandler;
 import lamao.soh.core.SHEntityCreator;
-import lamao.soh.core.SHPaddle;
-import lamao.soh.core.SHPaddleSticker;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHStickyPaddleHitHandler;
+import lamao.soh.core.controllers.SHDefaultBallMover;
+import lamao.soh.core.controllers.SHPaddleSticker;
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.entities.SHPaddle;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

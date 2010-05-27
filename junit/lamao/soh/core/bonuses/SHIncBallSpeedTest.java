@@ -6,9 +6,9 @@
  */
 package lamao.soh.core.bonuses;
 
-import lamao.soh.core.SHBall;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHScene;
+import lamao.soh.core.entities.SHBall;
 
 import org.junit.Test;
 

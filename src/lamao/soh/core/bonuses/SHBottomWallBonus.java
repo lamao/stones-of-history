@@ -8,8 +8,8 @@ package lamao.soh.core.bonuses;
 
 import com.jme.scene.Spatial;
 
-import lamao.soh.core.SHBottomWall;
 import lamao.soh.core.SHScene;
+import lamao.soh.core.entities.SHBottomWall;
 
 /**
  * Activates bottom wall (e.i. player is not failed when ball contact with 
