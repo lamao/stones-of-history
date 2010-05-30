@@ -251,6 +251,7 @@ public class SHLevelState extends BasicGameState
 						_display.getHeight() / 2 - win.getHeight(), 0);
 				_statNode.attachChild(win);
 				_statNode.updateRenderState();
+				_pause = true;
 			}
 		});
 		
@@ -265,53 +266,10 @@ public class SHLevelState extends BasicGameState
 						_display.getHeight() / 2 - win.getHeight(), 0);
 				_statNode.attachChild(win);
 				_statNode.updateRenderState();
+				_pause = true;
 			}
 		});
 		
-		dispatcher.addHandler("level-brick-hit", new ISHEventHandler()
-		{
-			@Override
-			public void processEvent(SHEvent event)
-			{
-				_events.print("Brick hit");
-			}
-		});
-		
-		dispatcher.addHandler("level-wall-hit", new ISHEventHandler()
-		{
-			@Override
-			public void processEvent(SHEvent event)
-			{
-				_events.print("Wall hit: " + event.params.get("wall-type"));
-			}
-		});
-		
-		dispatcher.addHandler("level-brick-deleted", new ISHEventHandler()
-		{
-			@Override
-			public void processEvent(SHEvent event)
-			{
-				_events.print("Brick deleted");
-				
-				SHBreakoutGameContext context = (SHBreakoutGameContext)
-					SHGamePack.context;
-				_info.print(Integer.toString(context.getNumDeletableBricks()));
-			}
-		});
-		
-		ISHEventHandler bonusHandler = new ISHEventHandler()
-		{
-			@Override
-			public void processEvent(SHEvent event)
-			{
-				_events.print(event.type + event.params.get("bonus")
-						.getClass());
-			}
-			
-		};
-		dispatcher.addHandler("level-bonus-activated", bonusHandler);
-		dispatcher.addHandler("level-bonus-deactivated", bonusHandler);		
-		dispatcher.addHandler("level-bonus-showed", bonusHandler);
 	}
 	
 	/* (non-Javadoc)
