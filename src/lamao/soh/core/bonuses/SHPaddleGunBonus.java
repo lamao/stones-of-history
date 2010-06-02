@@ -49,9 +49,6 @@ public class SHPaddleGunBonus extends SHBonus
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#apply(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void apply(SHScene scene)
 	{
@@ -69,9 +66,6 @@ public class SHPaddleGunBonus extends SHBonus
 		
 	}
 	
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.bonuses.SHBonus#cleanup(lamao.soh.core.SHLevel)
-	 */
 	@Override
 	public void cleanup(SHScene scene)
 	{
@@ -79,7 +73,7 @@ public class SHPaddleGunBonus extends SHBonus
 		
 		Spatial model = (Spatial)SHGamePack.manager.get(
 				SHResourceManager.TYPE_MODEL, SHConstants.PADDLE);
-		model.setLocalTranslation(paddle.getModel().getLocalTranslation().clone());
+		model.setLocalTranslation(paddle.getLocation().clone());
 		
 		paddle.setModel(model);
 		paddle.getRoot().updateGeometricState(0, true);
@@ -103,9 +97,6 @@ public class SHPaddleGunBonus extends SHBonus
 			_scene = scene;
 		}
 
-		/* (non-Javadoc)
-		 * @see com.jme.input.action.InputActionInterface#performAction(com.jme.input.action.InputActionEvent)
-		 */
 		@Override
 		public void performAction(InputActionEvent evt)
 		{
@@ -129,7 +120,7 @@ public class SHPaddleGunBonus extends SHBonus
 				bullet.setModel(bulletModel);
 				bullet.setLocation(paddle.getLocation().x, 
 						paddle.getLocation().y + bound.yExtent, 0);
-				bullet.getModel().addController(new SHDefaultBallMover(bullet));
+				bullet.getRoot().addController(new SHDefaultBallMover(bullet));
 
 				_scene.addEntity(bullet);
 			}
