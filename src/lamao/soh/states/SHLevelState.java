@@ -155,15 +155,6 @@ public class SHLevelState extends BasicGameState
 	
 	public void bindKeys()
 	{
-		_input.addAction(new KeyInputAction(){
-			public void performAction(InputActionEvent evt)
-			{
-				SHConsoleState console = (SHConsoleState)GameStateManager
-						.getInstance().getChild(SHConsoleState.STATE_NAME);
-				console.setActive(true);
-			}
-		}, "show console", KeyInput.KEY_GRAVE, false);
-		
 		_input.addAction(new KeyInputAction()
 		{
 			public void performAction(InputActionEvent evt)
@@ -175,7 +166,6 @@ public class SHLevelState extends BasicGameState
 
 	public SHScene getScene()
 	{
-//		return _level;
 		return _scene;
 	}
 	
@@ -190,9 +180,6 @@ public class SHLevelState extends BasicGameState
 		rootNode.updateRenderState();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.jmex.game.state.BasicGameState#update(float)
-	 */
 	@Override
 	public void update(float tpf)
 	{
@@ -209,9 +196,6 @@ public class SHLevelState extends BasicGameState
 		 SceneMonitor.getMonitor().updateViewer(tpf);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.jmex.game.state.BasicGameState#render(float)
-	 */
 	@Override
 	public void render(float tpf)
 	{
@@ -233,9 +217,6 @@ public class SHLevelState extends BasicGameState
 		SceneMonitor.getMonitor().renderViewer(renderer);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.jmex.game.state.GameState#setActive(boolean)
-	 */
 	@Override
 	public void setActive(boolean active)
 	{
@@ -282,9 +263,6 @@ public class SHLevelState extends BasicGameState
 		
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.jmex.game.state.BasicGameState#cleanup()
-	 */
 	@Override
 	public void cleanup()
 	{

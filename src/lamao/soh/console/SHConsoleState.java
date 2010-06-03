@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lamao.soh.utils.events.ISHEventHandler;
-import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 import com.jme.input.KeyInput;
@@ -55,11 +54,20 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	private SHEventDispatcher _commands = new SHEventDispatcher();
 
 	/** Visual text components for displaying commands */
-	Text _console = null;
+	private Text _console = null;
+	
+	/** Key which switches console on/off */
+	private int _switchKey = KeyInput.KEY_GRAVE;
 	
 	public SHConsoleState(String name)
 	{
+		this(name, KeyInput.KEY_GRAVE);
+	}
+	
+	public SHConsoleState(String name, int switchKey)
+	{
 		super(name);
+		_switchKey = switchKey;
 		
 		initGUI();
 		bindKeys();
@@ -120,14 +128,26 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	@Override
 	public void onKey(char character, int keyCode, boolean pressed)
 	{
-		if (!pressed || !isActive())
+		if (!pressed)
+		{
+			return;
+		}
+		
+		if (keyCode == _switchKey)
+		{
+			setActive(!isActive());
+		}
+		
+		if (!isActive())
 		{
 			return;
 		}
 		
 		if (keyCode == KeyInput.KEY_RETURN)
 		{
-			execute(_console.getText().toString());
+			String cmd = _console.getText().toString();
+			print("");
+			execute(cmd);
 		}
 		else if (keyCode == KeyInput.KEY_BACK)
 		{
@@ -178,10 +198,10 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	}
 	
 	/** Default handler of 'exit' command */ 
-	private class SHExitHandler implements ISHEventHandler
+	private class SHExitHandler extends SHBasicCommand
 	{
 		@Override
-		public void processEvent(SHEvent event)
+		public void processCommand(String[] args)
 		{
 			setActive(false);
 		}
