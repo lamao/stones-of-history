@@ -32,11 +32,19 @@ public class SHSetBonusCommand extends SHBasicCommand
 		String bonusName = args[2];
 		SHBonus bonus = (SHBonus) new SHBreakoutEntityFactory().createEntity(SHUtils.buildMap(
 				"type bonus|name " + bonusName));
-		if (bonus != null)
+		if (bonus == null)
+		{
+			printMessage("Can't create bonus <" + args[2] + ">");
+		}
+		else 
 		{
 			//TODO: Change hardcoded 'brick' type to constant from brick class.
 			SHBrick brick = (SHBrick) SHGamePack.scene.getEntity("brick", brickName);
-			if (brick != null)
+			if (brick == null)
+			{
+				printMessage("Can't find brick <" + args[1] + ">");
+			}
+			else
 			{
 				brick.setBonus(bonus);
 			}

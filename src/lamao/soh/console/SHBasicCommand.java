@@ -17,14 +17,14 @@ import lamao.soh.utils.events.SHEvent;
  */
 public abstract class SHBasicCommand implements ISHEventHandler
 {
-	/** Key for argument in event map */
-	public final static String ARGS_KEY = "args";
-	
 	/** Minimum number of arguments. NOTE: args[0] is command name */ 
 	private int _minNumArgs = -1;
 	
 	/** Maximum number of arguments. NOTE: args[0] is command name */
 	private int _maxNumArgs = Integer.MAX_VALUE;
+	
+	/** Link to console for internal usage */
+	private SHConsoleState _console = null;
 	
 	public SHBasicCommand()
 	{
@@ -59,13 +59,31 @@ public abstract class SHBasicCommand implements ISHEventHandler
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		String[] args = (String[]) event.params.get(ARGS_KEY);
-		if (args != null && args.length - 1 >= _minNumArgs && args.length - 1 <= _maxNumArgs)
+		String[] args = (String[]) event.params.get(SHConsoleState.ARGS_KEY);
+		_console = (SHConsoleState)event.params.get(SHConsoleState.CONSOLE_KEY);
+		if (args == null)
+		{
+			printMessage("Command is not typed");
+		}
+		else if (args.length - 1 < _minNumArgs || args.length - 1 > _maxNumArgs)
+		{
+			printMessage("Invalid number of arguments: " + (args.length - 1) + 
+					". Must be [" + _minNumArgs + ".." + _maxNumArgs + "]");
+		}
+		else
 		{
 			processCommand(args);
 		}
 	}
 	
 	protected abstract void processCommand(String[] args);
+	
+	protected void printMessage(String message)
+	{
+		if (_console != null)
+		{
+			_console.print(message);
+		}
+	}
 
 }

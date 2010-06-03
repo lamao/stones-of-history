@@ -28,7 +28,11 @@ public class SHActivateBonusCommand extends SHBasicCommand
 	{
 		SHBonus bonus = (SHBonus) new SHBreakoutEntityFactory().createEntity(
 				SHUtils.buildMap("type bonus|name " + args[1]));
-		if (bonus != null)
+		if (bonus == null)
+		{
+			printMessage("Can't create bonus <" + args[1] + ">");
+		}
+		else			
 		{
 			new SHBonusPaddleCollisionHandler().processEvent(new SHEvent(
 					"", this, SHUtils.buildEventMap("src", bonus)));

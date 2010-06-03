@@ -38,9 +38,15 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 {
 	/** Name of this game state */
 	public final static String STATE_NAME = "console";
+
+	/** Key for argument in event map */
+	public final static String ARGS_KEY = "args";
 	
+	/** Key for console */
+	public final static String CONSOLE_KEY = "console";
+		
 	/** Characters used for splitting command into arguments */
-	public final static String SPLITTERS = "[ =]";
+	private final static String SPLITTERS = "[ =]";
 	
 	/** Promt for console */
 	private final static String PROMT = "> ";
@@ -90,16 +96,15 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	 * @param cmd - full command
 	 * @return message from handler or error message if command is not supported
 	 */
-	public String execute(String cmd)
+	public void execute(String cmd)
 	{
 		int spaceIndex = cmd.indexOf(' ', PROMT.length());
 		String name = cmd.substring(PROMT.length(), 
 				spaceIndex != -1 ? spaceIndex : cmd.length()); 
 			
-		String result = null;
 		if (!_commands.hasHandler(name))
 		{
-			result = "Command <" + name +"> is not supported";
+			print("Command <" + name +"> is not supported");
 		}
 		else
 		{
@@ -107,9 +112,9 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 					.split(SPLITTERS);
 			Map<String, Object> args = new HashMap<String, Object>();
 			args.put("args", arguments);
+			args.put("console", this);
 			_commands.addEvent(name, this, args);
 		}
-		return result;
 	}
 	
 	@Override
@@ -122,14 +127,13 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		
 		if (keyCode == KeyInput.KEY_RETURN)
 		{
-			String result = execute(_console.getText().toString());
-			_console.print(PROMT + (result == null ? "" : result));
+			execute(_console.getText().toString());
 		}
 		else if (keyCode == KeyInput.KEY_BACK)
 		{
 			if (KeyInput.get().isControlDown())
 			{
-				_console.print(PROMT);
+				print("");
 			}
 			else
 			{
@@ -151,7 +155,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	{
 		return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || 
 				(ch >= '0' && ch <= '9') || (ch == '.') || (ch == '=') || 
-				(ch == '-') || (ch == ' ');
+				(ch == '-') || (ch == ' ') || (ch == '/');
 	}
 
 	@Override
@@ -159,9 +163,18 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	{
 		if (active)
 		{
-			_console.print(PROMT);
+			print("");
 		}
 		super.setActive(active);
+	}
+	
+	public void print(String message)
+	{
+		if (message == null)
+		{
+			message = "";
+		}
+		_console.print(PROMT + message);
 	}
 	
 	/** Default handler of 'exit' command */ 

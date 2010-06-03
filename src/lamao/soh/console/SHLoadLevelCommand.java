@@ -29,7 +29,11 @@ public class SHLoadLevelCommand extends SHBasicCommand
 	public void processCommand(String[] args)
 	{
 		File file = new File(args[1]);
-		if (file.exists())
+		if (!file.exists())
+		{
+			printMessage("File <" + args[1] + "> does not exists");
+		}
+		else
 		{
 			SHGamePack.scene.resetAll();
 			SHSceneLoader loader = new SHSceneLoader(SHGamePack.scene);

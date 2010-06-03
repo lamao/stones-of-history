@@ -24,12 +24,19 @@ public class SHBasicCommandTest
 	{
 		public String[] args;
 		public boolean processed = false;
+		public String message = null;
 		
 		@Override
 		protected void processCommand(String[] args)
 		{
 			this.args = args;
 			processed = true;
+		}
+		
+		@Override
+		protected void printMessage(String message)
+		{
+			this.message = message;
 		}
 	}
 	
@@ -55,47 +62,59 @@ public class SHBasicCommandTest
 				"args", null)));
 		assertNull(command.args);
 		assertFalse(command.processed);
+		assertNotNull(command.message);
 		
-		
+		command.message = null;
 		command.processed = false;
 		command.processEvent(new SHEvent("", null, SHUtils.buildEventMap(
 				"args", new String[] {})));
 		assertEquals(0, command.args.length);
 		assertTrue(command.processed);
+		assertNull(command.message);
 		
+		command.message = null;
 		command.processed = false;
 		command.processEvent(new SHEvent("", null, SHUtils.buildEventMap(
 				"args", new String[] {"ash"})));
 		assertEquals(1, command.args.length);
 		assertTrue(command.processed);
+		assertNull(command.message);
 	}
 	
 	@Test
 	public void testRangeProcessing()
 	{
+		command.message = null;
 		command.processed = false;
 		command.setMinNumArgs(2);
 		command.processEvent(new SHEvent("", null, SHUtils.buildEventMap(
 				"args", new String[] {"name"})));
 		assertFalse(command.processed);
+		assertNotNull(command.message);
 		
+		command.message = null;
 		command.processed = false;
 		command.setMinNumArgs(1);
 		command.processEvent(new SHEvent("", null, SHUtils.buildEventMap(
 				"args", new String[] {"name", "arg1"})));
 		assertTrue(command.processed);
+		assertNull(command.message);
 		
+		command.message = null;
 		command.processed = false;
 		command.setMaxNumArgs(2);
 		command.processEvent(new SHEvent("", null, SHUtils.buildEventMap(
 				"args", new String[] {"name", "arg1", "arg2", "arg3"})));
 		assertFalse(command.processed);
+		assertNotNull(command.message);
 		
+		command.message = null;
 		command.processed = false;
 		command.setMaxNumArgs(2);
 		command.processEvent(new SHEvent("", null, SHUtils.buildEventMap(
 				"args", new String[] {"name", "arg1", "arg2"})));
 		assertTrue(command.processed);
+		assertNull(command.message);
 	}
 
 }
