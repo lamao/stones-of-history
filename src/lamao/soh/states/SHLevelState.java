@@ -6,6 +6,7 @@
  */
 package lamao.soh.states;
 
+import lamao.soh.console.SHActivateBonusCommand;
 import lamao.soh.console.SHConsoleState;
 import lamao.soh.console.SHFPSInputCommand;
 import lamao.soh.console.SHLoadLevelCommand;
@@ -134,7 +135,7 @@ public class SHLevelState extends BasicGameState
 			public void processEvent(SHEvent event)
 			{
 				String args[] = (String[])event.params.get("args");
-				if (args.length > 2)
+				if (args.length >= 2)
 				{
 					drawNormals = Boolean.parseBoolean(args[1]);
 				}
@@ -144,6 +145,20 @@ public class SHLevelState extends BasicGameState
 		console.add("set-bonus", new SHSetBonusCommand());
 		console.add("load-level", new SHLoadLevelCommand());
 		console.add("free-camera", new SHFPSInputCommand());
+		console.add("activate-bonus", new SHActivateBonusCommand());
+		
+		console.add("pause", new ISHEventHandler() 
+		{
+			@Override
+			public void processEvent(SHEvent event)
+			{
+				String[] args = (String[])event.params.get("args");
+				if (args.length >= 2)
+				{
+					_pause = Boolean.parseBoolean(args[1]);
+				}
+			}
+		});
 	}
 	
 	public void bindKeys()
