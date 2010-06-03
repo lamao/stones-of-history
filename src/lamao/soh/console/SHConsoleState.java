@@ -136,6 +136,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		if (keyCode == _switchKey)
 		{
 			setActive(!isActive());
+			return;
 		}
 		
 		if (!isActive())
@@ -173,9 +174,10 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	
 	private boolean isValidCharacter(char ch)
 	{
-		return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || 
-				(ch >= '0' && ch <= '9') || (ch == '.') || (ch == '=') || 
-				(ch == '-') || (ch == ' ') || (ch == '/');
+		return true;
+		//return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || 
+//				(ch >= '0' && ch <= '9') || (ch == '.') || (ch == '=') || 
+//				(ch == '-') || (ch == ' ') || (ch == '/');
 	}
 
 	@Override
