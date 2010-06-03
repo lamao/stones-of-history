@@ -71,10 +71,16 @@ public class SHPaddleGunBonusTest
 		assertTrue(paddle.getLocation().toString(),
 				SHUtils.areEqual(new Vector3f(2, 3, 4), paddle.getLocation(), 
 				0.001f));
+		assertTrue(paddle.getModel().getLocalTranslation().toString(),
+				SHUtils.areEqual(new Vector3f(0, 0, 0), paddle.getModel().getLocalTranslation(), 
+				0.001f));
 		
 		bonus.cleanup(scene);
 		assertEquals(SHConstants.PADDLE, paddle.getModel().getName());
 		assertTrue(SHUtils.areEqual(new Vector3f(2, 3, 4), paddle.getLocation(), 
+				0.001f));
+		assertTrue(paddle.getModel().getLocalTranslation().toString(),
+				SHUtils.areEqual(new Vector3f(0, 0, 0), paddle.getModel().getLocalTranslation(), 
 				0.001f));
 		
 	}

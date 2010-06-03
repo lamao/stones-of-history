@@ -56,7 +56,6 @@ public class SHPaddleGunBonus extends SHBonus
 		
 		Spatial gunModel = (Spatial)SHGamePack.manager.get(
 				SHResourceManager.TYPE_MODEL, SHConstants.PADDLE_GUN);
-		gunModel.setLocalTranslation(paddle.getLocation().clone());
 		
 		paddle.setModel(gunModel);
 		paddle.getRoot().updateGeometricState(0, true);
@@ -73,7 +72,6 @@ public class SHPaddleGunBonus extends SHBonus
 		
 		Spatial model = (Spatial)SHGamePack.manager.get(
 				SHResourceManager.TYPE_MODEL, SHConstants.PADDLE);
-		model.setLocalTranslation(paddle.getLocation().clone());
 		
 		paddle.setModel(model);
 		paddle.getRoot().updateGeometricState(0, true);
