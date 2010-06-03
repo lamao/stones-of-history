@@ -11,20 +11,23 @@ import java.io.File;
 import lamao.soh.SHMain;
 import lamao.soh.core.SHGamePack;
 import lamao.soh.utils.deled.SHSceneLoader;
-import lamao.soh.utils.events.ISHEventHandler;
-import lamao.soh.utils.events.SHEvent;
 
 /**
  * Loads level from specified file
  * @author lamao
  *
  */
-public class SHLoadLevelCommand implements ISHEventHandler
+public class SHLoadLevelCommand extends SHBasicCommand
 {
-	@Override
-	public void processEvent(SHEvent event)
+	
+	public SHLoadLevelCommand()
 	{
-		String[] args = (String[])event.params.get("args");
+		super(1, 1);
+	}
+	
+	@Override
+	public void processCommand(String[] args)
+	{
 		File file = new File(args[1]);
 		if (file.exists())
 		{

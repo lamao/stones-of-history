@@ -7,6 +7,7 @@
 package lamao.soh.states;
 
 import lamao.soh.console.SHActivateBonusCommand;
+import lamao.soh.console.SHBasicCommand;
 import lamao.soh.console.SHConsoleState;
 import lamao.soh.console.SHFPSInputCommand;
 import lamao.soh.console.SHLoadLevelCommand;
@@ -119,26 +120,21 @@ public class SHLevelState extends BasicGameState
 				.getChild(SHConsoleState.STATE_NAME);
 		console.add("wired", new SHWireFrameCommand(rootNode));
 		
-		console.add("bounds", new ISHEventHandler() 
+		console.add("bounds", new SHBasicCommand(1, 1) 
 		{
 			@Override
-			public void processEvent(SHEvent event)
+			public void processCommand(String[] args)
 			{
-				String[] args = (String[])event.params.get("args");
 				drawBounds = Boolean.parseBoolean(args[1]);
 			}
 		});
 		
-		console.add("normals", new ISHEventHandler() 
+		console.add("normals", new SHBasicCommand(1, 1) 
 		{
 			@Override
-			public void processEvent(SHEvent event)
+			public void processCommand(String[] args)
 			{
-				String args[] = (String[])event.params.get("args");
-				if (args.length >= 2)
-				{
-					drawNormals = Boolean.parseBoolean(args[1]);
-				}
+				drawNormals = Boolean.parseBoolean(args[1]);
 			}
 		});
 		
@@ -147,16 +143,12 @@ public class SHLevelState extends BasicGameState
 		console.add("free-camera", new SHFPSInputCommand());
 		console.add("activate-bonus", new SHActivateBonusCommand());
 		
-		console.add("pause", new ISHEventHandler() 
+		console.add("pause", new SHBasicCommand(1, 1) 
 		{
 			@Override
-			public void processEvent(SHEvent event)
+			public void processCommand(String[] args)
 			{
-				String[] args = (String[])event.params.get("args");
-				if (args.length >= 2)
-				{
-					_pause = Boolean.parseBoolean(args[1]);
-				}
+				_pause = Boolean.parseBoolean(args[1]);
 			}
 		});
 	}

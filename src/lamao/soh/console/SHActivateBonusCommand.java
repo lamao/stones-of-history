@@ -10,19 +10,22 @@ import lamao.soh.core.SHBreakoutEntityFactory;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.collisionhandlers.SHBonusPaddleCollisionHandler;
-import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
 
 /**
  * @author lamao
  *
  */
-public class SHActivateBonusCommand implements ISHEventHandler
+public class SHActivateBonusCommand extends SHBasicCommand
 {
-	@Override
-	public void processEvent(SHEvent event)
+	public SHActivateBonusCommand()
 	{
-		String[] args = (String[])event.params.get("args");
+		super(1, 1);
+	}
+	
+	@Override
+	public void processCommand(String[] args)
+	{
 		SHBonus bonus = (SHBonus) new SHBreakoutEntityFactory().createEntity(
 				SHUtils.buildMap("type bonus|name " + args[1]));
 		if (bonus != null)

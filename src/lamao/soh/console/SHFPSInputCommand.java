@@ -14,20 +14,22 @@ import com.jme.system.DisplaySystem;
 
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
-import lamao.soh.utils.events.ISHEventHandler;
-import lamao.soh.utils.events.SHEvent;
 
 /**
  * Activates/deactivates FPS input handler in the scene. 
  * @author lamao
  *
  */
-public class SHFPSInputCommand implements ISHEventHandler
+public class SHFPSInputCommand extends SHBasicCommand
 {
-	@Override
-	public void processEvent(SHEvent event)
+	public SHFPSInputCommand()
 	{
-		String[] args = (String[]) event.params.get("args");
+		super(1, 1);
+	}
+	
+	@Override
+	public void processCommand(String[] args)
+	{
 		Boolean enable = Boolean.valueOf(args[1]);
 		FPSInputController controller = findController();
 		if (enable) 

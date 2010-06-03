@@ -12,20 +12,22 @@ import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.entities.SHBrick;
-import lamao.soh.utils.events.ISHEventHandler;
-import lamao.soh.utils.events.SHEvent;
 
 /**
  * Adds bonus to brick 
  * @author lamao
  *
  */
-public class SHSetBonusCommand implements ISHEventHandler
+public class SHSetBonusCommand extends SHBasicCommand
 {
-	@Override
-	public void processEvent(SHEvent event)
+	public SHSetBonusCommand()
 	{
-		String[] args = (String[]) event.params.get("args");
+		super(2, 2);
+	}
+	
+	@Override
+	public void processCommand(String[] args)
+	{
 		String brickName = args[1];
 		String bonusName = args[2];
 		SHBonus bonus = (SHBonus) new SHBreakoutEntityFactory().createEntity(SHUtils.buildMap(
