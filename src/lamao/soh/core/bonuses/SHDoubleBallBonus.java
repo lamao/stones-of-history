@@ -54,6 +54,7 @@ public class SHDoubleBallBonus extends SHBonus
 			setVelocityAngle(ball, angle + (float)Math.PI / 8);
 			setVelocityAngle(newBall, angle - (float)Math.PI / 8);
 			scene.addEntity(newBall);
+			newBall.getRoot().updateGeometricState(0, true);
 		}
 	}
 	

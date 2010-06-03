@@ -275,10 +275,22 @@ public class SHSceneTest extends SHEventTestCase
 		scene.addCollisionTask(new SHCollisionTask("type", "type1", false));
 		scene.reset();
 		
+		assertEquals(1, scene.getCollisionTasks().size());
+		assertEquals(0, scene.getEntities().size());
+		assertEquals(0, scene.getModels().size());
+		assertEquals(0, scene.getRootNode().getQuantity());
+		assertNull(scene.getEntity(box));
+		
+		scene.addEntity(new SHEntity("type", "name", null));
+		scene.addModel("type1", box);
+		scene.addCollisionTask(new SHCollisionTask("type", "type1", false));
+		scene.resetAll();
+		
 		assertEquals(0, scene.getCollisionTasks().size());
 		assertEquals(0, scene.getEntities().size());
 		assertEquals(0, scene.getModels().size());
 		assertEquals(0, scene.getRootNode().getQuantity());
 		assertNull(scene.getEntity(box));
+		
 	}
 }

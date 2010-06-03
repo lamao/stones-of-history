@@ -58,7 +58,6 @@ public class SHPaddleGunBonus extends SHBonus
 				SHResourceManager.TYPE_MODEL, SHConstants.PADDLE_GUN);
 		
 		paddle.setModel(gunModel);
-		paddle.getRoot().updateGeometricState(0, true);
 		
 		_action = new SHMouseGunAction(scene);
 		SHGamePack.input.addAction(_action);
@@ -74,7 +73,6 @@ public class SHPaddleGunBonus extends SHBonus
 				SHResourceManager.TYPE_MODEL, SHConstants.PADDLE);
 		
 		paddle.setModel(model);
-		paddle.getRoot().updateGeometricState(0, true);
 		
 		SHGamePack.input.removeAction(_action);
 		_action = null;
@@ -121,6 +119,7 @@ public class SHPaddleGunBonus extends SHBonus
 				bullet.getRoot().addController(new SHDefaultBallMover(bullet));
 
 				_scene.addEntity(bullet);
+				bullet.getRoot().updateGeometricState(0, true);
 			}
 			
 		}

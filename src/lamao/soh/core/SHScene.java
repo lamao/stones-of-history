@@ -167,6 +167,7 @@ public class SHScene
 		}
 		group.add(model);
 		nodeGroup.attachChild(model);
+		nodeGroup.updateRenderState();
 	}
 	
 	/**
@@ -270,13 +271,27 @@ public class SHScene
 		}
 	}
 	
+	/** 
+	 * Clears scene, but left non-entity elements (e.g. collision tasks).
+	 * Main purpose of this method is cleaning the scene loading other level
+	 */
 	public void reset()
 	{
-		_collisionTasks.clear();
 		_entities.clear();
 		_rootNode.detachAllChildren();
 		_models.clear();
 		_searchMap.clear();
+	}
+	
+	/**
+	 * Clears all scene to as it was just after creating default state.
+	 * Designed to be used in places, when we can't create new scene because we
+	 * don't want again attach scene's root node to its parent.
+	 */
+	public void resetAll()
+	{
+		this.reset();
+		_collisionTasks.clear();
 	}
 	
 //	public static void main(String[] args)

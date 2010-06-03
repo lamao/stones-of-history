@@ -42,6 +42,7 @@ public class SHBallBrickCollisionHandler implements ISHEventHandler
 				bonus.setLocation(brick.getLocation());
 				bonus.getRoot().updateGeometricState(0, true);
 				scene.addEntity(bonus);
+				bonus.getRoot().updateGeometricState(0, true);
 				SHGamePack.dispatcher.addEventEx("level-bonus-extracted", this, 
 						"bonus", bonus);
 			}

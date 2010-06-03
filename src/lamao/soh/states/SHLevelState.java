@@ -7,6 +7,8 @@
 package lamao.soh.states;
 
 import lamao.soh.console.SHConsoleState;
+import lamao.soh.console.SHFPSInputCommand;
+import lamao.soh.console.SHLoadLevelCommand;
 import lamao.soh.console.SHSetBonusCommand;
 import lamao.soh.console.SHWireFrameCommand;
 import lamao.soh.core.SHBreakoutGameContext;
@@ -140,7 +142,8 @@ public class SHLevelState extends BasicGameState
 		});
 		
 		console.add("set-bonus", new SHSetBonusCommand());
-		
+		console.add("load-level", new SHLoadLevelCommand());
+		console.add("free-camera", new SHFPSInputCommand());
 	}
 	
 	public void bindKeys()

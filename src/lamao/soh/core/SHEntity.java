@@ -67,6 +67,8 @@ public class SHEntity
 		}
 		_model = model;
 		_root.attachChild(model);
+		_root.updateRenderState();
+		_root.updateGeometricState(0, true);
 	}
 	
 	/** 
