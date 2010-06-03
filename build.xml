@@ -1,11 +1,7 @@
-<project name="stones-of-history" basedir="." default="run.testes">
+<project name="stones-of-history" basedir="." default="build.create">
 <!--=============================== Properties ==============================-->
 	
-	<!-- ***************** SETTINGS *********************** -->
-	<property name="project.build.internal" value="true" />
-	<property name="build.type" value="" />
-	<property name="project.build" value="1" />
-	<!-- ************************************************** -->
+	<property file="build.properties"/>
 	
 	<property name="project.name" value="stones-of-history" />
 	
