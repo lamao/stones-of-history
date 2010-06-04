@@ -43,6 +43,9 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	
 	/** Key for console */
 	public final static String CONSOLE_KEY = "console";
+	
+	/** Default history size */
+	public final static int DEFAULT_HISTORY_SIZE = 10;
 		
 	/** Characters used for splitting command into arguments */
 	private final static String SPLITTERS = "[ =]";
@@ -58,16 +61,23 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	
 	/** Key which switches console on/off */
 	private int _switchKey = KeyInput.KEY_GRAVE;
+
+	/** Command history. _history[0] - the latest command */
+	private SHCapacityList<String> _history = null;
+	
+	private int _historyIndex = -1;
 	
 	public SHConsoleState(String name)
 	{
-		this(name, KeyInput.KEY_GRAVE);
+		this(KeyInput.KEY_GRAVE, DEFAULT_HISTORY_SIZE);
+		setName(name);
 	}
 	
-	public SHConsoleState(String name, int switchKey)
+	public SHConsoleState(int switchKey, int historySize)
 	{
-		super(name);
+		super(STATE_NAME);
 		_switchKey = switchKey;
+		_history = new SHCapacityList<String>(historySize);
 		
 		initGUI();
 		bindKeys();
@@ -106,10 +116,11 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	 */
 	public void execute(String cmd)
 	{
-		int spaceIndex = cmd.indexOf(' ', PROMT.length());
-		String name = cmd.substring(PROMT.length(), 
-				spaceIndex != -1 ? spaceIndex : cmd.length()); 
-			
+		int spaceIndex = cmd.indexOf(' ');
+		String name = cmd.substring(0, spaceIndex != -1 ? spaceIndex : cmd.length());
+		
+		saveCommand(cmd);
+		
 		if (!_commands.hasHandler(name))
 		{
 			print("Command <" + name +"> is not supported");
@@ -123,6 +134,13 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 			args.put("console", this);
 			_commands.addEvent(name, this, args);
 		}
+	}
+	
+	
+	/** Saves command to history */
+	private void saveCommand(String cmd)
+	{
+		_history.add(0, cmd);
 	}
 	
 	@Override
@@ -147,8 +165,10 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		if (keyCode == KeyInput.KEY_RETURN)
 		{
 			String cmd = _console.getText().toString();
-			print("");
+			cmd = cmd.substring(PROMT.length(), cmd.length());
+			print("");			
 			execute(cmd);
+			_historyIndex = -1;
 		}
 		else if (keyCode == KeyInput.KEY_BACK)
 		{
@@ -163,6 +183,32 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 				{
 					s.deleteCharAt(s.length() - 1);
 				}
+			}
+		}
+		else if (keyCode == KeyInput.KEY_UP)
+		{
+			_historyIndex++;
+			if (_historyIndex >= _history.size())
+			{
+				_historyIndex = _history.size() - 1;
+				print("Command {" + _historyIndex + "} is the oldest saved command");
+			}
+			else
+			{
+				print(_history.get(_historyIndex));
+			}
+		}
+		else if (keyCode == KeyInput.KEY_DOWN)
+		{
+			_historyIndex--;
+			if (_historyIndex < 0)
+			{
+				_historyIndex = 0;
+				print("Command {" + _historyIndex + "} is the latest saved command");
+			}
+			else
+			{
+				print(_history.get(_historyIndex));
 			}
 		}
 		else if (isValidCharacter(character))
