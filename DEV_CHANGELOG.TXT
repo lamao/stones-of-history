@@ -1,0 +1,25 @@
+-------------------------------------------------------------------------------
+----------------------------- Stones of History -------------------------------
+-------------------------------------------------------------------------------
+
+                     Copyright (C) 2010 Stones of History
+                 WWW: http://stones-of-history.googlecode.com
+
+                            --------------------
+                                INTRODUCTION
+                            --------------------
+This file contains main changes across builds (also called change log). It
+reflects changes for each build (internal and public).
+
+                            --------------------
+                               C H A N G E S
+                            --------------------
+Build #1
+--------
+[+] Core functionality (three types of bricks, bonuses).
+[+] Level loading from DPS file.
+[+] Multiline game console with history and coloring.
+[+] SHScene architecture.
+[+] Event dispatcher.
+[+] Resource manager.
+

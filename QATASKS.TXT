@@ -1,0 +1,9 @@
+QA tasks for build #1
+
+Test:
+- Game core functionality (brick types, bonuses).
+- Level loading from DPS file.
+- Console functionality (multiline, history, message coloring).
+- Optional: Resource manager.
+
+Don't test:

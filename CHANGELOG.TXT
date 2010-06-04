@@ -1,0 +1,19 @@
+-------------------------------------------------------------------------------
+----------------------------- Stones of History -------------------------------
+-------------------------------------------------------------------------------
+
+                     Copyright (C) 2010 Stones of History
+                 WWW: http://stones-of-history.googlecode.com
+
+                            --------------------
+                                INTRODUCTION
+                            --------------------
+This file contains main changes across public builds (also called change log). 
+It reflects changes from the end-user point of view.
+
+                            --------------------
+                               C H A N G E S
+                            --------------------
+Build #
+--------
+
