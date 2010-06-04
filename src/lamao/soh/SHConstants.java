@@ -13,6 +13,8 @@ package lamao.soh;
  */
 public interface SHConstants
 {
+	public final int BUILD_NUMBER = 1;
+	
 	// Entity names. Defines names of resources in res manager, in
 	// configuration files and obj-files
 	public String LEFT_WALL = "left-wall";

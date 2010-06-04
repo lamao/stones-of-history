@@ -48,7 +48,7 @@
 	    </fileset>
 	</path>
 	
-	<path id="compile.testes.classpath">
+	<path id="compile.tests.classpath">
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar" />			
 		</fileset>
@@ -87,12 +87,12 @@
 			classpathref="compile.classpath"/>
 	</target>
 	
-	<target name="compile.testes" depends="compile">
+	<target name="compile.tests" depends="compile">
 		<javac srcdir="${testes.dir}" destdir="${build.testes.dir}"
-			classpathref="compile.testes.classpath" />
+			classpathref="compile.tests.classpath" />
 	</target>
 	
-	<target name="run.testes" depends="compile.testes">
+	<target name="run.tests" depends="compile.tests">
 		<copy todir="${build.testes.dir}/data">
 			<fileset dir="${testes.dir}/data" />
 		</copy>
@@ -104,7 +104,7 @@
 	        </batchtest>
 	        <formatter type="plain" usefile="false"/>
 	        <classpath path="${build.testes.dir}" />
-			<classpath refid="compile.testes.classpath" />
+			<classpath refid="compile.tests.classpath" />
 	    </junit>
 	</target>
 	
@@ -175,7 +175,7 @@
 	
 	<target name="build.create">
 		<antcall target="prepare" />
-		<antcall target="run.testes" />
+		<antcall target="run.tests" />
 		<antcall target="pack.gui" />
 		<antcall target="jar.create.windows" />
 		<antcall target="jar.create.linux32" />

@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.jme.input.KeyInput;
+import com.jme.input.dummy.DummyKeyInput;
 import com.jme.system.DisplaySystem;
 import com.jme.system.dummy.DummySystemProvider;
 
@@ -28,6 +29,7 @@ public class SHConsoleStateTest
 	{
 		Logger.getLogger("").setLevel(Level.OFF);
 		DisplaySystem.setSystemProvider(new DummySystemProvider());
+		KeyInput.setProvider(DummyKeyInput.class);
 	}
 	
 	class SHDummyCommand extends SHBasicCommand

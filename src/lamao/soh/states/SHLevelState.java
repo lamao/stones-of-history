@@ -6,6 +6,7 @@
  */
 package lamao.soh.states;
 
+import lamao.soh.SHConstants;
 import lamao.soh.console.SHActivateBonusCommand;
 import lamao.soh.console.SHBasicCommand;
 import lamao.soh.console.SHConsoleState;
@@ -60,7 +61,7 @@ public class SHLevelState extends BasicGameState
 	
 	private Text _info = null;
 	
-	private Text _events = null;
+	private Text _buildNumber = null;
 	
 	private DisplaySystem _display = DisplaySystem.getDisplaySystem();
 	
@@ -109,9 +110,12 @@ public class SHLevelState extends BasicGameState
 				0, 0);
 		_statNode.attachChild(_info);
 		
-		_events = Text.createDefaultTextLabel("events", "events");
-		_events.setLocalTranslation(_display.getWidth() * 3 / 4, 0, 0);
-		_statNode.attachChild(_events);
+		_buildNumber = Text.createDefaultTextLabel("build-number", "BUILD #" + 
+				SHConstants.BUILD_NUMBER);
+		_buildNumber.setLocalTranslation(
+				_display.getWidth() - _buildNumber.getWidth() - 20, 
+				_display.getHeight() - _buildNumber.getHeight(), 0);
+		_statNode.attachChild(_buildNumber);
 	}
 	
 	public void initConsole()
@@ -236,7 +240,6 @@ public class SHLevelState extends BasicGameState
 			@Override
 			public void processEvent(SHEvent event)
 			{
-				_events.print("Victory");
 				Text win = Text.createDefaultTextLabel("win", "YOU ARE WINNER");
 				win.setLocalTranslation(_display.getWidth() / 2 - win.getWidth() / 2,
 						_display.getHeight() / 2 - win.getHeight(), 0);
@@ -251,7 +254,6 @@ public class SHLevelState extends BasicGameState
 			@Override
 			public void processEvent(SHEvent event)
 			{
-				_events.print("Defeat");
 				Text win = Text.createDefaultTextLabel("fail", "YOU ARE LOOSER");
 				win.setLocalTranslation(_display.getWidth() / 2 - win.getWidth() / 2,
 						_display.getHeight() / 2 - win.getHeight(), 0);
