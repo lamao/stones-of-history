@@ -34,7 +34,7 @@ public class SHSetBonusCommand extends SHBasicCommand
 				"type bonus|name " + bonusName));
 		if (bonus == null)
 		{
-			printMessage("Can't create bonus <" + args[2] + ">");
+			warning("Can't create bonus <" + args[2] + ">");
 		}
 		else 
 		{
@@ -42,7 +42,7 @@ public class SHSetBonusCommand extends SHBasicCommand
 			SHBrick brick = (SHBrick) SHGamePack.scene.getEntity("brick", brickName);
 			if (brick == null)
 			{
-				printMessage("Can't find brick <" + args[1] + ">");
+				warning("Can't find brick <" + args[1] + ">");
 			}
 			else
 			{

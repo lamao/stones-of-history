@@ -31,7 +31,7 @@ public class SHLoadLevelCommand extends SHBasicCommand
 		File file = new File(args[1]);
 		if (!file.exists())
 		{
-			printMessage("File <" + args[1] + "> does not exists");
+			warning("File <" + args[1] + "> does not exists");
 		}
 		else
 		{

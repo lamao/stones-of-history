@@ -14,6 +14,7 @@ import lamao.soh.utils.events.SHEventDispatcher;
 
 import com.jme.input.KeyInput;
 import com.jme.input.KeyInputListener;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Text;
 import com.jme.system.DisplaySystem;
 import com.jmex.game.state.BasicGameState;
@@ -50,7 +51,20 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	
 	/** Default number of lines in console */
 	public final static int DEFAULT_LINES_NUMBER = 10;
+	
+	/** Default console color (used for commands */
+	public final static ColorRGBA DEFAULT_COLOR = ColorRGBA.white.clone();
+	
+	/** Default color for messages */
+	public final static ColorRGBA INFO_COLOR = ColorRGBA.gray.clone();
+	
+	/** Default color for warnings */
+	public final static ColorRGBA WARNING_COLOR = ColorRGBA.yellow.clone();
+	
+	/** Default color for errors */
+	public final static ColorRGBA ERROR_COLOR = ColorRGBA.red.clone();
 		
+	
 	/** Characters used for splitting command into arguments */
 	private final static String SPLITTERS = "[ =]";
 	
@@ -88,6 +102,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		bindKeys();
 		
 		add("exit", new SHExitHandler());
+		add("echo", new SHEchoCommand());
 		
 		rootNode.updateRenderState();
 	}
@@ -133,7 +148,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		
 		if (!_commands.hasHandler(name))
 		{
-			print("Command <" + name +"> is not supported");
+			warning("Command <" + name +"> is not supported");
 		}
 		else
 		{
@@ -184,7 +199,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		{
 			if (KeyInput.get().isControlDown())
 			{
-				print("");
+				setText("");
 			}
 			else
 			{
@@ -201,12 +216,9 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 			if (_historyIndex >= _history.size())
 			{
 				_historyIndex = _history.size() - 1;
-				print("Command {" + _historyIndex + "} is the oldest saved command");
+				info("Command {" + _historyIndex + "} is the oldest saved command");
 			}
-			else
-			{
-				setText(_history.get(_historyIndex));
-			}
+			setText(_history.get(_historyIndex));
 		}
 		else if (keyCode == KeyInput.KEY_DOWN)
 		{
@@ -214,12 +226,9 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 			if (_historyIndex < 0)
 			{
 				_historyIndex = 0;
-				print("Command {" + _historyIndex + "} is the latest saved command");
+				info("Command {" + _historyIndex + "} is the latest saved command");
 			}
-			else
-			{
-				setText(_history.get(_historyIndex));
-			}
+			setText(_history.get(_historyIndex));
 		}
 		else if (isValidCharacter(character))
 		{
@@ -241,27 +250,48 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	{
 		if (active)
 		{
-			print("");
+			setText("");
 		}
 		super.setActive(active);
 	}
 	
 	/** Print message and scroll console one line up */
-	public void print(String message)
+	public void print(String message, ColorRGBA color)
 	{
-		setText(message);
+		setText(message, color);
 		scrollUp();
 		_console[0].print(PROMT);
 	}
 	
+	public void info(String message)
+	{
+		print(message, INFO_COLOR);
+	}
+	
+	public void warning(String message)
+	{
+		print(message, WARNING_COLOR);
+	}
+	
+	public void error(String message)
+	{
+		print(message, ERROR_COLOR);
+	}
+	
 	/** Prints text and does not scroll console */
-	public void setText(String message)
+	private void setText(String message, ColorRGBA color)
 	{
 		if (message == null)
 		{
 			message = "";
 		}
+		_console[0].setTextColor(color);
 		_console[0].print(PROMT + message);
+	}
+	
+	private void setText(String message)
+	{
+		setText(message, DEFAULT_COLOR);
 	}
 	
 	/** Scrolls all lines up one line */ 
@@ -273,8 +303,10 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		}
 		for (int i = _console.length - 1; i > 0; i--)
 		{
+			_console[i].setTextColor(_console[i - 1].getTextColor());
 			_console[i].print(_console[i - 1].getText());
 		}
+		_console[0].setTextColor(DEFAULT_COLOR);
 		_console[0].print(PROMT);
 	}
 	

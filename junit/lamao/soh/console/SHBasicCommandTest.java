@@ -34,7 +34,7 @@ public class SHBasicCommandTest
 		}
 		
 		@Override
-		protected void printMessage(String message)
+		protected void error(String message)
 		{
 			this.message = message;
 		}

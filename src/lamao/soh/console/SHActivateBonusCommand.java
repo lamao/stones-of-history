@@ -30,7 +30,7 @@ public class SHActivateBonusCommand extends SHBasicCommand
 				SHUtils.buildMap("type bonus|name " + args[1]));
 		if (bonus == null)
 		{
-			printMessage("Can't create bonus <" + args[1] + ">");
+			warning("Can't create bonus <" + args[1] + ">");
 		}
 		else			
 		{

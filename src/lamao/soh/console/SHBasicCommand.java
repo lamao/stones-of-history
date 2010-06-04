@@ -6,6 +6,8 @@
  */
 package lamao.soh.console;
 
+import com.jme.renderer.ColorRGBA;
+
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
 
@@ -63,11 +65,11 @@ public abstract class SHBasicCommand implements ISHEventHandler
 		_console = (SHConsoleState)event.params.get(SHConsoleState.CONSOLE_KEY);
 		if (args == null)
 		{
-			printMessage("Command is not typed");
+			error("Command is not typed");
 		}
 		else if (args.length - 1 < _minNumArgs || args.length - 1 > _maxNumArgs)
 		{
-			printMessage("Invalid number of arguments: " + (args.length - 1) + 
+			error("Invalid number of arguments: " + (args.length - 1) + 
 					". Must be [" + _minNumArgs + ".." + _maxNumArgs + "]");
 		}
 		else
@@ -78,11 +80,35 @@ public abstract class SHBasicCommand implements ISHEventHandler
 	
 	protected abstract void processCommand(String[] args);
 	
-	protected void printMessage(String message)
+	protected void print(String message, ColorRGBA color)
 	{
 		if (_console != null)
 		{
-			_console.print(message);
+			_console.print(message, color);
+		}
+	}
+	
+	protected void info(String message)
+	{
+		if (_console != null)
+		{
+			_console.info(message);
+		}
+	}
+	
+	protected void warning(String message)
+	{
+		if (_console != null)
+		{
+			_console.warning(message);
+		}
+	}
+	
+	protected void error(String message)
+	{
+		if (_console != null)
+		{
+			_console.error(message);
 		}
 	}
 
