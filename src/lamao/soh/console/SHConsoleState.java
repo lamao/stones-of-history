@@ -8,6 +8,7 @@ package lamao.soh.console;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -34,11 +35,13 @@ import com.jmex.game.state.BasicGameState;
  * maintained. You should do it youself.
  * @author lamao
  */
-// TODO: Write unit tests for console
 public class SHConsoleState extends BasicGameState implements KeyInputListener
 {
 	/** Name of this game state */
 	public final static String STATE_NAME = "console";
+	
+	/** Promt for console */
+	public  final static String PROMT = "> ";
 
 	/** Key for argument in event map */
 	public final static String ARGS_KEY = "args";
@@ -67,9 +70,6 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	
 	/** Characters used for splitting command into arguments */
 	private final static String SPLITTERS = "[ =]";
-	
-	/** Promt for console */
-	private final static String PROMT = "> ";
 	
 	/** Registered commands */
 	private SHEventDispatcher _commands = new SHEventDispatcher();
@@ -101,7 +101,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		initGUI(numLines);
 		bindKeys();
 		
-		add("exit", new SHExitHandler());
+		add("exit", new SHExitCommand());
 		add("echo", new SHEchoCommand());
 		
 		rootNode.updateRenderState();
@@ -133,6 +133,22 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		_commands.addHandler(command, handler);
 	}
 	
+	public Set<String> getSupportedCommands()
+	{
+		return _commands.getHandledEvents();
+	}
+	
+	/** Returns text, currently showed in console */
+	public String[] getContents()
+	{
+		String[] result = new String[_console.length];
+		for (int i = 0; i < _console.length; i++)
+		{
+			result[i] = _console[i].getText().toString();
+		}
+		return result;
+	}
+	
 	/**
 	 * Find handler for given command and call its <code>execute</code>
 	 * method. 
@@ -152,8 +168,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		}
 		else
 		{
-			String[] arguments = cmd.substring(PROMT.length(), cmd.length())
-					.split(SPLITTERS);
+			String[] arguments = cmd.split(SPLITTERS);
 			Map<String, Object> args = new HashMap<String, Object>();
 			args.put("args", arguments);
 			args.put("console", this);
@@ -310,8 +325,8 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		_console[0].print(PROMT);
 	}
 	
-	/** Default handler of 'exit' command */ 
-	private class SHExitHandler extends SHBasicCommand
+	/** 'exit' command */ 
+	private class SHExitCommand extends SHBasicCommand
 	{
 		@Override
 		public void processCommand(String[] args)
