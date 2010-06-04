@@ -33,6 +33,7 @@ import com.jmex.game.state.BasicGameState;
  * maintained. You should do it youself.
  * @author lamao
  */
+// TODO: Write unit tests for console
 public class SHConsoleState extends BasicGameState implements KeyInputListener
 {
 	/** Name of this game state */
@@ -46,6 +47,9 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	
 	/** Default history size */
 	public final static int DEFAULT_HISTORY_SIZE = 10;
+	
+	/** Default number of lines in console */
+	public final static int DEFAULT_LINES_NUMBER = 10;
 		
 	/** Characters used for splitting command into arguments */
 	private final static String SPLITTERS = "[ =]";
@@ -57,7 +61,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	private SHEventDispatcher _commands = new SHEventDispatcher();
 
 	/** Visual text components for displaying commands */
-	private Text _console = null;
+	private Text[] _console = null;
 	
 	/** Key which switches console on/off */
 	private int _switchKey = KeyInput.KEY_GRAVE;
@@ -65,21 +69,22 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	/** Command history. _history[0] - the latest command */
 	private SHCapacityList<String> _history = null;
 	
+	/** Index of currently selected command from history */
 	private int _historyIndex = -1;
 	
 	public SHConsoleState(String name)
 	{
-		this(KeyInput.KEY_GRAVE, DEFAULT_HISTORY_SIZE);
+		this(KeyInput.KEY_GRAVE, DEFAULT_HISTORY_SIZE, DEFAULT_LINES_NUMBER);
 		setName(name);
 	}
 	
-	public SHConsoleState(int switchKey, int historySize)
+	public SHConsoleState(int switchKey, int historySize, int numLines)
 	{
 		super(STATE_NAME);
 		_switchKey = switchKey;
 		_history = new SHCapacityList<String>(historySize);
 		
-		initGUI();
+		initGUI(numLines);
 		bindKeys();
 		
 		add("exit", new SHExitHandler());
@@ -88,14 +93,19 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	}
 	
 	/** Initializes all gui */
-	private void initGUI()
+	private void initGUI(int numLines)
 	{
 		DisplaySystem display = DisplaySystem.getDisplaySystem();
 		
-		_console = Text.createDefaultTextLabel("console", PROMT);
-		_console.setLocalTranslation(0, display.getHeight() 
-				- _console.getHeight(), 0);
-		rootNode.attachChild(_console);
+		_console = new Text[numLines];
+		for (int i = 0; i < numLines; i++)
+		{
+			_console[i] = Text.createDefaultTextLabel("console" + i, "");
+			_console[i].setLocalTranslation(0, display.getHeight() 
+					- _console[i].getHeight() * (numLines - i), 0);
+			rootNode.attachChild(_console[i]);
+		}
+		_console[0].print(PROMT);
 	}
 	
 	private void bindKeys()
@@ -164,9 +174,9 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		
 		if (keyCode == KeyInput.KEY_RETURN)
 		{
-			String cmd = _console.getText().toString();
+			String cmd = _console[0].getText().toString();
 			cmd = cmd.substring(PROMT.length(), cmd.length());
-			print("");			
+			scrollUp();			
 			execute(cmd);
 			_historyIndex = -1;
 		}
@@ -178,7 +188,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 			}
 			else
 			{
-				StringBuffer s = _console.getText();
+				StringBuffer s = _console[0].getText();
 				if (s.length() > PROMT.length())
 				{
 					s.deleteCharAt(s.length() - 1);
@@ -195,7 +205,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 			}
 			else
 			{
-				print(_history.get(_historyIndex));
+				setText(_history.get(_historyIndex));
 			}
 		}
 		else if (keyCode == KeyInput.KEY_DOWN)
@@ -208,12 +218,12 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 			}
 			else
 			{
-				print(_history.get(_historyIndex));
+				setText(_history.get(_historyIndex));
 			}
 		}
 		else if (isValidCharacter(character))
 		{
-			_console.getText().append(character);
+			_console[0].getText().append(character);
 		}
 		
 	}
@@ -236,13 +246,36 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		super.setActive(active);
 	}
 	
+	/** Print message and scroll console one line up */
 	public void print(String message)
+	{
+		setText(message);
+		scrollUp();
+		_console[0].print(PROMT);
+	}
+	
+	/** Prints text and does not scroll console */
+	public void setText(String message)
 	{
 		if (message == null)
 		{
 			message = "";
 		}
-		_console.print(PROMT + message);
+		_console[0].print(PROMT + message);
+	}
+	
+	/** Scrolls all lines up one line */ 
+	private void scrollUp()
+	{
+		if (_console[0].getText().indexOf(PROMT) == 0)
+		{
+			_console[0].getText().replace(0, PROMT.length(), "");
+		}
+		for (int i = _console.length - 1; i > 0; i--)
+		{
+			_console[i].print(_console[i - 1].getText());
+		}
+		_console[0].print(PROMT);
 	}
 	
 	/** Default handler of 'exit' command */ 
