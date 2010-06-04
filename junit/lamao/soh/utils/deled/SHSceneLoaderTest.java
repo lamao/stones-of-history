@@ -7,18 +7,23 @@
 package lamao.soh.utils.deled;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
+import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHBrick;
 import lamao.soh.utils.SHResourceManager;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import com.jme.math.Vector3f;
 import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 import com.jme.system.DisplaySystem;
 import com.jme.system.dummy.DummySystemProvider;
 
@@ -61,8 +66,18 @@ public class SHSceneLoaderTest
 		
 		brick = (SHBrick)scene.getEntity("brick", "brick1");
 		assertEquals(1, brick.getStrength());
-		
-		
+	
+		Map<String, List<Spatial>> models = scene.getModels();
+		for (String key : models.keySet())
+		{
+			for (Spatial model : models.get(key))
+			{
+				assertFalse(model.getName() + " " + model.getLocalTranslation(), 
+						SHUtils.areEqual(model.getLocalTranslation(), 
+								new Vector3f(0, 0, 0), 0.001f));
+			}
+		}
 	}
+		
 	
 }

@@ -12,7 +12,8 @@ import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
 /**
- * Adds parsed spatial to the root node.
+ * Adds parsed spatial to the root node. It builds just a 3D jME scene and 
+ * don't care about any game-related features.
  * @author lamao
  *
  */

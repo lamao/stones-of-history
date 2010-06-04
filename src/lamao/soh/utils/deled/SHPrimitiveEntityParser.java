@@ -19,6 +19,10 @@ import org.w3c.dom.Node;
 import com.jme.scene.Spatial;
 
 /**
+ * Treats given spatial as model for entity. Creates entity based on 
+ * 'scene.primitives.primitive.tag' information, which should be set
+ * in DeleD editor. If entity can't be created spatial is treated as
+ * simple model and also is added to the scene.
  * @author lamao
  *
  */
@@ -59,6 +63,8 @@ class SHPrimitiveEntityParser extends SHPrimitiveParser
 		{
 			entity.setModel(spatial);
 			entity.setName(spatial.getName());
+			entity.setLocation(spatial.getLocalTranslation().clone());
+			spatial.setLocalTranslation(0, 0, 0);
 			_scene.addEntity(entity);
 		}
 	}

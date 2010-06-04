@@ -135,12 +135,36 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 				mesh.setName("mesh" + meshNumber++);
 				((com.jme.scene.Node)primitive).attachChild(mesh);
 			}
+			calculateNodeCenter((com.jme.scene.Node) primitive);
+			
 		}
 //		GeometryTool.minimizeVerts(_triMesh, GeometryTool.MV_SAME_COLORS | 
 //				GeometryTool.MV_SAME_NORMALS);
 		primitive.setModelBound(new BoundingBox());
 		primitive.updateModelBound();
 		return primitive;
+	}
+	
+	/**
+	 * Calculates average local translation of all node's children,
+	 * setup this point as node's local translation and correct children's
+	 * local translations.<br>
+	 * All routines are similar to {@link #calculateMeshCenter(Vector3f[])} 
+	 * @param node node
+	 */
+	private void calculateNodeCenter(com.jme.scene.Node node)
+	{
+		Vector3f center = new Vector3f(0, 0, 0);
+		for (Spatial spatial : node.getChildren())
+		{
+			center.addLocal(spatial.getLocalTranslation());
+		}
+		center.divideLocal(node.getQuantity());
+		
+		for (Spatial spatial : node.getChildren())
+		{
+			spatial.getLocalTranslation().subtractLocal(center);
+		}
 	}
 	
 	/**
@@ -161,8 +185,10 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 		Vector3f[] v = new Vector3f[_faceVertices.size()];
 		for (Integer index : _faceVertices)
 		{
-			v[i++] = vertices[index];
-		}
+			// TODO: See if this clone really need and can't be replaced
+			v[i++] = vertices[index].clone();
+		}		
+		Vector3f localTranslation = calculateMeshCenter(v);
 		
 		
 		i = 0;
@@ -196,11 +222,38 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 		applyMaterial(mesh, material);
 		mesh.updateRenderState();
 
+		mesh.setLocalTranslation(localTranslation);
 		mesh.setModelBound(new BoundingBox());
 		mesh.updateModelBound();
 		
 		return mesh;
 	}
+	
+	/**
+	 * Calculates average point of given array and treats it as the center
+	 * of mesh that will be constructed (its local translation).<br> 
+	 * <b>NOTE:</b> After calculation all vertices are
+	 * corrected by the formula <code>v[i] = v[i] - center</code>
+	 * @param vertices - vertices of mesh
+	 * @return center point of mesh. Its local translation.
+	 */
+	private Vector3f calculateMeshCenter(Vector3f[] vertices)
+	{
+		Vector3f center = new Vector3f(0, 0, 0);
+		for (Vector3f v : vertices)
+		{
+			center.addLocal(v);
+		}
+		center.divideLocal(vertices.length);
+		
+		for (Vector3f v : vertices)
+		{
+			v.subtractLocal(center);
+		}
+		
+		return center;
+	}
+	
 	
 	/**
 	 * Computes normals for each face.
@@ -304,8 +357,6 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 		public void parse(Node node)
 		{
 			// get material state for current poly
-			// TODO: Create separate node for each material state inside
-			// primitive
 			String mid = ((Element)node).getAttribute("mid");
 			_faceMaterial = _materials.get(mid);
 			if (_meshFaces.get(_faceMaterial) == null)
