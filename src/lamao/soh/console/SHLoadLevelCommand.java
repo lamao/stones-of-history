@@ -8,8 +8,8 @@ package lamao.soh.console;
 
 import java.io.File;
 
-import lamao.soh.SHMain;
 import lamao.soh.core.SHGamePack;
+import lamao.soh.core.SHScripts;
 import lamao.soh.utils.deled.SHSceneLoader;
 
 /**
@@ -38,7 +38,7 @@ public class SHLoadLevelCommand extends SHBasicCommand
 			SHGamePack.scene.resetAll();
 			SHSceneLoader loader = new SHSceneLoader(SHGamePack.scene);
 			loader.load(file);
-			SHMain.levelStartupScript();
+			SHScripts.levelStartupScript();
 		}
 	}
 	
