@@ -227,23 +227,37 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		}
 		else if (keyCode == KeyInput.KEY_UP)
 		{
-			_historyIndex++;
-			if (_historyIndex >= _history.size())
+			if (_history.isEmpty())
 			{
-				_historyIndex = _history.size() - 1;
-				info("Command {" + _historyIndex + "} is the oldest saved command");
+				info("Command history is empty");
 			}
-			setText(_history.get(_historyIndex));
+			else
+			{
+				_historyIndex++;
+				if (_historyIndex >= _history.size())
+				{
+					_historyIndex = _history.size() - 1;
+					info("Command {" + _historyIndex + "} is the oldest saved command");
+				}
+				setText(_history.get(_historyIndex));
+			}
 		}
 		else if (keyCode == KeyInput.KEY_DOWN)
 		{
-			_historyIndex--;
-			if (_historyIndex < 0)
+			if (_history.isEmpty())
 			{
-				_historyIndex = 0;
-				info("Command {" + _historyIndex + "} is the latest saved command");
+				info("Command history is empty");
 			}
-			setText(_history.get(_historyIndex));
+			else
+			{
+				_historyIndex--;
+				if (_historyIndex < 0)
+				{
+					_historyIndex = 0;
+					info("Command {" + _historyIndex + "} is the latest saved command");
+				}
+				setText(_history.get(_historyIndex));
+			}
 		}
 		else if (isValidCharacter(character) && !Character.isISOControl(character))
 		{

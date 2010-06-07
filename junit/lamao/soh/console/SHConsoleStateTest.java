@@ -159,5 +159,13 @@ public class SHConsoleStateTest
 		assertEquals(SHConsoleState.PROMT, console.getContents()[0]);
 	}
 	
+	@Test
+	public void testWalkingThroughHistory()
+	{
+		console.setActive(true);
+		console.onKey('a', KeyInput.KEY_UP, true);
+		console.onKey('a', KeyInput.KEY_DOWN, true);
+	}
+	
 
 }
