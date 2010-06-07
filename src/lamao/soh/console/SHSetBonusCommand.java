@@ -51,4 +51,10 @@ public class SHSetBonusCommand extends SHBasicCommand
 		}
 
 	}
+	
+	@Override
+	protected String getHelpMessage()
+	{
+		return "Arguments: <bonus name> <brick name>";
+	}
 }

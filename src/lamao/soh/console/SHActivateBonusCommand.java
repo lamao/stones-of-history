@@ -39,5 +39,11 @@ public class SHActivateBonusCommand extends SHBasicCommand
 		}
 		
 	}
+	
+	@Override
+	protected String getHelpMessage()
+	{
+		return "Arguments: <bonus name>";
+	}
 
 }

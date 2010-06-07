@@ -28,6 +28,9 @@ public abstract class SHBasicCommand implements ISHEventHandler
 	/** Link to console for internal usage */
 	private SHConsoleState _console = null;
 	
+	/** Argument to get help message about command */
+	public final static String HELP_ARG = "?";
+	
 	public SHBasicCommand()
 	{
 	}
@@ -67,6 +70,10 @@ public abstract class SHBasicCommand implements ISHEventHandler
 		{
 			error("Command is not typed");
 		}
+		else if (args.length >= 2 && args[1].equals(HELP_ARG))
+		{
+			info(getHelpMessage());
+		}
 		else if (args.length - 1 < _minNumArgs || args.length - 1 > _maxNumArgs)
 		{
 			error("Invalid number of arguments: " + (args.length - 1) + 
@@ -79,6 +86,12 @@ public abstract class SHBasicCommand implements ISHEventHandler
 	}
 	
 	protected abstract void processCommand(String[] args);
+	
+	/** Return a one-line help message about how this command should be used */
+	protected String getHelpMessage()
+	{
+		return "NO HELP";
+	}
 	
 	protected void print(String message, ColorRGBA color)
 	{

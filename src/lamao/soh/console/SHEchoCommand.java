@@ -38,5 +38,11 @@ public class SHEchoCommand extends SHBasicCommand
 			error(args[2]);
 		}
 	}
+	
+	@Override
+	protected String getHelpMessage()
+	{
+		return "Arguments: [info|warning|error] <message>";
+	}
 
 }

@@ -41,5 +41,11 @@ public class SHLoadLevelCommand extends SHBasicCommand
 			SHMain.levelStartupScript();
 		}
 	}
+	
+	@Override
+	protected String getHelpMessage()
+	{
+		return "Arguments: <path/to/file>";
+	}
 
 }

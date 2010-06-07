@@ -77,6 +77,11 @@ public class SHFPSInputCommand extends SHBasicCommand
 		}
 	}
 	
+	@Override
+	protected String getHelpMessage()
+	{
+		return "Arguments: true|false";
+	}
 	
 
 }

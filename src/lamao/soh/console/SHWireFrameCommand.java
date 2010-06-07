@@ -51,4 +51,9 @@ public class SHWireFrameCommand extends SHBasicCommand
 		
 	}
 	
+	@Override
+	protected String getHelpMessage()
+	{
+		return "Arguments: true|false";
+	}
 }

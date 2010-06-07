@@ -245,7 +245,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 			}
 			setText(_history.get(_historyIndex));
 		}
-		else if (isValidCharacter(character))
+		else if (isValidCharacter(character) && !Character.isISOControl(character))
 		{
 			_console[0].getText().append(character);
 		}

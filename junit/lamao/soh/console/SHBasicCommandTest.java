@@ -38,6 +38,12 @@ public class SHBasicCommandTest
 		{
 			this.message = message;
 		}
+		
+		@Override
+		protected void info(String message)
+		{
+			this.message = message;
+		}
 	}
 	
 	private SHDummyCommand command = null;
@@ -115,6 +121,20 @@ public class SHBasicCommandTest
 				"args", new String[] {"name", "arg1", "arg2"})));
 		assertTrue(command.processed);
 		assertNull(command.message);
+	}
+	
+	@Test
+	public void testHelpMessage()
+	{
+		command.message = null;
+		command.processEvent(new SHEvent("", null, SHUtils.buildEventMap(
+				"args", new String[] {"name", "?"})));
+		assertNotNull(command.message);
+		
+		command.message = null;
+		command.processEvent(new SHEvent("", null, SHUtils.buildEventMap(
+				"args", new String[] {"name", "?", "asdg", "asdg"})));
+		assertNotNull(command.message);
 	}
 
 }
