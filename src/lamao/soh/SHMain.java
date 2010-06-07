@@ -56,17 +56,14 @@ public class SHMain
 		GAME.start();
 		
 		SHGamePack.initDefaults();
-		SHGamePack.context = new SHBreakoutGameContext();
 		SHGamePack.dispatcher.addHandler("all", new SHEventLogger());
 		
 		SHGamePack.manager.loadAll(new File(
 				"data/epochs/test_epoch/appearence.txt"));
 		SHSceneLoader loader = new SHSceneLoader(SHGamePack.scene);
 		loader.load(new File("data/test/test-level.dps"));
+		dispatcherSetup();
 		levelStartupScript();
-		SHGamePack.input = new SHBreakoutInputHandler(SHGamePack.scene
-				.getEntity("paddle", "paddle"));
-		SHGamePack.input.addAction(new SHMouseBallLauncher(SHGamePack.scene));
 		
 		SHConsoleState console = new SHConsoleState(SHConsoleState.STATE_NAME);
 		GameStateManager.getInstance().attachChild(console);
@@ -104,9 +101,7 @@ public class SHMain
 		SHGamePack.scene.addEntity(paddle);
 		SHGamePack.scene.addEntity(ball);
 		
-		
 		SHScene scene = SHGamePack.scene;
-		SHEventDispatcher dispatcher = SHGamePack.dispatcher;
 		scene.addCollisionTask(new SHCollisionTask("ball", "wall", false));
 		scene.addCollisionTask(new SHCollisionTask("ball", "paddle", false));
 		scene.addCollisionTask(new SHCollisionTask("ball", "brick", true));
@@ -116,6 +111,18 @@ public class SHMain
 		scene.addCollisionTask(new SHCollisionTask("bullet", "brick", false));
 		scene.addCollisionTask(new SHCollisionTask("bullet", "wall", false));
 		
+		SHGamePack.input = new SHBreakoutInputHandler(paddle);
+		SHGamePack.input.addAction(new SHMouseBallLauncher(SHGamePack.scene));
+		
+		scene.getRootNode().updateRenderState();
+		scene.getRootNode().updateGeometricState(0, true);
+		SHGamePack.context = new SHBreakoutGameContext();
+		SHGamePack.dispatcher.deleteEvents();
+	}
+	
+	private static void dispatcherSetup()
+	{
+		SHEventDispatcher dispatcher = SHGamePack.dispatcher;
 		dispatcher.addHandler("scene-collision-ball-wall", new SHBallWallCollisionHandler());
 		dispatcher.addHandler("scene-collision-ball-paddle", new SHBallPaddleCollisionHandler());
 		dispatcher.addHandler("scene-collision-ball-brick", new SHBallBrickCollisionHandler());

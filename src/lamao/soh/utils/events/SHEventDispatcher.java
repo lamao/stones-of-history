@@ -52,6 +52,12 @@ public class SHEventDispatcher
 	public void reset()
 	{
 		_handlers.clear();
+		deleteEvents();
+	}
+	
+	/** Deletes all events but don't touch handlers */
+	public void deleteEvents()
+	{
 		_timeEvents.clear();
 	}
 	

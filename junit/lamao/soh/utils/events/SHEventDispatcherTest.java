@@ -180,7 +180,23 @@ public class SHEventDispatcherTest
 		
 		handler.eventsArrived = 0;
 		_dispatcher.addHandler("all", handler);
-		Thread.sleep(150);		
+		_dispatcher.update(0.15f);		
+		assertEquals(0, handler.eventsArrived);
+	}
+	
+	@Test
+	public void testDeleteEvents()
+	{
+		SHDummyEventHandler handler = new SHDummyEventHandler();
+		_dispatcher.addHandler("all", handler);
+		
+		_dispatcher.addEvent("type", "name", null);
+		_dispatcher.addEventEx("type1", "name1", null, 100);
+		_dispatcher.deleteEvents();		
+		assertEquals(0, _dispatcher.getNumberOfTimeEvents());
+		
+		handler.eventsArrived = 0;
+		_dispatcher.update(0.15f);
 		assertEquals(0, handler.eventsArrived);
 	}
 	
