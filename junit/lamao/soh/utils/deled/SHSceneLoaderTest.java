@@ -16,29 +16,22 @@ import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHBrick;
+import lamao.soh.ngutils.AbstractJmeTest;
 import lamao.soh.utils.SHResourceManager;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
-import com.jme.system.DisplaySystem;
-import com.jme.system.dummy.DummySystemProvider;
 
 /**
  * @author lamao
  *
  */
-public class SHSceneLoaderTest
+public class SHSceneLoaderTest extends AbstractJmeTest
 {
-
-	static
-	{
-		Logger.getLogger("").setLevel(Level.OFF);
-		DisplaySystem.setSystemProvider(new DummySystemProvider());
-	}
 	
 	@Test
 	public void testLoading()
@@ -72,9 +65,10 @@ public class SHSceneLoaderTest
 		{
 			for (Spatial model : models.get(key))
 			{
-				assertFalse(model.getName() + " " + model.getLocalTranslation(), 
+				assertFalse( 
 						SHUtils.areEqual(model.getLocalTranslation(), 
-								new Vector3f(0, 0, 0), 0.001f));
+								new Vector3f(0, 0, 0), 0.001f), 
+						model.getName() + " " + model.getLocalTranslation());
 			}
 		}
 	}

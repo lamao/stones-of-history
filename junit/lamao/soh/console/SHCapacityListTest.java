@@ -6,11 +6,11 @@
  */
 package lamao.soh.console;
 
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 import java.util.LinkedList;
 
-import org.junit.Test;
 
 /**
  * @author lamao

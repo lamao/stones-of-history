@@ -6,10 +6,10 @@
  */
 package lamao.soh.core.bonuses;
 
-import static org.junit.Assert.*;
 import lamao.soh.core.SHUtils;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;

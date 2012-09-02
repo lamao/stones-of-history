@@ -7,20 +7,14 @@
 package lamao.soh.utils.resparser;
 
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.resparser.ISHResourceParser;
 import lamao.soh.utils.resparser.SHModelParser;
 
-import org.junit.Test;
 
-import com.jme.system.DisplaySystem;
-import com.jme.system.dummy.DummySystemProvider;
-
-import static org.junit.Assert.*;
-
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 /**
  * @author lamao
  *
@@ -29,13 +23,6 @@ public class SHModelParserTest
 {
 	
 	public static String MODEL_PATH = "/data/models/monkey.jme";
-	
-	static 
-	{
-		DisplaySystem.setSystemProvider(new DummySystemProvider());
-		Logger logger = Logger.getLogger("");
-		logger.setLevel(Level.OFF);
-	}
 	
 	@Test
 	public void testParser()

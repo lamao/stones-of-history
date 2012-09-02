@@ -6,13 +6,13 @@
  */
 package lamao.soh.core.bonuses;
 
-import static junit.framework.Assert.assertTrue;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHPaddle;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 import com.jme.math.Vector3f;
 import com.jme.scene.Spatial;

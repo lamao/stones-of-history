@@ -6,15 +6,13 @@
  */
 package lamao.soh.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBrick;
 import lamao.soh.core.entities.SHPaddle;
 
-import org.junit.Test;
+
 
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;

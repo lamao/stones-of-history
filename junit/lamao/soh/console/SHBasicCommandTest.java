@@ -6,12 +6,13 @@
  */
 package lamao.soh.console;
 
-import static org.junit.Assert.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
+
 import lamao.soh.core.SHUtils;
 import lamao.soh.utils.events.SHEvent;
 
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author lamao
@@ -48,7 +49,7 @@ public class SHBasicCommandTest
 	
 	private SHDummyCommand command = null;
 	
-	@Before
+	@BeforeMethod
 	public void setUp()
 	{
 		command = new SHDummyCommand();

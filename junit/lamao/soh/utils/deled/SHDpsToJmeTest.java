@@ -7,32 +7,24 @@
 package lamao.soh.utils.deled;
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import lamao.soh.ngutils.AbstractJmeTest;
 
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.RenderState.StateType;
-import com.jme.system.DisplaySystem;
-import com.jme.system.dummy.DummySystemProvider;
 
 /**
  * @author lamao
  *
  */
-public class SHDpsToJmeTest
+public class SHDpsToJmeTest extends AbstractJmeTest
 {
 	
-	static
-	{
-		Logger.getLogger("").setLevel(Level.OFF);
-		DisplaySystem.setSystemProvider(new DummySystemProvider());
-	}
-
 	@Test
 	public void testLoading()
 	{
@@ -70,7 +62,7 @@ public class SHDpsToJmeTest
 		
 		for (Spatial spatial : scene.getChildren())
 		{
-			assertNotNull(spatial.toString(), spatial.getWorldBound());
+			assertNotNull( spatial.getWorldBound(), spatial.toString());
 			assertNotNull(spatial.getRenderState(StateType.Material));
 		}
 		

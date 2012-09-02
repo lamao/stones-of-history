@@ -6,12 +6,11 @@
  */
 package lamao.soh.core;
 
-import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 
-import org.junit.Test;
-
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 import com.thoughtworks.xstream.XStream;
 
 /**

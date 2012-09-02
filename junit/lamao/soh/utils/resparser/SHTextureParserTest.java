@@ -6,20 +6,14 @@
  */
 package lamao.soh.utils.resparser;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.resparser.ISHResourceParser;
 import lamao.soh.utils.resparser.SHTextureParser;
 
-import org.junit.Test;
-
-import com.jme.system.DisplaySystem;
-import com.jme.system.dummy.DummySystemProvider;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 /**
  * @author lamao
@@ -28,13 +22,6 @@ import com.jme.system.dummy.DummySystemProvider;
 public class SHTextureParserTest
 {
 	public static String TEXTURE_PATH = "/data/textures/bubble.jpg";
-	
-	static 
-	{
-		DisplaySystem.setSystemProvider(new DummySystemProvider());
-		Logger logger = Logger.getLogger("");
-		logger.setLevel(Level.OFF);
-	}
 	
 	@Test
 	public void testParser()

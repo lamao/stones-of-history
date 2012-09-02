@@ -9,9 +9,8 @@ package lamao.soh.core.entities;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.entities.SHBrick;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 /**
  * 
  * @author lamao

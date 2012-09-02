@@ -9,7 +9,8 @@ package lamao.junit.common;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
+import org.testng.annotations.BeforeMethod;
+
 
 import lamao.soh.core.SHGamePack;
 import lamao.soh.utils.events.SHEvent;
@@ -32,7 +33,7 @@ public class SHEventTestCase
 		dispatcher = SHGamePack.dispatcher;
 	}
 	
-	@Before
+	@BeforeMethod
 	public void setUp()
 	{
 		dispatcher.reset();

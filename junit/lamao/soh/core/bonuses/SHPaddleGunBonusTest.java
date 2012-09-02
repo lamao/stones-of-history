@@ -18,7 +18,6 @@ import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.core.input.SHBreakoutInputHandler;
 import lamao.soh.utils.SHResourceManager;
 
-import org.junit.Test;
 
 import com.jme.input.MouseInput;
 import com.jme.input.dummy.DummyMouseInput;
@@ -27,22 +26,14 @@ import com.jme.scene.shape.Box;
 import com.jme.system.DisplaySystem;
 import com.jme.system.dummy.DummySystemProvider;
 
-import static org.junit.Assert.*;
-
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 /**
  * @author lamao
  *
  */
 public class SHPaddleGunBonusTest
 {
-	static
-	{
-		DisplaySystem.setSystemProvider(new DummySystemProvider());
-		MouseInput.setProvider(DummyMouseInput.class);
-		Logger logger = Logger.getLogger("");
-		logger.setLevel(Level.OFF);
-	}
-	
 	@Test
 	public void testBonus()
 	{
@@ -68,20 +59,19 @@ public class SHPaddleGunBonusTest
 		
 		bonus.apply(scene);
 		assertEquals(SHConstants.PADDLE_GUN, paddle.getModel().getName());
-		assertTrue(paddle.getLocation().toString(),
-				SHUtils.areEqual(new Vector3f(2, 3, 4), paddle.getLocation(), 
-				0.001f));
-		assertTrue(paddle.getModel().getLocalTranslation().toString(),
-				SHUtils.areEqual(new Vector3f(0, 0, 0), paddle.getModel().getLocalTranslation(), 
-				0.001f));
+		assertTrue(SHUtils.areEqual(new Vector3f(2, 3, 4), paddle.getLocation(), 
+				0.001f),paddle.getLocation().toString());
+		assertTrue(SHUtils.areEqual(new Vector3f(0, 0, 0), paddle.getModel().getLocalTranslation(), 
+				0.001f), 
+				paddle.getModel().getLocalTranslation().toString());
 		
 		bonus.cleanup(scene);
 		assertEquals(SHConstants.PADDLE, paddle.getModel().getName());
 		assertTrue(SHUtils.areEqual(new Vector3f(2, 3, 4), paddle.getLocation(), 
 				0.001f));
-		assertTrue(paddle.getModel().getLocalTranslation().toString(),
-				SHUtils.areEqual(new Vector3f(0, 0, 0), paddle.getModel().getLocalTranslation(), 
-				0.001f));
+		assertTrue(SHUtils.areEqual(new Vector3f(0, 0, 0), paddle.getModel().getLocalTranslation(), 
+				0.001f),
+				paddle.getModel().getLocalTranslation().toString());
 		
 	}
 

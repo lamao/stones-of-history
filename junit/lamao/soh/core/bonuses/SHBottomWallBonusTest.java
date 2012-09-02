@@ -6,12 +6,11 @@
  */
 package lamao.soh.core.bonuses;
 
-import static junit.framework.Assert.*;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.entities.SHBottomWall;
 
-import org.junit.Test;
-
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 /**
  * @author lamao
  */

@@ -7,14 +7,14 @@
 package lamao.soh.core;
 
 
-import org.junit.Test;
-
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Box;
 
-import static org.junit.Assert.*;
 
 /**
  * @author lamao
@@ -22,16 +22,26 @@ import static org.junit.Assert.*;
  */
 public class SHEntityTest
 {
+	
+	private SHEntity entity;
+	
+	@BeforeMethod
+	public void setUp() {
+		entity = new SHEntity();
+	}
+	
 	@Test
-	public void testConstructors()
+	public void testConstructorDefault()
 	{
-		SHEntity entity = new SHEntity();
 		assertNotNull(entity);
 		assertNotNull(entity.getRoot());
 		assertNull(entity.getModel());
 		assertEquals("default", entity.getType());
 		assertEquals(null, entity.getName());
-		
+	}
+	
+	@Test
+	public void testParametrizedContstructor() {
 		entity = new SHEntity("type", "name", new Node("model"));
 		assertNotNull(entity.getRoot());
 		assertEquals(1, entity.getRoot().getQuantity());
@@ -44,8 +54,6 @@ public class SHEntityTest
 	@Test
 	public void testSetName()
 	{
-		SHEntity entity = new SHEntity();
-		
 		entity.setName("name");		
 		assertEquals("name", entity.getName());
 		assertEquals("name", entity.getRoot().getName());
@@ -58,7 +66,6 @@ public class SHEntityTest
 	@Test
 	public void testSetModel()
 	{
-		SHEntity entity = new SHEntity();
 		Node node = new Node("node");
 		Node node2 = new Node("node2");
 		
@@ -82,7 +89,7 @@ public class SHEntityTest
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		
-		SHEntity entity = new SHEntity(box);
+		entity = new SHEntity(box);
 		entity.setLocation(new Vector3f(0, 2, 0));
 		assertEquals(new Vector3f(0, 2, 0), entity.getLocation());
 		assertEquals(new Vector3f(0, 2, 0), entity.getRoot().getLocalTranslation());

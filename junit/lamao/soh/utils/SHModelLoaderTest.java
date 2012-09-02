@@ -7,33 +7,24 @@
 package lamao.soh.utils;
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import lamao.soh.ngutils.AbstractJmeTest;
+
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
-import com.jme.system.DisplaySystem;
-import com.jme.system.dummy.DummySystemProvider;
 
 /**
  * @author lamao
  *
  */
-public class SHModelLoaderTest
+public class SHModelLoaderTest extends AbstractJmeTest
 {
 	private final static String TEST_JME = "/data/models/monkey.jme";
 	private final static String TEST_OBJ = "/data/models/monkey.obj";
 	private final static String TEST_DPS = "/data/models/monkey.dps";
-	
-	static 
-	{
-		DisplaySystem.setSystemProvider(new DummySystemProvider());
-		Logger logger = Logger.getLogger("");
-		logger.setLevel(Level.OFF);
-	}
 	
 	@Test
 	public void testLoadJME()

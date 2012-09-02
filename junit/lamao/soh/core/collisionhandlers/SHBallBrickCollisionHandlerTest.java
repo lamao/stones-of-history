@@ -6,7 +6,6 @@
  */
 package lamao.soh.core.collisionhandlers;
 
-import static org.junit.Assert.*;
 import lamao.junit.common.SHEventTestCase;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHScene;
@@ -15,8 +14,9 @@ import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBrick;
 import lamao.soh.utils.events.SHEvent;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 import com.jme.math.Vector3f;
 
@@ -31,7 +31,7 @@ public class SHBallBrickCollisionHandlerTest extends SHEventTestCase
 	private SHBall ball = null;
 	private SHBallBrickCollisionHandler handler = new SHBallBrickCollisionHandler();
 	
-	@Before
+	@BeforeMethod
 	public void setUp()
 	{
 		super.setUp();
@@ -53,9 +53,8 @@ public class SHBallBrickCollisionHandlerTest extends SHEventTestCase
 		
 		
 		assertEquals(1, counter.getNumEvents("level-brick-deleted"));
-		assertFalse(ball.getVelocity().toString(), 
-				SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
-				0.001f));
+		assertFalse(SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
+				0.001f), ball.getVelocity().toString());
 		assertNull(scene.getEntities("brick"));
 		
 	}
@@ -71,9 +70,9 @@ public class SHBallBrickCollisionHandlerTest extends SHEventTestCase
 		
 		
 		assertEquals(0, counter.getNumEvents("level-brick-deleted"));
-		assertFalse(ball.getVelocity().toString(), 
-				SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
-				0.001f));
+		assertFalse(SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
+				0.001f),
+				ball.getVelocity().toString());
 		assertEquals(1, scene.getEntities("brick").size());
 		
 	}
@@ -89,9 +88,9 @@ public class SHBallBrickCollisionHandlerTest extends SHEventTestCase
 		
 		
 		assertEquals(1, counter.getNumEvents("level-brick-deleted"));
-		assertTrue(ball.getVelocity().toString(), 
-				SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
-				0.001f));
+		assertTrue(SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
+				0.001f),
+				ball.getVelocity().toString());
 		assertNull(scene.getEntities("brick"));
 		
 	}

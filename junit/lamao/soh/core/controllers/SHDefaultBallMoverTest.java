@@ -11,12 +11,11 @@ import lamao.soh.core.SHUtils;
 import lamao.soh.core.controllers.SHDefaultBallMover;
 import lamao.soh.core.entities.SHBall;
 
-import org.junit.Test;
 
 import com.jme.math.Vector3f;
 
-import static org.junit.Assert.*;
-
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 /**
  * @author lamao
  *

@@ -11,15 +11,14 @@ import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBrick;
 
-import org.junit.Before;
-import org.junit.Test;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
 import com.jme.scene.shape.Sphere;
 
-import static org.junit.Assert.*;
-
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*;
 /**
  * @author lamao
  *
@@ -28,7 +27,7 @@ public class SHBallTest
 {
 	private SHBrick sharedBrick;
 	
-	@Before
+	@BeforeMethod
 	public void setUp()
 	{
 		sharedBrick = SHEntityCreator.createDefaultBrick("brick");
@@ -43,7 +42,7 @@ public class SHBallTest
 		assertEquals(Vector3f.UNIT_Y, ball.getVelocity());
 		assertFalse(ball.isSuper());
 	}
-	
+
 	@Test
 	public void testBottomHit()
 	{

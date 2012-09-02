@@ -13,11 +13,11 @@ import lamao.soh.core.entities.SHBottomWall;
 import lamao.soh.core.entities.SHBrick;
 import lamao.soh.utils.SHResourceManager;
 
-import org.junit.Test;
-
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 import com.jme.scene.Node;
 
-import static org.junit.Assert.*;
+
 
 /**
  * @author lamao

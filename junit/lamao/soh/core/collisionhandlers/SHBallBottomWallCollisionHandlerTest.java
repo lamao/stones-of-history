@@ -6,8 +6,8 @@
  */
 package lamao.soh.core.collisionhandlers;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 import lamao.junit.common.SHEventTestCase;
 import lamao.soh.core.SHEntityCreator;

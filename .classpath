@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="junit"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/junit/junit-4.7.jar" sourcepath="libsource/junit-4.7-src.jar"/>
 	<classpathentry kind="lib" path="lib/jme/jme.jar" sourcepath="libsource/jme.zip"/>
 	<classpathentry kind="lib" path="lib/lwjgl/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl/lwjgl.jar">
@@ -22,5 +21,7 @@
 	<classpathentry kind="lib" path="lib/scenemonitor/sm_properties_jme2.jar"/>
 	<classpathentry kind="lib" path="lib/xstream/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="lib/xstream/xstream-1.3.1.jar" sourcepath="libsource/xstream-1.3.1-src.zip"/>
+	<classpathentry kind="lib" path="lib/mockito/mockito-core-1.9.0.jar"/>
+	<classpathentry kind="lib" path="lib/testng/testng-6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

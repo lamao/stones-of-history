@@ -6,7 +6,6 @@
  */
 package lamao.soh.utils.resparser;
 
-import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 
@@ -14,10 +13,8 @@ import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.resparser.ISHResourceParser;
 import lamao.soh.utils.resparser.SHBmFontParser;
 
-import org.junit.Test;
-
-import com.jme.system.DisplaySystem;
-import com.jme.system.dummy.DummySystemProvider;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 /**
  * @author lamao
@@ -27,11 +24,6 @@ public class SHBmFontParserTest
 {
 	public static String FONT_PATH = "/data/fonts/snap.fnt";
 	public static String FONT_TEX_PATH = "/data/fonts/snap_0.png";
-	
-	static 
-	{
-		DisplaySystem.setSystemProvider(new DummySystemProvider());
-	}
 	
 	@Test
 	public void testParser()

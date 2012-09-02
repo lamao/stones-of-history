@@ -31,6 +31,7 @@
 	<property name="build.classes.dir" value="${build.dir}/classes" />
 	<property name="build.gui.dir" value="${build.dir}/gui"/>
 	<property name="build.testes.dir" value="${build.dir}/testes"/>
+	<property name="build.testreports.dir" value="${build.dir}/test-reports"/>
 
 
 	
@@ -45,6 +46,8 @@
 	    <fileset dir="${lib.dir}">
 	      <include name="**/*.jar" />
 	      <exclude name="junit" />
+	      <exclude name="testng" />
+	      <exclude name="mockito"/>
 	    </fileset>
 	</path>
 	
@@ -53,6 +56,7 @@
 			<include name="**/*.jar" />			
 		</fileset>
 		<path location="${build.classes.dir}"/>
+		<path location="${build.testes.dir}"/>
 	</path>
 	
 <!--============================== Conditions ===============================-->
@@ -66,6 +70,10 @@
 		<equals arg1="${project.build.internal}" arg2="true"/>
 	</condition>
 	
+<!--============================ External tasks ============================ -->
+	<taskdef name="testng" classname="com.beust.testng.TestNGAntTask" 
+		classpathref="compile.tests.classpath"/>
+
 <!--=============================== Targets ================================ -->
 	
 	<target name="clean">
@@ -80,6 +88,7 @@
 		<mkdir dir="${build.jar.linux32.dir}" />
 		<mkdir dir="${build.jar.macosx.dir}" />
 		<mkdir dir="${build.testes.dir}" />
+		<mkdir dir="${build.testreports.dir}"/>
 	</target>
 	
 	<target name="compile">
@@ -96,16 +105,13 @@
 		<copy todir="${build.testes.dir}/data">
 			<fileset dir="${testes.dir}/data" />
 		</copy>
-		<junit fork="yes" haltonfailure="yes">
-	    	<batchtest>
-	        	<fileset dir="${build.testes.dir}">
-	            	<include name="**/*Test.class"/>
-	            </fileset>
-	        </batchtest>
-	        <formatter type="plain" usefile="false"/>
-	        <classpath path="${build.testes.dir}" />
-			<classpath refid="compile.tests.classpath" />
-	    </junit>
+		
+		<testng classpathref="compile.tests.classpath"
+		        outputDir="${build.testreports.dir}"
+		        haltOnFailure="true" verbose="2">
+		    <classfileset dir="${build.testes.dir}" includes="**/*Test.class" />
+		</testng>
+		
 	</target>
 	
 <!--======================== Create JARs & ZIPs =============================-->

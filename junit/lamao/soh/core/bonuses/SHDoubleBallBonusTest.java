@@ -14,8 +14,8 @@ import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHBall;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 /**
  * @author lamao
@@ -48,7 +48,7 @@ public class SHDoubleBallBonusTest
 		assertTrue(Math.abs(angle - Math.PI / 4) < 0.001f);
 		angle = SHUtils.angle(((SHBall)balls.get(1)).getVelocity()) - 
 				SHUtils.angle(((SHBall)balls.get(3)).getVelocity());
-		assertTrue(Float.toString(angle), Math.abs(angle - Math.PI / 4) < 0.001f);
+		assertTrue(Math.abs(angle - Math.PI / 4) < 0.001f, Float.toString(angle));
 		
 		// add new ball to level and double balls
 		scene.addEntity(SHEntityCreator.createDefaultBall());

@@ -9,9 +9,9 @@ package lamao.soh.core;
 import lamao.junit.common.SHEventTestCase;
 import lamao.soh.core.entities.SHBall;
 
-import org.junit.Before;
-import org.junit.Test;
-
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 import com.jme.bounding.BoundingBox;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
@@ -20,7 +20,6 @@ import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
 
-import static org.junit.Assert.*;
 
 /**
  * @author lamao
@@ -31,7 +30,7 @@ public class SHSceneTest extends SHEventTestCase
 	
 	private SHScene scene = null;
 	
-	@Before
+	@BeforeMethod
 	public void setUp()
 	{
 		super.setUp();

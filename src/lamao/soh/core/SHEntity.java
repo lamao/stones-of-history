@@ -17,8 +17,11 @@ import com.jme.scene.Spatial;
  */
 public class SHEntity
 {
+	public static final String ENTITY_TYPE_DEFAULT = "default";
+	
+	
 	/** Type of the entity */
-	private String _type = "default";
+	private String _type = ENTITY_TYPE_DEFAULT;
 
 	/** Root node for entity */
 	private Node _root = new Node("");

@@ -6,7 +6,6 @@
  */
 package lamao.soh.utils.resparser;
 
-import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -16,8 +15,8 @@ import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.resparser.ISHResourceParser;
 import lamao.soh.utils.resparser.SHTtFontParser;
 
-import org.junit.Test;
-
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 /**
  * @author lamao
  *

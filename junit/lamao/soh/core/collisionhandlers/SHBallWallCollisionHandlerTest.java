@@ -9,8 +9,8 @@ package lamao.soh.core.collisionhandlers;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 import com.jme.math.Vector3f;
 

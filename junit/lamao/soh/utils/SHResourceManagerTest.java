@@ -12,24 +12,21 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import lamao.soh.ngutils.AbstractJmeTest;
 import lamao.soh.utils.resparser.ISHResourceParser;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
-import com.jme.system.DisplaySystem;
-import com.jme.system.dummy.DummySystemProvider;
-
-import static org.junit.Assert.*;
 
 /**
  * @author lamao
  *
  */
-public class SHResourceManagerTest
+public class SHResourceManagerTest extends AbstractJmeTest 
 {
 	private class DummyParser implements ISHResourceParser
 	{
@@ -40,15 +37,12 @@ public class SHResourceManagerTest
 	}
 	
 	private SHResourceManager manager = null;
-	private static String line = null;
-	private static String line2 = null;
+	private String line = null;
+	private String line2 = null;
 	
-	static
+	@BeforeMethod
+	public void setUp()
 	{
-		DisplaySystem.setSystemProvider(new DummySystemProvider());
-		Logger logger = Logger.getLogger("");
-		logger.setLevel(Level.OFF);
-		
 		String type = SHResourceManager.TYPE_MODEL;
 		String path = SHResourceManagerTest.class
 				.getResource("/data/models/monkey.jme").getPath();
@@ -58,10 +52,11 @@ public class SHResourceManagerTest
 		path = SHResourceManagerTest.class
 			.getResource("/data/textures/bubble.jpg").getPath();
 		line2 = "type=" + type + " label=texture1 path='" + path + "'";
+		
 	}
 	
-	@Before
-	public void setUp()
+	@BeforeMethod
+	public void setupTest() 
 	{
 		manager = new SHResourceManager();
 	}

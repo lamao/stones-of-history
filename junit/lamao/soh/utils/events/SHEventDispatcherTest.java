@@ -6,13 +6,13 @@
  */
 package lamao.soh.utils.events;
 
-import org.junit.Before;
-import org.junit.Test;
 
 import com.jme.util.GameTaskQueue;
 import com.jme.util.GameTaskQueueManager;
 
-import static org.junit.Assert.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 /**
  * @author lamao
@@ -33,7 +33,7 @@ public class SHEventDispatcherTest
 	
 	private SHEventDispatcher _dispatcher = null;
 	
-	@Before
+	@BeforeMethod
 	public void setUp()
 	{
 		_dispatcher = new SHEventDispatcher();

@@ -6,32 +6,21 @@
  */
 package lamao.soh.console;
 
-import static org.junit.Assert.*;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import lamao.soh.ngutils.AbstractJmeTest;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 import com.jme.input.KeyInput;
-import com.jme.input.dummy.DummyKeyInput;
-import com.jme.system.DisplaySystem;
-import com.jme.system.dummy.DummySystemProvider;
 
 /**
  * @author lamao
  *
  */
-public class SHConsoleStateTest
+public class SHConsoleStateTest extends AbstractJmeTest
 {
-	static
-	{
-		Logger.getLogger("").setLevel(Level.OFF);
-		DisplaySystem.setSystemProvider(new DummySystemProvider());
-		KeyInput.setProvider(DummyKeyInput.class);
-	}
-	
 	class SHDummyCommand extends SHBasicCommand
 	{
 		public String[] command;
@@ -46,8 +35,8 @@ public class SHConsoleStateTest
 	private SHDummyCommand command = new SHDummyCommand();
 	private SHConsoleState console;
 	
-	@Before
-	public void setUp()
+	@BeforeMethod
+	public void setUpTest()
 	{
 		console = new SHConsoleState("console");
 	}
