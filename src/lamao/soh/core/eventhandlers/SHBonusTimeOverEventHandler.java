@@ -24,7 +24,7 @@ public class SHBonusTimeOverEventHandler implements ISHEventHandler
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHBonus bonus = (SHBonus)event.params.get("bonus");
+		SHBonus bonus = (SHBonus)event.parameters.get("bonus");
 		
 		bonus.cleanup(SHGamePack.scene);
 		

@@ -23,5 +23,7 @@
 	<classpathentry kind="lib" path="lib/xstream/xstream-1.3.1.jar" sourcepath="libsource/xstream-1.3.1-src.zip"/>
 	<classpathentry kind="lib" path="lib/mockito/mockito-core-1.9.0.jar"/>
 	<classpathentry kind="lib" path="lib/testng/testng-6.0.jar"/>
+	<classpathentry kind="lib" path="lib/mockito/com.springsource.org.hamcrest.core-1.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/mockito/com.springsource.org.objenesis-1.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

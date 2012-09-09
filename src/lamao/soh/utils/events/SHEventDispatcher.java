@@ -110,6 +110,11 @@ public class SHEventDispatcher
 		addEvent(new SHEvent(type, sender, params));
 	}
 	
+	public void addEvent(String type, Object sender) 
+	{
+		addEvent(type, sender, null);
+	}
+	
 	/**
 	 * Add event. <code>params</code> must have length = n pow 2 and must
 	 * consist of pairs <code>[String key, Object value, ..., 

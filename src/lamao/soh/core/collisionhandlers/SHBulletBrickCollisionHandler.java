@@ -20,7 +20,7 @@ public class SHBulletBrickCollisionHandler extends SHBallBrickCollisionHandler
 	public void processEvent(SHEvent event)
 	{
 		super.processEvent(event);
-		SHBall bullet = (SHBall)event.params.get("src");
+		SHBall bullet = (SHBall)event.parameters.get("src");
 		SHGamePack.scene.removeEntity(bullet);
 	}
 

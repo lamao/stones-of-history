@@ -7,13 +7,18 @@
 package lamao.soh.core;
 
 
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
+import static org.mockito.Mockito.*;
 
 
 /**
@@ -22,20 +27,49 @@ import com.jme.scene.shape.Box;
  */
 public class SHEntityTest
 {
+	@Mock
+	private Node root;
+	@Mock
+	private Node model;
 	
 	private SHEntity entity;
 	
+	@BeforeTest
+	public void initalizeMocks() {
+		MockitoAnnotations.initMocks(this);
+		entity = new SHEntity();
+		entity.setRoot(root);
+		
+		when(root.attachChild(any(Spatial.class))).thenReturn(1);
+		
+	}
+	
+	
 	@BeforeMethod
 	public void setUp() {
-		entity = new SHEntity();
+		
 	}
+	
 	
 	@Test
 	public void testConstructorDefault()
 	{
+		SHEntity entity = new SHEntity();
+		assertNotNull(entity);
+		assertNull(entity.getRoot());
+		assertNull(entity.getModel());
+		assertEquals("default", entity.getType());
+		assertEquals(null, entity.getName());
+	}
+	
+	@Test
+	public void testConstructorWithModel()
+	{
+		SHEntity entity = new SHEntity(model);
+		entity.setRoot(root);
 		assertNotNull(entity);
 		assertNotNull(entity.getRoot());
-		assertNull(entity.getModel());
+		assertSame(entity.getModel(), model);
 		assertEquals("default", entity.getType());
 		assertEquals(null, entity.getName());
 	}

@@ -109,19 +109,19 @@ public class SHEventDispatcherTest
 		_dispatcher.addHandler("all", counter);
 		
 		_dispatcher.addEventEx("1", null, "1", 2, "3", 4);
-		assertNotNull(counter.lastEvent.params);
-		assertTrue(2 == counter.lastEvent.params.size());
-		assertEquals(2, counter.lastEvent.params.get("1"));
-		assertEquals(4, counter.lastEvent.params.get("3"));
+		assertNotNull(counter.lastEvent.parameters);
+		assertTrue(2 == counter.lastEvent.parameters.size());
+		assertEquals(2, counter.lastEvent.parameters.get("1"));
+		assertEquals(4, counter.lastEvent.parameters.get("3"));
 		
 		_dispatcher.addEventEx("1", null, (Object[])null);
-		assertNull(counter.lastEvent.params);
+		assertNull(counter.lastEvent.parameters);
 		
 		_dispatcher.addEventEx("1", null, (Object)null);
-		assertNull(counter.lastEvent.params);
+		assertNull(counter.lastEvent.parameters);
 		
 		_dispatcher.addEventEx("1", null, "124");
-		assertNull(counter.lastEvent.params);
+		assertNull(counter.lastEvent.parameters);
 	}
 	
 	@Test 

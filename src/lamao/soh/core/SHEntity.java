@@ -11,7 +11,7 @@ import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
 /**
- * Game entity, which has model.
+ * Game entity (e.g. ball or box). Has a model as member variable.
  * @author lamao
  *
  */
@@ -24,7 +24,7 @@ public class SHEntity
 	private String _type = ENTITY_TYPE_DEFAULT;
 
 	/** Root node for entity */
-	private Node _root = new Node("");
+	private Node _root;
 	
 	/** Collidable model for this root. Other spatials attached to the root
 	 * node are treated as decoration, effect etc. 
@@ -44,6 +44,7 @@ public class SHEntity
 	public SHEntity(Spatial model)
 	{
 		this();
+		_root = new Node("");
 		_model = model;
 		_root.attachChild(model);
 	}
@@ -55,6 +56,10 @@ public class SHEntity
 	public Node getRoot()
 	{
 		return _root;
+	}
+	
+	public void setRoot(Node root) {
+		_root = root;
 	}
 	
 	public Spatial getModel()
@@ -118,5 +123,7 @@ public class SHEntity
 	{
 		return _name;
 	}
+	
+
 	
 }

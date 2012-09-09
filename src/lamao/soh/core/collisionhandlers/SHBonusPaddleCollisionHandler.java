@@ -21,7 +21,7 @@ public class SHBonusPaddleCollisionHandler implements ISHEventHandler
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHBonus bonus = (SHBonus)event.params.get("src");
+		SHBonus bonus = (SHBonus)event.parameters.get("src");
 		
 		SHGamePack.scene.removeEntity(bonus);
 		boolean needAdd = true;

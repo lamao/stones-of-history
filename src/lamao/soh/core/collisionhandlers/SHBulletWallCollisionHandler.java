@@ -20,7 +20,7 @@ public class SHBulletWallCollisionHandler implements ISHEventHandler
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHBall bullet = (SHBall)event.params.get("src");
+		SHBall bullet = (SHBall)event.parameters.get("src");
 		SHGamePack.scene.removeEntity(bullet);
 	}
 }

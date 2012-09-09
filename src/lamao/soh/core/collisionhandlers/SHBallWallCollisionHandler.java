@@ -21,8 +21,8 @@ public class SHBallWallCollisionHandler implements ISHEventHandler
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHBall ball = (SHBall)event.params.get("src");
-		SHEntity wall = (SHEntity)event.params.get("dst");
+		SHBall ball = (SHBall)event.parameters.get("src");
+		SHEntity wall = (SHEntity)event.parameters.get("dst");
 		
 		if (wall.getName().equals("left-wall") || 
 			wall.getName().equals("right-wall"))

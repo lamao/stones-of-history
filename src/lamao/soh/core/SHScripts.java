@@ -92,7 +92,8 @@ public class SHScripts
 		dispatcher.addHandler("level-brick-deleted", new SHBrickDeletedEventHandler());
 		dispatcher.addHandler("scene-collision-bonus-bottom-wall", new SHBonusBottomWallCollisionHandler());
 		dispatcher.addHandler("scene-collision-bonus-paddle", new SHBonusPaddleCollisionHandler());
-		dispatcher.addHandler("scene-collision-ball-bottom-wall", new SHBallBottomWallCollisionHandler());
+		dispatcher.addHandler("scene-collision-ball-bottom-wall", 
+				new SHBallBottomWallCollisionHandler(SHGamePack.dispatcher));
 		dispatcher.addHandler("scene-collision-bullet-brick", new SHBulletBrickCollisionHandler());
 		dispatcher.addHandler("scene-collision-bullet-wall", new SHBulletWallCollisionHandler());
 		

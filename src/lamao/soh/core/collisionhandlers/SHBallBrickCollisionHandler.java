@@ -24,8 +24,8 @@ public class SHBallBrickCollisionHandler implements ISHEventHandler
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHBrick brick = (SHBrick)event.params.get("dst");
-		SHBall ball = (SHBall)event.params.get("src");
+		SHBrick brick = (SHBrick)event.parameters.get("dst");
+		SHBall ball = (SHBall)event.parameters.get("src");
 		
 		SHGamePack.dispatcher.addEventEx("level-brick-hit", this, "brick", brick);
 		ball.onHit(brick);

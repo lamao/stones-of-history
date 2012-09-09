@@ -10,7 +10,8 @@ import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBottomWall;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
-import lamao.soh.core.SHGamePack;
+import lamao.soh.utils.events.SHEventDispatcher;
+import lamao.soh.core.SHScene;
 
 /**
  * Handler for ball collision with bottom wall
@@ -19,23 +20,60 @@ import lamao.soh.core.SHGamePack;
  */
 public class SHBallBottomWallCollisionHandler implements ISHEventHandler
 {
+	private SHEventDispatcher dispatcher;
+	
+	private SHScene scene;
+	
+	public SHBallBottomWallCollisionHandler()
+	{
+	}
+
+	public SHBallBottomWallCollisionHandler(
+			SHEventDispatcher dispatcher,
+			SHScene scene
+			)
+	{
+		this.dispatcher = dispatcher;
+		this.scene = scene;
+	}
+	
+	public SHEventDispatcher getDispatcher()
+	{
+		return dispatcher;
+	}
+
+	public void setDispatcher(SHEventDispatcher dispatcher)
+	{
+		this.dispatcher = dispatcher;
+	}
+	
+	public SHScene getScene()
+	{
+		return scene;
+	}
+
+	public void setScene(SHScene scene)
+	{
+		this.scene = scene;
+	}
+
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHBall ball = (SHBall)event.params.get("src");
-		SHBottomWall wall = (SHBottomWall)event.params.get("dst");
+		SHBall ball = event.getParameter("src", SHBall.class);
+		SHBottomWall wall = event.getParameter("dst", SHBottomWall.class);
 		
 		if (wall.isActive())
 		{
 			ball.getVelocity().y = -ball.getVelocity().y;
-			SHGamePack.dispatcher.addEvent("level-wall-hit", this, null);
+			dispatcher.addEvent("level-wall-hit", this);
 		}
 		else
 		{
-			SHGamePack.scene.removeEntity(ball);
-			if (SHGamePack.scene.getEntities(ball.getType()) == null)
+			scene.removeEntity(ball);
+			if (scene.getEntities(ball.getType()) == null)
 			{
-				SHGamePack.dispatcher.addEvent("level-failed", this, null);
+				dispatcher.addEvent("level-failed", this);
 			}
 		}
 	}

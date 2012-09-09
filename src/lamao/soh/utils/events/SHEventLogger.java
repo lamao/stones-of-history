@@ -21,7 +21,7 @@ public class SHEventLogger implements ISHEventHandler
 	public void processEvent(SHEvent event)
 	{
 		_logger.info("EVENT: <" + event.type + ", " + event.sender + ", " + 
-				event.params + ">");
+				event.parameters + ">");
 	}
 
 }

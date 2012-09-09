@@ -21,8 +21,8 @@ public class SHBallPaddleCollisionHandler implements ISHEventHandler
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHBall ball = (SHBall)event.params.get("src");
-		SHPaddle paddle = (SHPaddle)event.params.get("dst");
+		SHBall ball = (SHBall)event.parameters.get("src");
+		SHPaddle paddle = (SHPaddle)event.parameters.get("dst");
 		
 		SHGamePack.dispatcher.addEvent("level-paddle-hit", this, null);
 		paddle.onHit(ball);

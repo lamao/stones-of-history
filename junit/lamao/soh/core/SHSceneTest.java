@@ -199,8 +199,8 @@ public class SHSceneTest extends SHEventTestCase
 		scene.getRootNode().updateGeometricState(0, true);
 		scene.update(0);
 		assertEquals(1, counter.getNumEvents("scene-collision-type1-type2"));
-		assertSame(entity1, counter.lastEvent.params.get("src"));
-		assertSame(entity2, counter.lastEvent.params.get("dst"));
+		assertSame(entity1, counter.lastEvent.parameters.get("src"));
+		assertSame(entity2, counter.lastEvent.parameters.get("dst"));
 		
 		// bounding collision
 		box2.setLocalRotation(new Quaternion(new float[] {0, 0, FastMath.PI / 4}));
@@ -209,22 +209,22 @@ public class SHSceneTest extends SHEventTestCase
 		scene.getRootNode().updateGeometricState(0, true);
 		scene.update(0);
 		assertTrue(2 == counter.numEvents.get("scene-collision-type1-type2"));
-		assertSame(entity1, counter.lastEvent.params.get("src"));
-		assertSame(entity2, counter.lastEvent.params.get("dst"));
+		assertSame(entity1, counter.lastEvent.parameters.get("src"));
+		assertSame(entity2, counter.lastEvent.parameters.get("dst"));
 		
 		// triangle collision
 		scene.getCollisionTasks().remove(0);
 		scene.addCollisionTask(new SHCollisionTask("type1", "type2", true));
 		scene.update(0);
 		assertTrue(2 == counter.numEvents.get("scene-collision-type1-type2"));
-		assertSame(entity1, counter.lastEvent.params.get("src"));
-		assertSame(entity2, counter.lastEvent.params.get("dst"));
+		assertSame(entity1, counter.lastEvent.parameters.get("src"));
+		assertSame(entity2, counter.lastEvent.parameters.get("dst"));
 		
 		box2.setLocalTranslation(2, 1f, 0);
 		scene.update(0);
 		assertTrue(3 == counter.numEvents.get("scene-collision-type1-type2"));
-		assertSame(entity1, counter.lastEvent.params.get("src"));
-		assertSame(entity2, counter.lastEvent.params.get("dst"));
+		assertSame(entity1, counter.lastEvent.parameters.get("src"));
+		assertSame(entity2, counter.lastEvent.parameters.get("dst"));
 	}
 	
 	@Test
