@@ -16,9 +16,7 @@ import static org.testng.Assert.*;
 import com.jme.bounding.BoundingBox;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
-import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
-import static org.mockito.Mockito.*;
 
 
 /**
@@ -28,8 +26,6 @@ import static org.mockito.Mockito.*;
 public class SHEntityTest
 {
 	@Mock
-	private Node root;
-	@Mock
 	private Node model;
 	
 	private SHEntity entity;
@@ -38,9 +34,6 @@ public class SHEntityTest
 	public void initalizeMocks() {
 		MockitoAnnotations.initMocks(this);
 		entity = new SHEntity();
-		entity.setRoot(root);
-		
-		when(root.attachChild(any(Spatial.class))).thenReturn(1);
 		
 	}
 	
@@ -56,7 +49,6 @@ public class SHEntityTest
 	{
 		SHEntity entity = new SHEntity();
 		assertNotNull(entity);
-		assertNull(entity.getRoot());
 		assertNull(entity.getModel());
 		assertEquals("default", entity.getType());
 		assertEquals(null, entity.getName());
@@ -66,9 +58,7 @@ public class SHEntityTest
 	public void testConstructorWithModel()
 	{
 		SHEntity entity = new SHEntity(model);
-		entity.setRoot(root);
 		assertNotNull(entity);
-		assertNotNull(entity.getRoot());
 		assertSame(entity.getModel(), model);
 		assertEquals("default", entity.getType());
 		assertEquals(null, entity.getName());
@@ -77,12 +67,10 @@ public class SHEntityTest
 	@Test
 	public void testParametrizedContstructor() {
 		entity = new SHEntity("type", "name", new Node("model"));
-		assertNotNull(entity.getRoot());
-		assertEquals(1, entity.getRoot().getQuantity());
+		assertEquals(1, entity.getQuantity());
 		assertNotNull(entity.getModel());
 		assertEquals("type", entity.getType());
 		assertEquals("name", entity.getName());
-		assertEquals("name", entity.getRoot().getName());
 	}
 	
 	@Test
@@ -90,11 +78,9 @@ public class SHEntityTest
 	{
 		entity.setName("name");		
 		assertEquals("name", entity.getName());
-		assertEquals("name", entity.getRoot().getName());
 		
 		entity.setName("other");		
 		assertEquals("other", entity.getName());
-		assertEquals("other", entity.getRoot().getName());
 	}
 	
 	@Test
@@ -104,15 +90,15 @@ public class SHEntityTest
 		Node node2 = new Node("node2");
 		
 		entity.setModel(node);
-		assertEquals(1, entity.getRoot().getQuantity());
+		assertEquals(1, entity.getQuantity());
 		assertSame(node, entity.getModel());
 		
 		entity.setModel(node2);
-		assertEquals(1, entity.getRoot().getQuantity());
+		assertEquals(1, entity.getQuantity());
 		assertSame(node2, entity.getModel());
 		
 		entity.setModel(null);
-		assertEquals(0, entity.getRoot().getQuantity());
+		assertEquals(0, entity.getQuantity());
 		assertNull(entity.getModel());
 	}
 	
@@ -126,7 +112,7 @@ public class SHEntityTest
 		entity = new SHEntity(box);
 		entity.setLocation(new Vector3f(0, 2, 0));
 		assertEquals(new Vector3f(0, 2, 0), entity.getLocation());
-		assertEquals(new Vector3f(0, 2, 0), entity.getRoot().getLocalTranslation());
+		assertEquals(new Vector3f(0, 2, 0), entity.getLocalTranslation());
 		assertSame(box, entity.getModel());
 		
 	}

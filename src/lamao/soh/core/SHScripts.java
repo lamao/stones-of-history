@@ -88,12 +88,13 @@ public class SHScripts
 		SHEventDispatcher dispatcher = SHGamePack.dispatcher;
 		dispatcher.addHandler("scene-collision-ball-wall", new SHBallWallCollisionHandler());
 		dispatcher.addHandler("scene-collision-ball-paddle", new SHBallPaddleCollisionHandler());
-		dispatcher.addHandler("scene-collision-ball-brick", new SHBallBrickCollisionHandler());
+		dispatcher.addHandler("scene-collision-ball-brick", 
+				new SHBallBrickCollisionHandler(SHGamePack.dispatcher, SHGamePack.scene));
 		dispatcher.addHandler("level-brick-deleted", new SHBrickDeletedEventHandler());
 		dispatcher.addHandler("scene-collision-bonus-bottom-wall", new SHBonusBottomWallCollisionHandler());
 		dispatcher.addHandler("scene-collision-bonus-paddle", new SHBonusPaddleCollisionHandler());
 		dispatcher.addHandler("scene-collision-ball-bottom-wall", 
-				new SHBallBottomWallCollisionHandler(SHGamePack.dispatcher));
+				new SHBallBottomWallCollisionHandler(SHGamePack.dispatcher, SHGamePack.scene));
 		dispatcher.addHandler("scene-collision-bullet-brick", new SHBulletBrickCollisionHandler());
 		dispatcher.addHandler("scene-collision-bullet-wall", new SHBulletWallCollisionHandler());
 		

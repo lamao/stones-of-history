@@ -13,6 +13,9 @@ package lamao.soh.utils.events;
  */
 public interface ISHEventHandler
 {
-	public void processEvent(SHEvent event);
+	void processEvent(SHEvent event);
 	
+	SHEventDispatcher getDispatcher();
+
+	void setDispatcher(SHEventDispatcher dispatcher);
 }

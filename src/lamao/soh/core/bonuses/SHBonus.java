@@ -16,6 +16,7 @@ import lamao.soh.core.SHScene;
  * @author lamao
  *
  */
+@SuppressWarnings("serial")
 public abstract class SHBonus extends SHEntity
 {
 	/** Duration of bonus. NaN for persistent bonus (e.g. additional life) */

@@ -21,7 +21,7 @@ public class SHEvent
 	private Object sender;
 	
 	/** Additional parameters of event (event specific) */
-	public Map<String, Object> parameters;
+	private Map<String, Object> parameters;
 	
 	/** Time to fire this event. time < 0 if event has to be fired immediately */
 	private float time;

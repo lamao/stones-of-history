@@ -8,7 +8,6 @@ package lamao.soh.core.collisionhandlers;
 
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBottomWall;
-import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 import lamao.soh.core.SHScene;
@@ -18,43 +17,16 @@ import lamao.soh.core.SHScene;
  * @author lamao
  *
  */
-public class SHBallBottomWallCollisionHandler implements ISHEventHandler
+public class SHBallBottomWallCollisionHandler extends SHAbstractCollisiontHandler
 {
-	private SHEventDispatcher dispatcher;
-	
-	private SHScene scene;
-	
-	public SHBallBottomWallCollisionHandler()
+	/**
+	 * @param dispatcher
+	 * @param scene
+	 */
+	public SHBallBottomWallCollisionHandler(SHEventDispatcher dispatcher,
+			SHScene scene)
 	{
-	}
-
-	public SHBallBottomWallCollisionHandler(
-			SHEventDispatcher dispatcher,
-			SHScene scene
-			)
-	{
-		this.dispatcher = dispatcher;
-		this.scene = scene;
-	}
-	
-	public SHEventDispatcher getDispatcher()
-	{
-		return dispatcher;
-	}
-
-	public void setDispatcher(SHEventDispatcher dispatcher)
-	{
-		this.dispatcher = dispatcher;
-	}
-	
-	public SHScene getScene()
-	{
-		return scene;
-	}
-
-	public void setScene(SHScene scene)
-	{
-		this.scene = scene;
+		super(dispatcher, scene);
 	}
 
 	@Override
