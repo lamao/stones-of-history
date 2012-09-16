@@ -129,6 +129,11 @@ public class SHScene
 		nodeGroup.updateRenderState();
 	}
 	
+	public void add(SHEntity entity) 
+	{
+		add(entity.getType(), entity);
+	}
+	
 	/**
 	 * Remove model of specified type. If model is the only model of this type,
 	 * type will be removed. 

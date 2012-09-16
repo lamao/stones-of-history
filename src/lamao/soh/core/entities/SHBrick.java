@@ -18,6 +18,7 @@ import com.jme.scene.Spatial;
  * @author lamao
  *
  */
+@SuppressWarnings("serial")
 public class SHBrick extends SHEntity
 {
 	/** Strength (or lives) of the brick */

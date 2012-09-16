@@ -18,6 +18,7 @@ import com.jme.scene.Spatial;
  * @author lamao
  *
  */
+@SuppressWarnings("serial")
 public class SHPaddle extends SHEntity
 {
 	private ISHPaddleHitHandler _hitHandler = null;

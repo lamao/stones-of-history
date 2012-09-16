@@ -7,17 +7,15 @@
 package lamao.soh.core.collisionhandlers;
 
 import lamao.soh.core.SHScene;
-import lamao.soh.utils.events.ISHEventHandler;
+import lamao.soh.core.eventhandlers.SHAbstractEventHandler;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao
  *
  */
-public abstract class SHAbstractCollisiontHandler implements ISHEventHandler
+public abstract class SHAbstractCollisiontHandler extends SHAbstractEventHandler
 {
-	
-	protected SHEventDispatcher dispatcher;
 	
 	protected SHScene scene;
 	
@@ -29,20 +27,10 @@ public abstract class SHAbstractCollisiontHandler implements ISHEventHandler
 			SHEventDispatcher dispatcher,
 			SHScene scene)
 	{
-		this.dispatcher = dispatcher;
+		super(dispatcher);
 		this.scene = scene;
 	}
 	
-	public SHEventDispatcher getDispatcher()
-	{
-		return dispatcher;
-	}
-
-	public void setDispatcher(SHEventDispatcher dispatcher)
-	{
-		this.dispatcher = dispatcher;
-	}
-
 	public SHScene getScene()
 	{
 		return scene;

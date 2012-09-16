@@ -18,6 +18,7 @@ import lamao.soh.utils.events.SHEventDispatcher;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.*;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -70,8 +71,7 @@ public class SHBallBrickCollisionHandlerTest
 		verify(event).getParameter("src", SHBall.class);
 		verify(event).getParameter("dst", SHBrick.class);
 		verify(dispatcher).addEventEx("level-brick-hit", handler, "brick", brick);
-		verify(ball).onHit(brick);
-		verify(scene).removeEntity(brick);
+		verify(scene).remove(brick);
 		verify(dispatcher).addEventEx("level-brick-deleted", handler, "brick", brick);
 		verify(dispatcher, never()).addEventEx(eq("level-bonus-extracted"), 
 				same(handler), eq("bonus"), any(SHBonus.class));
@@ -81,7 +81,7 @@ public class SHBallBrickCollisionHandlerTest
 	public void testBallCollisionWithSuperBrick()
 	{
 		SHBrick brick = SHEntityCreator.createDefaultBrick("brick");
-		brick.setStrength(1); // ball hit on brick, but it has 2 lives
+		brick.setStrength(2); // ball hit on brick, but it has 2 lives
 		
 		when(event.getParameter("dst", SHBrick.class)).thenReturn(brick);
 		
@@ -90,8 +90,7 @@ public class SHBallBrickCollisionHandlerTest
 		verify(event).getParameter("src", SHBall.class);
 		verify(event).getParameter("dst", SHBrick.class);
 		verify(dispatcher).addEventEx("level-brick-hit", handler, "brick", brick);
-		verify(ball).onHit(brick);
-		verify(scene, never()).removeEntity(brick);
+		verify(scene, never()).remove(brick);
 		verify(dispatcher, never()).addEventEx("level-brick-deleted", handler, "brick", brick);
 		verify(dispatcher, never()).addEventEx(eq("level-bonus-extracted"), 
 				same(handler), eq("bonus"), any(SHBonus.class));
@@ -105,6 +104,7 @@ public class SHBallBrickCollisionHandlerTest
 		when(brick.getLocation()).thenReturn(Vector3f.UNIT_X.clone());
 		when(brick.getStrength()).thenReturn(-1); // ball hit on brick
 		when(brick.getBonus()).thenReturn(bonus);
+		when(bonus.getType()).thenReturn("bonus");
 		
 		
 		
@@ -115,10 +115,9 @@ public class SHBallBrickCollisionHandlerTest
 		verify(event).getParameter("src", SHBall.class);
 		verify(event).getParameter("dst", SHBrick.class);
 		verify(dispatcher).addEventEx("level-brick-hit", handler, "brick", brick);
-		verify(ball).onHit(brick);
-		verify(scene).removeEntity(brick);
+		verify(scene).remove(brick);
 		verify(dispatcher).addEventEx("level-brick-deleted", handler, "brick", brick);
-		verify(scene).addEntity(any(SHBall.class));
+		verify(scene).add("bonus", bonus);
 		verify(dispatcher).addEventEx(eq("level-bonus-extracted"), 
 				same(handler), eq("bonus"), any(SHBonus.class));
 		
@@ -127,5 +126,4 @@ public class SHBallBrickCollisionHandlerTest
 		verify(bonus, times(2)).updateGeometricState(0, true);
 		verify(dispatcher).addEventEx("level-bonus-extracted", handler, "bonus", bonus);
 	}
-	
 }

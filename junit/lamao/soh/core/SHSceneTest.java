@@ -9,16 +9,11 @@ package lamao.soh.core;
 import java.util.Collections;
 
 import lamao.junit.common.SHEventTestCase;
-import lamao.soh.core.entities.SHBall;
 
 import static org.mockito.Mockito.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
-import com.jme.bounding.BoundingBox;
-import com.jme.math.FastMath;
-import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
@@ -130,6 +125,16 @@ public class SHSceneTest extends SHEventTestCase
 		assertEquals(1, ((Node)scene.getRootNode().getChild(OTHER_TYPE)).getQuantity());
 	}
 	
+	public void testAddEntity() 
+	{
+		SHEntity entity = new SHEntity(TYPE, NAME, null);
+		scene.add(entity);
+		
+		assertEquals(1, scene.getNumberOfTypes());
+		assertEquals(1, scene.get(TYPE).size());
+		assertSame(1, scene.getEntity(TYPE, NAME));
+	}
+	
 	@Test
 	public void testRemove()
 	{
@@ -156,6 +161,18 @@ public class SHSceneTest extends SHEventTestCase
 		assertEquals(1, scene.get(OTHER_TYPE).size());
 		assertEquals(1, scene.getNumberOfTypes());
 		assertEquals(1, ((Node)scene.getRootNode().getChild(OTHER_TYPE)).getQuantity());
+	}
+	
+	public void testRemoveEntity() 
+	{
+		SHEntity entity = new SHEntity(TYPE, NAME, null);
+		scene.add(entity);
+		
+		scene.remove(entity);
+		
+		assertEquals(0, scene.getNumberOfTypes());
+		assertEquals(null, scene.get(TYPE));
+		assertSame(null, scene.getEntity(TYPE, NAME));
 	}
 	
 	@Test

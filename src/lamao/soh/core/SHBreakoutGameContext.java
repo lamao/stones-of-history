@@ -8,6 +8,8 @@ package lamao.soh.core;
 
 import java.util.List;
 
+import com.jme.scene.Spatial;
+
 import lamao.soh.core.entities.SHBrick;
 
 /**
@@ -27,11 +29,11 @@ public class SHBreakoutGameContext implements ISHGameContext
 	public void updateNumDeletableBricks()
 	{
 		_numDeletableBricks = 0;
-		List<SHEntity> bricks = SHGamePack.scene.getEntities("brick");
+		List<Spatial> bricks = SHGamePack.scene.get("brick");
 		if (bricks != null)
 		{
 			SHBrick brick = null;
-			for (SHEntity e : bricks)
+			for (Spatial e : bricks)
 			{
 				brick = (SHBrick)e;
 				if (brick.getStrength() != Integer.MAX_VALUE)
