@@ -45,9 +45,9 @@ public class SHSceneLoaderTest extends AbstractJmeTest
 		loader.load(new File("data/test/test-level.dps"));
 		
 		assertNull(scene.getEntities("decoration"));
-		assertEquals(2, scene.getModels("decoration").size());
+		assertEquals(2, scene.get("decoration").size());
 		assertEquals(3, scene.getEntities("wall").size());
-		assertEquals(3, scene.getModels("wall").size());
+		assertEquals(3, scene.get("wall").size());
 		assertEquals(1, scene.getEntities("bottom-wall").size());
 		assertEquals(15, scene.getEntities("brick").size());
 		
@@ -60,7 +60,7 @@ public class SHSceneLoaderTest extends AbstractJmeTest
 		brick = (SHBrick)scene.getEntity("brick", "brick1");
 		assertEquals(1, brick.getStrength());
 	
-		Map<String, List<Spatial>> models = scene.getModels();
+		Map<String, List<Spatial>> models = scene.getAll();
 		for (String key : models.keySet())
 		{
 			for (Spatial model : models.get(key))

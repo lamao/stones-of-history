@@ -57,7 +57,7 @@ class SHPrimitiveEntityParser extends SHPrimitiveParser
 		SHEntity entity = _factory.createEntity(_entityParams);
 		if (entity == null)
 		{
-			_scene.addModel("decoration", spatial);
+			_scene.add("decoration", spatial);
 		}
 		else
 		{
