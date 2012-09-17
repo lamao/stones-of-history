@@ -8,7 +8,6 @@ package lamao.soh.core.input;
 
 import lamao.soh.SHOptions;
 import lamao.soh.core.SHDefaultPaddleHitHandler;
-import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.controllers.SHDefaultBallMover;
 import lamao.soh.core.controllers.SHPaddleSticker;
@@ -19,6 +18,7 @@ import com.jme.input.MouseInput;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.MouseInputAction;
 import com.jme.scene.Controller;
+import com.jme.scene.Spatial;
 
 /**
  * Launches ball by mouse click. It removes <code>SHPaddleSticker</code> 
@@ -51,15 +51,15 @@ public class SHMouseBallLauncher extends MouseInputAction
 		if (MouseInput.get().isButtonDown(SHOptions.ReleaseBallButton))
 		{
 			SHPaddle paddle = (SHPaddle)_scene.getEntity("paddle", "paddle");
-			for (SHEntity e : _scene.getEntities("ball"))
+			for (Spatial e : _scene.get("ball"))
 			{
 				SHBall ball = (SHBall)e;
-				for (Controller controller : ball.getRoot().getControllers())
+				for (Controller controller : ball.getControllers())
 				{
 					if (controller instanceof SHPaddleSticker)
 					{
-						ball.getRoot().removeController(controller);
-						ball.getRoot().addController(new SHDefaultBallMover(ball));
+						ball.removeController(controller);
+						ball.addController(new SHDefaultBallMover(ball));
 						_handler.execute(ball, paddle);
 						break;
 					}

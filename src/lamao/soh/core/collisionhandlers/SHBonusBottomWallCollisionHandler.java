@@ -7,22 +7,30 @@
 package lamao.soh.core.collisionhandlers;
 
 import lamao.soh.core.SHGamePack;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.bonuses.SHBonus;
-import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
+import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao
  *
  */
-public class SHBonusBottomWallCollisionHandler implements ISHEventHandler
+public class SHBonusBottomWallCollisionHandler extends SHAbstractCollisiontHandler
 {
+	
+	public SHBonusBottomWallCollisionHandler(SHEventDispatcher dispatcher,
+			SHScene scene)
+	{
+		super(dispatcher, scene);
+	}
+
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHBonus bonus = (SHBonus)event.parameters.get("src");
-		SHGamePack.scene.removeEntity(bonus);
-		SHGamePack.dispatcher.addEventEx("level-bonus-destroyed", this, 
+		SHBonus bonus = event.getParameter("src", SHBonus.class);
+		SHGamePack.scene.remove(bonus);
+		dispatcher.addEventEx("level-bonus-destroyed", this, 
 				"bonus", bonus); 
 	}
 

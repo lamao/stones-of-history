@@ -6,25 +6,32 @@
  */
 package lamao.soh.core.collisionhandlers;
 
+import lamao.soh.core.SHScene;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
-import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
-import lamao.soh.core.SHGamePack;
+import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao
  *
  */
-public class SHBallPaddleCollisionHandler implements ISHEventHandler
+public class SHBallPaddleCollisionHandler extends SHAbstractCollisiontHandler
 {
+	
+	public SHBallPaddleCollisionHandler(SHEventDispatcher dispatcher,
+			SHScene scene)
+	{
+		super(dispatcher, scene);
+	}
+
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHBall ball = (SHBall)event.parameters.get("src");
-		SHPaddle paddle = (SHPaddle)event.parameters.get("dst");
+		SHBall ball = event.getParameter("src", SHBall.class);
+		SHPaddle paddle = event.getParameter("dst", SHPaddle.class);
 		
-		SHGamePack.dispatcher.addEvent("level-paddle-hit", this, null);
+		dispatcher.addEvent("level-paddle-hit", this, null);
 		paddle.onHit(ball);
 	}
 

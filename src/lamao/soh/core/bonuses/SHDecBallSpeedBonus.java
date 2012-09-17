@@ -9,7 +9,6 @@ package lamao.soh.core.bonuses;
 import java.util.LinkedList;
 import java.util.List;
 
-import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHBall;
@@ -21,6 +20,7 @@ import com.jme.scene.Spatial;
  * @author lamao
  *
  */
+@SuppressWarnings("serial")
 public class SHDecBallSpeedBonus extends SHBonus
 {
 	public final static float DURATION = 5;
@@ -45,7 +45,7 @@ public class SHDecBallSpeedBonus extends SHBonus
 	{
 		float speed;
 		double angle;
-		for (SHEntity entity : scene.getEntities("ball"))
+		for (Spatial entity : scene.get("ball"))
 		{
 			SHBall ball = (SHBall)entity;
 			speed = ball.getVelocity().length();			

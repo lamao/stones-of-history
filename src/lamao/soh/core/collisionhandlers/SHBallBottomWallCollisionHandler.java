@@ -42,8 +42,8 @@ public class SHBallBottomWallCollisionHandler extends SHAbstractCollisiontHandle
 		}
 		else
 		{
-			scene.removeEntity(ball);
-			if (scene.getEntities(ball.getType()) == null)
+			scene.remove(ball);
+			if (scene.get(ball.getType()) == null)
 			{
 				dispatcher.addEvent("level-failed", this);
 			}

@@ -12,8 +12,6 @@ import lamao.soh.core.SHEntity;
 import com.jme.input.InputHandler;
 import com.jme.input.RelativeMouse;
 import com.jme.input.action.InputActionEvent;
-import com.jme.input.action.KeyNodeStrafeLeftAction;
-import com.jme.input.action.KeyNodeStrafeRightAction;
 import com.jme.input.action.MouseInputAction;
 
 /**

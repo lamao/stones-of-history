@@ -7,10 +7,12 @@
 package lamao.soh.console;
 
 import lamao.soh.core.SHBreakoutEntityFactory;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.collisionhandlers.SHBonusPaddleCollisionHandler;
 import lamao.soh.utils.events.SHEvent;
+import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao
@@ -18,11 +20,39 @@ import lamao.soh.utils.events.SHEvent;
  */
 public class SHActivateBonusCommand extends SHBasicCommand
 {
-	public SHActivateBonusCommand()
+	private SHScene scene;
+	private SHEventDispatcher dispatcher;
+
+	
+	
+	public SHActivateBonusCommand(SHEventDispatcher dispatcher, SHScene scene)
 	{
 		super(1, 1);
+		this.scene = scene;
+		this.dispatcher = dispatcher;
 	}
 	
+
+	public SHScene getScene()
+	{
+		return scene;
+	}
+
+	public void setScene(SHScene scene)
+	{
+		this.scene = scene;
+	}
+
+	public SHEventDispatcher getDispatcher()
+	{
+		return dispatcher;
+	}
+
+	public void setDispatcher(SHEventDispatcher dispatcher)
+	{
+		this.dispatcher = dispatcher;
+	}
+
 	@Override
 	public void processCommand(String[] args)
 	{
@@ -34,8 +64,8 @@ public class SHActivateBonusCommand extends SHBasicCommand
 		}
 		else			
 		{
-			new SHBonusPaddleCollisionHandler().processEvent(new SHEvent(
-					"", this, SHUtils.buildEventMap("src", bonus)));
+			new SHBonusPaddleCollisionHandler(dispatcher, scene)
+				.processEvent(new SHEvent("", this, SHUtils.buildEventMap("src", bonus)));
 		}
 		
 	}

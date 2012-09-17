@@ -35,6 +35,11 @@ public class SHCollisionProcessor implements ISHCollisionProcessor
 	
 	private SHEventDispatcher dispatcher;
 	
+	public SHCollisionProcessor(SHEventDispatcher dispatcher)
+	{
+		this.dispatcher = dispatcher;
+	}
+
 	/* (non-Javadoc)
 	 * @see lamao.soh.core.ISHCollisionProcessor#getCollisionTasks()
 	 */

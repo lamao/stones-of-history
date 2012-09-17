@@ -145,7 +145,8 @@ public class SHLevelState extends BasicGameState
 		console.add("set-bonus", new SHSetBonusCommand());
 		console.add("load-level", new SHLoadLevelCommand());
 		console.add("free-camera", new SHFPSInputCommand());
-		console.add("activate-bonus", new SHActivateBonusCommand());
+		console.add("activate-bonus", new SHActivateBonusCommand(
+				SHGamePack.dispatcher, SHGamePack.scene));
 		
 		console.add("pause", new SHBasicCommand(1, 1) 
 		{

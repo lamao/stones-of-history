@@ -17,6 +17,7 @@ import lamao.soh.core.entities.SHBottomWall;
  * @author lamao
  *
  */
+@SuppressWarnings("serial")
 public class SHBottomWallBonus extends SHBonus
 {
 	public final static float DURATION = 5; 

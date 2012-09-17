@@ -69,7 +69,7 @@ public class SHEventDispatcher
 	 */
 	public void addEvent(SHEvent event)
 	{
-		if (event.time < 0)
+		if (event.getTime() < 0)
 		{
 			addSimpleEvent(event);
 		}
@@ -82,7 +82,7 @@ public class SHEventDispatcher
 	private void addSimpleEvent(SHEvent event)
 	{
 		notifySupervisors(event);
-		List<ISHEventHandler> handlers = getHandlers(event.type);
+		List<ISHEventHandler> handlers = getHandlers(event.getType());
 		if (handlers != null)
 		{
 			handlers = new LinkedList<ISHEventHandler>(handlers);
@@ -186,7 +186,7 @@ public class SHEventDispatcher
 		while (it.hasNext())
 		{
 			e = it.next();
-			if (e.time >= event.time)
+			if (e.getTime() >= event.getTime())
 			{
 				_timeEvents.add(_timeEvents.indexOf(e), event);
 				return;
@@ -227,9 +227,9 @@ public class SHEventDispatcher
 		while (it.hasNext())
 		{
 			event = it.next();
-			if (event.type.equals(type))
+			if (event.getType().equals(type))
 			{
-				event.time += time;
+				event.setTime(event.getTime() + time);
 				break;
 			}
 		}
@@ -241,7 +241,7 @@ public class SHEventDispatcher
 			while (it.hasNext())
 			{
 				laterEvent = it.next();
-				if (laterEvent.time >= event.time)
+				if (laterEvent.getTime() >= event.getTime())
 				{
 					_timeEvents.remove(event);
 					_timeEvents.add(_timeEvents.indexOf(laterEvent), event);
@@ -257,7 +257,7 @@ public class SHEventDispatcher
 	{
 		for (SHEvent event : _timeEvents)
 		{
-			if (event.type.equals(type))
+			if (event.getType().equals(type))
 			{
 				return true;
 			}
@@ -283,7 +283,7 @@ public class SHEventDispatcher
 	{
 		for (SHEvent event : _timeEvents)
 		{
-			event.time -= time;
+			event.setTime(event.getTime() - time);
 		}
 	}
 	
@@ -299,15 +299,14 @@ public class SHEventDispatcher
 			if (!_timeEvents.isEmpty())
 			{
 				event = _timeEvents.get(0);
-				if (event.time <= 0)
+				if (event.getTime() <= 0)
 				{
 					eventsToSent.add(event);
-//					addEvent(event);
 					_timeEvents.remove(event);
 				}
 			}
 		}
-		while (!_timeEvents.isEmpty() && event.time <= 0);
+		while (!_timeEvents.isEmpty() && event.getTime() <= 0);
 		
 		if (!eventsToSent.isEmpty())
 		{

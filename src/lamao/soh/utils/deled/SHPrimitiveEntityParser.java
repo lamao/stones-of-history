@@ -65,7 +65,7 @@ class SHPrimitiveEntityParser extends SHPrimitiveParser
 			entity.setName(spatial.getName());
 			entity.setLocation(spatial.getLocalTranslation().clone());
 			spatial.setLocalTranslation(0, 0, 0);
-			_scene.addEntity(entity);
+			_scene.add(entity);
 		}
 	}
 	

@@ -64,8 +64,8 @@ public abstract class SHBasicCommand implements ISHEventHandler
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		String[] args = (String[]) event.parameters.get(SHConsoleState.ARGS_KEY);
-		_console = (SHConsoleState)event.parameters.get(SHConsoleState.CONSOLE_KEY);
+		String[] args = event.getParameter(SHConsoleState.ARGS_KEY, String[].class);
+		_console = event.getParameter(SHConsoleState.CONSOLE_KEY, SHConsoleState.class);
 		if (args == null)
 		{
 			error("Command is not typed");
