@@ -17,12 +17,29 @@ import com.jme.scene.Node;
 public interface ISHCollisionProcessor
 {
 
+	/**
+	 * Get all collision tasks specified for this processor
+	 * @return
+	 */
 	public abstract List<SHCollisionTask> getCollisionTasks();
 
+	/**
+	 * Add collision task
+	 * @param task - collision task
+	 */
 	public abstract void addCollisionTask(SHCollisionTask task);
 
+	/**
+	 * Remove collision task
+	 * @param task
+	 */
 	public abstract void removeCollisionTask(SHCollisionTask task);
 
+	/**
+	 * Check for collission between entities in this rootNode and fire event if
+	 * it was happened. Only those pairs will be checked that have collision task
+	 * @param rootNode - rootNode of the scene
+	 */
 	public abstract void processCollisions(Node rootNode);
 
 }

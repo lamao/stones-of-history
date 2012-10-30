@@ -7,18 +7,22 @@
 package lamao.soh.core;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertSame;
-import static org.testng.Assert.assertTrue;
-import lamao.soh.core.entities.SHBall;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import lamao.soh.core.entities.SHBall;
+import lamao.soh.utils.events.SHEvent;
+import lamao.soh.utils.events.SHEventDispatcher;
+
+import org.mockito.Mock;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.*;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.jme.bounding.BoundingBox;
-import com.jme.math.FastMath;
-import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
-import com.jme.scene.shape.Box;
+import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 
 /**
  * @author lamao
@@ -26,142 +30,143 @@ import com.jme.scene.shape.Box;
  */
 public class CollisionProcessorTest
 {
+	private final static String TYPE = "type";
+	private final static String OTHER_TYPE = "other type";
+	
+	private SHCollisionProcessor processor;
+	
+	@Mock
+	private SHEventDispatcher dispatcher;
+	
+	@BeforeMethod
+	public void setUp() {
+		initMocks(this);
+		processor = new SHCollisionProcessor(dispatcher);
+	}
+	
 	@Test
 	public void testAddCollisionTask()
 	{
-		scene.addCollisionTask(new SHCollisionTask(TYPE, OTHER_TYPE, false));
-		assertEquals(1, scene.getCollisionTasks().size());
+		processor.addCollisionTask(new SHCollisionTask(TYPE, OTHER_TYPE, false));
+		assertEquals(1, processor.getCollisionTasks().size());
 		
 		SHCollisionTask someTask = new SHCollisionTask(TYPE, OTHER_TYPE, false);
-		scene.addCollisionTask(someTask);
-		assertEquals(2, scene.getCollisionTasks().size());
+		processor.addCollisionTask(someTask);
+		assertEquals(2, processor.getCollisionTasks().size());
 	}
 	
 	@Test
 	public void testRemoveCollisionTasks() {
-		scene.addCollisionTask(new SHCollisionTask(TYPE, OTHER_TYPE, false));
+		processor.addCollisionTask(new SHCollisionTask(TYPE, OTHER_TYPE, false));
 		
-		SHCollisionTask someTask = new SHCollisionTask(TYPE, OTHER_TYPE, false);
-		scene.addCollisionTask(someTask);
-		scene.addCollisionTask(new SHCollisionTask("type3", "type4", false));
+		processor.addCollisionTask(new SHCollisionTask(OTHER_TYPE, TYPE, false));
 		
-		scene.removeCollisionTask(new SHCollisionTask(TYPE, OTHER_TYPE, true));
-		assertEquals(2, scene.getCollisionTasks().size());
+		processor.removeCollisionTask(new SHCollisionTask(OTHER_TYPE, TYPE, true));
+		assertEquals(processor.getCollisionTasks().size(), 1);
 		
-		scene.removeCollisionTask(someTask);
-		assertEquals(1, scene.getCollisionTasks().size());
-		
-		scene.removeCollisionTask(new SHCollisionTask("type3", "type4", false));
-		assertEquals(0, scene.getCollisionTasks().size());
+		processor.removeCollisionTask(new SHCollisionTask(TYPE, OTHER_TYPE, true));
+		assertEquals(processor.getCollisionTasks().size(), 0);
 	}
 	
 	@Test
-	public void testCollisions()
-	{
-		Box box1 = new Box("box1", new Vector3f(0, 0, 0), 1, 1, 1);
-		box1.setModelBound(new BoundingBox());
-		box1.updateModelBound();
-		SHEntity entity1 = new SHEntity("type1", "box1", box1);
-		scene.addEntity(entity1);
-		
-		Box box2 = new Box("box2", new Vector3f(0, 0, 0), 1, 1, 1);
-		box2.setModelBound(new BoundingBox());
-		box2.updateModelBound();
-		box2.setLocalTranslation(2, 0, 0);
-		SHEntity entity2 = new SHEntity("type2", "box2", box2);
-		scene.addEntity(entity2);
-		
-		scene.addCollisionTask(new SHCollisionTask("type1", "type2", false));
-
-		// general collision
-		scene.getRootNode().updateGeometricState(0, true);
-		scene.update(0);
-		assertEquals(1, counter.getNumEvents("scene-collision-type1-type2"));
-		assertSame(entity1, counter.lastEvent.parameters.get("src"));
-		assertSame(entity2, counter.lastEvent.parameters.get("dst"));
-		
-		// bounding collision
-		box2.setLocalRotation(new Quaternion(new float[] {0, 0, FastMath.PI / 4}));
-		box2.setLocalTranslation(2, 1.5f, 0);
-		box2.updateModelBound();
-		scene.getRootNode().updateGeometricState(0, true);
-		scene.update(0);
-		assertTrue(2 == counter.numEvents.get("scene-collision-type1-type2"));
-		assertSame(entity1, counter.lastEvent.parameters.get("src"));
-		assertSame(entity2, counter.lastEvent.parameters.get("dst"));
-		
-		// triangle collision
-		scene.getCollisionTasks().remove(0);
-		scene.addCollisionTask(new SHCollisionTask("type1", "type2", true));
-		scene.update(0);
-		assertTrue(2 == counter.numEvents.get("scene-collision-type1-type2"));
-		assertSame(entity1, counter.lastEvent.parameters.get("src"));
-		assertSame(entity2, counter.lastEvent.parameters.get("dst"));
-		
-		box2.setLocalTranslation(2, 1f, 0);
-		scene.update(0);
-		assertTrue(3 == counter.numEvents.get("scene-collision-type1-type2"));
-		assertSame(entity1, counter.lastEvent.parameters.get("src"));
-		assertSame(entity2, counter.lastEvent.parameters.get("dst"));
-	}
-	
-	@Test
-	public void testSingleCollision()
+	public void testCollisionBoundingSuccess()
 	{
 		SHEntity brick1 = SHEntityCreator.createDefaultBrick("brick1");
-		scene.addEntity(brick1);
-		
-		SHEntity brick2 = SHEntityCreator.createDefaultBrick("brick2");
-		brick2.setLocation(10, 10, 10);
-		brick2.getRoot().updateGeometricState(0, true);
-		scene.addEntity(brick2);
 		
 		SHBall ball = SHEntityCreator.createDefaultBall();
-		ball.setLocation(0, -1.99f, 0);
-		ball.getRoot().updateGeometricState(0, true);
-		scene.addEntity(ball);
+		ball.setLocation(-2.99f, -1.99f, 0);
+		ball.updateGeometricState(0, true);
+		
+		Node rootNode = new Node();
+		Node bricks = new Node("brick");
+		bricks.attachChild(brick1);
+		Node balls = new Node("ball");
+		balls.attachChild(ball);
+		rootNode.attachChild(bricks);
+		rootNode.attachChild(balls);
 		
 		SHCollisionTask task = new SHCollisionTask("ball", "brick", false);
-		scene.addCollisionTask(task);
+		processor.addCollisionTask(task);
 		
-		scene.update(0);
-		assertEquals(1, counter.getNumEvents("scene-collision-ball-brick"));
 		
-		task.checkTris = true;
-		scene.update(0);
-		assertEquals(2, counter.getNumEvents("scene-collision-ball-brick"));
+		processor.processCollisions(rootNode);
 		
+		verify(dispatcher).addEvent(any(SHEvent.class));
 	}
-	
-	
-	
 	
 	@Test
-	public void testReset()
+	public void testCollisionBoundingFail()
 	{
-		scene.addEntity(new SHEntity("type", "name", null));
-		Box box = new Box("box", new Vector3f(0, 0, 0), 1, 1, 1);
-		scene.add("type1", box);
-		scene.addCollisionTask(new SHCollisionTask("type", "type1", false));
-		scene.reset();
+		SHEntity brick1 = SHEntityCreator.createDefaultBrick("brick1");
+		brick1.updateGeometricState(0, true);
 		
-		assertEquals(1, scene.getCollisionTasks().size());
-		assertEquals(0, scene.getEntities().size());
-		assertEquals(0, scene.getAll().size());
-		assertEquals(0, scene.getRootNode().getQuantity());
-		assertNull(scene.getEntity(box));
+		SHBall ball = SHEntityCreator.createDefaultBall();
+		ball.setLocation(-3.01f, -2.01f, 0);
+		ball.updateGeometricState(0, true);
 		
-		scene.addEntity(new SHEntity("type", "name", null));
-		scene.add("type1", box);
-		scene.addCollisionTask(new SHCollisionTask("type", "type1", false));
-		scene.resetAll();
+		SHCollisionTask task = new SHCollisionTask("ball", "brick", false);
+		processor.addCollisionTask(task);
 		
-		assertEquals(0, scene.getCollisionTasks().size());
-		assertEquals(0, scene.getEntities().size());
-		assertEquals(0, scene.getAll().size());
-		assertEquals(0, scene.getRootNode().getQuantity());
-		assertNull(scene.getEntity(box));
+		Node rootNode = mock(Node.class);
+		Node bricks = mock(Node.class);
+		Node balls = mock(Node.class);
+		when(rootNode.getChild("brick")).thenReturn(bricks);
+		when(rootNode.getChild("ball")).thenReturn(balls);
+		when(bricks.getChildren()).thenReturn(new ArrayList<Spatial>(Arrays.asList(brick1)));
+		when(balls.getChildren()).thenReturn(new ArrayList<Spatial>(Arrays.asList(ball)));
 		
+		processor.processCollisions(rootNode);
+		
+		verify(dispatcher, never()).addEvent(any(SHEvent.class));
 	}
-
+	
+	@Test
+	public void testCollisionTriangleFail()
+	{
+		SHEntity brick1 = SHEntityCreator.createDefaultBrick("brick1");
+		
+		SHBall ball = SHEntityCreator.createDefaultBall();
+		ball.setLocation(-2.99f, -1.99f, 0);
+		ball.updateGeometricState(0, true);
+		
+		SHCollisionTask task = new SHCollisionTask("ball", "brick", true);
+		processor.addCollisionTask(task);
+		
+		Node rootNode = mock(Node.class);
+		Node bricks = mock(Node.class);
+		Node balls = mock(Node.class);
+		when(rootNode.getChild("brick")).thenReturn(bricks);
+		when(rootNode.getChild("ball")).thenReturn(balls);
+		when(bricks.getChildren()).thenReturn(new ArrayList<Spatial>(Arrays.asList(brick1)));
+		when(balls.getChildren()).thenReturn(new ArrayList<Spatial>(Arrays.asList(ball)));
+		processor.processCollisions(rootNode);
+		
+		verify(dispatcher, never()).addEvent(any(SHEvent.class));
+	}
+	
+	@Test
+	public void testCollisionTriangleSuccess()
+	{
+		SHEntity brick1 = SHEntityCreator.createDefaultBrick("brick1");
+		
+		SHBall ball = SHEntityCreator.createDefaultBall();
+		ball.setLocation(-2.5f, -1.5f, 0);
+		ball.updateGeometricState(0, true);
+		
+		SHCollisionTask task = new SHCollisionTask("ball", "brick", true);
+		processor.addCollisionTask(task);
+		
+		Node rootNode = mock(Node.class);
+		Node bricks = mock(Node.class);
+		Node balls = mock(Node.class);
+		when(rootNode.getChild("brick")).thenReturn(bricks);
+		when(rootNode.getChild("ball")).thenReturn(balls);
+		when(bricks.getChildren()).thenReturn(new ArrayList<Spatial>(Arrays.asList(brick1)));
+		when(balls.getChildren()).thenReturn(new ArrayList<Spatial>(Arrays.asList(ball)));
+		processor.processCollisions(rootNode);
+		
+		verify(dispatcher).addEvent(any(SHEvent.class));
+	}
+	
+	
 }

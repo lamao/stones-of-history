@@ -29,7 +29,7 @@ public class SHPaddleStickerTest
 	{
 		SHPaddleSticker sticker = new SHPaddleSticker(
 				SHEntityCreator.createDefaultBall(),
-				SHEntityCreator.createDefaultPaddle().getRoot());
+				SHEntityCreator.createDefaultPaddle());
 		assertNotNull(sticker.getBall());
 		assertNotNull(sticker.getTarget());
 	}
@@ -41,7 +41,7 @@ public class SHPaddleStickerTest
 		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
 		
 		ball.setLocation(-1, 2, 0);
-		SHPaddleSticker sticker = new SHPaddleSticker(ball, paddle.getRoot());
+		SHPaddleSticker sticker = new SHPaddleSticker(ball, paddle);
 		
 		sticker.update(1);
 		assertTrue(SHUtils.areEqual(new Vector3f(-1, 2, 0), ball.getLocation(),

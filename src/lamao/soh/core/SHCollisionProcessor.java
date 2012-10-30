@@ -35,13 +35,17 @@ public class SHCollisionProcessor implements ISHCollisionProcessor
 	
 	private SHEventDispatcher dispatcher;
 	
+	/**
+	 * Creates collision processor
+	 * @param dispatcher - used to fire events when found collision
+	 */
 	public SHCollisionProcessor(SHEventDispatcher dispatcher)
 	{
 		this.dispatcher = dispatcher;
 	}
 
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.ISHCollisionProcessor#getCollisionTasks()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public List<SHCollisionTask> getCollisionTasks()
@@ -49,8 +53,8 @@ public class SHCollisionProcessor implements ISHCollisionProcessor
 		return collisionTasks;
 	}
 	
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.ISHCollisionProcessor#addCollisionTask(lamao.soh.core.SHCollisionTask)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void addCollisionTask(SHCollisionTask task)
@@ -58,8 +62,8 @@ public class SHCollisionProcessor implements ISHCollisionProcessor
 		collisionTasks.add(task);
 	}
 	
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.ISHCollisionProcessor#removeCollisionTask(lamao.soh.core.SHCollisionTask)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void removeCollisionTask(SHCollisionTask task)
@@ -94,8 +98,8 @@ public class SHCollisionProcessor implements ISHCollisionProcessor
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see lamao.soh.core.ISHCollisionProcessor#processCollisions(com.jme.scene.Node)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void processCollisions(Node rootNode)
