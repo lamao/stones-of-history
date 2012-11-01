@@ -25,9 +25,9 @@ public class SHEventCounterTest
 		counter.processEvent(new SHEvent("1", null, null));
 		counter.processEvent(new SHEvent("2", null, null));
 		counter.processEvent(new SHEvent("3", null, null));
-		assertNull(counter.lastEvent.parameters);
+		assertNull(counter.lastEvent.getParameters());
 		counter.processEvent(new SHEvent("1", null, new HashMap<String, Object>()));
-		assertEquals(0, counter.lastEvent.parameters.size());
+		assertEquals(0, counter.lastEvent.getParameters().size());
 		
 		assertTrue(3 == counter.numEvents.get("1"));
 		assertEquals(3, counter.getNumEvents("1"));

@@ -18,10 +18,10 @@ public class SHEventTest
 	public void testConstructors()
 	{
 		SHEvent event = new SHEvent();		
-		assertTrue(event.time < 0);
+		assertTrue(event.getTime() < 0);
 		
 		event = new SHEvent("type", "sender", null);
-		assertTrue(event.time < 0);
+		assertTrue(event.getTime() < 0);
 	}
 
 }

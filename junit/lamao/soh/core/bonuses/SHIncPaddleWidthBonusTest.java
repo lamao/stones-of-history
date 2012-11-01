@@ -40,7 +40,7 @@ public class SHIncPaddleWidthBonusTest
 		
 		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
 		Spatial paddleModel = paddle.getModel();
-		scene.addEntity(paddle);
+		scene.add(paddle);
 		
 		bonus.apply(scene);
 		assertTrue(SHUtils.areEqual(new Vector3f(1.2f, 1, 1), 

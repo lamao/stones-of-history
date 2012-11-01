@@ -6,6 +6,7 @@
  */
 package lamao.soh.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -89,6 +90,26 @@ public class SHScene
 			return ((Node) typeNode).getChildren();
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns only those spatials of type <code>type</type> that are subclasses
+	 * of SHEntity
+	 * @param type - type name
+	 * @return list of entities of that type. All Spatial instances are skipped 
+	 */
+	public List<SHEntity> getEntities(String type)
+	{
+		List<Spatial> spatials = get(type);
+		List<SHEntity> entities = new ArrayList<SHEntity>();
+		for (Spatial spatial : spatials) 
+		{
+			if (spatial instanceof SHEntity) 
+			{
+				entities.add((SHEntity)spatial);
+			}
+		}
+		return entities;
 	}
 	
 	public Spatial get(String type, String name) 

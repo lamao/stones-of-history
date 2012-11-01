@@ -83,6 +83,15 @@ public class SHSceneTest extends SHEventTestCase
 	}
 	
 	@Test
+	public void testGetEntities() {
+		scene.add(TYPE, new SHEntity());
+		scene.add(TYPE, new Box());
+		scene.add(TYPE, new SHEntity());
+		
+		assertEquals(scene.getEntities(TYPE).size(), 2);
+	}
+	
+	@Test
 	public void testGetByTypeAndName() {
 		Node node1 = new Node(NAME);		
 		scene.add(TYPE, node1);

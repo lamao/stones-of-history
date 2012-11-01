@@ -36,7 +36,7 @@ public class SHEventTestCase
 	public void setUp()
 	{
 		dispatcher = new SHEventDispatcher();
-		counter = new SHEventCounter(dispatcher);
+		counter = new SHEventCounter();
 		dispatcher.addHandler("all", counter);
 	}
 	

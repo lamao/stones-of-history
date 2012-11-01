@@ -81,11 +81,11 @@ public class SHBallBottomWallCollisionHandlerTest
 		
 		when(event.getParameter("src", SHBall.class)).thenReturn(ball);
 		when(event.getParameter("dst", SHBottomWall.class)).thenReturn(wall);
-		when(scene.getEntities(anyString())).thenReturn(null);
+		when(scene.get(anyString())).thenReturn(null);
 		
 		handler.processEvent(event);
 		
-		verify(scene).removeEntity(ball);
+		verify(scene).remove(ball);
 		verify(dispatcher).addEvent("level-failed", handler);
 	}
 	
@@ -99,11 +99,11 @@ public class SHBallBottomWallCollisionHandlerTest
 		
 		when(event.getParameter("src", SHBall.class)).thenReturn(ball);
 		when(event.getParameter("dst", SHBottomWall.class)).thenReturn(wall);
-		when(scene.getEntities(anyString())).thenReturn(Collections.EMPTY_LIST);
+		when(scene.get(anyString())).thenReturn(Collections.EMPTY_LIST);
 		
 		handler.processEvent(event);
 		
-		verify(scene).removeEntity(ball);
+		verify(scene).remove(ball);
 		verify(dispatcher, never()).addEvent("level-failed", handler);
 	}
 

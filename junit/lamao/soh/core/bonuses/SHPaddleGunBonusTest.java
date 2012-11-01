@@ -6,9 +6,6 @@
  */
 package lamao.soh.core.bonuses;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import lamao.soh.SHConstants;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHGamePack;
@@ -16,15 +13,12 @@ import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.core.input.SHBreakoutInputHandler;
+import lamao.soh.ngutils.AbstractJmeTest;
 import lamao.soh.utils.SHResourceManager;
 
 
-import com.jme.input.MouseInput;
-import com.jme.input.dummy.DummyMouseInput;
 import com.jme.math.Vector3f;
 import com.jme.scene.shape.Box;
-import com.jme.system.DisplaySystem;
-import com.jme.system.dummy.DummySystemProvider;
 
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
@@ -32,7 +26,7 @@ import static org.testng.Assert.*;
  * @author lamao
  *
  */
-public class SHPaddleGunBonusTest
+public class SHPaddleGunBonusTest extends AbstractJmeTest
 {
 	@Test
 	public void testBonus()
@@ -55,7 +49,7 @@ public class SHPaddleGunBonusTest
 		SHGamePack.input = new SHBreakoutInputHandler(paddle);
 
 		SHScene scene = new SHScene();
-		scene.addEntity(paddle);
+		scene.add(paddle);
 		
 		bonus.apply(scene);
 		assertEquals(SHConstants.PADDLE_GUN, paddle.getModel().getName());

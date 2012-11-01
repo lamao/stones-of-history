@@ -15,6 +15,9 @@ import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHBall;
 
 import org.testng.annotations.Test;
+
+import com.jme.scene.Spatial;
+
 import static org.testng.Assert.*;
 
 /**
@@ -32,17 +35,17 @@ public class SHDoubleBallBonusTest
 				0.001f);
 		
 		SHScene scene = new SHScene();
-		scene.addEntity(SHEntityCreator.createDefaultBall());
+		scene.add(SHEntityCreator.createDefaultBall());
 		SHBall ball = SHEntityCreator.createDefaultBall();
 		ball.setVelocity(-1, 2, 0);
-		scene.addEntity(ball);
+		scene.add(ball);
 		
 		// double balls
 		bonus.apply(scene);
-		List<SHEntity> balls = scene.getEntities("ball");
+		List<Spatial> balls = scene.get("ball");
 		assertEquals(4, balls.size());
-		assertEquals(1, balls.get(2).getRoot().getControllerCount());
-		assertEquals(1, balls.get(3).getRoot().getControllerCount());
+		assertEquals(1, balls.get(2).getControllerCount());
+		assertEquals(1, balls.get(3).getControllerCount());
 		float angle = SHUtils.angle(((SHBall)balls.get(0)).getVelocity()) - 
 				SHUtils.angle(((SHBall)balls.get(2)).getVelocity());
 		assertTrue(Math.abs(angle - Math.PI / 4) < 0.001f);
@@ -51,18 +54,19 @@ public class SHDoubleBallBonusTest
 		assertTrue(Math.abs(angle - Math.PI / 4) < 0.001f, Float.toString(angle));
 		
 		// add new ball to level and double balls
-		scene.addEntity(SHEntityCreator.createDefaultBall());
+		scene.add(SHEntityCreator.createDefaultBall());
 		bonus.apply(scene);
-		assertEquals(10, balls.size());
+		assertEquals(10, scene.get("ball").size());
 		
 		// first cleanup
 		bonus.cleanup(scene);
-		assertEquals(5, balls.size());
+		assertEquals(5, scene.get("ball").size());
 		
 		// remove few balls and perform cleanup
-		scene.removeEntity(balls.get(0));
-		scene.removeEntity(balls.get(0));		
+		List<SHEntity> ballEntities = scene.getEntities("ball");
+		scene.remove(ballEntities.get(0));
+		scene.remove(ballEntities.get(1));		
 		bonus.cleanup(scene);
-		assertEquals(2, balls.size());
+		assertEquals(2, scene.get("ball").size());
 	}
 }

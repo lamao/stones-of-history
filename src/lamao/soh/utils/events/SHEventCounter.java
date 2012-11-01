@@ -16,15 +16,10 @@ import lamao.soh.core.eventhandlers.SHAbstractEventHandler;
  * @author lamao
  *
  */
-public class SHEventCounter extends SHAbstractEventHandler
+public class SHEventCounter implements ISHEventHandler
 {
 	public Map<String, Integer> numEvents = new HashMap<String, Integer>();
 	public SHEvent lastEvent = null;
-
-	public SHEventCounter(SHEventDispatcher dispatcher)
-	{
-		super(dispatcher);
-	}
 
 	@Override
 	public void processEvent(SHEvent event)

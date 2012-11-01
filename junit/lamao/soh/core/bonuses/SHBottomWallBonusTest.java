@@ -23,7 +23,7 @@ public class SHBottomWallBonusTest
 		SHScene scene = new SHScene();
 		
 		SHBottomWall wall = new SHBottomWall("bottom-wall", "bottom-wall", null);
-		scene.addEntity(wall);
+		scene.add(wall);
 		
 		assertTrue(bonus.isAddictive());	
 		

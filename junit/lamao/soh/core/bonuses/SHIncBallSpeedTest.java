@@ -34,8 +34,8 @@ public class SHIncBallSpeedTest
 		SHBall ball2 = SHEntityCreator.createDefaultBall();
 		ball2.setVelocity(1, 1, 0);
 
-		scene.addEntity(ball1);
-		scene.addEntity(ball2);
+		scene.add(ball1);
+		scene.add(ball2);
 		
 		// first bonus
 		SHIncBallSpeedBonus bonus = new SHIncBallSpeedBonus();
@@ -62,7 +62,7 @@ public class SHIncBallSpeedTest
 		
 		SHBall ball3 = SHEntityCreator.createDefaultBall();
 		ball3.setVelocity(1, -1, 0);
-		scene.addEntity(ball3);
+		scene.add(ball3);
 		
 		bonus.cleanup(scene);
 		assertTrue(Math.abs(Math.abs(ball1.getVelocity().length() / 
