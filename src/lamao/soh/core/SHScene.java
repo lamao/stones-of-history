@@ -6,6 +6,7 @@
  */
 package lamao.soh.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,111 +42,94 @@ public class SHScene
 	/** Root node of the scene */
 	private Node _rootNode = new Node("scene-root");
 	
-	/** Entities (objects) of the scene. Grouped by the 
-	 * <code>SHEntity#getType()</code>
-	 */
-	private Map<String, List<SHEntity>> _entities = 
-			new TreeMap<String, List<SHEntity>>();
-
-	/** 3D models for the scene. Can be entity models or free models (such as
-	 * decorations). Grouped by the type (entity type if it's entity model or
-	 * by user specified type if it's free model) 
-	 */
-	private Map<String, List<Spatial>> _models = 
-			new TreeMap<String, List<Spatial>>();
+	private ISHCollisionProcessor collisionProcessor;
 	
-	/**
-	 * Pairs of entity types to check for collision.
-	 */
-	private List<SHCollisionTask> _collisionTasks = 
-			new LinkedList<SHCollisionTask>();
-	
-	/** Map for fast searching entities for models */
-	private Map<Spatial, SHEntity> _searchMap = new HashMap<Spatial, SHEntity>();
-	
+	public void setRootNode(Node rootNode) 
+	{
+		_rootNode = rootNode;
+	}
 	
 	public Node getRootNode()
 	{
 		return _rootNode;
 	}
 	
-	public Map<String, List<SHEntity>> getEntities()
+	public ISHCollisionProcessor getCollisionProcessor()
 	{
-		return _entities;
+		return collisionProcessor;
+	}
+
+	public void setCollisionProcessor(ISHCollisionProcessor collisionProcessor)
+	{
+		this.collisionProcessor = collisionProcessor;
+	}
+
+	/**
+	 * 
+	 * @return number of model groups in the scene
+	 */
+	public int getNumberOfTypes() 
+	{
+		if (_rootNode.getChildren() == null)
+		{
+			return 0;
+		}
+		return _rootNode.getChildren().size();
 	}
 	
+	/**
+	 * 
+	 * @param type - user type of model group (e.g. 'brick')
+	 * @return list of models of given types
+	 */
+	public List<Spatial> get(String type)
+	{
+		Spatial typeNode = _rootNode.getChild(type);
+		if (typeNode instanceof Node)
+		{
+			return ((Node) typeNode).getChildren();
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns only those spatials of type <code>type</type> that are subclasses
+	 * of SHEntity
+	 * @param type - type name
+	 * @return list of entities of that type. All Spatial instances are skipped 
+	 */
 	public List<SHEntity> getEntities(String type)
 	{
-		return _entities.get(type);
+		List<Spatial> spatials = get(type);
+		List<SHEntity> entities = new ArrayList<SHEntity>();
+		for (Spatial spatial : spatials) 
+		{
+			if (spatial instanceof SHEntity) 
+			{
+				entities.add((SHEntity)spatial);
+			}
+		}
+		return entities;
+	}
+	
+	public Spatial get(String type, String name) 
+	{
+		Spatial typeNode = _rootNode.getChild(type);
+		if (typeNode instanceof Node)
+		{
+			return ((Node) typeNode).getChild(name);
+		}
+		return null;
 	}
 	
 	public SHEntity getEntity(String type, String name)
 	{
-		List<SHEntity> entities = getEntities(type);
-		if (entities != null)
+		Spatial possibleResult = get(type, name);
+		if (possibleResult instanceof SHEntity)
 		{
-			for (SHEntity entity : entities)
-			{
-				if (entity.getName().equals(name))
-				{
-					return entity;
-				}
-			}
+			return (SHEntity)possibleResult;
 		}
-		return null;
-	}
-
-	public Map<String, List<Spatial>> getModels()
-	{
-		return _models;
-	}
-	
-	/**
-	 * Adds entity to the scene. Entities are grouped by their type in the same 
-	 * way to models. Also method adds entity model to the scene models. The type
-	 * of  model will be <code>entity.getType()</code>  
-	 * @param type
-	 * @param model
-	 */
-	public void addEntity(SHEntity entity)
-	{
-		List<SHEntity> entityGroup = getEntities(entity.getType());
-		if (entityGroup == null)
-		{
-			entityGroup = new LinkedList<SHEntity>();
-			_entities.put(entity.getType(), entityGroup);
-		}
-		entityGroup.add(entity);
-		addModel(entity.getType(), entity.getRoot());
-		_searchMap.put(entity.getRoot(), entity);
-	}
-	
-	/**
-	 * Remove entity and its model from the scene. If entity is the only entity 
-	 * of this type, type will be removed. 
-	 * @param type
-	 * @param model
-	 */
-	public void removeEntity(SHEntity entity)
-	{
-		List<SHEntity> group = getEntities(entity.getType());
-		if (group != null)
-		{
-			group.remove(entity);
-			if (group.isEmpty())
-			{
-				_entities.remove(entity.getType());
-			}
-			removeModel(entity.getType(), entity.getRoot());
-			_searchMap.remove(entity.getRoot());
-		}
-	}
-	
-	
-	
-	public List<Spatial> getModels(String type)
-	{
-		return _models.get(type);
+		return null;		
 	}
 	
 	/**
@@ -154,20 +138,21 @@ public class SHScene
 	 * @param type
 	 * @param model
 	 */
-	public void addModel(String type, Spatial model)
+	public void add(String type, Spatial model)
 	{
-		List<Spatial> group = getModels(type);
 		Node nodeGroup = (Node)_rootNode.getChild(type);
-		if (group == null)
+		if (nodeGroup == null)
 		{
-			group = new LinkedList<Spatial>();
-			_models.put(type, group);
 			nodeGroup = new Node(type);
 			_rootNode.attachChild(nodeGroup);
 		}
-		group.add(model);
 		nodeGroup.attachChild(model);
 		nodeGroup.updateRenderState();
+	}
+	
+	public void add(SHEntity entity) 
+	{
+		add(entity.getType(), entity);
 	}
 	
 	/**
@@ -176,41 +161,33 @@ public class SHScene
 	 * @param type
 	 * @param model
 	 */
-	public void removeModel(String type, Spatial model)
+	public void remove(String type, Spatial model)
 	{
-		List<Spatial> group = getModels(type);
 		Node nodeGroup = (Node)_rootNode.getChild(type);
-		if (group != null)
+		if (nodeGroup != null)
 		{
-			group.remove(model);
 			nodeGroup.detachChild(model);
-			if (group.isEmpty())
+			if (nodeGroup.getChildren().isEmpty())
 			{
-				_models.remove(type);
 				_rootNode.detachChild(nodeGroup);
 			}
 		}
 	}
 	
-	public List<SHCollisionTask> getCollisionTasks()
+	/**
+	 * Remove model of specified type. If model is the only model of this type,
+	 * type will be removed. 
+	 * @param type
+	 * @param model
+	 */
+	public void remove(SHEntity entity)
 	{
-		return _collisionTasks;
+		remove(entity.getType(), entity);
 	}
 	
-	public void addCollisionTask(SHCollisionTask task)
-	{
-		_collisionTasks.add(task);
-	}
 	
-	public void removeCollisionTask(SHCollisionTask task)
-	{
-		_collisionTasks.remove(task);
-	}
 	
-	public SHEntity getEntity(Spatial model)
-	{
-		return _searchMap.get(model);
-	}
+	
 	
 	/**
 	 * Updates the scene. It includes node updates, collision detection
@@ -218,58 +195,10 @@ public class SHScene
 	 */
 	public void update(float tpf)
 	{
-		processCollisions();
+		collisionProcessor.processCollisions(_rootNode);
 	}
 	
-	private void processCollisions()
-	{
-		List<SHEvent> eventsToSend = new LinkedList<SHEvent>();
-		Node source = null;
-		Node dest = null;
-		for (SHCollisionTask task : _collisionTasks)
-		{
-			source = (Node)_rootNode.getChild(task.sourceType);
-			dest = (Node)_rootNode.getChild(task.destType);
-			if (source != null && dest != null)
-			{
-				for (Spatial sourceModel : source.getChildren())
-				{
-					for (Spatial destModel : dest.getChildren())
-					{
-						CollisionResults results = task.checkTris ? 
-								new TriangleCollisionResults() :
-								new BoundingCollisionResults();
-						sourceModel.findCollisions(destModel, results);
-						
-						SHEntity sourceEntity = getEntity(sourceModel);
-						SHEntity destEntity = getEntity(destModel);
-						CollisionData data = null;
-						for (int i = 0; i < results.getNumber(); i++)
-						{
-							data = results.getCollisionData(i);
-							if (!task.checkTris || (data.getSourceTris().size() > 0 && 
-								data.getTargetTris().size() > 0))
-							{
-								String event = "scene-collision-" 
-										+ task.sourceType 
-										+ "-" + task.destType;
-								Map<String, Object> params = new HashMap<String, Object>();
-								params.put("data", results.getCollisionData(i));
-								params.put("src", sourceEntity);
-								params.put("dst", destEntity);
-								eventsToSend.add(new SHEvent(event, this, params));
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		for (SHEvent event : eventsToSend)
-		{
-			SHGamePack.dispatcher.addEvent(event);
-		}
-	}
+	
 	
 	/** 
 	 * Clears scene, but left non-entity elements (e.g. collision tasks).
@@ -277,10 +206,7 @@ public class SHScene
 	 */
 	public void reset()
 	{
-		_entities.clear();
 		_rootNode.detachAllChildren();
-		_models.clear();
-		_searchMap.clear();
 	}
 	
 	/**
@@ -291,7 +217,6 @@ public class SHScene
 	public void resetAll()
 	{
 		this.reset();
-		_collisionTasks.clear();
 	}
 	
 //	public static void main(String[] args)

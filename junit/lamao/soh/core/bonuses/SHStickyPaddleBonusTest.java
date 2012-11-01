@@ -35,20 +35,20 @@ public class SHStickyPaddleBonusTest
 		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
 		SHBall ball1 = SHEntityCreator.createDefaultBall("ball", "ball1");
 		
-		scene.addEntity(paddle);
-		scene.addEntity(ball1);
+		scene.add(paddle);
+		scene.add(ball1);
 		ball1.setVelocity(0, -1, 0);
 		
 		bonus.apply(scene);
 		paddle.onHit(ball1);
 		assertTrue(paddle.getHitHandler() instanceof 
 				SHStickyPaddleHitHandler);
-		assertTrue(ball1.getRoot().getController(0) instanceof SHPaddleSticker);
+		assertTrue(ball1.getController(0) instanceof SHPaddleSticker);
 		
 		bonus.cleanup(scene);
 		assertTrue(paddle.getHitHandler() instanceof
 				SHDefaultPaddleHitHandler);
-		assertTrue(ball1.getRoot().getController(0) instanceof SHDefaultBallMover);
+		assertTrue(ball1.getController(0) instanceof SHDefaultBallMover);
 		
 		
 	}

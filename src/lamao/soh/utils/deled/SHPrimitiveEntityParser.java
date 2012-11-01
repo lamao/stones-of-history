@@ -57,7 +57,7 @@ class SHPrimitiveEntityParser extends SHPrimitiveParser
 		SHEntity entity = _factory.createEntity(_entityParams);
 		if (entity == null)
 		{
-			_scene.addModel("decoration", spatial);
+			_scene.add("decoration", spatial);
 		}
 		else
 		{
@@ -65,7 +65,7 @@ class SHPrimitiveEntityParser extends SHPrimitiveParser
 			entity.setName(spatial.getName());
 			entity.setLocation(spatial.getLocalTranslation().clone());
 			spatial.setLocalTranslation(0, 0, 0);
-			_scene.addEntity(entity);
+			_scene.add(entity);
 		}
 	}
 	

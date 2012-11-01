@@ -6,17 +6,21 @@
  */
 package lamao.soh.core.collisionhandlers;
 
-import lamao.junit.common.SHEventTestCase;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHScene;
-import lamao.soh.core.SHUtils;
+import lamao.soh.core.bonuses.SHBonus;
+import lamao.soh.core.bonuses.SHDefaultMover;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBrick;
 import lamao.soh.utils.events.SHEvent;
+import lamao.soh.utils.events.SHEventDispatcher;
+
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.*;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import static org.testng.Assert.*;
 
 import com.jme.math.Vector3f;
 
@@ -24,75 +28,102 @@ import com.jme.math.Vector3f;
  * @author lamao
  *
  */
-public class SHBallBrickCollisionHandlerTest extends SHEventTestCase
+public class SHBallBrickCollisionHandlerTest
 {
 	
-	private SHScene scene = null;
-	private SHBall ball = null;
-	private SHBallBrickCollisionHandler handler = new SHBallBrickCollisionHandler();
+	@Mock
+	private SHEventDispatcher dispatcher;
+	
+	@Mock
+	private SHScene scene;
+	
+	@Mock
+	private SHEvent event;
+	
+	@Mock
+	private SHBall ball;
+	
+	private SHBallBrickCollisionHandler handler;
+	
+	
 	
 	@BeforeMethod
 	public void setUp()
 	{
-		super.setUp();
-		scene = new SHScene();
-		ball = SHEntityCreator.createDefaultBall();
-		scene.addEntity(ball);
-		ball.setLocation(0, -1.99f, 0);
-		ball.setVelocity(1, 1, 0);
+		MockitoAnnotations.initMocks(this);
+		
+		handler = new SHBallBrickCollisionHandler(dispatcher, scene);
+		
+		when(event.getParameter("src", SHBall.class)).thenReturn(ball);
+		
 	}
 
 	@Test 
 	public void testBallCollisionWithDefaultBrick()
 	{
 		SHBrick brick = SHEntityCreator.createDefaultBrick("brick");
-		scene.addEntity(brick);
+		brick.setStrength(-1); // ball hit on brick
 		
-		handler.processEvent(new SHEvent("ball-brick-collision", scene, 
-				SHUtils.buildEventMap("src", ball, "dst", brick)));
+		when(event.getParameter("dst", SHBrick.class)).thenReturn(brick);
 		
+		handler.processEvent(event);		
 		
-		assertEquals(1, counter.getNumEvents("level-brick-deleted"));
-		assertFalse(SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
-				0.001f), ball.getVelocity().toString());
-		assertNull(scene.getEntities("brick"));
-		
+		verify(event).getParameter("src", SHBall.class);
+		verify(event).getParameter("dst", SHBrick.class);
+		verify(dispatcher).addEventEx("level-brick-hit", handler, "brick", brick);
+		verify(scene).remove(brick);
+		verify(dispatcher).addEventEx("level-brick-deleted", handler, "brick", brick);
+		verify(dispatcher, never()).addEventEx(eq("level-bonus-extracted"), 
+				same(handler), eq("bonus"), any(SHBonus.class));
 	}
 	
 	@Test 
 	public void testBallCollisionWithSuperBrick()
 	{
-		SHBrick brick = SHEntityCreator.createSuperBrick("brick");
-		scene.addEntity(brick);
+		SHBrick brick = SHEntityCreator.createDefaultBrick("brick");
+		brick.setStrength(2); // ball hit on brick, but it has 2 lives
 		
-		handler.processEvent(new SHEvent("ball-brick-collision", scene, 
-				SHUtils.buildEventMap("src", ball, "dst", brick)));
+		when(event.getParameter("dst", SHBrick.class)).thenReturn(brick);
 		
+		handler.processEvent(event);		
 		
-		assertEquals(0, counter.getNumEvents("level-brick-deleted"));
-		assertFalse(SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
-				0.001f),
-				ball.getVelocity().toString());
-		assertEquals(1, scene.getEntities("brick").size());
-		
+		verify(event).getParameter("src", SHBall.class);
+		verify(event).getParameter("dst", SHBrick.class);
+		verify(dispatcher).addEventEx("level-brick-hit", handler, "brick", brick);
+		verify(scene, never()).remove(brick);
+		verify(dispatcher, never()).addEventEx("level-brick-deleted", handler, "brick", brick);
+		verify(dispatcher, never()).addEventEx(eq("level-bonus-extracted"), 
+				same(handler), eq("bonus"), any(SHBonus.class));
 	}
 	
 	@Test 
-	public void testBallCollisionWithGlassBrick()
+	public void testBallCollisionWithBrickContainsBonus()
 	{
-		SHBrick brick = SHEntityCreator.createGlassBrick("brick");
-		scene.addEntity(brick);
+		SHBonus bonus = mock(SHBonus.class);
+		SHBrick brick = mock(SHBrick.class);
+		when(brick.getLocation()).thenReturn(Vector3f.UNIT_X.clone());
+		when(brick.getStrength()).thenReturn(-1); // ball hit on brick
+		when(brick.getBonus()).thenReturn(bonus);
+		when(bonus.getType()).thenReturn("bonus");
 		
-		handler.processEvent(new SHEvent("ball-brick-collision", scene, 
-				SHUtils.buildEventMap("src", ball, "dst", brick)));
 		
 		
-		assertEquals(1, counter.getNumEvents("level-brick-deleted"));
-		assertTrue(SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
-				0.001f),
-				ball.getVelocity().toString());
-		assertNull(scene.getEntities("brick"));
+		when(event.getParameter("dst", SHBrick.class)).thenReturn(brick);
 		
+		handler.processEvent(event);		
+		
+		verify(event).getParameter("src", SHBall.class);
+		verify(event).getParameter("dst", SHBrick.class);
+		verify(dispatcher).addEventEx("level-brick-hit", handler, "brick", brick);
+		verify(scene).remove(brick);
+		verify(dispatcher).addEventEx("level-brick-deleted", handler, "brick", brick);
+		verify(scene).add("bonus", bonus);
+		verify(dispatcher).addEventEx(eq("level-bonus-extracted"), 
+				same(handler), eq("bonus"), any(SHBonus.class));
+		
+		verify(bonus).addController(any(SHDefaultMover.class));
+		verify(bonus).setLocation(eq(Vector3f.UNIT_X));
+		verify(bonus, times(2)).updateGeometricState(0, true);
+		verify(dispatcher).addEventEx("level-bonus-extracted", handler, "bonus", bonus);
 	}
-	
 }

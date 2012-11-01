@@ -8,27 +8,35 @@ package lamao.soh.core.eventhandlers;
 
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.bonuses.SHBonus;
-import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
+import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * 
  * @author lamao
  *
  */
-public class SHBonusTimeOverEventHandler implements ISHEventHandler
+public class SHBonusTimeOverEventHandler extends SHAbstractEventHandler
 {
-	/* (non-Javadoc)
-	 * @see lamao.soh.utils.events.ISHEventHandler#processEvent(lamao.soh.utils.events.SHEvent)
+	
+	
+	public SHBonusTimeOverEventHandler(SHEventDispatcher dispatcher)
+	{
+		super(dispatcher);
+	}
+
+	/** 
+	 * {@inheritDoc}
+	 * 
 	 */
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHBonus bonus = (SHBonus)event.params.get("bonus");
+		SHBonus bonus = event.getParameter("bonus", SHBonus.class);
 		
 		bonus.cleanup(SHGamePack.scene);
 		
-		SHGamePack.dispatcher.removeHandler(event.type, this);
+		dispatcher.removeHandler(event.getType(), this);
 	}
 
 }

@@ -35,9 +35,9 @@ public class SHDefaultBallMover extends SHBallMover
 	{
 		if (getBall() != null)
 		{
-			getBall().getRoot().getLocalTranslation().addLocal(
+			getBall().getLocalTranslation().addLocal(
 					getBall().getVelocity().mult(time));
-			getBall().getRoot().updateWorldBound();
+			getBall().updateWorldBound();
 		}
 	}
 

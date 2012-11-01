@@ -15,16 +15,16 @@ import java.util.Map;
 public class SHEvent
 {
 	/** Type of event */
-	public String type;
+	private String type;
 	
 	/** Sender of event */
-	public Object sender;
+	private Object sender;
 	
 	/** Additional parameters of event (event specific) */
-	public Map<String, Object> params;
+	private Map<String, Object> parameters;
 	
 	/** Time to fire this event. time < 0 if event has to be fired immediately */
-	public float time;
+	private float time;
 
 	/**
 	 * Constructs time event 
@@ -43,7 +43,7 @@ public class SHEvent
 		this();
 		this.type = type;
 		this.sender = sender;
-		this.params = params;
+		this.parameters = params;
 	}
 	
 	public SHEvent()
@@ -56,4 +56,62 @@ public class SHEvent
 	{
 		return type;
 	}
+
+	public String getType()
+	{
+		return type;
+	}
+
+	public void setType(String type)
+	{
+		this.type = type;
+	}
+
+	public Object getSender()
+	{
+		return sender;
+	}
+
+	public void setSender(Object sender)
+	{
+		this.sender = sender;
+	}
+
+	public Map<String, Object> getParameters()
+	{
+		return parameters;
+	}
+
+	public void setParameters(Map<String, Object> params)
+	{
+		this.parameters = params;
+	}
+	
+	public Object getParameter(String name) 
+	{
+		return parameters.get(name); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public<T> T getParameter(String name, Class<T> clazz) 
+	{
+		return (T) getParameter(name);
+	}
+	
+	public void setParameter(String name, Object value) 
+	{
+		parameters.put(name, value);
+	}
+
+	public float getTime()
+	{
+		return time;
+	}
+
+	public void setTime(float time)
+	{
+		this.time = time;
+	}
+	
+	
 }

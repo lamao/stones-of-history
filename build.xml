@@ -93,7 +93,7 @@
 	
 	<target name="compile">
 		<javac srcdir="${source.dir}" destdir="${build.classes.dir}" 
-			classpathref="compile.classpath"/>
+			classpathref="compile.classpath" debug="${project.compile.debug}"/>
 	</target>
 	
 	<target name="compile.tests" depends="compile">

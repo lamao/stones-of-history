@@ -29,6 +29,7 @@ import lamao.soh.utils.SHResourceManager;
  * @author lamao
  *
  */
+@SuppressWarnings("serial")
 public class SHPaddleGunBonus extends SHBonus
 {
 	public final static float DURATION = 5; 
@@ -116,10 +117,10 @@ public class SHPaddleGunBonus extends SHBonus
 				bullet.setModel(bulletModel);
 				bullet.setLocation(paddle.getLocation().x, 
 						paddle.getLocation().y + bound.yExtent, 0);
-				bullet.getRoot().addController(new SHDefaultBallMover(bullet));
+				bullet.addController(new SHDefaultBallMover(bullet));
 
-				_scene.addEntity(bullet);
-				bullet.getRoot().updateGeometricState(0, true);
+				_scene.add(bullet);
+				bullet.updateGeometricState(0, true);
 			}
 			
 		}

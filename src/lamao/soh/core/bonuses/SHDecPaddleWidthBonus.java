@@ -15,6 +15,7 @@ import com.jme.scene.Spatial;
  * @author lamao
  *
  */
+@SuppressWarnings("serial")
 public class SHDecPaddleWidthBonus extends SHBonus
 {
 	public final static float DECREASE_PERCENT = 0.2f;

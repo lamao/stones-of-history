@@ -56,20 +56,23 @@ public class SHScripts
 		
 		ball.setLocation(0, -6.3f, 0);
 		ball.setVelocity(-3 ,3 ,0);
-		ball.getRoot().addController(new SHPaddleSticker(ball, paddle.getRoot()));
+		ball.addController(new SHPaddleSticker(ball, paddle));
 		
-		SHGamePack.scene.addEntity(paddle);
-		SHGamePack.scene.addEntity(ball);
+		SHGamePack.scene.add(paddle);
+		SHGamePack.scene.add(ball);
 		
 		SHScene scene = SHGamePack.scene;
-		scene.addCollisionTask(new SHCollisionTask("ball", "wall", false));
-		scene.addCollisionTask(new SHCollisionTask("ball", "paddle", false));
-		scene.addCollisionTask(new SHCollisionTask("ball", "brick", true));
-		scene.addCollisionTask(new SHCollisionTask("bonus", "bottom-wall", false));
-		scene.addCollisionTask(new SHCollisionTask("bonus", "paddle", false));
-		scene.addCollisionTask(new SHCollisionTask("ball", "bottom-wall", false));
-		scene.addCollisionTask(new SHCollisionTask("bullet", "brick", false));
-		scene.addCollisionTask(new SHCollisionTask("bullet", "wall", false));
+		
+		SHCollisionProcessor collisionProcessor = new SHCollisionProcessor(SHGamePack.dispatcher);
+		collisionProcessor.addCollisionTask(new SHCollisionTask("ball", "wall", false));
+		collisionProcessor.addCollisionTask(new SHCollisionTask("ball", "paddle", false));
+		collisionProcessor.addCollisionTask(new SHCollisionTask("ball", "brick", true));
+		collisionProcessor.addCollisionTask(new SHCollisionTask("bonus", "bottom-wall", false));
+		collisionProcessor.addCollisionTask(new SHCollisionTask("bonus", "paddle", false));
+		collisionProcessor.addCollisionTask(new SHCollisionTask("ball", "bottom-wall", false));
+		collisionProcessor.addCollisionTask(new SHCollisionTask("bullet", "brick", false));
+		collisionProcessor.addCollisionTask(new SHCollisionTask("bullet", "wall", false));
+		scene.setCollisionProcessor(collisionProcessor);
 		
 		SHGamePack.input = new SHBreakoutInputHandler(paddle);
 		SHGamePack.input.addAction(new SHMouseBallLauncher(SHGamePack.scene));
@@ -83,18 +86,27 @@ public class SHScripts
 	public final static void gameStartupScript()
 	{
 		SHGamePack.initDefaults();
-		SHGamePack.dispatcher.addHandler("all", new SHEventLogger());
 		
 		SHEventDispatcher dispatcher = SHGamePack.dispatcher;
-		dispatcher.addHandler("scene-collision-ball-wall", new SHBallWallCollisionHandler());
-		dispatcher.addHandler("scene-collision-ball-paddle", new SHBallPaddleCollisionHandler());
-		dispatcher.addHandler("scene-collision-ball-brick", new SHBallBrickCollisionHandler());
-		dispatcher.addHandler("level-brick-deleted", new SHBrickDeletedEventHandler());
-		dispatcher.addHandler("scene-collision-bonus-bottom-wall", new SHBonusBottomWallCollisionHandler());
-		dispatcher.addHandler("scene-collision-bonus-paddle", new SHBonusPaddleCollisionHandler());
-		dispatcher.addHandler("scene-collision-ball-bottom-wall", new SHBallBottomWallCollisionHandler());
-		dispatcher.addHandler("scene-collision-bullet-brick", new SHBulletBrickCollisionHandler());
-		dispatcher.addHandler("scene-collision-bullet-wall", new SHBulletWallCollisionHandler());
+		dispatcher.addHandler("all", new SHEventLogger(dispatcher));
+		dispatcher.addHandler("scene-collision-ball-wall", 
+				new SHBallWallCollisionHandler(dispatcher, SHGamePack.scene));
+		dispatcher.addHandler("scene-collision-ball-paddle", 
+				new SHBallPaddleCollisionHandler(dispatcher, SHGamePack.scene));
+		dispatcher.addHandler("scene-collision-ball-brick", 
+				new SHBallBrickCollisionHandler(dispatcher, SHGamePack.scene));
+		dispatcher.addHandler("level-brick-deleted", 
+				new SHBrickDeletedEventHandler(dispatcher, SHGamePack.context));
+		dispatcher.addHandler("scene-collision-bonus-bottom-wall", 
+				new SHBonusBottomWallCollisionHandler(dispatcher, SHGamePack.scene));
+		dispatcher.addHandler("scene-collision-bonus-paddle", 
+				new SHBonusPaddleCollisionHandler(dispatcher, SHGamePack.scene));
+		dispatcher.addHandler("scene-collision-ball-bottom-wall", 
+				new SHBallBottomWallCollisionHandler(dispatcher, SHGamePack.scene));
+		dispatcher.addHandler("scene-collision-bullet-brick", 
+				new SHBulletBrickCollisionHandler(dispatcher, SHGamePack.scene));
+		dispatcher.addHandler("scene-collision-bullet-wall", 
+				new SHBulletWallCollisionHandler(dispatcher, SHGamePack.scene));
 		
 		SHConsoleState console = new SHConsoleState(SHConsoleState.STATE_NAME);
 		GameStateManager.getInstance().attachChild(console);

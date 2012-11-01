@@ -34,7 +34,7 @@ public class SHEntityCreator
 		box.setModelBound(new BoundingBox());
 		box.updateModelBound();
 		SHBrick brick = new SHBrick(box);
-		brick.getRoot().updateGeometricState(0, true);
+		brick.updateGeometricState(0, true);
 		brick.setType("brick");
 		brick.setName(id);
 		
@@ -68,7 +68,7 @@ public class SHEntityCreator
 		model.updateModelBound();
 		
 		SHBall ball = new SHBall(model);
-		ball.getRoot().updateGeometricState(0, true);
+		ball.updateGeometricState(0, true);
 		ball.setType(type);
 		ball.setName(name);
 		
@@ -93,7 +93,7 @@ public class SHEntityCreator
 		SHPaddle paddle = new SHPaddle(box);
 		paddle.setType("paddle");
 		paddle.setName("paddle");
-		paddle.getRoot().updateGeometricState(0, true);
+		paddle.updateGeometricState(0, true);
 		return paddle;
 	}
 	
@@ -101,7 +101,7 @@ public class SHEntityCreator
 	public void testDefaultBrick()
 	{
 		SHBrick brick = createDefaultBrick("brick");
-		assertNotNull(brick.getRoot().getWorldBound());
+		assertNotNull(brick.getWorldBound());
 		assertEquals(1, brick.getStrength());
 		assertFalse(brick.isGlass());
 		assertTrue(SHUtils.areEqual(Vector3f.ZERO, brick.getLocation(), 0.001f));
@@ -131,7 +131,7 @@ public class SHEntityCreator
 		SHBall ball = createDefaultBall();
 		assertEquals("ball", ball.getType());
 		assertEquals("ball", ball.getName());
-		assertNotNull(ball.getRoot().getWorldBound());
+		assertNotNull(ball.getWorldBound());
 		assertNotNull(ball.getModel());
 		assertNotNull(ball.getModel().getWorldBound());
 		assertTrue(SHUtils.areEqual(Vector3f.UNIT_Y, ball.getVelocity(), 0.001f));
@@ -144,7 +144,7 @@ public class SHEntityCreator
 		SHPaddle paddle = createDefaultPaddle();
 		assertEquals("paddle", paddle.getType());
 		assertEquals("paddle", paddle.getName());
-		assertNotNull(paddle.getRoot().getWorldBound());
+		assertNotNull(paddle.getWorldBound());
 		assertNotNull(paddle.getModel());
 		assertNotNull(paddle.getModel().getWorldBound());
 		assertTrue(paddle.getModel().getWorldBound() instanceof BoundingBox);

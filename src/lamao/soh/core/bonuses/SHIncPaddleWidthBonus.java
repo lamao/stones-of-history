@@ -15,6 +15,7 @@ import lamao.soh.core.SHScene;
  * @author lamao
  *
  */
+@SuppressWarnings("serial")
 public class SHIncPaddleWidthBonus extends SHBonus
 {
 	public final static float INCREASE_PERCENT = 0.2f;

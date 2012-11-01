@@ -16,6 +16,7 @@ import com.jme.scene.Spatial;
  * @author lamao
  *
  */
+@SuppressWarnings("serial")
 public class SHBottomWall extends SHEntity
 {
 

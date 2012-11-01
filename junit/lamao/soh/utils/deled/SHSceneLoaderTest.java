@@ -7,10 +7,6 @@
 package lamao.soh.utils.deled;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
@@ -44,12 +40,12 @@ public class SHSceneLoaderTest extends AbstractJmeTest
 		
 		loader.load(new File("data/test/test-level.dps"));
 		
-		assertNull(scene.getEntities("decoration"));
-		assertEquals(2, scene.getModels("decoration").size());
-		assertEquals(3, scene.getEntities("wall").size());
-		assertEquals(3, scene.getModels("wall").size());
-		assertEquals(1, scene.getEntities("bottom-wall").size());
-		assertEquals(15, scene.getEntities("brick").size());
+		//assertNull(scene.getEntities("decoration"));
+		assertEquals(2, scene.get("decoration").size());
+		assertEquals(3, scene.get("wall").size());
+		assertEquals(3, scene.get("wall").size());
+		assertEquals(1, scene.get("bottom-wall").size());
+		assertEquals(15, scene.get("brick").size());
 		
 		SHBrick brick = (SHBrick)scene.getEntity("brick", "brick-tank");
 		assertEquals(Integer.MAX_VALUE, brick.getStrength());
@@ -60,10 +56,11 @@ public class SHSceneLoaderTest extends AbstractJmeTest
 		brick = (SHBrick)scene.getEntity("brick", "brick1");
 		assertEquals(1, brick.getStrength());
 	
-		Map<String, List<Spatial>> models = scene.getModels();
-		for (String key : models.keySet())
+		Node rootNode = scene.getRootNode();
+		for (Spatial groupSpatial : rootNode.getChildren())
 		{
-			for (Spatial model : models.get(key))
+			Node group = (Node)groupSpatial;
+			for (Spatial model : group.getChildren())
 			{
 				assertFalse( 
 						SHUtils.areEqual(model.getLocalTranslation(), 

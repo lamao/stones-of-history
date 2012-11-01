@@ -17,7 +17,6 @@ import lamao.soh.ngutils.AbstractJmeTest;
 import lamao.soh.utils.resparser.ISHResourceParser;
 
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 

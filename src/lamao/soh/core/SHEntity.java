@@ -11,11 +11,12 @@ import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
 /**
- * Game entity, which has model.
+ * Game entity (e.g. ball or box). Has a model as member variable.
  * @author lamao
  *
  */
-public class SHEntity
+@SuppressWarnings("serial")
+public class SHEntity extends Node
 {
 	public static final String ENTITY_TYPE_DEFAULT = "default";
 	
@@ -23,16 +24,10 @@ public class SHEntity
 	/** Type of the entity */
 	private String _type = ENTITY_TYPE_DEFAULT;
 
-	/** Root node for entity */
-	private Node _root = new Node("");
-	
-	/** Collidable model for this root. Other spatials attached to the root
+	/** Collidable model for this entity. Other spatials attached to the root
 	 * node are treated as decoration, effect etc. 
 	 */
 	private Spatial _model = null;
-	
-	/** Name of this entity */
-	private String _name = null;
 	
 	public SHEntity(String type, String name, Spatial model)
 	{
@@ -45,18 +40,13 @@ public class SHEntity
 	{
 		this();
 		_model = model;
-		_root.attachChild(model);
+		attachChild(model);
 	}
 	
 	public SHEntity()
 	{
 	}
 
-	public Node getRoot()
-	{
-		return _root;
-	}
-	
 	public Spatial getModel()
 	{
 		return _model;
@@ -66,12 +56,12 @@ public class SHEntity
 	{
 		if (_model != null)
 		{
-			_root.detachChild(_model);
+			detachChild(_model);
 		}
 		_model = model;
-		_root.attachChild(model);
-		_root.updateRenderState();
-		_root.updateGeometricState(0, true);
+		attachChild(model);
+		updateRenderState();
+		updateGeometricState(0, true);
 	}
 	
 	/** 
@@ -80,8 +70,8 @@ public class SHEntity
 	 */
 	public void setLocation(Vector3f location)
 	{
-		_root.setLocalTranslation(location);
-		_root.updateModelBound();
+		setLocalTranslation(location);
+		updateModelBound();
 	}
 	
 	/** 
@@ -89,13 +79,13 @@ public class SHEntity
 	 */
 	public void setLocation(float x, float y, float z)
 	{
-		_root.setLocalTranslation(x, y, z);
-		_root.updateModelBound();
+		setLocalTranslation(x, y, z);
+		updateModelBound();
 	}
 	
 	public Vector3f getLocation()
 	{
-		return _root.getLocalTranslation();
+		return getLocalTranslation();
 	}
 
 	public String getType()
@@ -106,17 +96,6 @@ public class SHEntity
 	public void setType(String type)
 	{
 		_type = type;
-	}
-	
-	public void setName(String name)
-	{
-		_name = name;
-		_root.setName(name);
-	}
-	
-	public String getName()
-	{
-		return _name;
 	}
 	
 }

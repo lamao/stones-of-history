@@ -7,22 +7,28 @@
 package lamao.soh.core.collisionhandlers;
 
 import lamao.soh.core.SHEntity;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.entities.SHBall;
-import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
-import lamao.soh.core.SHGamePack;
+import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao
  *
  */
-public class SHBallWallCollisionHandler implements ISHEventHandler
+public class SHBallWallCollisionHandler extends SHAbstractCollisiontHandler
 {
+	public SHBallWallCollisionHandler(SHEventDispatcher dispatcher,
+			SHScene scene)
+	{
+		super(dispatcher, scene);
+	}
+
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		SHBall ball = (SHBall)event.params.get("src");
-		SHEntity wall = (SHEntity)event.params.get("dst");
+		SHBall ball = event.getParameter("src", SHBall.class);
+		SHEntity wall = event.getParameter("dst", SHEntity.class);
 		
 		if (wall.getName().equals("left-wall") || 
 			wall.getName().equals("right-wall"))
@@ -34,7 +40,7 @@ public class SHBallWallCollisionHandler implements ISHEventHandler
 			ball.getVelocity().y = -ball.getVelocity().y;
 		}
 		
-		SHGamePack.dispatcher.addEventEx("level-wall-hit", this, "wall-type", wall.getName());
+		dispatcher.addEventEx("level-wall-hit", this, "wall-type", wall.getName());
 	}
 
 }
