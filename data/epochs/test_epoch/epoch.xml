@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epoch>
+    <name>Test Epoch</name>
+    <levels>
+        <level>
+            <year>1</year>
+            <models>level1.dps</models>
+            <intro>This is description of first test level.</intro>
+            <name>First test level</name>
+        </level>
+        <level>
+            <year>2</year>
+            <models>level1.dps</models>
+            <intro>This is description of SECOND test level.</intro>
+            <name>Second\n   test\n      level</name>
+        </level>
+        <level>
+            <year>1.1</year>
+            <models>level1.dps</models>
+            <intro>This is description of middle (between first and second) test level.</intro>
+            <name>MIDDLE test LEVEL.:))))0</name>
+        </level>
+    </levels>
+</epoch>

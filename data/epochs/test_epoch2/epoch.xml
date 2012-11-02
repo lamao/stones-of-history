@@ -1,0 +1,23 @@
+<epoch>
+    <name>Test Epoch 2</name>
+    <levels>
+        <level>
+            <year>1</year>
+            <models>level1.dps</models>
+            <intro>This is description of first test level in second epoch.</intro>
+            <name>First test level</name>
+        </level>
+        <level>
+            <year>3</year>
+            <models>level1.dps</models>
+            <intro>This is description of third test level in second epoch.</intro>
+            <name>Second\n   test\n      level</name>
+        </level>
+        <level>
+            <year>2</year>
+            <models>level1.dps</models>
+            <intro>This is description of second (between first and third) test level in 2nd epoch.</intro>
+            <name>MIDDLE test LEVEL.:))))0</name>
+        </level>
+    </levels>
+</epoch>

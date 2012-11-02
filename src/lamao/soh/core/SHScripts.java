@@ -6,6 +6,10 @@
  */
 package lamao.soh.core;
 
+import java.io.File;
+import java.util.logging.Logger;
+
+import lamao.soh.SHOptions;
 import lamao.soh.console.SHConsoleState;
 import lamao.soh.core.collisionhandlers.SHBallBottomWallCollisionHandler;
 import lamao.soh.core.collisionhandlers.SHBallBrickCollisionHandler;
@@ -22,6 +26,7 @@ import lamao.soh.core.eventhandlers.SHBrickDeletedEventHandler;
 import lamao.soh.core.input.SHBreakoutInputHandler;
 import lamao.soh.core.input.SHMouseBallLauncher;
 import lamao.soh.utils.SHResourceManager;
+import lamao.soh.utils.deled.SHSceneLoader;
 import lamao.soh.utils.events.SHEventDispatcher;
 import lamao.soh.utils.events.SHEventLogger;
 
@@ -79,13 +84,15 @@ public class SHScripts
 		
 		scene.getRootNode().updateRenderState();
 		scene.getRootNode().updateGeometricState(0, true);
-		SHGamePack.context = new SHBreakoutGameContext();
+		((SHBreakoutGameContext)SHGamePack.context).updateNumDeletableBricks();
 		SHGamePack.dispatcher.deleteEvents();
 	}
 	
 	public final static void gameStartupScript()
 	{
-		SHGamePack.initDefaults();
+		Logger.getLogger("").setLevel(SHOptions.LogLevel);
+		SHGamePack.initDefaults();		
+		SHGamePack.context = new SHBreakoutGameContext();
 		
 		SHEventDispatcher dispatcher = SHGamePack.dispatcher;
 		dispatcher.addHandler("all", new SHEventLogger(dispatcher));
@@ -110,6 +117,18 @@ public class SHScripts
 		
 		SHConsoleState console = new SHConsoleState(SHConsoleState.STATE_NAME);
 		GameStateManager.getInstance().attachChild(console);
+	}
+	
+	public final static void loadEpochScript(String file)
+	{
+		SHGamePack.manager.loadAll(new File(file));
+	}
+	
+	public final static void loadLevelScript(String file)
+	{
+		SHSceneLoader loader = new SHSceneLoader(SHGamePack.scene);
+		loader.load(new File(file));
+		SHScripts.levelStartupScript();
 	}
 
 }

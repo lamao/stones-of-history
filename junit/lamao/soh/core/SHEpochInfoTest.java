@@ -101,4 +101,25 @@ public class SHEpochInfoTest
 		
 	}
 
+	@Test
+	public void testSortLevels()
+	{
+		SHLevelInfo l1 = new SHLevelInfo();
+		l1.setYear(2);		
+		SHLevelInfo l2 = new SHLevelInfo();
+		l2.setYear(1);		
+		SHLevelInfo l3 = new SHLevelInfo();
+		l3.setYear(1.1f);
+		
+		SHEpochInfo epoch = new SHEpochInfo();
+		epoch.getLevels().add(l1);
+		epoch.getLevels().add(l2);
+		epoch.getLevels().add(l3);
+		
+		epoch.sortLevels();
+		
+		assertSame(l2, epoch.getLevels().get(0));
+		assertSame(l3, epoch.getLevels().get(1));
+		assertSame(l1, epoch.getLevels().get(2));
+	}
 }

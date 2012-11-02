@@ -29,8 +29,18 @@ public class SHLevelInfoTest
 			"  <completed>%b</completed>\n" + 
 			"  <name>%s</name>\n" +
 			"</level>";
+	public static String XML_LEVEL_WITHOUT_COMPLETED_TEMPLATE = 
+			"<level>\n" +
+			"  <year>" + YEAR + "</year>\n" +
+			"  <models>%s</models>\n" +
+			"  <intro>%s</intro>\n" +
+			"  <name>%s</name>\n" +
+			"</level>";
 	public static String XML_LEVEL = String.format(XML_LEVEL_TEMPLATE, 
 			MODELS, INTRO, COMPLETED, NAME);
+	public static String XML_LEVEL_WITHOUT_COMPLETED = String.format(
+			XML_LEVEL_WITHOUT_COMPLETED_TEMPLATE, MODELS, INTRO, NAME); 
+
 			
 	
 	@Test
@@ -62,6 +72,19 @@ public class SHLevelInfoTest
         assertEquals(MODELS, level.getModels());
         assertEquals(INTRO, level.getIntro());
         assertEquals(COMPLETED, level.isCompleted());
+        assertEquals(NAME, level.getName());
+	}
+	
+	@Test
+	public void testFromXmlWithoutCompleted() {
+		XStream xstream = new XStream();
+        xstream.processAnnotations(SHLevelInfo.class);
+		
+        SHLevelInfo level = (SHLevelInfo) xstream.fromXML(XML_LEVEL_WITHOUT_COMPLETED);
+        assertTrue(SHUtils.inRange(level.getYear(), YEAR - 0.00001f, YEAR + 0.00001f));
+        assertEquals(MODELS, level.getModels());
+        assertEquals(INTRO, level.getIntro());
+        assertEquals(false, level.isCompleted());
         assertEquals(NAME, level.getName());
 	}
 

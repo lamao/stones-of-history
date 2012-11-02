@@ -27,5 +27,8 @@ public interface SHConstants
 	public String PADDLE_GUN = "paddle-gun-model";
 	public String DECORATION = "decoration";
 	public String BULLET = "bullet";
+	
+	/** Directory where player's profiles are stored */
+	public String PLAYERS_DIR = "data/players/";
 
 }

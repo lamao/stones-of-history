@@ -31,7 +31,7 @@ public class SHLevelInfo
 	
 	/** Indicates if this level was completed */
 	@XStreamAlias("completed")
-	private boolean _completed;
+	private boolean _completed = false;
 	
 	/** Name of the displayed level name */
 	@XStreamAlias("name")

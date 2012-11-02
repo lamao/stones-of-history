@@ -7,6 +7,8 @@
 package lamao.soh.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -95,6 +97,20 @@ public class SHEpochInfo
 			}
 		}
 		
+	}
+	
+	/**
+	 * Sort levels according to their level
+	 */
+	public void sortLevels()
+	{
+		Collections.sort(_levels, new Comparator<SHLevelInfo>() {
+			@Override
+			public int compare(SHLevelInfo o1, SHLevelInfo o2)
+			{
+				return (o1.getYear() < o2.getYear()) ? -1 : 1;
+			}
+		});
 	}
 	
 }

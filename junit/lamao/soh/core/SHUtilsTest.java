@@ -26,6 +26,8 @@ import com.jme.scene.shape.Sphere;
  */
 public class SHUtilsTest
 {
+	private static String PLAYERS_DIR = "data/test/test_get_players/";
+	
 	@Test
 	public void testVectorComparsion()
 	{
@@ -177,5 +179,15 @@ public class SHUtilsTest
 		assertEquals(1.45f, map.get("key2"));
 		assertEquals("value", map.get("key3"));
 		
+	}
+	
+	@Test
+	public void testGetPlayers()
+	{
+		SHPlayerInfo[] players = SHUtils.getPlayers("some/dir");
+		assertNull(players);
+		
+		players = SHUtils.getPlayers(PLAYERS_DIR);
+		assertEquals(3, players.length);
 	}
 }

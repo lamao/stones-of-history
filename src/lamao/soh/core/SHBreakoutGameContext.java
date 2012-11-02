@@ -19,11 +19,25 @@ import lamao.soh.core.entities.SHBrick;
  */
 public class SHBreakoutGameContext implements ISHGameContext
 {
+	/** Number of bricks can be deleted ( = number of bricks to delete)*/
 	private int _numDeletableBricks = 0;
+	
+	/**  Current player profile */
+	private SHPlayerInfo _player = null;
 	
 	public int getNumDeletableBricks()
 	{
 		return _numDeletableBricks;
+	}
+	
+	public SHPlayerInfo getPlayer()
+	{
+		return _player;
+	}
+
+	public void setPlayer(SHPlayerInfo player)
+	{
+		_player = player;
 	}
 	
 	public void updateNumDeletableBricks()

@@ -36,9 +36,7 @@ public class SHLoadLevelCommand extends SHBasicCommand
 		else
 		{
 			SHGamePack.scene.resetAll();
-			SHSceneLoader loader = new SHSceneLoader(SHGamePack.scene);
-			loader.load(file);
-			SHScripts.levelStartupScript();
+			SHScripts.loadLevelScript(file.toString());
 		}
 	}
 	
