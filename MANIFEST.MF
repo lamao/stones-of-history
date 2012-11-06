@@ -1,13 +1,16 @@
 Main-Class: lamao.soh.SHMain
 Class-Path: 
-        lib/gbui/jme-bui.jar lib/gbui/mouseManager_r1_jme2.jar 
         lib/jme/jme.jar lib/jme/jme-audio.jar lib/jme/jme-font.jar 
             lib/jme/jme-gamestates.jar lib/jme/jme-model.jar 
             lib/jme/jme-scene.jar lib/jme/jme-effects.jar 
         lib/jorbis/jorbis-0.0.17.jar 
         lib/lwjgl/lwjgl.jar lib/lwjgl/lwjgl_util.jar
+        lib/niftygui/nifty-1.2.jar lib/niftygui/nifty-default-controls-1.2.jar
+        	lib/niftygui/nifty-jme-renderer-1.0-20100823.220147-1.jar
+        	lib/niftygui/nifty-openal-soundsystem-1.0.jar
+        	lib/niftygui/nifty-style-grey-1.0.jar
         lib/scenemonitor/jmejtree_jme2.jar lib/scenemonitor/propertytable.jar
             lib/scenemonitor/scenemonitor_jme2.jar 
             lib/scenemonitor/sm_properties_jme2.jar 
         lib/xstream/xpp3_min-1.1.4c.jar lib/xstream/xstream-1.3.1.jar
-        data/gui.zip
+        

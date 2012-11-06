@@ -25,5 +25,10 @@
 	<classpathentry kind="lib" path="lib/testng/testng-6.0.jar"/>
 	<classpathentry kind="lib" path="lib/mockito/com.springsource.org.hamcrest.core-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/mockito/com.springsource.org.objenesis-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/niftygui/nifty-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/niftygui/nifty-default-controls-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/niftygui/nifty-openal-soundsystem-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/niftygui/nifty-style-grey-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/niftygui/nifty-jme-renderer-1.0-20100823.220147-1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
