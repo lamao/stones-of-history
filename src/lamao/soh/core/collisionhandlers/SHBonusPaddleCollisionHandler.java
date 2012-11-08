@@ -6,7 +6,6 @@
  */
 package lamao.soh.core.collisionhandlers;
 
-import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.eventhandlers.SHBonusTimeOverEventHandler;
@@ -36,7 +35,7 @@ public class SHBonusPaddleCollisionHandler extends SHAbstractCollisiontHandler
 		if (bonus.isAddictive())
 		{
 			String eventName = "bonus-over-" + bonus.getType();
-			if (SHGamePack.dispatcher.hasTimeEvent(eventName))
+			if (dispatcher.hasTimeEvent(eventName))
 			{
 				needAdd = false;
 				dispatcher.prolongTimeEvent(eventName, bonus.getDuration());
@@ -49,7 +48,8 @@ public class SHBonusPaddleCollisionHandler extends SHAbstractCollisiontHandler
 			String eventType = "bonus-over-" + bonus;
 			dispatcher.addEventEx(eventType, this, bonus.getDuration(), 
 					"bonus", bonus);
-			dispatcher.addHandler(eventType, new SHBonusTimeOverEventHandler(dispatcher));
+			dispatcher.addHandler(eventType, 
+					new SHBonusTimeOverEventHandler(dispatcher, scene));
 			bonus.apply(scene);
 			dispatcher.addEventEx("level-bonus-activated", this, 
 					"bonus", bonus);

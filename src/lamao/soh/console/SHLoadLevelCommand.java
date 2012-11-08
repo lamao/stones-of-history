@@ -8,9 +8,8 @@ package lamao.soh.console;
 
 import java.io.File;
 
-import lamao.soh.core.SHGamePack;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.SHScripts;
-import lamao.soh.utils.deled.SHSceneLoader;
 
 /**
  * Loads level from specified file
@@ -19,10 +18,14 @@ import lamao.soh.utils.deled.SHSceneLoader;
  */
 public class SHLoadLevelCommand extends SHBasicCommand
 {
+	private SHScene scene;
 	
-	public SHLoadLevelCommand()
+	private SHScripts scripts;
+	
+	public SHLoadLevelCommand(SHScene scene, SHScripts scripts)
 	{
 		super(1, 1);
+		this.scene = scene;
 	}
 	
 	@Override
@@ -35,8 +38,8 @@ public class SHLoadLevelCommand extends SHBasicCommand
 		}
 		else
 		{
-			SHGamePack.scene.resetAll();
-			SHScripts.loadLevelScript(file.toString());
+			scene.resetAll();
+			scripts.loadLevelScript(file.toString());
 		}
 	}
 	

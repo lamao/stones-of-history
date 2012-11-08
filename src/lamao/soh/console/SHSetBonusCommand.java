@@ -8,7 +8,7 @@
 package lamao.soh.console;
 
 import lamao.soh.core.SHBreakoutEntityFactory;
-import lamao.soh.core.SHGamePack;
+import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.entities.SHBrick;
@@ -20,9 +20,12 @@ import lamao.soh.core.entities.SHBrick;
  */
 public class SHSetBonusCommand extends SHBasicCommand
 {
-	public SHSetBonusCommand()
+	private SHScene scene;
+	
+	public SHSetBonusCommand(SHScene scene)
 	{
 		super(2, 2);
+		this.scene = scene;
 	}
 	
 	@Override
@@ -39,7 +42,7 @@ public class SHSetBonusCommand extends SHBasicCommand
 		else 
 		{
 			//TODO: Change hardcoded 'brick' type to constant from brick class.
-			SHBrick brick = (SHBrick) SHGamePack.scene.getEntity("brick", brickName);
+			SHBrick brick = (SHBrick) scene.getEntity("brick", brickName);
 			if (brick == null)
 			{
 				warning("Can't find brick <" + args[1] + ">");

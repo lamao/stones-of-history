@@ -9,8 +9,6 @@ package lamao.soh.utils.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import lamao.soh.core.eventhandlers.SHAbstractEventHandler;
-
 /**
  * Simple event handler that counts all arrived events and store last event.
  * @author lamao

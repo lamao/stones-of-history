@@ -12,7 +12,6 @@ import java.util.Map;
 import org.testng.annotations.BeforeMethod;
 
 
-import lamao.soh.core.SHGamePack;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventCounter;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -26,11 +25,6 @@ public class SHEventTestCase
 {
 	public SHEventDispatcher dispatcher = null;
 	public SHEventCounter counter;
-	
-	public SHEventTestCase()
-	{
-		SHGamePack.dispatcher = new SHEventDispatcher();
-	}
 	
 	@BeforeMethod
 	public void setUp()

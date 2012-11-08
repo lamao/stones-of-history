@@ -75,9 +75,15 @@ public class SHLevelState extends BasicGameState
 	
 	private boolean _pause = false;
 	
-	public SHLevelState()
+	/** Dispatcher used to fire events */
+	private SHEventDispatcher dispatcher;
+	
+	
+	public SHLevelState(SHEventDispatcher dispatcher)
 	{
 		super(NAME);
+		
+		this.dispatcher = dispatcher;
 		
 		PointLight light = new  PointLight();
 		light.setEnabled(true);
@@ -120,42 +126,7 @@ public class SHLevelState extends BasicGameState
 	
 	public void initConsole()
 	{
-		SHConsoleState console = (SHConsoleState)GameStateManager.getInstance()
-				.getChild(SHConsoleState.STATE_NAME);
-		console.add("wired", new SHWireFrameCommand(rootNode));
 		
-		console.add("bounds", new SHBasicCommand(1, 1) 
-		{
-			@Override
-			public void processCommand(String[] args)
-			{
-				drawBounds = Boolean.parseBoolean(args[1]);
-			}
-		});
-		
-		console.add("normals", new SHBasicCommand(1, 1) 
-		{
-			@Override
-			public void processCommand(String[] args)
-			{
-				drawNormals = Boolean.parseBoolean(args[1]);
-			}
-		});
-		
-		console.add("set-bonus", new SHSetBonusCommand());
-		console.add("load-level", new SHLoadLevelCommand());
-		console.add("free-camera", new SHFPSInputCommand());
-		console.add("activate-bonus", new SHActivateBonusCommand(
-				SHGamePack.dispatcher, SHGamePack.scene));
-		
-		console.add("pause", new SHBasicCommand(1, 1) 
-		{
-			@Override
-			public void processCommand(String[] args)
-			{
-				_pause = Boolean.parseBoolean(args[1]);
-			}
-		});
 	}
 	
 	public void bindKeys()
@@ -194,7 +165,7 @@ public class SHLevelState extends BasicGameState
 			super.update(tpf);
 			SHGamePack.input.update(tpf);
 			_scene.update(tpf);
-			SHGamePack.dispatcher.update(tpf);
+			dispatcher.update(tpf);
 		}
 		_fps.print("FPS: " + Math.round(Timer.getTimer().getFrameRate()));
 		
@@ -235,7 +206,6 @@ public class SHLevelState extends BasicGameState
 	
 	private void setupHandlers()
 	{
-		SHEventDispatcher dispatcher = SHGamePack.dispatcher;
 		dispatcher.addHandler("level-completed", new ISHEventHandler()
 		{
 			@Override
@@ -274,5 +244,34 @@ public class SHLevelState extends BasicGameState
 		SceneMonitor.getMonitor().cleanup();
 	}
 	
+	public void setPause(boolean pause)
+	{
+		_pause = pause;		 
+	}
+	
+	public boolean isPause() 
+	{
+		return _pause;
+	}
+
+	public boolean isDrawBounds()
+	{
+		return drawBounds;
+	}
+
+	public void setDrawBounds(boolean drawBounds)
+	{
+		this.drawBounds = drawBounds;
+	}
+
+	public boolean isDrawNormals()
+	{
+		return drawNormals;
+	}
+
+	public void setDrawNormals(boolean drawNormals)
+	{
+		this.drawNormals = drawNormals;
+	}
 	
 }

@@ -25,6 +25,15 @@ public class SHBreakoutGameContext implements ISHGameContext
 	/**  Current player profile */
 	private SHPlayerInfo _player = null;
 	
+	
+	/** Main scene of game */
+	private SHScene scene;
+	
+	public SHBreakoutGameContext(SHScene scene)
+	{
+		this.scene = scene;
+	}
+	
 	public int getNumDeletableBricks()
 	{
 		return _numDeletableBricks;
@@ -43,7 +52,7 @@ public class SHBreakoutGameContext implements ISHGameContext
 	public void updateNumDeletableBricks()
 	{
 		_numDeletableBricks = 0;
-		List<Spatial> bricks = SHGamePack.scene.get("brick");
+		List<Spatial> bricks = scene.get("brick");
 		if (bricks != null)
 		{
 			SHBrick brick = null;

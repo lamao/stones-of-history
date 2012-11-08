@@ -12,7 +12,6 @@ import com.jme.renderer.Camera;
 import com.jme.scene.Controller;
 import com.jme.system.DisplaySystem;
 
-import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
 
 /**
@@ -22,9 +21,12 @@ import lamao.soh.core.SHScene;
  */
 public class SHFPSInputCommand extends SHBasicCommand
 {
-	public SHFPSInputCommand()
+	private SHScene scene;
+	
+	public SHFPSInputCommand(SHScene scene)
 	{
 		super(1, 1);
+		this.scene = scene;
 	}
 	
 	@Override
@@ -36,20 +38,19 @@ public class SHFPSInputCommand extends SHBasicCommand
 		{
 			if (controller == null)
 			{
-				SHGamePack.scene.getRootNode().addController(
-						new FPSInputController(SHGamePack.scene));
+				scene.getRootNode().addController(new FPSInputController(scene));
 			}
 		}
 		else if (controller != null)
 		{
-			SHGamePack.scene.getRootNode().removeController(
+			scene.getRootNode().removeController(
 					controller);
 		}
 	}
 	
 	private FPSInputController findController()
 	{
-		for (Controller controller : SHGamePack.scene.getRootNode().getControllers())
+		for (Controller controller : scene.getRootNode().getControllers())
 		{
 			if (controller instanceof FPSInputController)
 			{

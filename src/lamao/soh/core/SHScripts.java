@@ -10,7 +10,16 @@ import java.io.File;
 import java.util.logging.Logger;
 
 import lamao.soh.SHOptions;
+import lamao.soh.console.SHActivateBonusCommand;
+import lamao.soh.console.SHBasicCommand;
 import lamao.soh.console.SHConsoleState;
+import lamao.soh.console.SHDrawBoundsCommand;
+import lamao.soh.console.SHDrawNormalsCommand;
+import lamao.soh.console.SHFPSInputCommand;
+import lamao.soh.console.SHLoadLevelCommand;
+import lamao.soh.console.SHPauseLevelCommand;
+import lamao.soh.console.SHSetBonusCommand;
+import lamao.soh.console.SHWireFrameCommand;
 import lamao.soh.core.collisionhandlers.SHBallBottomWallCollisionHandler;
 import lamao.soh.core.collisionhandlers.SHBallBrickCollisionHandler;
 import lamao.soh.core.collisionhandlers.SHBallPaddleCollisionHandler;
@@ -25,6 +34,7 @@ import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.core.eventhandlers.SHBrickDeletedEventHandler;
 import lamao.soh.core.input.SHBreakoutInputHandler;
 import lamao.soh.core.input.SHMouseBallLauncher;
+import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.deled.SHSceneLoader;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -40,7 +50,17 @@ import com.jmex.game.state.GameStateManager;
  */
 public class SHScripts
 {
-	public final static void levelStartupScript()
+	private SHEventDispatcher dispatcher;
+	
+	private SHScene scene;
+	
+	public SHScripts(SHEventDispatcher dispatcher, SHScene scene)
+	{
+		this.dispatcher = dispatcher;
+		this.scene = scene;
+	}
+	
+	public final void levelStartupScript()
 	{
 		SHBall ball = new SHBall();
 		ball.setType("ball");
@@ -63,12 +83,10 @@ public class SHScripts
 		ball.setVelocity(-3 ,3 ,0);
 		ball.addController(new SHPaddleSticker(ball, paddle));
 		
-		SHGamePack.scene.add(paddle);
-		SHGamePack.scene.add(ball);
+		scene.add(paddle);
+		scene.add(ball);
 		
-		SHScene scene = SHGamePack.scene;
-		
-		SHCollisionProcessor collisionProcessor = new SHCollisionProcessor(SHGamePack.dispatcher);
+		SHCollisionProcessor collisionProcessor = new SHCollisionProcessor(dispatcher);
 		collisionProcessor.addCollisionTask(new SHCollisionTask("ball", "wall", false));
 		collisionProcessor.addCollisionTask(new SHCollisionTask("ball", "paddle", false));
 		collisionProcessor.addCollisionTask(new SHCollisionTask("ball", "brick", true));
@@ -80,55 +98,70 @@ public class SHScripts
 		scene.setCollisionProcessor(collisionProcessor);
 		
 		SHGamePack.input = new SHBreakoutInputHandler(paddle);
-		SHGamePack.input.addAction(new SHMouseBallLauncher(SHGamePack.scene));
+		SHGamePack.input.addAction(new SHMouseBallLauncher(scene));
 		
 		scene.getRootNode().updateRenderState();
 		scene.getRootNode().updateGeometricState(0, true);
 		((SHBreakoutGameContext)SHGamePack.context).updateNumDeletableBricks();
-		SHGamePack.dispatcher.deleteEvents();
+		dispatcher.deleteEvents();
 	}
 	
-	public final static void gameStartupScript()
+	public final void gameStartupScript()
 	{
 		Logger.getLogger("").setLevel(SHOptions.LogLevel);
 		SHGamePack.initDefaults();		
-		SHGamePack.context = new SHBreakoutGameContext();
+		SHGamePack.context = new SHBreakoutGameContext(scene);
 		
-		SHEventDispatcher dispatcher = SHGamePack.dispatcher;
 		dispatcher.addHandler("all", new SHEventLogger(dispatcher));
 		dispatcher.addHandler("scene-collision-ball-wall", 
-				new SHBallWallCollisionHandler(dispatcher, SHGamePack.scene));
+				new SHBallWallCollisionHandler(dispatcher, scene));
 		dispatcher.addHandler("scene-collision-ball-paddle", 
-				new SHBallPaddleCollisionHandler(dispatcher, SHGamePack.scene));
+				new SHBallPaddleCollisionHandler(dispatcher, scene));
 		dispatcher.addHandler("scene-collision-ball-brick", 
-				new SHBallBrickCollisionHandler(dispatcher, SHGamePack.scene));
+				new SHBallBrickCollisionHandler(dispatcher, scene));
 		dispatcher.addHandler("level-brick-deleted", 
 				new SHBrickDeletedEventHandler(dispatcher, SHGamePack.context));
 		dispatcher.addHandler("scene-collision-bonus-bottom-wall", 
-				new SHBonusBottomWallCollisionHandler(dispatcher, SHGamePack.scene));
+				new SHBonusBottomWallCollisionHandler(dispatcher, scene));
 		dispatcher.addHandler("scene-collision-bonus-paddle", 
-				new SHBonusPaddleCollisionHandler(dispatcher, SHGamePack.scene));
+				new SHBonusPaddleCollisionHandler(dispatcher, scene));
 		dispatcher.addHandler("scene-collision-ball-bottom-wall", 
-				new SHBallBottomWallCollisionHandler(dispatcher, SHGamePack.scene));
+				new SHBallBottomWallCollisionHandler(dispatcher, scene));
 		dispatcher.addHandler("scene-collision-bullet-brick", 
-				new SHBulletBrickCollisionHandler(dispatcher, SHGamePack.scene));
+				new SHBulletBrickCollisionHandler(dispatcher, scene));
 		dispatcher.addHandler("scene-collision-bullet-wall", 
-				new SHBulletWallCollisionHandler(dispatcher, SHGamePack.scene));
+				new SHBulletWallCollisionHandler(dispatcher, scene));
 		
 		SHConsoleState console = new SHConsoleState(SHConsoleState.STATE_NAME);
 		GameStateManager.getInstance().attachChild(console);
 	}
 	
-	public final static void loadEpochScript(String file)
+	public final void loadEpochScript(String file)
 	{
 		SHGamePack.manager.loadAll(new File(file));
 	}
 	
-	public final static void loadLevelScript(String file)
+	public final void loadLevelScript(String file)
 	{
-		SHSceneLoader loader = new SHSceneLoader(SHGamePack.scene);
+		SHSceneLoader loader = new SHSceneLoader(scene);
 		loader.load(new File(file));
-		SHScripts.levelStartupScript();
+		levelStartupScript();
+	}
+	
+	public final void initializeConsole(SHLevelState levelState) 
+	{
+		SHConsoleState console = (SHConsoleState)GameStateManager.getInstance()
+			.getChild(SHConsoleState.STATE_NAME);
+		SHScene scene = levelState.getScene();
+		console.add("wired", new SHWireFrameCommand(levelState.getRootNode()));
+		console.add("bounds", new SHDrawBoundsCommand(levelState));
+		console.add("normals", new SHDrawNormalsCommand(levelState));
+		console.add("set-bonus", new SHSetBonusCommand(scene));
+		console.add("load-level", new SHLoadLevelCommand(scene, this));
+		console.add("free-camera", new SHFPSInputCommand(scene));
+		console.add("activate-bonus", new SHActivateBonusCommand(
+				dispatcher, scene));
+		console.add("pause", new SHPauseLevelCommand(levelState));
 	}
 
 }

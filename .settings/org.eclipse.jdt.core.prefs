@@ -1,8 +1,8 @@
-#Fri Apr 02 22:40:35 EEST 2010
+#Tue Nov 06 10:44:04 EET 2012
 eclipse.preferences.version=1
 org.eclipse.jdt.core.codeComplete.argumentPrefixes=
 org.eclipse.jdt.core.codeComplete.argumentSuffixes=
-org.eclipse.jdt.core.codeComplete.fieldPrefixes=_
+org.eclipse.jdt.core.codeComplete.fieldPrefixes=
 org.eclipse.jdt.core.codeComplete.fieldSuffixes=
 org.eclipse.jdt.core.codeComplete.localPrefixes=
 org.eclipse.jdt.core.codeComplete.localSuffixes=
