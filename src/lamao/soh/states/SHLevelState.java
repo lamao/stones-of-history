@@ -7,13 +7,6 @@
 package lamao.soh.states;
 
 import lamao.soh.SHConstants;
-import lamao.soh.console.SHActivateBonusCommand;
-import lamao.soh.console.SHBasicCommand;
-import lamao.soh.console.SHConsoleState;
-import lamao.soh.console.SHFPSInputCommand;
-import lamao.soh.console.SHLoadLevelCommand;
-import lamao.soh.console.SHSetBonusCommand;
-import lamao.soh.console.SHWireFrameCommand;
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
@@ -23,9 +16,6 @@ import lamao.soh.utils.events.SHEventDispatcher;
 
 import com.acarter.scenemonitor.SceneMonitor;
 import com.jme.input.InputHandler;
-import com.jme.input.KeyInput;
-import com.jme.input.action.InputActionEvent;
-import com.jme.input.action.KeyInputAction;
 import com.jme.light.PointLight;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
@@ -37,7 +27,6 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.Timer;
 import com.jme.util.geom.Debugger;
 import com.jmex.game.state.BasicGameState;
-import com.jmex.game.state.GameStateManager;
 
 /**
  * Game state for actual game for one level (from starting to winning or
@@ -65,7 +54,7 @@ public class SHLevelState extends BasicGameState
 	
 	private DisplaySystem _display = DisplaySystem.getDisplaySystem();
 	
-	private InputHandler _input = new InputHandler();
+	private InputHandler inputHandler;
 	
 	/** Indicates where draw bounding volumes or not */
 	private boolean drawBounds = false;
@@ -97,13 +86,12 @@ public class SHLevelState extends BasicGameState
 		initTextLabels();
 		initConsole();
 		setupHandlers();
-		bindKeys();
 		
 		rootNode.updateRenderState();
 		_statNode.updateRenderState();
 		
-		 SceneMonitor.getMonitor().registerNode(rootNode, "Root Node");
-         SceneMonitor.getMonitor().showViewer(true); 
+		 //SceneMonitor.getMonitor().registerNode(rootNode, "Root Node");
+         //SceneMonitor.getMonitor().showViewer(true); 
 	}
 	
 	public void initTextLabels()
@@ -128,16 +116,15 @@ public class SHLevelState extends BasicGameState
 	{
 		
 	}
-	
-	public void bindKeys()
+
+	public InputHandler getInputHandler()
 	{
-		_input.addAction(new KeyInputAction()
-		{
-			public void performAction(InputActionEvent evt)
-			{
-				_pause = !_pause;
-			}
-		}, "pause", KeyInput.KEY_PAUSE, false);
+		return inputHandler;
+	}
+
+	public void setInputHandler(InputHandler inputHandler)
+	{
+		this.inputHandler = inputHandler;
 	}
 
 	public SHScene getScene()
@@ -159,7 +146,7 @@ public class SHLevelState extends BasicGameState
 	@Override
 	public void update(float tpf)
 	{
-		_input.update(tpf);
+		inputHandler.update(tpf);
 		if (!_pause)
 		{
 			super.update(tpf);
@@ -169,7 +156,7 @@ public class SHLevelState extends BasicGameState
 		}
 		_fps.print("FPS: " + Math.round(Timer.getTimer().getFrameRate()));
 		
-		 SceneMonitor.getMonitor().updateViewer(tpf);
+		 //SceneMonitor.getMonitor().updateViewer(tpf);
 	}
 	
 	@Override
@@ -190,7 +177,7 @@ public class SHLevelState extends BasicGameState
 			Debugger.drawNormals(rootNode, renderer);
 		}
 		
-		SceneMonitor.getMonitor().renderViewer(renderer);
+		//SceneMonitor.getMonitor().renderViewer(renderer);
 	}
 	
 	@Override
@@ -241,7 +228,7 @@ public class SHLevelState extends BasicGameState
 	{
 		super.cleanup();
 		
-		SceneMonitor.getMonitor().cleanup();
+		//SceneMonitor.getMonitor().cleanup();
 	}
 	
 	public void setPause(boolean pause)

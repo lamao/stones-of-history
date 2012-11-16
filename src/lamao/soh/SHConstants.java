@@ -30,5 +30,9 @@ public interface SHConstants
 	
 	/** Directory where player's profiles are stored */
 	public String PLAYERS_DIR = "data/players/";
+	
+	public String UI_FILE = "data/nifty/main.xml";
+	public String UI_SCREEN_START = "start";
+	public String UI_CURSOR_DEFAULT = "default";
 
 }

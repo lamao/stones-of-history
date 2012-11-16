@@ -1,4 +1,4 @@
-/* 
+/** 
  * SHScripts.java Jun 7, 2010
  * 
  * Copyright 2010 Stones of History
@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 import lamao.soh.SHOptions;
 import lamao.soh.console.SHActivateBonusCommand;
-import lamao.soh.console.SHBasicCommand;
 import lamao.soh.console.SHConsoleState;
 import lamao.soh.console.SHDrawBoundsCommand;
 import lamao.soh.console.SHDrawNormalsCommand;
@@ -34,12 +33,16 @@ import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.core.eventhandlers.SHBrickDeletedEventHandler;
 import lamao.soh.core.input.SHBreakoutInputHandler;
 import lamao.soh.core.input.SHMouseBallLauncher;
+import lamao.soh.core.input.keyactions.SHPauseKeyAction;
+import lamao.soh.core.input.keyactions.SHToMenuKeyAction;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.deled.SHSceneLoader;
 import lamao.soh.utils.events.SHEventDispatcher;
 import lamao.soh.utils.events.SHEventLogger;
 
+import com.jme.input.InputHandler;
+import com.jme.input.KeyInput;
 import com.jme.scene.Spatial;
 import com.jmex.game.state.GameStateManager;
 
@@ -162,6 +165,25 @@ public class SHScripts
 		console.add("activate-bonus", new SHActivateBonusCommand(
 				dispatcher, scene));
 		console.add("pause", new SHPauseLevelCommand(levelState));
+	}
+
+	/**
+	 * @param levelState
+	 * @param dispatcher2 
+	 */
+	public SHLevelState initializeLevelState(SHEventDispatcher dispatcher, SHScene scene)
+	{
+		SHLevelState levelState = new SHLevelState(dispatcher);
+
+		InputHandler inputHandler = new InputHandler();
+		inputHandler.addAction(new SHPauseKeyAction(levelState), "pause", 
+				KeyInput.KEY_PAUSE, false);
+		inputHandler.addAction(new SHToMenuKeyAction(levelState), "menu", 
+				KeyInput.KEY_ESCAPE, false);
+		
+		levelState.setInputHandler(inputHandler);
+		levelState.setScene(scene);
+		return levelState;
 	}
 
 }

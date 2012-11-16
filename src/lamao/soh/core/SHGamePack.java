@@ -9,7 +9,6 @@ package lamao.soh.core;
 import com.jme.input.InputHandler;
 
 import lamao.soh.utils.SHResourceManager;
-import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * Central storage for information that should be accessed from any part of

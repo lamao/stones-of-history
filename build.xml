@@ -119,15 +119,6 @@
 		<copy todir="${build.jar.dir.param}" file="${qatasks.file}" />
 	</target>
 	
-	<target name="pack.gui">
-		<!--
-		<copy todir="${build.gui.dir}" >
-			<fileset dir="${gui.dir}"/>
-		</copy>
-		<zip basedir="${build.gui.dir}" destfile="${build.gui.dir}/gui.zip" />
-		-->
-	</target>
-	
 	<target name="jar.create">
 		
 		<jar destfile="${build.jar.dir.param}/${project.name}.jar" 
@@ -136,9 +127,6 @@
 		<copy todir="${build.jar.dir.param}/data">
 			<fileset dir="${data.dir}" />
 		</copy>
-		<!--
-		<copy todir="${build.jar.dir.param}/data" file="${build.gui.dir}/gui.zip" />
-		-->
 		<copy todir="${build.jar.dir.param}/lib">
 			<fileset dir="${lib.dir}">
 				<exclude name="**/junit/**"/>
@@ -212,6 +200,12 @@
 	<target name="run.macosx">
 		<exec executable="${build.jar.macosx.dir}/${launcher.macosx}"
 			dir="${build.jar.macosx.dir}"/>
+	</target>
+	
+	<target name="compile-and-run-win">
+		<antcall target="compile"/>
+		<antcall target="jar.create.windows"/>
+		<antcall target="run.windows"/>
 	</target>
 	
 </project>

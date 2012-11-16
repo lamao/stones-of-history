@@ -12,18 +12,12 @@ import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHScripts;
 import lamao.soh.states.SHLevelState;
+import lamao.soh.states.SHNiftyState;
 import lamao.soh.utils.deled.SHSceneLoader;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 import com.jmex.game.StandardGame;
-import com.jmex.game.state.BasicGameState;
 import com.jmex.game.state.GameStateManager;
-
-import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.jme.input.JmeInputSystem;
-import de.lessvoid.nifty.jme.render.JmeRenderDevice;
-import de.lessvoid.nifty.jme.sound.JmeSoundDevice;
-import de.lessvoid.nifty.tools.TimeProvider;
 
 /**
  * Enter point into the program.
@@ -53,42 +47,21 @@ public class SHMain
 		loader.load(new File("data/test/test-level.dps"));
 		scripts.levelStartupScript();
 		
-		SHLevelState levelState = new SHLevelState(dispatcher);
-		levelState.setScene(scene);		
+		SHLevelState levelState = scripts.initializeLevelState(dispatcher, scene);
 		scripts.initializeConsole(levelState);
 		
 		GameStateManager.getInstance().attachChild(levelState);
-		levelState.setActive(true);
+//		levelState.setActive(true);
 		
-		NiftyState niftyState = new NiftyState("menu");
+		SHNiftyState niftyState = new SHNiftyState( 
+				SHConstants.UI_FILE, SHConstants.UI_SCREEN_START);		
 		GameStateManager.getInstance().attachChild(niftyState);
-//		niftyState.setActive(true);
+		niftyState.setActive(true);
 	}
 	
-	static class NiftyState extends BasicGameState {
-
-		Nifty nifty;
-		/**
-		 * @param name
-		 */
-		public NiftyState(String name)
-		{
-			super(name);
-			nifty = new Nifty(new JmeRenderDevice(), new JmeSoundDevice(), 
-							new JmeInputSystem(), new TimeProvider());
-			nifty.fromXml("data/nifty/main.xml", "start");
-		}
-		
-		/* (non-Javadoc)
-		 * @see com.jmex.game.state.BasicGameState#render(float)
-		 */
-		@Override
-		public void render(float tpf)
-		{
-			super.render(tpf);
-			nifty.render(false);
-		}
-		
+	public static void exit() 
+	{
+		GAME.shutdown();
 	}
 	
 }
