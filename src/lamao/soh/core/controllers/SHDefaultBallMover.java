@@ -27,8 +27,8 @@ public class SHDefaultBallMover extends SHBallMover
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.jme.scene.Controller#update(float)
+	/**
+     * {@inheritDoc}
 	 */
 	@Override
 	public void update(float time)

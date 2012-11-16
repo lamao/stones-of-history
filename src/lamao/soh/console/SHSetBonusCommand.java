@@ -44,7 +44,7 @@ public class SHSetBonusCommand extends SHBasicCommand
 		else 
 		{
 			//TODO: Change hardcoded 'brick' type to constant from brick class.
-			SHBrick brick = (SHBrick) scene.getEntity("brick", brickName);
+			SHBrick brick = scene.getEntity("brick", brickName, SHBrick.class);
 			if (brick == null)
 			{
 				warning("Can't find brick <" + args[1] + ">");

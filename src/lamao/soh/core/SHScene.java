@@ -132,6 +132,12 @@ public class SHScene
 		return null;		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public<T extends SHEntity> T getEntity(String type, String name, Class<T> clazz)
+	{
+		return (T)getEntity(type, name);
+	}
+	
 	/**
 	 * Add model of specified type. If this type is not present, it will be
 	 * created.

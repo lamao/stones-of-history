@@ -53,7 +53,7 @@ public class SHPaddleGunBonus extends SHBonus
 	@Override
 	public void apply(SHScene scene)
 	{
-		SHPaddle paddle = (SHPaddle) scene.getEntity("paddle", "paddle");
+		SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 		
 		Spatial gunModel = (Spatial)SHGamePack.manager.get(
 				SHResourceManager.TYPE_MODEL, SHConstants.PADDLE_GUN);
@@ -68,7 +68,7 @@ public class SHPaddleGunBonus extends SHBonus
 	@Override
 	public void cleanup(SHScene scene)
 	{
-		SHPaddle paddle = (SHPaddle) scene.getEntity("paddle", "paddle");
+		SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 		
 		Spatial model = (Spatial)SHGamePack.manager.get(
 				SHResourceManager.TYPE_MODEL, SHConstants.PADDLE);
@@ -102,7 +102,7 @@ public class SHPaddleGunBonus extends SHBonus
 				_timeSinceLastFire > FIRE_INTERVAL)
 			{
 				_timeSinceLastFire = 0;
-				SHPaddle paddle = (SHPaddle) _scene.getEntity("paddle", "paddle");
+				SHPaddle paddle = _scene.getEntity("paddle", "paddle", SHPaddle.class);
 				BoundingBox bound = (BoundingBox)paddle.getModel().getWorldBound();
 				
 				SHBall bullet = new SHBall();

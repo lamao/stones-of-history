@@ -42,14 +42,14 @@ public class SHStickyPaddleBonus extends SHBonus
 	@Override
 	public void apply(SHScene scene)
 	{
-		SHPaddle paddle = (SHPaddle) scene.getEntity("paddle", "paddle");
+		SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 		paddle.setHitHandler(new SHStickyPaddleHitHandler());
 	}
 	
 	@Override
 	public void cleanup(SHScene scene)
 	{
-		SHPaddle paddle = (SHPaddle) scene.getEntity("paddle", "paddle");
+		SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 		paddle.setHitHandler(new SHDefaultPaddleHitHandler());
 		
 		for (Spatial entity : scene.get("ball"))

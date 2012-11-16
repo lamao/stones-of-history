@@ -23,7 +23,6 @@ public class SHBulletWallCollisionHandler extends SHAbstractCollisiontHandler
 			SHScene scene)
 	{
 		super(dispatcher, scene);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

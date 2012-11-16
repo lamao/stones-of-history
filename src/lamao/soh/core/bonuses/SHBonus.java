@@ -72,4 +72,5 @@ public abstract class SHBonus extends SHEntity
 	
 	/** Cleanup (deactivate) this bonus */
 	public abstract void cleanup(SHScene scene);
+	
 }

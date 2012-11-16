@@ -37,16 +37,15 @@ public class SHBottomWallBonus extends SHBonus
 	@Override
 	public void apply(SHScene scene)
 	{
-		SHBottomWall wall = (SHBottomWall) scene.getEntity("bottom-wall", "bottom-wall");
+		SHBottomWall wall = scene.getEntity("bottom-wall", "bottom-wall", SHBottomWall.class);
 		wall.setActive(true);
 	}
 
 	@Override
 	public void cleanup(SHScene scene)
 	{
-		SHBottomWall wall = (SHBottomWall) scene.getEntity("bottom-wall", "bottom-wall");
+		SHBottomWall wall = scene.getEntity("bottom-wall", "bottom-wall", SHBottomWall.class);
 		wall.setActive(false);
 	}
 	
-
 }

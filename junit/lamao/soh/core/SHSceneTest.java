@@ -9,6 +9,7 @@ package lamao.soh.core;
 import java.util.Collections;
 
 import lamao.junit.common.SHEventTestCase;
+import lamao.soh.core.entities.SHBall;
 
 import static org.mockito.Mockito.*;
 import org.testng.annotations.BeforeMethod;
@@ -110,6 +111,18 @@ public class SHSceneTest extends SHEventTestCase
 		scene.add(OTHER_TYPE, new Node(OTHER_NAME));
 		
 		assertSame(scene.getEntity(TYPE, NAME), entity);
+		assertNull(scene.getEntity(OTHER_TYPE, OTHER_NAME));
+	}
+	
+	@Test
+	public void testGetEntityCasted() {
+		SHBall entity = new SHBall();
+		entity.setName(NAME);
+		scene.add(TYPE, entity);
+		scene.add(OTHER_TYPE, new Node(OTHER_NAME));
+		
+		SHBall actualEntity = scene.getEntity(TYPE, NAME, SHBall.class);
+		assertSame(actualEntity, entity);
 		assertNull(scene.getEntity(OTHER_TYPE, OTHER_NAME));
 	}
 	
