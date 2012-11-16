@@ -11,6 +11,7 @@ import java.util.List;
 import com.jme.scene.Spatial;
 
 import lamao.soh.core.entities.SHBrick;
+import lamao.soh.core.model.entity.SHUser;
 
 /**
  * Game context for Stones of History
@@ -23,7 +24,7 @@ public class SHBreakoutGameContext implements ISHGameContext
 	private int _numDeletableBricks = 0;
 	
 	/**  Current player profile */
-	private SHPlayerInfo _player = null;
+	private SHUser _player = null;
 	
 	
 	/** Main scene of game */
@@ -39,12 +40,12 @@ public class SHBreakoutGameContext implements ISHGameContext
 		return _numDeletableBricks;
 	}
 	
-	public SHPlayerInfo getPlayer()
+	public SHUser getPlayer()
 	{
 		return _player;
 	}
 
-	public void setPlayer(SHPlayerInfo player)
+	public void setPlayer(SHUser player)
 	{
 		_player = player;
 	}

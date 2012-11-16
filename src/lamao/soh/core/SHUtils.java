@@ -6,14 +6,8 @@
  */
 package lamao.soh.core;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
@@ -29,8 +23,6 @@ import com.jme.scene.TriMesh;
  */
 public class SHUtils
 {
-	private static Logger _logger = Logger.getLogger(SHUtils.class.getName());
-
 	/**
 	 * Checks if two vectors are equal with specified accuracy.
 	 */
@@ -150,51 +142,4 @@ public class SHUtils
 		return parameters;
 	}
 	
-	/**
-	 * Find player's profiles in specified directory and load them if possibly.
-	 * @param baseDir - base directory to search profiles
-	 * @return array of correct profiles.
-	 */
-	public static SHPlayerInfo[] getPlayers(String baseDir)
-	{
-		SHPlayerInfo[] result = null;
-		
-		File file = new File(baseDir);
-		// build filter for *.xml files
-		File[] files = file.listFiles(new FilenameFilter() 
-		{
-			@Override
-			public boolean accept(File dir, String name)
-			{
-				return name.endsWith(".xml");
-			}
-		});
-		
-		if (files != null)
-		{
-			// load profiles
-			List<SHPlayerInfo> players = new LinkedList<SHPlayerInfo>();
-			SHPlayerInfo player = null;
-			for (int i = 0; i < files.length; i++)
-			{
-				try
-				{
-					player = SHPlayerInfo.load(files[i]);
-					if (player != null)
-					{
-						players.add(player);
-					}
-				}
-				catch (FileNotFoundException e)
-				{
-					_logger.info("Can't load player profile from " + files[i]);
-					e.printStackTrace();
-				}
-			}
-
-			result = players.toArray(new SHPlayerInfo[0]);
-		}
-		
-		return result;
-	}
 }
