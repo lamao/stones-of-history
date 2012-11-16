@@ -43,8 +43,7 @@ public class SHFPSInputCommand extends SHBasicCommand
 		}
 		else if (controller != null)
 		{
-			scene.getRootNode().removeController(
-					controller);
+			scene.getRootNode().removeController(controller);
 		}
 	}
 	

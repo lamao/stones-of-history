@@ -13,6 +13,10 @@ package lamao.soh.console;
  */
 public class SHEchoCommand extends SHBasicCommand
 {
+	public static final String ECHO_LEVEL_INFO = "info";
+	public static final String ECHO_LEVEL_WARNING = "warning";
+	public static final String ECHO_LEVEL_ERROR = "error";
+	
 	public SHEchoCommand()
 	{
 		super(1, 2);
@@ -25,15 +29,15 @@ public class SHEchoCommand extends SHBasicCommand
 		{
 			print(args[1], SHConsoleState.DEFAULT_COLOR);
 		}
-		else if (args[1].equals("info"))
+		else if (args[1].equals(ECHO_LEVEL_INFO))
 		{
 			info(args[2]);
 		}
-		else if (args[1].equals("warning"))
+		else if (args[1].equals(ECHO_LEVEL_WARNING))
 		{
 			warning(args[2]);
 		}
-		else if (args[1].equals("error"))
+		else if (args[1].equals(ECHO_LEVEL_ERROR))
 		{
 			error(args[2]);
 		}

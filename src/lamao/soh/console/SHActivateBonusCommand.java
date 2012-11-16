@@ -6,7 +6,7 @@
  */
 package lamao.soh.console;
 
-import lamao.soh.core.SHBreakoutEntityFactory;
+import lamao.soh.core.ISHEntityFactory;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.bonuses.SHBonus;
@@ -22,14 +22,17 @@ public class SHActivateBonusCommand extends SHBasicCommand
 {
 	private SHScene scene;
 	private SHEventDispatcher dispatcher;
+	private ISHEntityFactory entityFactory;
 
 	
 	
-	public SHActivateBonusCommand(SHEventDispatcher dispatcher, SHScene scene)
+	public SHActivateBonusCommand(SHEventDispatcher dispatcher, SHScene scene, 
+			ISHEntityFactory entityFactory)
 	{
 		super(1, 1);
 		this.scene = scene;
 		this.dispatcher = dispatcher;
+		this.entityFactory = entityFactory;
 	}
 	
 
@@ -56,7 +59,7 @@ public class SHActivateBonusCommand extends SHBasicCommand
 	@Override
 	public void processCommand(String[] args)
 	{
-		SHBonus bonus = (SHBonus) new SHBreakoutEntityFactory().createEntity(
+		SHBonus bonus = (SHBonus) entityFactory.createEntity(
 				SHUtils.buildMap("type bonus|name " + args[1]));
 		if (bonus == null)
 		{

@@ -44,6 +44,7 @@ import lamao.soh.utils.events.SHEventLogger;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
 import com.jme.scene.Spatial;
+import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
 
 /**
@@ -153,17 +154,20 @@ public class SHScripts
 	
 	public final void initializeConsole(SHLevelState levelState) 
 	{
+		SHBreakoutEntityFactory entityFactory = new SHBreakoutEntityFactory();
+		
 		SHConsoleState console = (SHConsoleState)GameStateManager.getInstance()
 			.getChild(SHConsoleState.STATE_NAME);
 		SHScene scene = levelState.getScene();
-		console.add("wired", new SHWireFrameCommand(levelState.getRootNode()));
+		console.add("wired", new SHWireFrameCommand(levelState.getRootNode(),
+				DisplaySystem.getDisplaySystem()));
 		console.add("bounds", new SHDrawBoundsCommand(levelState));
 		console.add("normals", new SHDrawNormalsCommand(levelState));
-		console.add("set-bonus", new SHSetBonusCommand(scene));
+		console.add("set-bonus", new SHSetBonusCommand(scene, entityFactory));
 		console.add("load-level", new SHLoadLevelCommand(scene, this));
 		console.add("free-camera", new SHFPSInputCommand(scene));
 		console.add("activate-bonus", new SHActivateBonusCommand(
-				dispatcher, scene));
+				dispatcher, scene, entityFactory));
 		console.add("pause", new SHPauseLevelCommand(levelState));
 	}
 

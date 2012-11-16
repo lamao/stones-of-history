@@ -7,7 +7,7 @@
 
 package lamao.soh.console;
 
-import lamao.soh.core.SHBreakoutEntityFactory;
+import lamao.soh.core.ISHEntityFactory;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.bonuses.SHBonus;
@@ -21,11 +21,13 @@ import lamao.soh.core.entities.SHBrick;
 public class SHSetBonusCommand extends SHBasicCommand
 {
 	private SHScene scene;
+	private ISHEntityFactory entityFactory;
 	
-	public SHSetBonusCommand(SHScene scene)
+	public SHSetBonusCommand(SHScene scene, ISHEntityFactory entityFactory)
 	{
 		super(2, 2);
 		this.scene = scene;
+		this.entityFactory = entityFactory;
 	}
 	
 	@Override
@@ -33,7 +35,7 @@ public class SHSetBonusCommand extends SHBasicCommand
 	{
 		String brickName = args[1];
 		String bonusName = args[2];
-		SHBonus bonus = (SHBonus) new SHBreakoutEntityFactory().createEntity(SHUtils.buildMap(
+		SHBonus bonus = (SHBonus) entityFactory.createEntity(SHUtils.buildMap(
 				"type bonus|name " + bonusName));
 		if (bonus == null)
 		{

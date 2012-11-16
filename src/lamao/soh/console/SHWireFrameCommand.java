@@ -19,11 +19,14 @@ public class SHWireFrameCommand extends SHBasicCommand
 	/** Spatial for applying command */
 	private Spatial _spatial = null;
 	
+	private DisplaySystem displaySystem;
 	
-	public SHWireFrameCommand(Spatial spatial)
+	
+	public SHWireFrameCommand(Spatial spatial, DisplaySystem displaySystem)
 	{
 		super(1, 1);
 		_spatial = spatial;
+		this.displaySystem = displaySystem;
 	}
 	
 	public Spatial getSpatial()
@@ -42,8 +45,7 @@ public class SHWireFrameCommand extends SHBasicCommand
 		if (_spatial != null)
 		{
 			boolean wired = Boolean.parseBoolean(args[1]);
-			WireframeState ws = DisplaySystem.getDisplaySystem().getRenderer()
-					.createWireframeState();
+			WireframeState ws = displaySystem.getRenderer().createWireframeState();
 			ws.setEnabled(wired);
 			_spatial.setRenderState(ws);
 			_spatial.updateRenderState();
