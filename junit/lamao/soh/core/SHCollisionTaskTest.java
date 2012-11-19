@@ -26,34 +26,34 @@ public class SHCollisionTaskTest
 		assertEquals(task1, task2);
 		assertEquals(task2, task1);
 		
-		task2.checkTris = false;
+		task2.setCheckTris(false);
 		assertEquals(task1, task2);
 		assertEquals(task2, task1);
 		
-		task2.sourceType = "3";
+		task2.setSourceType("3");
 		assertFalse(task1.equals(task2));
 		assertFalse(task2.equals(task1));
 		
-		task2.destType = "3";
+		task2.setDestType("3");
 		assertFalse(task1.equals(task2));
 		assertFalse(task2.equals(task1));
 		
-		task2.sourceType = "2";
+		task2.setSourceType("2");
 		assertFalse(task1.equals(task2));
 		
-		task2.sourceType = null;
-		assertFalse(task1.equals(task2));
-		assertFalse(task2.equals(task1));
-		
-		task2.destType = null;
+		task2.setSourceType(null);
 		assertFalse(task1.equals(task2));
 		assertFalse(task2.equals(task1));
 		
-		task1.sourceType = null;
+		task2.setDestType(null);
 		assertFalse(task1.equals(task2));
 		assertFalse(task2.equals(task1));
 		
-		task1.destType = null;
+		task1.setSourceType(null);
+		assertFalse(task1.equals(task2));
+		assertFalse(task2.equals(task1));
+		
+		task1.setDestType(null);
 		assertFalse(task1.equals(task2));
 		assertFalse(task2.equals(task1));
 		

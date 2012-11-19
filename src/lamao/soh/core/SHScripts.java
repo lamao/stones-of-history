@@ -35,6 +35,7 @@ import lamao.soh.core.input.SHBreakoutInputHandler;
 import lamao.soh.core.input.SHMouseBallLauncher;
 import lamao.soh.core.input.keyactions.SHPauseKeyAction;
 import lamao.soh.core.input.keyactions.SHToMenuKeyAction;
+import lamao.soh.core.service.SHGameContextService;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.deled.SHSceneLoader;
@@ -43,6 +44,7 @@ import lamao.soh.utils.events.SHEventLogger;
 
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
+import com.jme.input.MouseInput;
 import com.jme.scene.Spatial;
 import com.jme.system.DisplaySystem;
 import com.jmex.game.state.GameStateManager;
@@ -102,11 +104,12 @@ public class SHScripts
 		scene.setCollisionProcessor(collisionProcessor);
 		
 		SHGamePack.input = new SHBreakoutInputHandler(paddle);
-		SHGamePack.input.addAction(new SHMouseBallLauncher(scene));
+		SHGamePack.input.addAction(new SHMouseBallLauncher(scene, MouseInput.get()));
 		
 		scene.getRootNode().updateRenderState();
 		scene.getRootNode().updateGeometricState(0, true);
-		((SHBreakoutGameContext)SHGamePack.context).updateNumDeletableBricks();
+		SHGameContextService contextService = new SHGameContextService(scene);
+		contextService.updateNumberOfDeletableBricks(SHGamePack.context);
 		dispatcher.deleteEvents();
 	}
 	
@@ -114,7 +117,7 @@ public class SHScripts
 	{
 		Logger.getLogger("").setLevel(SHOptions.LogLevel);
 		SHGamePack.initDefaults();		
-		SHGamePack.context = new SHBreakoutGameContext(scene);
+		SHGamePack.context = new SHBreakoutGameContext();
 		
 		dispatcher.addHandler("all", new SHEventLogger(dispatcher));
 		dispatcher.addHandler("scene-collision-ball-wall", 
@@ -124,7 +127,8 @@ public class SHScripts
 		dispatcher.addHandler("scene-collision-ball-brick", 
 				new SHBallBrickCollisionHandler(dispatcher, scene));
 		dispatcher.addHandler("level-brick-deleted", 
-				new SHBrickDeletedEventHandler(dispatcher, SHGamePack.context));
+				new SHBrickDeletedEventHandler(dispatcher, SHGamePack.context, 
+				new SHGameContextService(scene)));
 		dispatcher.addHandler("scene-collision-bonus-bottom-wall", 
 				new SHBonusBottomWallCollisionHandler(dispatcher, scene));
 		dispatcher.addHandler("scene-collision-bonus-paddle", 

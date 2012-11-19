@@ -31,27 +31,30 @@ import com.jme.scene.Spatial;
 public class SHMouseBallLauncher extends MouseInputAction
 {
 	/** Level where find balls to launch */
-	private SHScene _scene = null;
+	private SHScene scene = null;
 	
 	// TODO: Remove this variable
 	/** Class for calculation ball velocity after launching */
-	private SHDefaultPaddleHitHandler _handler = new SHDefaultPaddleHitHandler();
+	private SHDefaultPaddleHitHandler handler = new SHDefaultPaddleHitHandler();
 	
-	public SHMouseBallLauncher(SHScene scene)
+	private MouseInput mouseInput;
+	
+	public SHMouseBallLauncher(SHScene scene, MouseInput mouseInput)
 	{
-		_scene = scene;
+		this.scene = scene;
+		this.mouseInput = mouseInput;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.jme.input.action.InputActionInterface#performAction(com.jme.input.action.InputActionEvent)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void performAction(InputActionEvent evt)
 	{
-		if (MouseInput.get().isButtonDown(SHOptions.ReleaseBallButton))
+		if (mouseInput.isButtonDown(SHOptions.ReleaseBallButton))
 		{
-			SHPaddle paddle = (SHPaddle)_scene.getEntity("paddle", "paddle");
-			for (Spatial e : _scene.get("ball"))
+			SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
+			for (Spatial e : scene.get("ball"))
 			{
 				SHBall ball = (SHBall)e;
 				for (Controller controller : ball.getControllers())
@@ -60,7 +63,7 @@ public class SHMouseBallLauncher extends MouseInputAction
 					{
 						ball.removeController(controller);
 						ball.addController(new SHDefaultBallMover(ball));
-						_handler.execute(ball, paddle);
+						handler.execute(ball, paddle);
 						break;
 					}
 				}
@@ -68,6 +71,4 @@ public class SHMouseBallLauncher extends MouseInputAction
 			
 		}
 	}
-	
-
 }

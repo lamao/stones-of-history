@@ -27,6 +27,8 @@ import com.jme.scene.Spatial;
  */
 public class SHCollisionProcessor implements ISHCollisionProcessor
 {
+	private static final String EVENT_NAME_PATTERN = "scene-collision-%s-%s";
+	
 	/**
 	 * Pairs of entity types to check for collision.
 	 */
@@ -109,15 +111,15 @@ public class SHCollisionProcessor implements ISHCollisionProcessor
 		Node dest = null;
 		for (SHCollisionTask task : collisionTasks)
 		{
-			source = (Node)rootNode.getChild(task.sourceType);
-			dest = (Node)rootNode.getChild(task.destType);
+			source = (Node)rootNode.getChild(task.getSourceType());
+			dest = (Node)rootNode.getChild(task.getDestType());
 			if (source != null && dest != null)
 			{
 				for (Spatial sourceModel : source.getChildren())
 				{
 					for (Spatial destModel : dest.getChildren())
 					{
-						CollisionResults results = task.checkTris ? 
+						CollisionResults results = task.isCheckTris() ? 
 								new TriangleCollisionResults() :
 								new BoundingCollisionResults();
 						sourceModel.findCollisions(destModel, results);
@@ -128,12 +130,11 @@ public class SHCollisionProcessor implements ISHCollisionProcessor
 						for (int i = 0; i < results.getNumber(); i++)
 						{
 							data = results.getCollisionData(i);
-							if (!task.checkTris || (data.getSourceTris().size() > 0 && 
+							if (!task.isCheckTris() || (data.getSourceTris().size() > 0 && 
 								data.getTargetTris().size() > 0))
 							{
-								String event = "scene-collision-" 
-										+ task.sourceType 
-										+ "-" + task.destType;
+								String event = getEventName(task.getSourceType(), 
+										task.getDestType());
 								Map<String, Object> params = new HashMap<String, Object>();
 								params.put("data", results.getCollisionData(i));
 								params.put("src", sourceEntity);
@@ -152,4 +153,9 @@ public class SHCollisionProcessor implements ISHCollisionProcessor
 		}
 	}
 
+	
+	private String getEventName(String sourceType, String destType)
+	{
+		return String.format(EVENT_NAME_PATTERN, sourceType, destType);
+	}
 }

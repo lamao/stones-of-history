@@ -40,12 +40,6 @@ public class SHBreakoutInputHandler extends InputHandler
 		mouseAction.setMouse(_mouse);
 		addAction(mouseAction);
 		
-//		addAction(new KeyNodeStrafeRightAction(entity, 
-//				SHOptions.PaddleKeyboardSensitivity),
-//				"paddle left", SHOptions.PaddleLeftKey, true);
-//		addAction(new KeyNodeStrafeLeftAction(entity, 
-//				SHOptions.PaddleKeyboardSensitivity), 
-//				"paddle right", SHOptions.PaddleRightKey, true);
 	}
 
 	public SHEntity getModel()

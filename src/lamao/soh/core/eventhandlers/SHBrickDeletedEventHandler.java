@@ -7,6 +7,7 @@
 package lamao.soh.core.eventhandlers;
 
 import lamao.soh.core.SHBreakoutGameContext;
+import lamao.soh.core.service.SHGameContextService;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 
@@ -19,17 +20,22 @@ public class SHBrickDeletedEventHandler extends SHAbstractEventHandler
 	
 	private SHBreakoutGameContext context;
 	
-	public SHBrickDeletedEventHandler(SHEventDispatcher dispatcher,
-			SHBreakoutGameContext context)
+	private SHGameContextService contextService;
+	
+	public SHBrickDeletedEventHandler(
+			SHEventDispatcher dispatcher,
+			SHBreakoutGameContext context,
+			SHGameContextService contextService)
 	{
 		super(dispatcher);
 		this.context = context;
+		this.contextService = contextService;
 	}
 
 	@Override
 	public void processEvent(SHEvent event)
 	{
-		context.updateNumDeletableBricks();
+		contextService.updateNumberOfDeletableBricks(context);
 		if (context.getNumDeletableBricks() == 0)
 		{
 			dispatcher.addEvent("level-completed", this, null);

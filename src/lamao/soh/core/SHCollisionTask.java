@@ -14,13 +14,13 @@ package lamao.soh.core;
 public class SHCollisionTask
 {
 	/** Type of source entity */
-	public String sourceType = null;
+	private String sourceType = null;
 	
 	/** Type of destination entity */
-	public String destType = null;
+	private String destType = null;
 	
 	/** Bounding or triangle collision detection */
-	public boolean checkTris = false;
+	private boolean checkTris = false;
 
 	public SHCollisionTask(String sourceType, String destType, boolean checkTris)
 	{
@@ -29,6 +29,36 @@ public class SHCollisionTask
 		this.sourceType = sourceType;
 	}
 	
+	public String getSourceType()
+	{
+		return sourceType;
+	}
+
+	public void setSourceType(String sourceType)
+	{
+		this.sourceType = sourceType;
+	}
+
+	public String getDestType()
+	{
+		return destType;
+	}
+
+	public void setDestType(String destType)
+	{
+		this.destType = destType;
+	}
+
+	public boolean isCheckTris()
+	{
+		return checkTris;
+	}
+
+	public void setCheckTris(boolean checkTris)
+	{
+		this.checkTris = checkTris;
+	}
+
 	@Override
 	public boolean equals(Object obj)
 	{

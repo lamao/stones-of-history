@@ -153,6 +153,8 @@ public class SHLevelState extends BasicGameState
 			SHGamePack.input.update(tpf);
 			_scene.update(tpf);
 			dispatcher.update(tpf);
+			SHBreakoutGameContext context = SHGamePack.context;
+			_info.print(Integer.toString(context.getNumDeletableBricks()));
 		}
 		_fps.print("FPS: " + Math.round(Timer.getTimer().getFrameRate()));
 		
@@ -183,11 +185,6 @@ public class SHLevelState extends BasicGameState
 	@Override
 	public void setActive(boolean active)
 	{
-		if (active)
-		{
-			SHBreakoutGameContext context = (SHBreakoutGameContext)SHGamePack.context;
-			_info.print(Integer.toString(context.getNumDeletableBricks()));
-		}
 		super.setActive(active);
 	}
 	

@@ -21,6 +21,8 @@ import com.jme.scene.Spatial;
 @SuppressWarnings("serial")
 public class SHBrick extends SHEntity
 {
+	public static final int SUPER_STRENGTH = Integer.MAX_VALUE;
+	
 	/** Strength (or lives) of the brick */
 	private int _strength;
 	
@@ -86,7 +88,7 @@ public class SHBrick extends SHEntity
 	 */
 	public void hit()
 	{
-		if (_strength != Integer.MAX_VALUE)
+		if (_strength != SUPER_STRENGTH)
 		{
 			_strength--;
 		}

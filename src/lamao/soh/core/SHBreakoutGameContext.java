@@ -6,11 +6,6 @@
  */
 package lamao.soh.core;
 
-import java.util.List;
-
-import com.jme.scene.Spatial;
-
-import lamao.soh.core.entities.SHBrick;
 import lamao.soh.core.model.entity.SHUser;
 
 /**
@@ -18,26 +13,18 @@ import lamao.soh.core.model.entity.SHUser;
  * @author lamao
  *
  */
-public class SHBreakoutGameContext implements ISHGameContext
+public class SHBreakoutGameContext
 {
 	/** Number of bricks can be deleted ( = number of bricks to delete)*/
-	private int _numDeletableBricks = 0;
+	private int numberOfDeletableBricks = 0;
 	
 	/**  Current player profile */
 	private SHUser _player = null;
 	
 	
-	/** Main scene of game */
-	private SHScene scene;
-	
-	public SHBreakoutGameContext(SHScene scene)
-	{
-		this.scene = scene;
-	}
-	
 	public int getNumDeletableBricks()
 	{
-		return _numDeletableBricks;
+		return numberOfDeletableBricks;
 	}
 	
 	public SHUser getPlayer()
@@ -49,22 +36,14 @@ public class SHBreakoutGameContext implements ISHGameContext
 	{
 		_player = player;
 	}
-	
-	public void updateNumDeletableBricks()
+
+	/**
+	 * @param numberOfDeletableBricks
+	 */
+	public void setNumberOfDeletableBricks(int numberOfDeletableBricks)
 	{
-		_numDeletableBricks = 0;
-		List<Spatial> bricks = scene.get("brick");
-		if (bricks != null)
-		{
-			SHBrick brick = null;
-			for (Spatial e : bricks)
-			{
-				brick = (SHBrick)e;
-				if (brick.getStrength() != Integer.MAX_VALUE)
-				{
-					_numDeletableBricks++;
-				}
-			}
-		}
+		this.numberOfDeletableBricks = numberOfDeletableBricks;
 	}
+	
+	
 }

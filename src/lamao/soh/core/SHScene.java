@@ -7,30 +7,10 @@
 package lamao.soh.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
-import lamao.soh.utils.events.SHEvent;
-import lamao.soh.utils.events.SHEventDispatcher;
-import lamao.soh.utils.events.SHEventLogger;
-
-import com.jme.app.SimpleGame;
-import com.jme.app.AbstractGame.ConfigShowMode;
-import com.jme.bounding.BoundingBox;
-import com.jme.input.KeyInput;
-import com.jme.intersection.BoundingCollisionResults;
-import com.jme.intersection.CollisionData;
-import com.jme.intersection.CollisionResults;
-import com.jme.intersection.TriangleCollisionResults;
-import com.jme.math.FastMath;
-import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
-import com.jme.scene.shape.Box;
 
 /**
  * Game scene. Contains models and entities related to current game/level.
@@ -225,58 +205,4 @@ public class SHScene
 		this.reset();
 	}
 	
-//	public static void main(String[] args)
-//	{
-//		SimpleGame game = new SimpleGame() 
-//		{
-//			SHScene scene; 
-//			SHBall ball;
-//			@Override
-//			protected void simpleInitGame()
-//			{
-//				SHGamePack.dispatcher = new SHEventDispatcher();
-//				SHGamePack.dispatcher.addHandler("all", new SHEventLogger());
-//				
-//				scene = new SHScene();
-//				SHEntity brick1 = SHEntityCreator.createDefaultBrick("brick1");
-//				scene.addEntity(brick1);
-//				
-//				SHEntity brick2 = SHEntityCreator.createDefaultBrick("brick2");
-//				brick2.setLocation(10, 10, 10);
-//				brick2.getRoot().updateWorldData(0);
-//				scene.addEntity(brick2);
-//				
-//				ball = SHEntityCreator.createDefaultBall();
-//				ball.setLocation(0, -2f, 0);
-//				ball.getRoot().updateWorldData(0);
-//				scene.addEntity(ball);
-//				
-//				SHCollisionTask task = new SHCollisionTask("ball", "brick", false);
-//				scene.addCollisionTask(task);
-//				
-//				rootNode.attachChild(scene.getRootNode());
-//				rootNode.updateRenderState();
-//			}
-//			
-//			@Override
-//			protected void simpleUpdate()
-//			{
-//				scene.update(0);
-//				
-//				if (KeyInput.get().isKeyDown(KeyInput.KEY_0))
-//				{
-//					ball.getLocation().y += 0.01f;
-//				}
-//				else if (KeyInput.get().isKeyDown(KeyInput.KEY_9))
-//				{
-//					ball.getLocation().y -= 0.01f;
-//				}
-//				
-//			}
-//		};
-//		game.setConfigShowMode(ConfigShowMode.AlwaysShow);
-//		game.start();
-//	}
-	
-
 }
