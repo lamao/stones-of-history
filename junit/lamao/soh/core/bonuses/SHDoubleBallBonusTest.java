@@ -6,19 +6,26 @@
  */
 package lamao.soh.core.bonuses;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHBall;
 
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author lamao
@@ -26,24 +33,38 @@ import static org.testng.Assert.*;
  */
 public class SHDoubleBallBonusTest
 {
+	@Mock
+	private SHScene scene;
+	
+	private SHDoubleBallBonus bonus = new SHDoubleBallBonus();
+	
+	@BeforeMethod
+	public void setUp()
+	{
+		initMocks(this);
+	}
 	
 	@Test
-	public void testBonus()
+	public void testDuration()
 	{
-		SHDoubleBallBonus bonus = new SHDoubleBallBonus();
 		assertTrue(Math.abs(bonus.getDuration() - SHDoubleBallBonus.DURATION) < 
 				0.001f);
-		
-		SHScene scene = new SHScene();
-		scene.add(SHEntityCreator.createDefaultBall());
+	}
+	
+	@Test
+	public void testBonusApply()
+	{
+		List<Spatial> balls = new ArrayList<Spatial>();
 		SHBall ball = SHEntityCreator.createDefaultBall();
 		ball.setVelocity(-1, 2, 0);
-		scene.add(ball);
+		balls.add(SHEntityCreator.createDefaultBall());
+		balls.add(ball);
+		when(scene.get("ball")).thenReturn(balls);
+		doAnswer(new AddToListAnswer(balls)).when(scene).add(any(SHBall.class));
 		
 		// double balls
 		bonus.apply(scene);
-		List<Spatial> balls = scene.get("ball");
-		assertEquals(4, balls.size());
+		verify(scene, times(2)).add(any(SHBall.class));
 		assertEquals(1, balls.get(2).getControllerCount());
 		assertEquals(1, balls.get(3).getControllerCount());
 		float angle = SHUtils.angle(((SHBall)balls.get(0)).getVelocity()) - 
@@ -52,21 +73,48 @@ public class SHDoubleBallBonusTest
 		angle = SHUtils.angle(((SHBall)balls.get(1)).getVelocity()) - 
 				SHUtils.angle(((SHBall)balls.get(3)).getVelocity());
 		assertTrue(Math.abs(angle - Math.PI / 4) < 0.001f, Float.toString(angle));
+	}
+	
+	@Test
+	public void testBonusCleanup()
+	{
+		List<Spatial> list = new ArrayList<Spatial>();
+		SHBall ball = SHEntityCreator.createDefaultBall();
+		ball.setVelocity(-1, 2, 0);
+		list.add(SHEntityCreator.createDefaultBall());
+		list.add(ball);
+		list.add(SHEntityCreator.createDefaultBall());
+		when(scene.get("ball")).thenReturn(list);
 		
-		// add new ball to level and double balls
-		scene.add(SHEntityCreator.createDefaultBall());
-		bonus.apply(scene);
-		assertEquals(10, scene.get("ball").size());
+		Node rootNode = mock(Node.class);
+		when(scene.getRootNode()).thenReturn(rootNode);
 		
-		// first cleanup
 		bonus.cleanup(scene);
-		assertEquals(5, scene.get("ball").size());
+		verify(scene, times(1)).remove(eq("ball"), any(SHBall.class));
+		verify(rootNode).updateRenderState();
+	}
+	
+	private class AddToListAnswer implements Answer<Object>
+	{
 		
-		// remove few balls and perform cleanup
-		List<SHEntity> ballEntities = scene.getEntities("ball");
-		scene.remove(ballEntities.get(0));
-		scene.remove(ballEntities.get(1));		
-		bonus.cleanup(scene);
-		assertEquals(2, scene.get("ball").size());
+		private List<Spatial> list;
+		
+		public AddToListAnswer(List<Spatial> list)
+		{
+			super();
+			this.list = list;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Object answer(InvocationOnMock invocation) throws Throwable
+		{
+			Object[] args = invocation.getArguments();
+			Spatial ball = (Spatial)args[0];
+			list.add(ball);
+		    return null;
+		}
 	}
 }

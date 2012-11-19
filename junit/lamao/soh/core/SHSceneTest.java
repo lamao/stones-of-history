@@ -12,9 +12,14 @@ import lamao.junit.common.SHEventTestCase;
 import lamao.soh.core.entities.SHBall;
 
 import static org.mockito.Mockito.*;
+
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
+
+import com.jme.input.InputHandler;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.shape.Box;
@@ -33,12 +38,17 @@ public class SHSceneTest extends SHEventTestCase
 	
 	private SHScene scene = null;
 	
+	@Mock
+	private ISHCollisionProcessor collisionProcessor;
+	@Mock
+	private InputHandler inputHandler;
 	
 	
 	@BeforeMethod
 	public void setUp()
 	{
-		scene = new SHScene();
+		MockitoAnnotations.initMocks(this);
+		scene = new SHScene(collisionProcessor, inputHandler);
 	}
 	
 	@Test

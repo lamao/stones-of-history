@@ -7,6 +7,7 @@
 package lamao.soh.core.bonuses;
 
 import com.jme.bounding.BoundingBox;
+import com.jme.input.InputHandler;
 import com.jme.input.MouseInput;
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.MouseInputAction;
@@ -32,23 +33,20 @@ import lamao.soh.utils.SHResourceManager;
 @SuppressWarnings("serial")
 public class SHPaddleGunBonus extends SHBonus
 {
-	public final static float DURATION = 5; 
+	public final static float DEFAULT_DURATION = 5; 
 	public final static float FIRE_INTERVAL = 1;
 	
 	/** Fire action which will be added after ball activation */
 	private SHMouseGunAction _action = null;
 	
-	public SHPaddleGunBonus(Spatial model)
+	private InputHandler inputHandler;
+	
+	public SHPaddleGunBonus(Spatial model, InputHandler inputHandler)
 	{
 		super(model);
-		setDuration(DURATION);
+		this.inputHandler = inputHandler;
+		setDuration(DEFAULT_DURATION);
 	}
-	
-	public SHPaddleGunBonus()
-	{
-		this(null);
-	}
-	
 	
 	@Override
 	public void apply(SHScene scene)
@@ -61,7 +59,7 @@ public class SHPaddleGunBonus extends SHBonus
 		paddle.setModel(gunModel);
 		
 		_action = new SHMouseGunAction(scene);
-		SHGamePack.input.addAction(_action);
+		inputHandler.addAction(_action);
 		
 	}
 	
@@ -75,7 +73,7 @@ public class SHPaddleGunBonus extends SHBonus
 		
 		paddle.setModel(model);
 		
-		SHGamePack.input.removeAction(_action);
+		inputHandler.removeAction(_action);
 		_action = null;
 	}
 	

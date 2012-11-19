@@ -10,62 +10,86 @@ import lamao.soh.SHConstants;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
-import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHPaddle;
-import lamao.soh.core.input.SHBreakoutInputHandler;
 import lamao.soh.ngutils.AbstractJmeTest;
 import lamao.soh.utils.SHResourceManager;
 
 
+import com.jme.input.InputHandler;
+import com.jme.input.action.MouseInputAction;
 import com.jme.math.Vector3f;
-import com.jme.scene.shape.Box;
+import com.jme.scene.Spatial;
 
+import org.mockito.Mock;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.*;
+import static org.mockito.Mockito.*;
 /**
  * @author lamao
  *
  */
 public class SHPaddleGunBonusTest extends AbstractJmeTest
 {
-	@Test
-	public void testBonus()
+	@Mock
+	private SHScene scene;
+	
+	@Mock
+	private SHResourceManager manager;
+	@Mock
+	private Spatial paddleModel = mock(Spatial.class);
+	@Mock
+	private Spatial paddleGunModel = mock(Spatial.class);
+	@Mock
+	private InputHandler inputHandler;
+	
+	private SHPaddleGunBonus bonus;
+	
+	private SHPaddle paddle;
+	
+	@BeforeMethod
+	public void setUp()
 	{
-		SHPaddleGunBonus bonus = new SHPaddleGunBonus();
-		assertTrue(Math.abs(bonus.getDuration() - SHPaddleGunBonus.DURATION) < 
-				0.001f);
+		initMocks(this);
+		bonus = new SHPaddleGunBonus(paddleModel, inputHandler);
 		
-		SHResourceManager manager = new SHResourceManager();
 		SHGamePack.manager = manager;
-		manager.add(SHResourceManager.TYPE_MODEL, SHConstants.PADDLE, 
-				new Box(SHConstants.PADDLE,
-				new Vector3f(0, 0, 0), 2, 1, 1));
-		manager.add(SHResourceManager.TYPE_MODEL, SHConstants.PADDLE_GUN, 
-				new Box(SHConstants.PADDLE_GUN,
-				new Vector3f(0, 0, 0), 2, 1, 1));
+		when(manager.get(SHResourceManager.TYPE_MODEL, SHConstants.PADDLE))
+				.thenReturn(paddleModel);
+		when(manager.get(SHResourceManager.TYPE_MODEL, SHConstants.PADDLE_GUN))
+				.thenReturn(paddleGunModel);
 		
-		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
+		paddle = SHEntityCreator.createDefaultPaddle();
 		paddle.setLocation(new Vector3f(2, 3, 4));
-		SHGamePack.input = new SHBreakoutInputHandler(paddle);
-
-		SHScene scene = new SHScene();
-		scene.add(paddle);
 		
+		when(scene.getEntity("paddle", "paddle", SHPaddle.class)).thenReturn(paddle);
+	}
+	
+	@Test
+	public void testConstructors()
+	{
+		assertTrue(Math.abs(bonus.getDuration() - SHPaddleGunBonus.DEFAULT_DURATION) < 
+				0.001f);
+	}
+	
+	@Test
+	public void testBonusApply()
+	{
 		bonus.apply(scene);
-		assertEquals(SHConstants.PADDLE_GUN, paddle.getModel().getName());
-		assertTrue(SHUtils.areEqual(new Vector3f(2, 3, 4), paddle.getLocation(), 
-				0.001f),paddle.getLocation().toString());
-		assertTrue(SHUtils.areEqual(new Vector3f(0, 0, 0), paddle.getModel().getLocalTranslation(), 
-				0.001f), 
-				paddle.getModel().getLocalTranslation().toString());
-		
+		verify(scene).getEntity("paddle", "paddle", SHPaddle.class);
+		verify(inputHandler).addAction(any(MouseInputAction.class));
+		assertSame(paddle.getModel(), paddleGunModel);
+	}
+	
+	public void testBonusCleanup()
+	{
+		bonus.apply(scene);
 		bonus.cleanup(scene);
-		assertEquals(SHConstants.PADDLE, paddle.getModel().getName());
-		assertTrue(SHUtils.areEqual(new Vector3f(2, 3, 4), paddle.getLocation(), 
-				0.001f));
-		assertTrue(SHUtils.areEqual(new Vector3f(0, 0, 0), paddle.getModel().getLocalTranslation(), 
-				0.001f),
-				paddle.getModel().getLocalTranslation().toString());
+		verify(scene).getEntity("paddle", "paddle", SHPaddle.class);
+		verify(inputHandler).removeAction(any(MouseInputAction.class));
+		assertSame(paddle.getModel(), paddleModel);
 		
 	}
 

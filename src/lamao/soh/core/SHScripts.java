@@ -60,10 +60,14 @@ public class SHScripts
 	
 	private SHScene scene;
 	
-	public SHScripts(SHEventDispatcher dispatcher, SHScene scene)
+	private SHBreakoutGameContext context;
+	
+	public SHScripts(SHEventDispatcher dispatcher, SHScene scene,
+			SHBreakoutGameContext context)
 	{
 		this.dispatcher = dispatcher;
 		this.scene = scene;
+		this.context = context;
 	}
 	
 	public final void levelStartupScript()
@@ -103,13 +107,14 @@ public class SHScripts
 		collisionProcessor.addCollisionTask(new SHCollisionTask("bullet", "wall", false));
 		scene.setCollisionProcessor(collisionProcessor);
 		
-		SHGamePack.input = new SHBreakoutInputHandler(paddle);
-		SHGamePack.input.addAction(new SHMouseBallLauncher(scene, MouseInput.get()));
+		InputHandler inputHandler = new SHBreakoutInputHandler(paddle);
+		inputHandler.addAction(new SHMouseBallLauncher(scene, MouseInput.get()));
+		scene.setInGameInputHandler(inputHandler);
 		
 		scene.getRootNode().updateRenderState();
 		scene.getRootNode().updateGeometricState(0, true);
 		SHGameContextService contextService = new SHGameContextService(scene);
-		contextService.updateNumberOfDeletableBricks(SHGamePack.context);
+		contextService.updateNumberOfDeletableBricks(context);
 		dispatcher.deleteEvents();
 	}
 	
@@ -117,8 +122,6 @@ public class SHScripts
 	{
 		Logger.getLogger("").setLevel(SHOptions.LogLevel);
 		SHGamePack.initDefaults();		
-		SHGamePack.context = new SHBreakoutGameContext();
-		
 		dispatcher.addHandler("all", new SHEventLogger(dispatcher));
 		dispatcher.addHandler("scene-collision-ball-wall", 
 				new SHBallWallCollisionHandler(dispatcher, scene));
@@ -127,7 +130,7 @@ public class SHScripts
 		dispatcher.addHandler("scene-collision-ball-brick", 
 				new SHBallBrickCollisionHandler(dispatcher, scene));
 		dispatcher.addHandler("level-brick-deleted", 
-				new SHBrickDeletedEventHandler(dispatcher, SHGamePack.context, 
+				new SHBrickDeletedEventHandler(dispatcher, context, 
 				new SHGameContextService(scene)));
 		dispatcher.addHandler("scene-collision-bonus-bottom-wall", 
 				new SHBonusBottomWallCollisionHandler(dispatcher, scene));
@@ -181,7 +184,7 @@ public class SHScripts
 	 */
 	public SHLevelState initializeLevelState(SHEventDispatcher dispatcher, SHScene scene)
 	{
-		SHLevelState levelState = new SHLevelState(dispatcher);
+		SHLevelState levelState = new SHLevelState(dispatcher, context);
 
 		InputHandler inputHandler = new InputHandler();
 		inputHandler.addAction(new SHPauseKeyAction(levelState), "pause", 

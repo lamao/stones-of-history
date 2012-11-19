@@ -9,6 +9,7 @@ package lamao.soh.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jme.input.InputHandler;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
@@ -24,6 +25,16 @@ public class SHScene
 	
 	private ISHCollisionProcessor collisionProcessor;
 	
+	private InputHandler inGameInputHandler;
+	
+	public SHScene(ISHCollisionProcessor collisionProcessor,
+			InputHandler inGameInputHandler)
+	{
+		super();
+		this.collisionProcessor = collisionProcessor;
+		this.inGameInputHandler = inGameInputHandler;
+	}
+
 	public void setRootNode(Node rootNode) 
 	{
 		_rootNode = rootNode;
@@ -42,6 +53,16 @@ public class SHScene
 	public void setCollisionProcessor(ISHCollisionProcessor collisionProcessor)
 	{
 		this.collisionProcessor = collisionProcessor;
+	}
+	
+	public InputHandler getInGameInputHandler()
+	{
+		return inGameInputHandler;
+	}
+
+	public void setInGameInputHandler(InputHandler inGameInputHandler)
+	{
+		this.inGameInputHandler = inGameInputHandler;
 	}
 
 	/**
@@ -181,6 +202,7 @@ public class SHScene
 	 */
 	public void update(float tpf)
 	{
+		inGameInputHandler.update(tpf);
 		collisionProcessor.processCollisions(_rootNode);
 	}
 	

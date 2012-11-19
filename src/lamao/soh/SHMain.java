@@ -8,6 +8,7 @@ package lamao.soh;
 
 import java.io.File;
 
+import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHScripts;
@@ -30,9 +31,11 @@ public class SHMain
 
 	static SHEventDispatcher dispatcher = new SHEventDispatcher();
 	
-	static SHScene scene = new SHScene();
+	static SHScene scene = new SHScene(null, null);
 	
-	static SHScripts scripts = new SHScripts(dispatcher , scene);
+	static SHBreakoutGameContext context = new SHBreakoutGameContext();
+	
+	static SHScripts scripts = new SHScripts(dispatcher , scene, context);
 	
 	public static void main(String args[])
 	{

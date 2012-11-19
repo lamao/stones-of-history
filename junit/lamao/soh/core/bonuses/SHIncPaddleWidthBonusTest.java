@@ -6,7 +6,12 @@
  */
 package lamao.soh.core.bonuses;
 
+import org.mockito.Mock;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.*;
 
 import lamao.soh.core.SHEntityCreator;
@@ -24,6 +29,24 @@ import com.jme.scene.Spatial;
  */
 public class SHIncPaddleWidthBonusTest
 {
+	@Mock
+	private SHScene scene;
+	
+	private SHPaddle paddle;
+	
+	private SHIncPaddleWidthBonus bonus;
+	
+	@BeforeMethod
+	public void setUp()
+	{
+		initMocks(this);
+		
+		bonus = new SHIncPaddleWidthBonus();
+		
+		paddle = SHEntityCreator.createDefaultPaddle();
+		when(scene.getEntity("paddle", "paddle")).thenReturn(paddle);
+	}
+	
 	@Test
 	public void testConstructors()
 	{
@@ -33,22 +56,25 @@ public class SHIncPaddleWidthBonusTest
 	}
 	
 	@Test
-	public void testBonus()
+	public void testBonusApply()
 	{
-		SHScene scene = new SHScene();
-		SHBonus bonus = new SHIncPaddleWidthBonus();
-		
-		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
+		bonus.apply(scene);		
 		Spatial paddleModel = paddle.getModel();
-		scene.add(paddle);
-		
-		bonus.apply(scene);
 		assertTrue(SHUtils.areEqual(new Vector3f(1.2f, 1, 1), 
 				paddleModel.getLocalScale(), 0.001f));
 		
-		bonus.apply(scene);
+		bonus.apply(scene);		
 		assertTrue(SHUtils.areEqual(new Vector3f(1.44f, 1, 1), 
 				paddleModel.getLocalScale(), 0.001f));
+		
+	}
+	
+	@Test
+	public void testBonusCleanup()
+	{
+		Spatial paddleModel = paddle.getModel();
+		paddleModel.setLocalScale(new Vector3f(1.44f, 1f, 1f));
+		paddle.updateModelBound();
 		
 		bonus.cleanup(scene);
 		assertTrue(SHUtils.areEqual(new Vector3f(1.2f, 1, 1), 

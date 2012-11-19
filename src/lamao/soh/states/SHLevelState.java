@@ -8,7 +8,6 @@ package lamao.soh.states;
 
 import lamao.soh.SHConstants;
 import lamao.soh.core.SHBreakoutGameContext;
-import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
@@ -67,12 +66,15 @@ public class SHLevelState extends BasicGameState
 	/** Dispatcher used to fire events */
 	private SHEventDispatcher dispatcher;
 	
+	private SHBreakoutGameContext context;
 	
-	public SHLevelState(SHEventDispatcher dispatcher)
+	public SHLevelState(SHEventDispatcher dispatcher, 
+			SHBreakoutGameContext context)
 	{
 		super(NAME);
 		
 		this.dispatcher = dispatcher;
+		this.context = context;
 		
 		PointLight light = new  PointLight();
 		light.setEnabled(true);
@@ -150,10 +152,8 @@ public class SHLevelState extends BasicGameState
 		if (!_pause)
 		{
 			super.update(tpf);
-			SHGamePack.input.update(tpf);
 			_scene.update(tpf);
 			dispatcher.update(tpf);
-			SHBreakoutGameContext context = SHGamePack.context;
 			_info.print(Integer.toString(context.getNumDeletableBricks()));
 		}
 		_fps.print("FPS: " + Math.round(Timer.getTimer().getFrameRate()));

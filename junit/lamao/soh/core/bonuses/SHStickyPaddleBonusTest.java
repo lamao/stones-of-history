@@ -6,8 +6,10 @@
  */
 package lamao.soh.core.bonuses;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lamao.soh.core.SHDefaultPaddleHitHandler;
-import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHStickyPaddleHitHandler;
 import lamao.soh.core.controllers.SHDefaultBallMover;
@@ -15,40 +17,70 @@ import lamao.soh.core.controllers.SHPaddleSticker;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 
+import org.mockito.Mock;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import com.jme.scene.Controller;
+import com.jme.scene.Spatial;
+
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.*;
+import static org.mockito.Mockito.*;
 /**
  * @author lamao
  *
  */
 public class SHStickyPaddleBonusTest
 {
-	@Test
-	public void testBonus()
+	@Mock
+	private SHScene scene;
+	@Mock
+	private SHPaddle paddle;
+	@Mock
+	private SHBall ball;
+	
+	private SHStickyPaddleBonus bonus;
+	
+	@BeforeMethod
+	public void setUp()
 	{
-		SHStickyPaddleBonus bonus = new SHStickyPaddleBonus();
+		initMocks(this);
+		
+		bonus = new SHStickyPaddleBonus();
+		when(scene.getEntity("paddle", "paddle", SHPaddle.class)).thenReturn(paddle);
+		List<Spatial> balls = new ArrayList<Spatial>();
+		balls.add(ball);
+		when(scene.get("ball")).thenReturn(balls);
+	}
+	
+	@Test
+	public void testConstructor()
+	{
 		assertTrue(Math.abs(bonus.getDuration() - SHStickyPaddleBonus.DURATION) 
 				< 0.001f);
 		assertTrue(bonus.isAddictive());
-		
-		SHScene scene = new SHScene();
-		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
-		SHBall ball1 = SHEntityCreator.createDefaultBall("ball", "ball1");
-		
-		scene.add(paddle);
-		scene.add(ball1);
-		ball1.setVelocity(0, -1, 0);
-		
+	}
+	
+	@Test
+	public void testBonusApply()
+	{
 		bonus.apply(scene);
-		paddle.onHit(ball1);
-		assertTrue(paddle.getHitHandler() instanceof 
-				SHStickyPaddleHitHandler);
-		assertTrue(ball1.getController(0) instanceof SHPaddleSticker);
+		verify(paddle).setHitHandler(any(SHStickyPaddleHitHandler.class));
+	}
+	
+	@Test
+	public void testCleanup()
+	{
+		ArrayList<Controller> controllers = new ArrayList<Controller>();
+		controllers.add(mock(SHPaddleSticker.class));
+		when(ball.getControllers()).thenReturn(controllers);
 		
 		bonus.cleanup(scene);
-		assertTrue(paddle.getHitHandler() instanceof
-				SHDefaultPaddleHitHandler);
-		assertTrue(ball1.getController(0) instanceof SHDefaultBallMover);
+		
+		verify(paddle).setHitHandler(any(SHDefaultPaddleHitHandler.class));
+		verify(ball).removeController(any(SHPaddleSticker.class));
+		verify(ball).addController(any(SHDefaultBallMover.class));
 		
 		
 	}
