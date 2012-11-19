@@ -8,7 +8,6 @@ package lamao.soh.core.bonuses;
 
 import lamao.soh.SHConstants;
 import lamao.soh.core.SHEntityCreator;
-import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.ngutils.AbstractJmeTest;
@@ -53,9 +52,8 @@ public class SHPaddleGunBonusTest extends AbstractJmeTest
 	public void setUp()
 	{
 		initMocks(this);
-		bonus = new SHPaddleGunBonus(paddleModel, inputHandler);
+		bonus = new SHPaddleGunBonus(paddleModel, inputHandler, manager);
 		
-		SHGamePack.manager = manager;
 		when(manager.get(SHResourceManager.TYPE_MODEL, SHConstants.PADDLE))
 				.thenReturn(paddleModel);
 		when(manager.get(SHResourceManager.TYPE_MODEL, SHConstants.PADDLE_GUN))

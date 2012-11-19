@@ -9,7 +9,7 @@ package lamao.soh.utils.deled;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import lamao.soh.core.SHBreakoutEntityFactory;
+import lamao.soh.core.ISHEntityFactory;
 import lamao.soh.core.SHScene;
 import lamao.soh.utils.xmlparser.SHDocXMLParser;
 
@@ -20,11 +20,14 @@ import lamao.soh.utils.xmlparser.SHDocXMLParser;
 public class SHSceneLoader extends SHDpsLoader
 {
 	/** Scene where load data from file */
-	private SHScene _scene = null;
+	private SHScene scene = null;
+	
+	private ISHEntityFactory entityFactory;
 
-	public SHSceneLoader(SHScene scene)
+	public SHSceneLoader(SHScene scene, ISHEntityFactory entityFactory)
 	{
-		_scene = scene;
+		this.scene = scene;
+		this.entityFactory = entityFactory;
 	}
 	
 	/**
@@ -33,7 +36,7 @@ public class SHSceneLoader extends SHDpsLoader
 	protected void resetLoader()
 	{
 		super.resetLoader();
-		_scene.reset();
+		scene.reset();
 	}
 
 	/**
@@ -51,8 +54,8 @@ public class SHSceneLoader extends SHDpsLoader
 			parser.addParser("scene.materials.category.material", 
 					new SHMaterialParser(getMaterials(), textureLocation));
 			parser.addParser("scene.primitives.primitive", 
-					new SHPrimitiveEntityParser(getMaterials(), _scene, 
-					new SHBreakoutEntityFactory()));
+					new SHPrimitiveEntityParser(getMaterials(), scene, 
+					entityFactory));
 			return parser;
 		}
 		catch (MalformedURLException e)

@@ -15,7 +15,6 @@ import com.jme.scene.Spatial;
 
 import lamao.soh.SHConstants;
 import lamao.soh.SHOptions;
-import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.controllers.SHDefaultBallMover;
@@ -41,10 +40,14 @@ public class SHPaddleGunBonus extends SHBonus
 	
 	private InputHandler inputHandler;
 	
-	public SHPaddleGunBonus(Spatial model, InputHandler inputHandler)
+	private SHResourceManager manager;
+	
+	public SHPaddleGunBonus(Spatial model, InputHandler inputHandler, 
+			SHResourceManager resourceManager)
 	{
 		super(model);
 		this.inputHandler = inputHandler;
+		this.manager = resourceManager;
 		setDuration(DEFAULT_DURATION);
 	}
 	
@@ -53,7 +56,7 @@ public class SHPaddleGunBonus extends SHBonus
 	{
 		SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 		
-		Spatial gunModel = (Spatial)SHGamePack.manager.get(
+		Spatial gunModel = (Spatial)manager.get(
 				SHResourceManager.TYPE_MODEL, SHConstants.PADDLE_GUN);
 		
 		paddle.setModel(gunModel);
@@ -68,7 +71,7 @@ public class SHPaddleGunBonus extends SHBonus
 	{
 		SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 		
-		Spatial model = (Spatial)SHGamePack.manager.get(
+		Spatial model = (Spatial)manager.get(
 				SHResourceManager.TYPE_MODEL, SHConstants.PADDLE);
 		
 		paddle.setModel(model);
@@ -110,7 +113,7 @@ public class SHPaddleGunBonus extends SHBonus
 				bullet.setVelocity(0, 2, 0);
 				Spatial bulletModel = SHUtils.createSharedModel(
 						"bullet" + bullet, 
-						(Spatial)SHGamePack.manager.get(SHResourceManager.TYPE_MODEL, 
+						(Spatial)manager.get(SHResourceManager.TYPE_MODEL, 
 						SHConstants.BULLET));
 				bullet.setModel(bulletModel);
 				bullet.setLocation(paddle.getLocation().x, 

@@ -62,12 +62,20 @@ public class SHScripts
 	
 	private SHBreakoutGameContext context;
 	
+	private SHResourceManager resourceManager;
+	
+	private SHSceneLoader sceneLoader;
+	
 	public SHScripts(SHEventDispatcher dispatcher, SHScene scene,
-			SHBreakoutGameContext context)
+			SHBreakoutGameContext context,
+			SHResourceManager resourceManager,
+			SHSceneLoader sceneLoader)
 	{
 		this.dispatcher = dispatcher;
 		this.scene = scene;
 		this.context = context;
+		this.resourceManager = resourceManager;
+		this.sceneLoader = sceneLoader;
 	}
 	
 	public final void levelStartupScript()
@@ -75,7 +83,7 @@ public class SHScripts
 		SHBall ball = new SHBall();
 		ball.setType("ball");
 		ball.setName("ball" + ball);
-		Spatial model = (Spatial)SHGamePack.manager.get(
+		Spatial model = (Spatial)resourceManager.get(
 				SHResourceManager.TYPE_MODEL, "ball");
 		model = SHUtils.createSharedModel("shared-ball", model);
 		ball.setModel(model);
@@ -83,7 +91,7 @@ public class SHScripts
 		SHPaddle paddle = new SHPaddle();
 		paddle.setType("paddle");
 		paddle.setName("paddle");
-		model = (Spatial)SHGamePack.manager.get(
+		model = (Spatial)resourceManager.get(
 				SHResourceManager.TYPE_MODEL, "paddle");
 		paddle.setModel(model);
 		paddle.setLocation(0, -7, 0);
@@ -121,7 +129,6 @@ public class SHScripts
 	public final void gameStartupScript()
 	{
 		Logger.getLogger("").setLevel(SHOptions.LogLevel);
-		SHGamePack.initDefaults();		
 		dispatcher.addHandler("all", new SHEventLogger(dispatcher));
 		dispatcher.addHandler("scene-collision-ball-wall", 
 				new SHBallWallCollisionHandler(dispatcher, scene));
@@ -149,19 +156,18 @@ public class SHScripts
 	
 	public final void loadEpochScript(String file)
 	{
-		SHGamePack.manager.loadAll(new File(file));
+		resourceManager.loadAll(new File(file));
 	}
 	
 	public final void loadLevelScript(String file)
 	{
-		SHSceneLoader loader = new SHSceneLoader(scene);
-		loader.load(new File(file));
+		sceneLoader.load(new File(file));
 		levelStartupScript();
 	}
 	
 	public final void initializeConsole(SHLevelState levelState) 
 	{
-		SHBreakoutEntityFactory entityFactory = new SHBreakoutEntityFactory();
+		SHBreakoutEntityFactory entityFactory = new SHBreakoutEntityFactory(resourceManager);
 		
 		SHConsoleState console = (SHConsoleState)GameStateManager.getInstance()
 			.getChild(SHConsoleState.STATE_NAME);
@@ -196,5 +202,5 @@ public class SHScripts
 		levelState.setScene(scene);
 		return levelState;
 	}
-
+	
 }

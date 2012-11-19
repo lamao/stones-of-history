@@ -9,7 +9,7 @@ package lamao.soh.utils.deled;
 import java.io.File;
 
 import lamao.soh.core.ISHCollisionProcessor;
-import lamao.soh.core.SHGamePack;
+import lamao.soh.core.SHBreakoutEntityFactory;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHBrick;
@@ -17,7 +17,6 @@ import lamao.soh.ngutils.AbstractJmeTest;
 import lamao.soh.utils.SHResourceManager;
 
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
@@ -26,6 +25,9 @@ import com.jme.input.InputHandler;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
+
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
  * @author lamao
@@ -37,21 +39,26 @@ public class SHSceneLoaderTest extends AbstractJmeTest
 	private ISHCollisionProcessor collisionProcessor;
 	@Mock
 	private InputHandler inputHandler;
+	@Mock
+	private SHResourceManager manager;
+	
+	private SHBreakoutEntityFactory entityFactory;
 	
 	@BeforeMethod
 	public void setUp()
 	{
-		MockitoAnnotations.initMocks(this);
+		initMocks(this);
+		entityFactory = new SHBreakoutEntityFactory(manager);
+		
 	}
 	
 	@Test
 	public void testLoading()
 	{
-		SHGamePack.manager = new SHResourceManager();
-		SHGamePack.manager.add(SHResourceManager.TYPE_MODEL, "double-ball", 
-				new Node("ball"));
+		when(manager.get(SHResourceManager.TYPE_MODEL, "double-ball"))
+			.thenReturn(new Node("ball"));
 		SHScene scene = new SHScene(collisionProcessor, inputHandler);
-		SHSceneLoader loader = new SHSceneLoader(scene);
+		SHSceneLoader loader = new SHSceneLoader(scene, entityFactory);
 		
 		loader.load(new File("data/test/test-level.dps"));
 		

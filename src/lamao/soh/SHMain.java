@@ -6,14 +6,13 @@
  */
 package lamao.soh;
 
-import java.io.File;
-
+import lamao.soh.core.SHBreakoutEntityFactory;
 import lamao.soh.core.SHBreakoutGameContext;
-import lamao.soh.core.SHGamePack;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHScripts;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.states.SHNiftyState;
+import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.deled.SHSceneLoader;
 import lamao.soh.utils.events.SHEventDispatcher;
 
@@ -35,7 +34,11 @@ public class SHMain
 	
 	static SHBreakoutGameContext context = new SHBreakoutGameContext();
 	
-	static SHScripts scripts = new SHScripts(dispatcher , scene, context);
+	static SHResourceManager resourceManager = new SHResourceManager();
+	
+	static SHSceneLoader sceneLoader = new SHSceneLoader(scene, new SHBreakoutEntityFactory(resourceManager));
+	
+	static SHScripts scripts = new SHScripts(dispatcher , scene, context, resourceManager, sceneLoader);
 	
 	public static void main(String args[])
 	{
@@ -44,11 +47,8 @@ public class SHMain
 		
 		scripts.gameStartupScript();
 		
-		SHGamePack.manager.loadAll(new File(
-				"data/epochs/test_epoch/appearence.txt"));
-		SHSceneLoader loader = new SHSceneLoader(scene);
-		loader.load(new File("data/test/test-level.dps"));
-		scripts.levelStartupScript();
+		scripts.loadEpochScript("data/epochs/test_epoch/appearence.txt");
+		scripts.loadLevelScript("data/test/test-level.dps");
 		
 		SHLevelState levelState = scripts.initializeLevelState(dispatcher, scene);
 		scripts.initializeConsole(levelState);

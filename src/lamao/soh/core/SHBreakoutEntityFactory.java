@@ -22,6 +22,14 @@ import com.jme.scene.Spatial;
  */
 public class SHBreakoutEntityFactory implements ISHEntityFactory
 {
+	private SHResourceManager manager;
+	
+	public SHBreakoutEntityFactory(SHResourceManager manager)
+	{
+		super();
+		this.manager = manager;
+	}
+
 	@Override
 	public SHEntity createEntity(Map<String, String> metadata)
 	{
@@ -82,7 +90,7 @@ public class SHBreakoutEntityFactory implements ISHEntityFactory
 							"lamao.soh.core.bonuses.SH", bonusName, "Bonus"); 
 					Class<?> klass = Class.forName(className);
 					entity = (SHBonus)klass.newInstance();
-					Spatial model = (Spatial)SHGamePack.manager
+					Spatial model = (Spatial)manager
 						.get(SHResourceManager.TYPE_MODEL, bonusName);
 					entity.setModel(SHUtils.createSharedModel(entity + "bonus", 
 							model));

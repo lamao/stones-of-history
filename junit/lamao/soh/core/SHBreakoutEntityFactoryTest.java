@@ -13,9 +13,13 @@ import lamao.soh.core.entities.SHBottomWall;
 import lamao.soh.core.entities.SHBrick;
 import lamao.soh.utils.SHResourceManager;
 
+import org.mockito.Mock;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 import com.jme.scene.Node;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 
 
@@ -25,8 +29,20 @@ import com.jme.scene.Node;
  */
 public class SHBreakoutEntityFactoryTest
 {
-	private SHBreakoutEntityFactory _factory = new SHBreakoutEntityFactory();
+	@Mock
+	private SHResourceManager manager;
+	
+	private SHBreakoutEntityFactory _factory; 
 
+	
+	@BeforeMethod
+	public void setUp()
+	{
+		initMocks(this);
+		
+		_factory = new SHBreakoutEntityFactory(manager);
+	}
+	
 	@Test
 	public void testBricks()
 	{
@@ -50,9 +66,8 @@ public class SHBreakoutEntityFactoryTest
 	@Test
 	public void testBricksWithBonus()
 	{
-		SHGamePack.manager = new SHResourceManager();
-		SHGamePack.manager.add(SHResourceManager.TYPE_MODEL, "double-ball", 
-				new Node("double-ball"));
+		when(manager.get(SHResourceManager.TYPE_MODEL, "double-ball"))
+			.thenReturn(new Node("double-ball"));
 		
 		SHBrick brick = (SHBrick)_factory.createEntity(SHUtils.buildMap(
 				"type brick|bonus double-ball"));
@@ -80,9 +95,8 @@ public class SHBreakoutEntityFactoryTest
 	@Test
 	public void testBonus()
 	{
-		SHGamePack.manager = new SHResourceManager();
-		SHGamePack.manager.add(SHResourceManager.TYPE_MODEL, "double-ball", 
-				new Node("double-ball"));
+		when(manager.get(SHResourceManager.TYPE_MODEL, "double-ball"))
+			.thenReturn(new Node("double-ball"));
 		
 		SHBonus bonus = (SHBonus)_factory.createEntity(SHUtils
 				.buildMap("type bonus|name double-ball"));
