@@ -12,9 +12,7 @@ import lamao.soh.states.SHNiftyState;
 
 import com.jmex.game.state.GameStateManager;
 
-import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.DefaultScreenController;
-import de.lessvoid.nifty.screen.Screen;
 
 /**
  * @author lamao
@@ -29,13 +27,6 @@ public class SHMainMenuScreenController extends DefaultScreenController
 	public SHMainMenuScreenController(SHNiftyState niftyState)
 	{
 		this.niftyState = niftyState;
-	}
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void bind(Nifty nifty, Screen screen)
-	{
 	}
 
 	public void quit() 
