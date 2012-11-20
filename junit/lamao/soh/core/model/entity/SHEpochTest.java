@@ -9,7 +9,6 @@ package lamao.soh.core.model.entity;
 
 import java.io.FileNotFoundException;
 
-import lamao.soh.core.SHUtils;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
 

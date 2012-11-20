@@ -68,6 +68,7 @@ public class SHLevelState extends BasicGameState
 	
 	private SHBreakoutGameContext context;
 	
+	// TODO: Move to constructor scene and inputhandler
 	public SHLevelState(SHEventDispatcher dispatcher, 
 			SHBreakoutGameContext context)
 	{

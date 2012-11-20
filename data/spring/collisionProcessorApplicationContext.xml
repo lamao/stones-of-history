@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<bean id="collisionProcessor" class="lamao.soh.core.SHCollisionProcessor">
+	<constructor-arg ref="dispatcher"/>
+	<property name="collisionTasks">
+		<list>
+			<bean class="lamao.soh.core.SHCollisionTask">
+				<constructor-arg value="ball"/>
+				<constructor-arg value="wall"/>
+				<constructor-arg value="false"/>
+			</bean>
+			<bean class="lamao.soh.core.SHCollisionTask">
+				<constructor-arg value="ball"/>
+				<constructor-arg value="paddle"/>
+				<constructor-arg value="false"/>
+			</bean>
+			<bean class="lamao.soh.core.SHCollisionTask">
+				<constructor-arg value="ball"/>
+				<constructor-arg value="brick"/>
+				<constructor-arg value="true"/>
+			</bean>
+			<bean class="lamao.soh.core.SHCollisionTask">
+				<constructor-arg value="bonus"/>
+				<constructor-arg value="bottom-wall"/>
+				<constructor-arg value="false"/>
+			</bean>
+			<bean class="lamao.soh.core.SHCollisionTask">
+				<constructor-arg value="bonus"/>
+				<constructor-arg value="paddle"/>
+				<constructor-arg value="false"/>
+			</bean>
+			<bean class="lamao.soh.core.SHCollisionTask">
+				<constructor-arg value="ball"/>
+				<constructor-arg value="bottom-wall"/>
+				<constructor-arg value="false"/>
+			</bean>
+			<bean class="lamao.soh.core.SHCollisionTask">
+				<constructor-arg value="bullet"/>
+				<constructor-arg value="brick"/>
+				<constructor-arg value="false"/>
+			</bean>
+			<bean class="lamao.soh.core.SHCollisionTask">
+				<constructor-arg value="bullet"/>
+				<constructor-arg value="wall"/>
+				<constructor-arg value="false"/>
+			</bean>
+		</list>
+	</property>
+</bean>
+
+</beans>

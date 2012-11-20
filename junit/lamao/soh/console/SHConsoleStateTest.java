@@ -7,8 +7,13 @@
 package lamao.soh.console;
 
 
-import lamao.soh.ngutils.AbstractJmeTest;
+import java.util.HashMap;
+import java.util.Map;
 
+import lamao.soh.ngutils.AbstractJmeTest;
+import lamao.soh.utils.events.ISHEventHandler;
+
+import org.mockito.Mockito;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
@@ -46,6 +51,15 @@ public class SHConsoleStateTest extends AbstractJmeTest
 	public void testConstructors()
 	{
 		assertEquals(SHConsoleState.PROMT, console.getContents()[0]);
+		assertTrue(console.getSupportedCommands().contains("exit"));
+		assertTrue(console.getSupportedCommands().contains("echo"));
+	}
+	
+	@Test
+	public void testDefaultConstructor()
+	{
+		SHConsoleState console = new SHConsoleState();
+		assertEquals(console.getName(), SHConsoleState.STATE_NAME);
 		assertTrue(console.getSupportedCommands().contains("exit"));
 		assertTrue(console.getSupportedCommands().contains("echo"));
 	}
@@ -154,6 +168,18 @@ public class SHConsoleStateTest extends AbstractJmeTest
 		console.setActive(true);
 		console.onKey('a', KeyInput.KEY_UP, true);
 		console.onKey('a', KeyInput.KEY_DOWN, true);
+	}
+	
+	@Test
+	public void testSetCommands()
+	{
+		Map<String, ISHEventHandler> commands = new HashMap<String, ISHEventHandler>();
+		commands.put("cmd1", Mockito.mock(ISHEventHandler.class));
+		commands.put("cmd2", Mockito.mock(ISHEventHandler.class));
+		
+		console.setCommands(commands);
+		
+		assertEquals(console.getSupportedCommands().size(), 4);
 	}
 	
 

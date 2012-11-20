@@ -1,0 +1,74 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+<!--  Engine beans -->
+<bean id="gameStateManager" class="com.jmex.game.state.GameStateManager" 
+	factory-method="getInstance"/>
+	
+<bean id="displaySystem" class="com.jme.system.DisplaySystem" 
+	factory-method="getDisplaySystem"/>
+
+<!-- Services -->
+<bean id="gameContextService" class="lamao.soh.core.service.SHGameContextService">
+	<constructor-arg ref="scene"/>
+</bean>
+
+<bean id="levelService" class="lamao.soh.core.SHScripts">
+	<constructor-arg ref="dispatcher"/>
+	<constructor-arg ref="scene"/>
+	<constructor-arg ref="gameContext"/>
+	<constructor-arg ref="resourceManager"/>
+	<constructor-arg ref="sceneLoader"/>
+</bean>
+
+<!-- Game beans -->
+<bean id="gameContext" class="lamao.soh.core.SHBreakoutGameContext"/>
+
+<bean id="resourceManager" class="lamao.soh.utils.SHResourceManager"/>
+
+<bean id="entityFactory" class="lamao.soh.core.SHBreakoutEntityFactory">
+	<constructor-arg ref="resourceManager"/>
+</bean>
+
+<bean id="scene" class="lamao.soh.core.SHScene">
+	<constructor-arg ref="collisionProcessor"/>
+	<constructor-arg ref="inGameInputHandler"/>
+</bean>
+
+<bean id="sceneLoader" class="lamao.soh.utils.deled.SHSceneLoader">
+	<constructor-arg ref="scene"/>
+	<constructor-arg ref="entityFactory"/>
+</bean>
+
+<bean id="inGameInputHandler" class="com.jme.input.InputHandler"/>
+<!--bean id="inGameInputHandler" class="lamao.soh.core.input.SHBreakoutInputHandler">
+	
+</bean-->
+
+<!-- Game states -->
+<bean id="niftyState" class="lamao.soh.states.SHNiftyState">
+	<constructor-arg value="data/nifty/main.xml"/>
+	<constructor-arg value="start"/>
+</bean>
+
+<bean id="levelState" class="lamao.soh.states.SHLevelState">
+	<constructor-arg ref="dispatcher"/>
+	<constructor-arg ref="gameContext"/>
+	
+	<property name="scene" ref="scene"/>
+	<property name="inputHandler">
+		<bean class="lamao.soh.core.input.SHLevelStateInputHandler">
+			<constructor-arg ref="levelState"/>
+		</bean>
+	</property>
+</bean>
+
+<bean id="levelStateRootNode" factory-bean="levelState" 
+	factory-method="getRootNode"/>
+
+</beans> 

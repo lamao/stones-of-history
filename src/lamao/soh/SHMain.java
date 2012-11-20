@@ -6,15 +6,15 @@
  */
 package lamao.soh;
 
-import lamao.soh.core.SHBreakoutEntityFactory;
-import lamao.soh.core.SHBreakoutGameContext;
-import lamao.soh.core.SHScene;
+import java.util.logging.Logger;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+import lamao.soh.console.SHConsoleState;
 import lamao.soh.core.SHScripts;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.states.SHNiftyState;
-import lamao.soh.utils.SHResourceManager;
-import lamao.soh.utils.deled.SHSceneLoader;
-import lamao.soh.utils.events.SHEventDispatcher;
 
 import com.jmex.game.StandardGame;
 import com.jmex.game.state.GameStateManager;
@@ -28,37 +28,28 @@ public class SHMain
 {
 	private static StandardGame GAME = null;
 
-	static SHEventDispatcher dispatcher = new SHEventDispatcher();
-	
-	static SHScene scene = new SHScene(null, null);
-	
-	static SHBreakoutGameContext context = new SHBreakoutGameContext();
-	
-	static SHResourceManager resourceManager = new SHResourceManager();
-	
-	static SHSceneLoader sceneLoader = new SHSceneLoader(scene, new SHBreakoutEntityFactory(resourceManager));
-	
-	static SHScripts scripts = new SHScripts(dispatcher , scene, context, resourceManager, sceneLoader);
-	
 	public static void main(String args[])
 	{
+		Logger.getLogger("").setLevel(SHOptions.LogLevel);
+		
 		GAME = new StandardGame("Stones of History");
 		GAME.start();
 		
-		scripts.gameStartupScript();
+		ApplicationContext applicationContext = new FileSystemXmlApplicationContext(
+				"data/spring/rootApplicationContext.xml");
 		
+		SHScripts scripts = applicationContext.getBean(SHScripts.class);
 		scripts.loadEpochScript("data/epochs/test_epoch/appearence.txt");
 		scripts.loadLevelScript("data/test/test-level.dps");
 		
-		SHLevelState levelState = scripts.initializeLevelState(dispatcher, scene);
-		scripts.initializeConsole(levelState);
+		SHLevelState levelState = applicationContext.getBean(SHLevelState.class);
+		SHConsoleState consoleState = applicationContext.getBean(SHConsoleState.class);
+		SHNiftyState niftyState = applicationContext.getBean(SHNiftyState.class);
 		
-		GameStateManager.getInstance().attachChild(levelState);
-//		levelState.setActive(true);
-		
-		SHNiftyState niftyState = new SHNiftyState( 
-				SHConstants.UI_FILE, SHConstants.UI_SCREEN_START);		
-		GameStateManager.getInstance().attachChild(niftyState);
+		GameStateManager gameStateManager = GameStateManager.getInstance();
+		gameStateManager.attachChild(levelState);
+		gameStateManager.attachChild(niftyState);
+		gameStateManager.attachChild(consoleState);
 		niftyState.setActive(true);
 	}
 	

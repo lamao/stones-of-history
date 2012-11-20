@@ -68,6 +68,15 @@ public class SHCollisionProcessor implements ISHCollisionProcessor
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void setCollisionTasks(List<SHCollisionTask> tasks)
+	{
+		this.collisionTasks = tasks;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void removeCollisionTask(SHCollisionTask task)
 	{
 		collisionTasks.remove(task);

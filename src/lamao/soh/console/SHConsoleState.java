@@ -92,6 +92,11 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		setName(name);
 	}
 	
+	public SHConsoleState()
+	{
+		this(STATE_NAME);
+	}
+	
 	public SHConsoleState(int switchKey, int historySize, int numLines)
 	{
 		super(STATE_NAME);
@@ -101,10 +106,15 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		initGUI(numLines);
 		bindKeys();
 		
-		add("exit", new SHExitCommand());
-		add("echo", new SHEchoCommand());
+		initDefaultCommands();
 		
 		rootNode.updateRenderState();
+	}
+	
+	private void initDefaultCommands()
+	{
+		add("exit", new SHExitCommand());
+		add("echo", new SHEchoCommand());
 	}
 	
 	/** Initializes all gui */
@@ -131,6 +141,21 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	public void add(String command, ISHEventHandler handler)
 	{
 		_commands.addHandler(command, handler);
+	}
+	
+	/**
+	 * Sets given console commands and their handlers. Replaces current commands,
+	 * but lives default commands (echo, exit)
+	 * @param commands - map of commands and handlers
+	 */
+	public void setCommands(Map<String, ISHEventHandler> commands)
+	{
+		_commands.reset();
+		initDefaultCommands();
+		for (Map.Entry<String, ISHEventHandler> command : commands.entrySet())
+		{
+			add(command.getKey(), command.getValue());
+		}
 	}
 	
 	public Set<String> getSupportedCommands()

@@ -154,6 +154,15 @@ public class SHEventDispatcher
 		handlers.add(handler);
 	}
 	
+	/**
+	 * Sets handlers map for this event dispatcher. Replaces current handlers.
+	 * @param handlers - handlers to set
+	 */
+	public void setHandlers(Map<String, List<ISHEventHandler>> handlers)
+	{
+		this._handlers = handlers;
+	}
+	
 	public void removeHandler(String type, ISHEventHandler handler)
 	{
 		List<ISHEventHandler> handlers = getHandlers(type);

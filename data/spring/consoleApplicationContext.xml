@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<bean id="consoleState" class="lamao.soh.console.SHConsoleState">
+	<property name="commands">
+		<map>
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="wired"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.console.SHWireFrameCommand">
+					<constructor-arg ref="levelStateRootNode"/>
+					<constructor-arg ref="displaySystem"/>
+				</bean>
+			</entry>
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="bounds"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.console.SHDrawBoundsCommand">
+					<constructor-arg ref="levelState"/>
+				</bean>
+			</entry>
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="normals"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.console.SHDrawNormalsCommand">
+					<constructor-arg ref="levelState"/>
+				</bean>
+			</entry>
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="set-bonus"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.console.SHSetBonusCommand">
+					<constructor-arg ref="scene"/>
+					<constructor-arg ref="entityFactory"/>
+				</bean>
+			</entry>
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="load-level"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.console.SHLoadLevelCommand">
+					<constructor-arg ref="scene"/>
+					<constructor-arg ref="levelService"/>
+				</bean>
+			</entry>
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="free-camera"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.console.SHFPSInputCommand">
+					<constructor-arg ref="scene"/>
+				</bean>
+			</entry>
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="activate-bonus"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.console.SHActivateBonusCommand">
+					<constructor-arg ref="dispatcher"/>
+					<constructor-arg ref="scene"/>
+					<constructor-arg ref="entityFactory"/>
+				</bean>
+			</entry>
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="pause"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.console.SHPauseLevelCommand">
+					<constructor-arg ref="levelState"/>
+				</bean>
+			</entry>
+		</map>
+	</property>
+
+</bean>
+</beans>
