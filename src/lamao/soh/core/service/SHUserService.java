@@ -11,12 +11,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import lamao.soh.SHConstants;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
@@ -37,39 +39,42 @@ public class SHUserService
 	
 	private SHEpochService epochService;
 	
-	public SHUserService(SHEpochService epochService)
+	private SHConstants constants;
+	
+	public SHUserService(SHEpochService epochService, SHConstants constants)
 	{
 		this.epochService = epochService;
+		this.constants = constants;
 	}
 
-	public void save(SHUser user, FileOutputStream os)
+	public void save(SHUser user) throws IOException
 	{
 		XStream xstream = new XStream();
         xstream.processAnnotations(SHLevel.class);
         xstream.processAnnotations(SHEpoch.class);
         xstream.processAnnotations(SHUser.class);
-        
-		xstream.toXML(user, os);
+
+        File file = getProfileFile(user.getName());
+        if (!file.exists())
+        {
+        	file.createNewFile();
+        }
+		xstream.toXML(user, new FileOutputStream(file));
 	}
 	
-	public void save(SHUser user, File file) throws FileNotFoundException
+	public SHUser load(String username) throws FileNotFoundException
 	{
-		save(user, new FileOutputStream(file));
+		return load(getProfileFile(username));
 	}
 	
-	public SHUser load(FileInputStream is)
+	private SHUser load(File file) throws FileNotFoundException
 	{
 		XStream xstream = new XStream();
 		xstream.processAnnotations(SHLevel.class);
 		xstream.processAnnotations(SHEpoch.class);
 		xstream.processAnnotations(SHUser.class);
 
-		return (SHUser) xstream.fromXML(is);
-	}
-	
-	public SHUser load(File file) throws FileNotFoundException
-	{
-		return load(new FileInputStream(file));
+		return (SHUser) xstream.fromXML(new FileInputStream(file));
 	}
 	
 	/**
@@ -77,11 +82,11 @@ public class SHUserService
 	 * @param baseDir - base directory to search profiles
 	 * @return array of correct profiles.
 	 */
-	public SHUser[] getAll(String baseDir)
+	public List<SHUser> getAll()
 	{
-		SHUser[] result = null;
+		List<SHUser> players = new LinkedList<SHUser>();
 		
-		File file = new File(baseDir);
+		File file = new File(constants.PLAYERS_DIR);
 		// build filter for *.xml files
 		File[] files = file.listFiles(new FilenameFilter() 
 		{
@@ -95,7 +100,6 @@ public class SHUserService
 		if (files != null)
 		{
 			// load profiles
-			List<SHUser> players = new LinkedList<SHUser>();
 			SHUser player = null;
 			for (int i = 0; i < files.length; i++)
 			{
@@ -114,10 +118,9 @@ public class SHUserService
 				}
 			}
 
-			result = players.toArray(new SHUser[0]);
 		}
 		
-		return result;
+		return players;
 	}
 	
 	/**
@@ -156,4 +159,37 @@ public class SHUserService
 		user.setEpochs(epochs);
 	}
 
+	/**
+	 * Deleted saved profiles from disk
+	 * @param username username
+	 */
+	public boolean delete(String username)
+	{
+		File file = getProfileFile(username);
+		if (!file.exists())
+		{
+			return false;
+		}
+		else
+		{
+			file.delete();
+			return true;
+		}
+	}
+	
+	public boolean isExists(String username)
+	{
+		File file = getProfileFile(username);
+		return file.exists();
+	}
+
+	/**
+	 * Builds filename from username and return {@link File} instanse
+	 * @param username username
+	 * @return file with profile for specified username
+	 */
+	private File getProfileFile(String username)
+	{
+		return new File(constants.PLAYERS_DIR + username + FILE_EXTENSION_XML);
+	}
 }

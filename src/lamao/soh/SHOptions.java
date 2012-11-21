@@ -32,5 +32,5 @@ public class SHOptions
 	public static int FireButton = 0;
 	
 	/** Log level. Indicates how verbose will be log output */
-	public static Level LogLevel = Level.INFO;
+	public static Level LogLevel = Level.WARNING;
 }

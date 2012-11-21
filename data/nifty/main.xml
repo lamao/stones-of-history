@@ -3,6 +3,10 @@
 	<useStyles filename="nifty-default-styles.xml" />
 	<useControls filename="nifty-default-controls.xml" />
 	  
+	<style id="panelStyle">
+		<attributes backgroundColor="#0000" align="center"/>
+	</style>  
+	  
 <screen id="start" controller="lamao.soh.ui.controllers.SHMainMenuScreenController">
  
     <layer id="mainLayer" childLayout="vertical" align="center">
@@ -16,9 +20,11 @@
 	          	<onHover name="pulsate" scaleFactor="0.008" startColor="#EE7F" endColor="#EE7F" post="true"/>
 	        </effect>
  
+ 			<control id="helloLabel" name="label" text="Hello, ${CALL.getUserName()}" width="90%" height="5%" align="center"/>
+ 			
  			<panel id="SPACER1" height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
       
-      		<panel id="gameStart" height="28%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
+      		<panel id="gameStart" height="25%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
       			<control id="btnStart" name="button" label="Start Game" align="center" valign="center" width="100%" height="100%" 
       				visibleToMouse="true">
         			<interact onClick="startGame()"/>
@@ -27,7 +33,7 @@
 	 
 	      	<panel id="SPACER2" height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
 	      	
-	      	<panel id="showProfiles" height="28%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
+	      	<panel id="showProfiles" height="25%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
 	        	<control id="btnProfiles" name="button" label="Profiles" align="center" valign="center" width="100%" height="100%"
 	        		visibleToMouse="true">
 	        		<interact onClick="gotoScreen(profiles)"/>
@@ -36,7 +42,7 @@
 	      	
 	      	<panel id="SPACER2" height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
 	 
-	      	<panel id="gameExit" height="28%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
+	      	<panel id="gameExit" height="25%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
 	        	<control id="btnExit" name="button" label="Exit" align="center" valign="center" width="100%" height="100%"
 	        		visibleToMouse="true">
 	        		<interact onClick="quit()"/>
@@ -67,7 +73,7 @@
  
  			<panel id="SPACER" height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
       
-      		<panel id="back" height="78%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center" visibleToMouse="true">
+      		<panel id="profiles" height="78%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center" visibleToMouse="true">
       			<control id="listProfiles" name="listBox" vertical="optional" horizontal="optional" displayItems="12" width="100%" height="100%"/>
       			
       			<panel id="SPACER" height="*" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
@@ -75,15 +81,15 @@
 	      	
 	      	<panel id="SPACER" height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
       
-      		<panel id="back" height="10%" width="90%" align="center" backgroundColor="#BBBF" childLayout="horizontal" visibleToMouse="true">
+      		<panel id="buttons" height="10%" width="90%" align="center" backgroundColor="#BBBF" childLayout="horizontal" visibleToMouse="true">
       			<control id="btnSelect" name="button" label="Select" align="center" valign="center" width="25%" height="100%">
-        			
+        			<interact onClick="selectProfile()"/>
 	        	</control>
 	        	<control id="btnAdd" name="button" label="Add" align="center" valign="center" width="25%" height="100%">
-        			
+        			<interact onClick="showAddProfilesWindow()"/>
 	        	</control>
 	        	<control id="btnDelete" name="button" label="Delete" align="center" valign="center" width="25%" height="100%">
-        			
+        			<interact onClick="deleteProfile()"/>
 	        	</control>
       			<control id="btnBack" name="button" label="Back" align="center" valign="center" width="25%" height="100%">
         			<interact onClick="gotoScreen(start)"/>
@@ -98,6 +104,25 @@
  		
  		<panel id="SPACER" height="10%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
     </layer>
- 
+    
+    <layer id="windows" childLayout="absolute">
+    	<control id="addProfiles" name="window" title="Input your name" closeable="false" 
+    			width="50%" height="100px" x="25%" y="35%" visible="false">
+    		<panel id="rootPanel" height="100%" width="100%" style="panelStyle" childLayout="vertical">
+	    		<panel id="text" height="50%" width="90%" style="panelStyle" childLayout="vertical">
+	  				<control id="profileName" name="textfield" maxLength="20"/>
+	  			</panel>
+	  			<panel id="buttons" height="50%" width="90%" style="panelStyle" childLayout="horizontal">
+	  				<control id="btnAdd" name="button" label="Add" align="center" valign="center" width="50%" height="100%">
+	  					<interact onClick="addProfile()"/>
+		        	</control>
+		        	<control id="btnCancel" name="button" label="Cancel" align="center" valign="center" width="50%" height="100%">
+		        		<interact onClick="hideAddProfilesWindow()"/>
+		        	</control>
+	  			</panel>
+	  		</panel>
+  		</control>
+	</layer>
+	
 </screen>
 </nifty>

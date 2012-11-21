@@ -1,6 +1,6 @@
 <player>
   <lives>5</lives>
-  <name>ugly player</name>
+  <name>player</name>
   <current-epoch>
     <name>epoch2</name>
     <levels>

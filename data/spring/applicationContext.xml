@@ -14,6 +14,8 @@
 	factory-method="getDisplaySystem"/>
 
 <!-- Services -->
+<bean id="constants" class="lamao.soh.SHConstants"/>
+
 <bean id="gameContextService" class="lamao.soh.core.service.SHGameContextService">
 	<constructor-arg ref="scene"/>
 </bean>
@@ -24,6 +26,13 @@
 	<constructor-arg ref="gameContext"/>
 	<constructor-arg ref="resourceManager"/>
 	<constructor-arg ref="sceneLoader"/>
+</bean>
+
+<bean id="epochService" class="lamao.soh.core.service.SHEpochService"/>
+
+<bean id="userService" class="lamao.soh.core.service.SHUserService">
+	<constructor-arg ref="epochService"/>
+	<constructor-arg ref="constants"/>
 </bean>
 
 <!-- Game beans -->
@@ -54,6 +63,12 @@
 <bean id="niftyState" class="lamao.soh.states.SHNiftyState">
 	<constructor-arg value="data/nifty/main.xml"/>
 	<constructor-arg value="start"/>
+	<constructor-arg>
+		<list>
+			<ref bean="mainMenuScreenController"/>
+			<ref bean="profilesScreenController"/>
+		</list>
+	</constructor-arg>
 </bean>
 
 <bean id="levelState" class="lamao.soh.states.SHLevelState">
@@ -70,5 +85,16 @@
 
 <bean id="levelStateRootNode" factory-bean="levelState" 
 	factory-method="getRootNode"/>
+	
+<!--  Nifty screen controllers -->
+<bean id="mainMenuScreenController" class="lamao.soh.ui.controllers.SHMainMenuScreenController">
+	<constructor-arg ref="gameStateManager"/>
+	<constructor-arg ref="gameContext"/>
+</bean>
+
+<bean id="profilesScreenController" class="lamao.soh.ui.controllers.SHProfilesScreenController">
+	<constructor-arg ref="userService"/>
+	<constructor-arg ref="gameContext"/>
+</bean>
 
 </beans> 

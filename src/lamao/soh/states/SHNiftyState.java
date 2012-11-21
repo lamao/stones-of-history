@@ -6,8 +6,7 @@
  */
 package lamao.soh.states;
 
-import lamao.soh.SHConstants;
-import lamao.soh.ui.controllers.SHMainMenuScreenController;
+import java.util.List;
 
 import com.jmex.game.state.BasicGameState;
 
@@ -26,21 +25,27 @@ public class SHNiftyState extends BasicGameState {
 
 	public static final String NAME = "menu";
 	
+	private static final String CURSOR_DEFAULT = "default";
+	
 	private Nifty nifty;
+	
+	private String startScreen;
+	
 	/**
 	 * @param name
 	 */
-	public SHNiftyState(String uiConfigurationFile, String startScreen)
+	public SHNiftyState(String uiConfigurationFile, String startScreen,
+			List<ScreenController> controllers)
 	{
 		super(NAME);
+		this.startScreen = startScreen;
 		
 		nifty = new Nifty(new JmeRenderDevice(), new JmeSoundDevice(), 
 						new JmeInputSystem(), new TimeProvider());
 		
-		ScreenController controllers[] = {
-				new SHMainMenuScreenController(this)};
-		nifty.fromXml(uiConfigurationFile, startScreen, controllers);
-		nifty.registerMouseCursor("default", "data/cursors/cursor-default.png", 15, 15);
+		ScreenController controllersArray[] = controllers.toArray(new ScreenController[0]);
+		nifty.fromXml(uiConfigurationFile, startScreen, controllersArray);
+		nifty.registerMouseCursor("default", "data/cursors/nifty-cursor.png", 0, 23);
 	}
 	
 	/**
@@ -77,8 +82,8 @@ public class SHNiftyState extends BasicGameState {
 		}
 		else 
 		{
-			nifty.getNiftyMouse().enableMouseCursor(SHConstants.UI_CURSOR_DEFAULT);
-			nifty.gotoScreen(SHConstants.UI_SCREEN_START);
+			nifty.getNiftyMouse().enableMouseCursor(CURSOR_DEFAULT);
+			nifty.gotoScreen(startScreen);
 		}
 	}
 }

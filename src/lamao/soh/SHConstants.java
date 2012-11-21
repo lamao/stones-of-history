@@ -11,28 +11,26 @@ package lamao.soh;
  * @author lamao
  *
  */
-public interface SHConstants
+public class SHConstants
 {
-	public final int BUILD_NUMBER = 1;
+	public static final int BUILD_NUMBER = 1;
 	
 	// Entity names. Defines names of resources in res manager, in
 	// configuration files and obj-files
-	public String LEFT_WALL = "left-wall";
-	public String TOP_WALL = "top-wall";
-	public String RIGHT_WALL = "right-wall";
-	public String BOTTOM_WALL = "bottom-wall";
-	public String BRICK = "brick";
-	public String BALL = "ball";
-	public String PADDLE = "paddle";
-	public String PADDLE_GUN = "paddle-gun-model";
-	public String DECORATION = "decoration";
-	public String BULLET = "bullet";
+	public static final String LEFT_WALL = "left-wall";
+	public static final String TOP_WALL = "top-wall";
+	public static final String RIGHT_WALL = "right-wall";
+	public static final String BOTTOM_WALL = "bottom-wall";
+	public static final String BRICK = "brick";
+	public static final String BALL = "ball";
+	public static final String PADDLE = "paddle";
+	public static final String PADDLE_GUN = "paddle-gun-model";
+	public static final String DECORATION = "decoration";
+	public static final String BULLET = "bullet";
 	
 	/** Directory where player's profiles are stored */
 	public String PLAYERS_DIR = "data/players/";
 	
 	public String UI_FILE = "data/nifty/main.xml";
-	public String UI_SCREEN_START = "start";
-	public String UI_CURSOR_DEFAULT = "default";
 
 }
