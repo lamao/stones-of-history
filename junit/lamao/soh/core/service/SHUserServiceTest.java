@@ -60,7 +60,6 @@ public class SHUserServiceTest
 	private SHUser createDefaultPlayer()
 	{
 		SHUser player = new SHUser();
-		player.setLives(5);
 		player.setName(PLAYER_NAME);
 		
 		SHEpoch epoch1 = new SHEpoch();
@@ -81,7 +80,6 @@ public class SHUserServiceTest
 	private void checkPlayer(SHUser player, SHUser player2)
 	{
 		assertEquals(player.getName(), player2.getName());
-        assertEquals(player.getLives(), player2.getLives());
         assertEquals(player.getCurrentEpoch().getName(), player2.getCurrentEpoch().getName());
         assertEquals(player.getEpochs().size(), player2.getEpochs().size());
         for (int i = 0; i < player.getEpochs().size(); i++) 
@@ -126,7 +124,7 @@ public class SHUserServiceTest
 	}
 	
 	@Test
-	public void testSaveNewFile() throws IOException
+	public void testSaveNewFile() throws IOException, InterruptedException
 	{
 		File file = new File(constants.PLAYERS_DIR + NEW_PLAYER + ".xml");
 		if (file.exists())
@@ -138,8 +136,8 @@ public class SHUserServiceTest
 		
 		userService.save(player);
 		
-		file = new File(constants.PLAYERS_DIR + NEW_PLAYER + ".xml");
 		assertTrue(file.exists());
+		file.delete();
 	}
 	
 	@Test(expectedExceptions=FileNotFoundException.class)
@@ -218,9 +216,9 @@ public class SHUserServiceTest
 	@Test
 	public void testIsExistExist() throws IOException
 	{
-		File file = new File(PLAYERS_DIR + NEW_PLAYER + ".xml");
+		File file = new File(PLAYERS_DIR + "existentplayer.xml");
 		file.createNewFile();
-		assertTrue(userService.isExists(NEW_PLAYER));
+		assertTrue(userService.isExists("existentplayer"));
 		file.delete();
 	}
 	

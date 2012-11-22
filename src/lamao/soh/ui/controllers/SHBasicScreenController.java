@@ -110,6 +110,7 @@ public class SHBasicScreenController implements ScreenController
 			}});
 		}}.build(nifty, screen, screen.getRootElement());
 		
+		screen.layoutLayers();
 	}
 	
 	public void gotoScreen(String screenId)

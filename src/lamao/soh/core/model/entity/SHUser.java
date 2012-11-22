@@ -19,10 +19,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("player")
 public class SHUser
 {
-	/** Lives remains */
-	@XStreamAlias("lives")
-	private int _lives;
-	
 	/** Player name */
 	@XStreamAlias("name")
 	private String _name;
@@ -34,16 +30,6 @@ public class SHUser
 	/** List of all available epochs */
 	@XStreamAlias("epochs")
 	private List<SHEpoch> _epochs = new ArrayList<SHEpoch>();
-
-	public int getLives()
-	{
-		return _lives;
-	}
-
-	public void setLives(int lives)
-	{
-		_lives = lives;
-	}
 
 	public String getName()
 	{
