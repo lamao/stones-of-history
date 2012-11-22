@@ -64,23 +64,15 @@ public class SHUserServiceTest
 		epoch2.getLevels().add(new SHLevel());
 		epoch2.setName("epoch2");
 		
-		player.getEpochs().add(epoch1);
-		player.getEpochs().add(epoch2);
-		player.setCurrentEpoch(epoch2);
-		
 		return player;
 	}
 	
 	private void checkPlayer(SHUser player, SHUser player2)
 	{
 		assertEquals(player.getName(), player2.getName());
-        assertEquals(player.getCurrentEpoch().getName(), player2.getCurrentEpoch().getName());
-        assertEquals(player.getEpochs().size(), player2.getEpochs().size());
-        for (int i = 0; i < player.getEpochs().size(); i++) 
-        {
-        	assertEquals(player.getEpochs().get(i).getLevels().size(),
-        				player2.getEpochs().get(i).getLevels().size());
-        }
+        assertEquals(player.getCompletedLevels().size(), player2.getCompletedLevels().size());
+        assertTrue(player.getCompletedLevels().containsAll(player2.getCompletedLevels()));
+        assertTrue(player2.getCompletedLevels().containsAll(player.getCompletedLevels()));
 	}
 	
 	@Test

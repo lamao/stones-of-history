@@ -101,6 +101,7 @@
 <bean id="epochsScreenController" class="lamao.soh.ui.controllers.SHEpochsScreenController">
     <constructor-arg ref="gameStateManager"/>
     <constructor-arg ref="gameContext"/>
+    <constructor-arg ref="epochService"/>
 </bean>
 
 </beans> 

@@ -80,4 +80,13 @@ public class SHEpoch
 		_levels = levels;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString()
+	{
+		return _name;
+	}
+	
 }

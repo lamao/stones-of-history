@@ -73,5 +73,14 @@ public class SHLevel
 	{
 		_name = name;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString()
+	{
+		return _name;
+	}
 
 }

@@ -6,11 +6,31 @@
  */
 package lamao.soh.core.model.entity;
 
+import static org.testng.Assert.assertEquals;
+
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 /**
  * @author lamao
  *
  */
 public class SHLevelTest
 {
+	private SHLevel level;
+	
+	@BeforeMethod
+	public void setUp()
+	{
+		level = new SHLevel();
+	}
+			
+	@Test
+	public void testToString()
+	{
+		level.setName("name");
+		
+		assertEquals(level.toString(), "name");
+	}
 	
 }

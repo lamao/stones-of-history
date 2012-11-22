@@ -135,4 +135,5 @@ public class SHEpochService
 		File result = new File(epochDirectory + "/" + epochConfigurationFile);
 		return result;
 	}
+	
 }

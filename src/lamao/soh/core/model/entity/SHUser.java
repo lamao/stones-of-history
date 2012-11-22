@@ -6,8 +6,8 @@
  */
 package lamao.soh.core.model.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -23,13 +23,9 @@ public class SHUser
 	@XStreamAlias("name")
 	private String _name;
 	
-	/** Currently played epoch */
-	@XStreamAlias("current-epoch")
-	private SHEpoch _currentEpoch;
-	
 	/** List of all available epochs */
-	@XStreamAlias("epochs")
-	private List<SHEpoch> _epochs = new ArrayList<SHEpoch>();
+	@XStreamAlias("completed-levels")
+	private Set<String> completedLevels = new HashSet<String>();
 
 	public String getName()
 	{
@@ -41,27 +37,16 @@ public class SHUser
 		_name = name;
 	}
 
-	public SHEpoch getCurrentEpoch()
+	public Set<String> getCompletedLevels()
 	{
-		return _currentEpoch;
+		return completedLevels;
 	}
 
-	public void setCurrentEpoch(SHEpoch currentEpoch)
+	public void setCompletedLevels(Set<String> completedLevels)
 	{
-		_currentEpoch = currentEpoch;
+		this.completedLevels = completedLevels;
 	}
 
-	public List<SHEpoch> getEpochs()
-	{
-		return _epochs;
-	}
-
-	public void setEpochs(List<SHEpoch> epochs)
-	{
-		_epochs = epochs;
-	}
-	
-	
 	@Override
 	public String toString()
 	{
