@@ -17,44 +17,41 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("level")
 public class SHLevel
 {
-	/** Year of the level */
-	@XStreamAlias("year")
-	private float _year;
+	/** Unique (within epoch) ID of this level */ 
+	@XStreamAlias("id")
+	private String id;
 	
 	/** Level contents (bricks, walls etc) */
-	@XStreamAlias("models")
-	private String _models;
+	@XStreamAlias("scene")
+	private String _scene;
 	
 	/** Level introduction - historical overview */
 	@XStreamAlias("intro")
 	private String _intro;
 	
-	/** Indicates if this level was completed */
-	@XStreamAlias("completed")
-	private boolean _completed = false;
-	
 	/** Name of the displayed level name */
 	@XStreamAlias("name")
 	private String _name;
 
-	public float getYear()
+	
+	public String getId()
 	{
-		return _year;
+		return id;
 	}
 
-	public void setYear(float year)
+	public void setId(String id)
 	{
-		_year = year;
+		this.id = id;
 	}
 
-	public String getModels()
+	public String getScene()
 	{
-		return _models;
+		return _scene;
 	}
 
-	public void setModels(String models)
+	public void setScene(String scene)
 	{
-		_models = models;
+		_scene = scene;
 	}
 
 	public String getIntro()
@@ -65,16 +62,6 @@ public class SHLevel
 	public void setIntro(String intro)
 	{
 		_intro = intro;
-	}
-
-	public boolean isCompleted()
-	{
-		return _completed;
-	}
-
-	public void setCompleted(boolean completed)
-	{
-		_completed = completed;
 	}
 
 	public String getName()

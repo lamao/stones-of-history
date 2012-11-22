@@ -1,26 +1,18 @@
 <player>
-  <lives>5</lives>
   <name>player</name>
   <current-epoch>
     <name>epoch2</name>
+    <order>0.0</order>
     <levels>
-      <level>
-        <year>0.0</year>
-        <completed>false</completed>
-      </level>
+      <level/>
     </levels>
   </current-epoch>
   <epochs>
     <epoch>
+      <order>0.0</order>
       <levels>
-        <level>
-          <year>0.0</year>
-          <completed>false</completed>
-        </level>
-        <level>
-          <year>0.0</year>
-          <completed>false</completed>
-        </level>
+        <level/>
+        <level/>
       </levels>
     </epoch>
     <epoch reference="../../current-epoch"/>

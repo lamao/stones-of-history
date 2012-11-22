@@ -6,10 +6,19 @@
  */
 package lamao.soh.core.service;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
+import com.thoughtworks.xstream.XStream;
+
+import lamao.soh.SHConstants;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
 
@@ -19,46 +28,111 @@ import lamao.soh.core.model.entity.SHLevel;
  */
 public class SHEpochService
 {
-	/**
-	 * Sort levels according to their level
-	 */
-	public void sortLevels(SHEpoch epoch)
+	private static final Logger LOGGER = Logger.getLogger(SHUserService.class.getCanonicalName());
+	
+	private static final String DEFAULT_EPOCH_CONFIGURATION_FILE = "epoch.xml";
+	
+	private SHConstants constants;
+	
+	private String epochConfigurationFile = DEFAULT_EPOCH_CONFIGURATION_FILE;
+	
+	public SHEpochService(SHConstants constants)
 	{
-		List<SHLevel> levels = epoch.getLevels();
-		Collections.sort(levels, new Comparator<SHLevel>() {
+		this.constants = constants;
+	}
+	
+	public String getEpochConfigurationFile()
+	{
+		return epochConfigurationFile;
+	}
+
+	public void setEpochConfigurationFile(String epochConfigurationFile)
+	{
+		this.epochConfigurationFile = epochConfigurationFile;
+	}
+
+	/**
+	 * Find all available epochs and load them.
+	 * @return list of all available epochs
+	 */
+	public List<SHEpoch> getAll()
+	{
+		List<SHEpoch> epochs = new LinkedList<SHEpoch>();
+		
+		File file = new File(constants.EPOCHS_DIR);
+		// build filter for *.xml files
+		File[] files = file.listFiles(new FileFilter() {
 			@Override
-			public int compare(SHLevel o1, SHLevel o2)
+			public boolean accept(File file)
 			{
-				return (o1.getYear() < o2.getYear()) ? -1 : 1;
+				File configurationFile = getConfigurationFile(file.getAbsolutePath());				
+				return file.isDirectory() && configurationFile.exists();
 			}
 		});
 		
-		epoch.setLevels(levels);
+		if (files != null)
+		{
+			// load profiles
+			SHEpoch epoch = null;
+			for (int i = 0; i < files.length; i++)
+			{
+				try
+				{
+					epoch = load(getConfigurationFile(files[i].getAbsolutePath()));
+					if (epoch != null)
+					{
+						epochs.add(epoch);
+					}
+				}
+				catch (FileNotFoundException e)
+				{
+					LOGGER.warning("Can't load epoch from " + files[i]);
+					e.printStackTrace();
+				}
+			}
+
+		}
+		
+		sortEpochs(epochs);
+		return epochs;
 	}
 	
 	/**
-	 * Calculates min year and max year from its level's years
+	 * Loads epoch info from file
+	 * @param file epoch configuration file
+	 * @return epoch info
+	 * @throws FileNotFoundException if file was not found
 	 */
-	public void updateYears(SHEpoch epoch)
+	private SHEpoch load(File file) throws FileNotFoundException
 	{
-		float minYear = Float.MAX_VALUE;
-		float maxYear = Float.MIN_VALUE;
-		for (SHLevel level : epoch.getLevels())
-		{
-			if (level.getYear() < minYear)
-			{
-				minYear = level.getYear();
-			}
-			if (level.getYear() > maxYear)
-			{
-				maxYear = level.getYear();
-			}
-		}
-		
-		epoch.setMinYear(minYear);
-		epoch.setMaxYear(maxYear);
-		
+		XStream xstream = new XStream();
+		xstream.processAnnotations(SHLevel.class);
+		xstream.processAnnotations(SHEpoch.class);
+
+		return (SHEpoch) xstream.fromXML(new FileInputStream(file));
 	}
 	
-
+	/**
+	 * Sort epochs by their order from lowest to highest
+	 * 
+	 * @param epochs list of epochs to sort
+	 */
+	private void sortEpochs(List<SHEpoch> epochs)
+	{
+		Collections.sort(epochs, new Comparator<SHEpoch>() 
+		{
+			@Override
+			public int compare(SHEpoch o1, SHEpoch o2)
+			{
+				int result = o1.getOrder() < o2.getOrder() ? -1 : 1;
+				return result;
+			}
+		});
+	}
+	
+	private File getConfigurationFile(String epochDirectory)
+	{
+		File result = new File(epochDirectory + "/" + epochConfigurationFile);
+		return result;
+	}
 }

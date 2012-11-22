@@ -28,10 +28,11 @@
 	<constructor-arg ref="sceneLoader"/>
 </bean>
 
-<bean id="epochService" class="lamao.soh.core.service.SHEpochService"/>
+<bean id="epochService" class="lamao.soh.core.service.SHEpochService">
+    <constructor-arg ref="constants"/>
+</bean>
 
 <bean id="userService" class="lamao.soh.core.service.SHUserService">
-	<constructor-arg ref="epochService"/>
 	<constructor-arg ref="constants"/>
 </bean>
 

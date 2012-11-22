@@ -32,5 +32,8 @@ public class SHConstants
 	public String PLAYERS_DIR = "data/players/";
 	
 	public String UI_FILE = "data/nifty/main.xml";
+	
+	/** Directory where epochs are located */
+	public String EPOCHS_DIR = "data/epochs";
 
 }

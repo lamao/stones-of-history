@@ -7,9 +7,7 @@
 package lamao.soh.core.service;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertSame;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.mockito.Mockito.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,7 +19,6 @@ import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
 import lamao.soh.core.model.entity.SHUser;
 
-import org.mockito.Mock;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -44,9 +41,6 @@ public class SHUserServiceTest
 	
 	private SHUserService userService;
 	
-	@Mock
-	private SHEpochService epochService;
-	
 	SHConstants constants = new SHConstants();
 	
 	@BeforeMethod
@@ -54,7 +48,7 @@ public class SHUserServiceTest
 	{
 		initMocks(this);
 		constants.PLAYERS_DIR = PLAYERS_DIR;
-		userService = new SHUserService(epochService, constants);
+		userService = new SHUserService(constants);
 	}
 	
 	private SHUser createDefaultPlayer()
@@ -160,35 +154,6 @@ public class SHUserServiceTest
 		constants.PLAYERS_DIR = PLAYERS_LIST_DIR;
 		List<SHUser> players = userService.getAll();
 		assertEquals(players.size(), 3);
-	}
-	
-	@Test
-	public void testUpdateEpochs()
-	{
-		SHEpoch e1 = new SHEpoch();
-		e1.setMinYear(1);
-		e1.setMaxYear(3);
-		
-		SHEpoch e2 = new SHEpoch();
-		e2.setMinYear(1);
-		e2.setMaxYear(2);
-
-		SHEpoch e3 = new SHEpoch();
-		e3.setMinYear(1.5f);
-		e3.setMaxYear(3);
-
-		
-		SHUser player = new SHUser();
-		player.getEpochs().add(e1);
-		player.getEpochs().add(e2);
-		player.getEpochs().add(e3);
-		
-		userService.updateEpochs(player);
-		
-		verify(epochService, times(3)).updateYears(any(SHEpoch.class));
-		assertSame(e2, player.getEpochs().get(0));
-		assertSame(e1, player.getEpochs().get(1));
-		assertSame(e3, player.getEpochs().get(2));
 	}
 	
 	@Test

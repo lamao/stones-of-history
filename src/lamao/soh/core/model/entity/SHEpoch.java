@@ -21,21 +21,34 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @XStreamAlias("epoch")
 public class SHEpoch
 {
+	/** 
+	 * ID of epochs. Is set from outer code. Typically the name of folder 
+	 * with epoch
+	 */
+	@XStreamOmitField
+	private String id;
+	
 	/** Displayed name of the epoch */
 	@XStreamAlias("name")
 	private String _name;
 	
-	/** Minimal year of the level in epoch */
-	@XStreamOmitField
-	private float _minYear = Float.MAX_VALUE;
-	
-	/** Maximum year of the level in epoch */
-	@XStreamOmitField
-	private float _maxYear = Float.MIN_VALUE;
+	/** Order of the epoch. The lowest order the earlier is epoch */
+	@XStreamAlias("order")
+	private float order = 0;
 	
 	/** List of levels in epoch */
 	@XStreamAlias("levels")
 	private List<SHLevel> _levels = new ArrayList<SHLevel>();
+
+	public String getId()
+	{
+		return id;
+	}
+
+	public void setId(String id)
+	{
+		this.id = id;
+	}
 
 	public String getName()
 	{
@@ -47,24 +60,14 @@ public class SHEpoch
 		_name = name;
 	}
 
-	public float getMinYear()
+	public float getOrder()
 	{
-		return _minYear;
+		return order;
 	}
 
-	public void setMinYear(float minYear)
+	public void setOrder(float order)
 	{
-		_minYear = minYear;
-	}
-
-	public float getMaxYear()
-	{
-		return _maxYear;
-	}
-
-	public void setMaxYear(float maxYear)
-	{
-		_maxYear = maxYear;
+		this.order = order;
 	}
 
 	public List<SHLevel> getLevels()
