@@ -8,6 +8,8 @@ package lamao.soh.ui.controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.model.entity.SHUser;
@@ -44,6 +46,7 @@ public class SHProfilesScreenController extends SHBasicScreenController
 	
 	private static final String DELETE_PROFILE_ERROR_TEXT = "Some errrors were during deleting profile";
 	
+	private static Logger LOGGER = Logger.getLogger(SHProfilesScreenController.class.getCanonicalName());
 	
 	private SHUserService userService;
 	
@@ -92,6 +95,9 @@ public class SHProfilesScreenController extends SHBasicScreenController
 		addProfilesWindow.setVisible(true);
 	}
 	
+	/**
+	 * Create new profile with name from text input and save it.
+	 */
 	@SuppressWarnings("unchecked")
 	public void addProfile()
 	{
@@ -127,6 +133,7 @@ public class SHProfilesScreenController extends SHBasicScreenController
 		catch (IOException e)
 		{
 			showInfoWindow(SAVE_PROFILE_ERROR_TITLE, SAVE_PROFILE_ERROR_TEXT);
+			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
 		
 	}

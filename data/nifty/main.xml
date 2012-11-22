@@ -27,7 +27,7 @@
       		<panel id="gameStart" height="25%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
       			<control id="btnStart" name="button" label="Start Game" align="center" valign="center" width="100%" height="100%" 
       				visibleToMouse="true">
-        			<interact onClick="startGame()"/>
+        			<interact onClick="gotoScreen(epochs)"/>
 	        	</control>
 	      	</panel>
 	 
@@ -123,6 +123,55 @@
 	  		</panel>
   		</control>
 	</layer>
-	
+</screen>
+
+<screen id="epochs" controller="lamao.soh.ui.controllers.SHEpochsScreenController">
+    <layer id="epochsLayer" childLayout="vertical" align="center">
+	    <panel id="topPanel" style="nifty-panel" childLayout="vertical" width="100%" height="100%">
+	        <effect>
+	             <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
+	             <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
+	             <onHover name="pulsate" scaleFactor="0.008" startColor="#EE7F" endColor="#EE7F" post="true"/>
+	         </effect>
+	    
+		    <panel id="contentPanel" style="panelStyle" childLayout="horizontal" width="100%" height="*">
+		      <panel id="listPanel" style="nifty-panel-no-shadow" childLayout="vertical" width="200px">
+			      <panel id="epochsPanel" childLayout="vertical" height="40%">
+			          <control id="epochsLabel" name="label" text="Epochs"/>
+			          <control id="epochsList" name="listBox" vertical="optional" horizontal="optional" displayItems="6"/>
+			      </panel>
+			      
+			      <panel id="SPACER" height="10px"/>
+			      
+			      <panel id="levelsPanel" childLayout="vertical" height="*">
+	                  <control id="levelsLabel" name="label" text="Levels"/>
+	                  <control id="levelsList" name="listBox" vertical="optional" horizontal="optional" displayItems="8"/>
+	              </panel>
+              </panel>
+              
+              <panel id="SPACER" width="10px"/>
+              
+              <panel id="detailsPanel" style="nifty-panel-no-shadow" childLayout="vertical">
+                  <control id="detailsTitleLabel" name="label" text="Details"/>
+                    
+                  <control id="scrollbarPanelId" name="scrollPanel" horizontal="false" height="*">
+                      <control id="detailsContentLabel" name="label" text="More details"/>
+                  </control>
+              </panel>
+		    </panel>
+		    
+		    <panel id="buttonPanel" style="panelStyle" childLayout="horizontal" width="100%" height="50px" valign="bottom">
+		        <control id="btnBack" name="button" label="Back" align="left" valign="center">
+		            <interact onClick="gotoScreen(start)"/>
+		        </control>
+		        
+		        <panel id="SPACER" width="*"/>
+		        
+		        <control id="btnPlay" name="button" label="Play" align="right" valign="center">
+		            <interact onClick="startGame()"/>
+		        </control>
+		    </panel>
+	    </panel>
+    </layer>
 </screen>
 </nifty>

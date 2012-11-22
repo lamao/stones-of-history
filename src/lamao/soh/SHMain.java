@@ -1,4 +1,4 @@
-/* 
+/** 
  * SHMain.java 25.03.2010
  * 
  * Copyright 2010 Stones of History

@@ -8,12 +8,8 @@ package lamao.soh.ui.controllers;
 
 import lamao.soh.SHMain;
 import lamao.soh.core.SHBreakoutGameContext;
-import lamao.soh.states.SHLevelState;
-import lamao.soh.states.SHNiftyState;
 
-import com.jmex.game.state.GameState;
-import com.jmex.game.state.GameStateManager;
-
+import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.controls.Label;
 
 /**
@@ -26,30 +22,17 @@ public class SHMainMenuScreenController extends SHBasicScreenController
 	
 	private static final String HELLO_USER_PATTERN = "Hello, %s";
 	
-	private GameStateManager manager;
-	
 	private SHBreakoutGameContext gameContext;
 	
 	
-	public SHMainMenuScreenController(GameStateManager manager,
-			SHBreakoutGameContext gameContext)
+	public SHMainMenuScreenController(SHBreakoutGameContext gameContext)
 	{
-		this.manager = manager;
 		this.gameContext = gameContext;
 	}
 
 	public void quit() 
 	{
 		SHMain.exit();
-	}
-	
-	public void startGame() 
-	{
-		GameState niftyState = manager.getChild(SHNiftyState.NAME); 
-		GameState levelState = manager.getChild(SHLevelState.NAME);
-		
-		niftyState.setActive(false);
-		levelState.setActive(true);
 	}
 	
 	public String getUserName()
@@ -67,6 +50,9 @@ public class SHMainMenuScreenController extends SHBasicScreenController
 	{
 		Label helloLabel = getScreen().findNiftyControl("helloLabel", Label.class);
 		helloLabel.setText(String.format(HELLO_USER_PATTERN, getUserName()));
+		
+		Button startGameButton = getScreen().findNiftyControl("btnStart", Button.class);
+		startGameButton.setEnabled(gameContext.getPlayer() != null);
 	}
 
 }
