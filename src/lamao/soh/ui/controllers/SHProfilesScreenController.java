@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.model.entity.SHUser;
+import lamao.soh.core.service.SHSessionService;
 import lamao.soh.core.service.SHUserService;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
@@ -52,15 +53,19 @@ public class SHProfilesScreenController extends SHBasicScreenController
 	
 	private SHBreakoutGameContext gameContext;
 	
+	private SHSessionService sessionService;
+	
 	private Element addProfilesWindow;
 	
 	private SHUser selectedUser = null;
 	
 	public SHProfilesScreenController(SHUserService userService,
-			SHBreakoutGameContext gameContext)
+			SHBreakoutGameContext gameContext,
+			SHSessionService sessionService)
 	{
 		this.userService = userService;
 		this.gameContext = gameContext;
+		this.sessionService = sessionService;
 	}
 
 	/**
@@ -128,6 +133,8 @@ public class SHProfilesScreenController extends SHBasicScreenController
         		listBox.addItem(newUser);
         		
         		hideAddProfilesWindow();
+        		
+        		actualSelectProfile(newUser);
     		}
 		}
 		catch (IOException e)
@@ -183,9 +190,20 @@ public class SHProfilesScreenController extends SHBasicScreenController
 	{
 		if (selectedUser != null)
 		{
-			gameContext.setPlayer(selectedUser);
-			gotoScreen("start");
+			actualSelectProfile(selectedUser);
 		}
+	}
+	
+	/**
+	 * Do 'select profile' logic. 
+	 * @param profile profile to select. Must be not null
+	 */
+	private void actualSelectProfile(SHUser profile)
+	{
+		gameContext.setPlayer(profile);
+		sessionService.getSessionInfo().setLastSelectedUsername(profile.getName());
+		sessionService.saveSessionInfo();
+		gotoScreen("start");
 	}
 	
 	/**

@@ -6,8 +6,15 @@
  */
 package lamao.soh.ui.controllers;
 
+import java.io.FileNotFoundException;
+import java.util.logging.Logger;
+
 import lamao.soh.SHMain;
 import lamao.soh.core.SHBreakoutGameContext;
+import lamao.soh.core.SHSessionInfo;
+import lamao.soh.core.model.entity.SHUser;
+import lamao.soh.core.service.SHSessionService;
+import lamao.soh.core.service.SHUserService;
 
 import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.controls.Label;
@@ -22,12 +29,22 @@ public class SHMainMenuScreenController extends SHBasicScreenController
 	
 	private static final String HELLO_USER_PATTERN = "Hello, %s";
 	
+	private static final Logger LOGGER = Logger.getLogger(SHMainMenuScreenController.class.getCanonicalName());
+	
 	private SHBreakoutGameContext gameContext;
 	
+	private SHSessionService sessionService;
 	
-	public SHMainMenuScreenController(SHBreakoutGameContext gameContext)
+	private SHUserService userService;
+	
+	
+	public SHMainMenuScreenController(SHBreakoutGameContext gameContext,
+			SHSessionService sessionService,
+			SHUserService userService)
 	{
 		this.gameContext = gameContext;
+		this.sessionService = sessionService;
+		this.userService = userService;
 	}
 
 	public void quit() 
@@ -48,11 +65,36 @@ public class SHMainMenuScreenController extends SHBasicScreenController
 	@Override
 	public void onStartScreen()
 	{
+		if (gameContext.getPlayer() == null)
+		{
+			gameContext.setPlayer(getUserFromSession());
+		}
+		
 		Label helloLabel = getScreen().findNiftyControl("helloLabel", Label.class);
 		helloLabel.setText(String.format(HELLO_USER_PATTERN, getUserName()));
 		
 		Button startGameButton = getScreen().findNiftyControl("btnStart", Button.class);
 		startGameButton.setEnabled(gameContext.getPlayer() != null);
+	}
+	
+	private SHUser getUserFromSession()
+	{
+		SHUser result = null;
+		SHSessionInfo sessionInfo = sessionService.getSessionInfo();
+		if (sessionInfo.getLastSelectedUsername() != null 
+			&& !sessionInfo.getLastSelectedUsername().isEmpty())
+		{
+			try
+			{
+				result = userService.load(sessionInfo.getLastSelectedUsername());
+			}
+			catch (FileNotFoundException e)
+			{
+				LOGGER.warning("Can not load profile from session: <" 
+						+ sessionInfo.getLastSelectedUsername() + ">");
+			}
+		}
+		return result;
 	}
 
 }

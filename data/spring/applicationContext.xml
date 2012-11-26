@@ -38,6 +38,8 @@
 	<constructor-arg ref="constants"/>
 </bean>
 
+<bean id="sessionService" class="lamao.soh.core.service.SHSessionService"/>
+
 <!-- Game beans -->
 <bean id="gameContext" class="lamao.soh.core.SHBreakoutGameContext"/>
 
@@ -94,11 +96,14 @@
 <!--  Nifty screen controllers -->
 <bean id="mainMenuScreenController" class="lamao.soh.ui.controllers.SHMainMenuScreenController">
 	<constructor-arg ref="gameContext"/>
+	<constructor-arg ref="sessionService"/>
+	<constructor-arg ref="userService"/>
 </bean>
 
 <bean id="profilesScreenController" class="lamao.soh.ui.controllers.SHProfilesScreenController">
 	<constructor-arg ref="userService"/>
 	<constructor-arg ref="gameContext"/>
+	<constructor-arg ref="sessionService"/>
 </bean>
 
 <bean id="epochsScreenController" class="lamao.soh.ui.controllers.SHEpochsScreenController">
