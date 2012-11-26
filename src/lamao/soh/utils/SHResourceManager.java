@@ -130,6 +130,11 @@ public class SHResourceManager
 		return _parsers;
 	}
 	
+	public Map<String, Map<String, Object>> getResources()
+	{
+		return _resources;
+	}
+	
 	/**
 	 * Adds given resource to storage. If there is no storage for specified type
 	 * it will be created.
@@ -190,6 +195,11 @@ public class SHResourceManager
 	public Map<String, Object> get(String type)
 	{
 		return _resources.get(type);
+	}
+	
+	public void clear()
+	{
+		_resources = new HashMap<String, Map<String, Object>>();
 	}
 	
 	public void readConfig(File file)

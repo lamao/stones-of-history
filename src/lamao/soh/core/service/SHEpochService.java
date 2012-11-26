@@ -14,11 +14,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.thoughtworks.xstream.XStream;
 
 import lamao.soh.SHConstants;
+import lamao.soh.core.model.SHEpochLevelItem;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
 
@@ -81,6 +84,7 @@ public class SHEpochService
 					epoch = load(getConfigurationFile(files[i].getAbsolutePath()));
 					if (epoch != null)
 					{
+						epoch.setId(getEpochId(files[i].getAbsolutePath()));
 						epochs.add(epoch);
 					}
 				}
@@ -136,4 +140,58 @@ public class SHEpochService
 		return result;
 	}
 	
+	private String getEpochId(String directory)
+	{
+		return directory.substring(directory.lastIndexOf("\\") + 1);
+	}
+
+	
+	/**
+	 * Find first epoch where at least one level is uncompleted
+	 * @param epochs list of epochs to find through
+	 * @param completedLevels set of ids of completed levels
+	 * @return first epoch with at least one uncompleted level and first 
+	 * 		uncompleted level. Or null if all levels in all epochs were completed
+	 */
+	public SHEpochLevelItem getFirstUncompletedEpoch(List<SHEpoch> epochs, 
+			Map<String, Set<String>> completedLevels)
+	{
+		for (SHEpoch epoch : epochs)
+		{
+			Set<String> completedEpochLevels = completedLevels.get(epoch.getId());
+			SHLevel firstUncompletedLevel = getFirstUncompletedLevel(
+					epoch.getLevels(), completedEpochLevels);
+			
+			if (firstUncompletedLevel != null)
+			{
+				return new SHEpochLevelItem(epoch, firstUncompletedLevel);
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Find first uncompleted level from given list
+	 * @param levels list of levels to check. Must be not null and not empty
+	 * @param completedLevels IDs of completed levels
+	 * @return first uncompleted level or null if all levels were completed
+	 */
+	public SHLevel getFirstUncompletedLevel(List<SHLevel> levels, 
+			Set<String> completedLevels)
+	{
+		if (completedLevels == null)
+		{
+			return levels.get(0);
+		}
+		for (SHLevel level : levels) 
+		{
+			if (!completedLevels.contains(level.getId()))
+			{
+				return level;
+			}
+		}
+		
+		return null;
+	}
 }

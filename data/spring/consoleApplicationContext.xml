@@ -55,7 +55,6 @@
 					</bean>
 				</key>
 				<bean class="lamao.soh.console.SHLoadLevelCommand">
-					<constructor-arg ref="scene"/>
 					<constructor-arg ref="levelService"/>
 				</bean>
 			</entry>
@@ -91,6 +90,26 @@
 					<constructor-arg ref="levelState"/>
 				</bean>
 			</entry>
+			<entry>
+                <key>
+                    <bean class="java.lang.String">
+                        <constructor-arg value="camera-direction"/>
+                    </bean>
+                </key>
+                <bean class="lamao.soh.console.SHCameraDirectionCommand">
+                    <constructor-arg ref="displaySystem"/>
+                </bean>
+            </entry>
+            <entry>
+                <key>
+                    <bean class="java.lang.String">
+                        <constructor-arg value="camera-location"/>
+                    </bean>
+                </key>
+                <bean class="lamao.soh.console.SHCameraLocationCommand">
+                    <constructor-arg ref="displaySystem"/>
+                </bean>
+            </entry>
 		</map>
 	</property>
 

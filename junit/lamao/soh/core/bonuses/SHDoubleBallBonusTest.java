@@ -56,7 +56,7 @@ public class SHDoubleBallBonusTest
 	{
 		List<Spatial> balls = new ArrayList<Spatial>();
 		SHBall ball = SHEntityCreator.createDefaultBall();
-		ball.setVelocity(-1, 2, 0);
+		ball.setVelocity(-1, 0, -2);
 		balls.add(SHEntityCreator.createDefaultBall());
 		balls.add(ball);
 		when(scene.get("ball")).thenReturn(balls);
@@ -69,10 +69,10 @@ public class SHDoubleBallBonusTest
 		assertEquals(1, balls.get(3).getControllerCount());
 		float angle = SHUtils.angle(((SHBall)balls.get(0)).getVelocity()) - 
 				SHUtils.angle(((SHBall)balls.get(2)).getVelocity());
-		assertTrue(Math.abs(angle - Math.PI / 4) < 0.001f);
+		assertTrue(Math.abs(angle) - Math.PI / 4 < 0.001f);
 		angle = SHUtils.angle(((SHBall)balls.get(1)).getVelocity()) - 
 				SHUtils.angle(((SHBall)balls.get(3)).getVelocity());
-		assertTrue(Math.abs(angle - Math.PI / 4) < 0.001f, Float.toString(angle));
+		assertTrue(Math.abs(angle) - Math.PI / 4 < 0.001f, Float.toString(angle));
 	}
 	
 	@Test

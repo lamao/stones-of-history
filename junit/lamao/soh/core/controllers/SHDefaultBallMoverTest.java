@@ -38,16 +38,16 @@ public class SHDefaultBallMoverTest
 		SHBall ball = SHEntityCreator.createDefaultBall();
 		SHDefaultBallMover mover = new SHDefaultBallMover(ball);
 		mover.update(1);
-		assertTrue(SHUtils.areEqual(new Vector3f(0, 1, 0), ball.getLocation(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(0, 0, -1), ball.getLocation(), 
 				0.001f));
 		mover.update(0.123f);
-		assertTrue(SHUtils.areEqual(new Vector3f(0, 1.123f, 0), ball.getLocation(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(0, 0, -1.123f), ball.getLocation(), 
 				0.001f));
 		
 		ball.setLocation(0, 0, 0);
-		ball.setVelocity(new Vector3f(0.4f, -2.4f, 0));
+		ball.setVelocity(new Vector3f(0.4f, 0, 2.4f));
 		mover.update(0.25f);
-		assertTrue(SHUtils.areEqual(new Vector3f(0.1f, -0.6f, 0), 
+		assertTrue(SHUtils.areEqual(new Vector3f(0.1f, 0, 0.6f), 
 				ball.getLocation(), 0.001f));
 		
 	}

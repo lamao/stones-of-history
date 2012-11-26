@@ -117,7 +117,7 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisiontHandler
 			}
 			
 			totalNormal.divideLocal(data.getSourceTris().size());
-			totalNormal.z = 0;
+			totalNormal.y = 0;
 			
 			
 			Vector3f ballVelocity = ball.getVelocity();
@@ -126,7 +126,7 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisiontHandler
 			float resultAngle = velocityAngle + 2 * (normalAngle - velocityAngle);
 			float speed = ballVelocity.length();
 			ballVelocity.x = FastMath.cos(resultAngle) * speed;
-			ballVelocity.y = FastMath.sin(resultAngle) * speed;
+			ballVelocity.z = -FastMath.sin(resultAngle) * speed;
 		}
 		
 	}

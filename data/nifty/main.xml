@@ -6,6 +6,10 @@
 	<style id="panelStyle">
 		<attributes backgroundColor="#0000" align="center"/>
 	</style>  
+	
+	<style id="listitem-disabled">
+	   <attributes color="#888888ff" textHAlign="left"/>
+	</style>
 	  
 <screen id="start" controller="lamao.soh.ui.controllers.SHMainMenuScreenController">
  
@@ -136,16 +140,18 @@
 	    
 		    <panel id="contentPanel" style="panelStyle" childLayout="horizontal" width="100%" height="*">
 		      <panel id="listPanel" style="nifty-panel-no-shadow" childLayout="vertical" width="200px">
-			      <panel id="epochsPanel" childLayout="vertical" height="40%">
+			      <panel id="epochsPanel" childLayout="vertical" height="40%" >
 			          <control id="epochsLabel" name="label" text="Epochs"/>
-			          <control id="epochsList" name="listBox" vertical="optional" horizontal="optional" displayItems="6"/>
+			          <control id="epochsList" name="listBox" vertical="optional" horizontal="optional" displayItems="6"
+			                 viewConverterClass="lamao.soh.ui.ListBoxDisablableViewConverter"/>
 			      </panel>
 			      
 			      <panel id="SPACER" height="10px"/>
 			      
 			      <panel id="levelsPanel" childLayout="vertical" height="*">
 	                  <control id="levelsLabel" name="label" text="Levels"/>
-	                  <control id="levelsList" name="listBox" vertical="optional" horizontal="optional" displayItems="8"/>
+	                  <control id="levelsList" name="listBox" vertical="optional" horizontal="optional" displayItems="8"
+	                       viewConverterClass="lamao.soh.ui.ListBoxDisablableViewConverter"/>
 	              </panel>
               </panel>
               
@@ -156,7 +162,7 @@
                     
                   <control id="scrollbarPanelId" name="scrollPanel" height="*">
                       <control id="detailsContentLabel" name="label" text="More details" 
-                        width="100%" height="100%" x="10" y="10" align="left" valign="top"/>
+                        width="100%" height="100%" x="10" y="10" textHAlign="left" textVAlign="top"/>
                   </control>
               </panel>
 		    </panel>

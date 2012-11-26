@@ -80,28 +80,28 @@ public class SHUtilsTest
 		
 		assertTrue(Math.abs(SHUtils.angle(v) - 0) < 0.001f);
 		
-		v.set(1, 1, 0);
+		v.set(1, 0, -1);
 		assertTrue(Math.abs(SHUtils.angle(v) - Math.PI / 4) < 0.001f);
 		
-		v.set(0, 1, 0);
+		v.set(0, 0, -1);
 		assertTrue(Math.abs(SHUtils.angle(v) - Math.PI / 2) < 0.001f);
 		
-		v.set(-1, 1, 0);
+		v.set(-1, 0, -1);
 		assertTrue(Math.abs(SHUtils.angle(v) - 3 * Math.PI / 4) < 0.001f);
 		
 		v.set(-1, 0, 0);
 		assertTrue(Math.abs(SHUtils.angle(v) - Math.PI) < 0.001f);
 		
-		v.set(-1, -1, 0);
+		v.set(-1, 0, 1);
 		assertTrue(Math.abs(SHUtils.angle(v) - 5 * Math.PI / 4) < 0.001f);
 		
-		v.set(0, -1, 0);
+		v.set(0, 0, 1);
 		assertTrue(Math.abs(SHUtils.angle(v) - 3 * Math.PI / 2) < 0.001f);
 		
-		v.set(1, -1, 0);
+		v.set(1, 0, 1);
 		assertTrue(Math.abs(SHUtils.angle(v) - 7 * Math.PI / 4) < 0.001f);
 		
-		v.set(1, -0.00000000000000000001f, 0);
+		v.set(1, 0, 0.00000000000000000001f);
 		assertTrue(Math.abs(SHUtils.angle(v) - 2 * Math.PI) < 0.001f);
 	}
 	

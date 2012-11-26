@@ -144,4 +144,17 @@ public class SHResourceManagerTest extends AbstractJmeTest
 		manager.loadAll(new FileInputStream(new File("data/model_test2.txt")));
 		assertEquals(10, manager.get(SHResourceManager.TYPE_MODEL).size());
 	}
+	
+	@Test
+	public void testClear()
+	{
+		List<String> config = new LinkedList<String>();
+		config.add("#comment line");
+		config.add(line);
+		config.add(line2);			
+
+		manager.parseConfig(config);
+		manager.clear();
+		assertEquals(0, manager.getResources().size());
+	}
 }

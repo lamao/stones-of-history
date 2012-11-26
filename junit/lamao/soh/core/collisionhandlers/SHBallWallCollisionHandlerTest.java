@@ -75,7 +75,7 @@ public class SHBallWallCollisionHandlerTest
 	
 	@Test 
 	public void testHandlerTopWall() {
-		SHBall ball = new SHBall(null, new Vector3f(1, 1, 0));
+		SHBall ball = new SHBall(null, new Vector3f(1, 0, -1));
 		SHEntity wall = new SHEntity(null, "top-wall", null);
 		
 		when(event.getParameter("src", SHBall.class)).thenReturn(ball);
@@ -83,7 +83,7 @@ public class SHBallWallCollisionHandlerTest
 		
 		handler.processEvent(event);
 		
-		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 0.001f));
+		assertTrue(SHUtils.areEqual(new Vector3f(1, 0, 1), ball.getVelocity(), 0.001f));
 	}
 
 }

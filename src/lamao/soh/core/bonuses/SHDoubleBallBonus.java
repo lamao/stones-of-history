@@ -67,7 +67,7 @@ public class SHDoubleBallBonus extends SHBonus
 	{
 		float speed = ball.getVelocity().length();
 		ball.setVelocity((float)Math.cos(angle) * speed,
-				(float)Math.sin(angle) * speed, 0);
+				0, -(float)Math.sin(angle) * speed);
 	}
 
 	@Override

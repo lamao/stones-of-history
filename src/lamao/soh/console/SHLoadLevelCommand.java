@@ -6,10 +6,9 @@
  */
 package lamao.soh.console;
 
-import java.io.File;
-
-import lamao.soh.core.SHScene;
-import lamao.soh.core.SHScripts;
+import lamao.soh.core.model.entity.SHEpoch;
+import lamao.soh.core.model.entity.SHLevel;
+import lamao.soh.core.service.SHLevelService;
 
 /**
  * Loads level from specified file
@@ -18,35 +17,24 @@ import lamao.soh.core.SHScripts;
  */
 public class SHLoadLevelCommand extends SHBasicCommand
 {
-	private SHScene scene;
+	private SHLevelService scripts;
 	
-	private SHScripts scripts;
-	
-	public SHLoadLevelCommand(SHScene scene, SHScripts scripts)
+	public SHLoadLevelCommand(SHLevelService scripts)
 	{
-		super(1, 1);
-		this.scene = scene;
+		super(2, 2);
+		this.scripts = scripts;
 	}
 	
 	@Override
 	public void processCommand(String[] args)
 	{
-		File file = new File(args[1]);
-		if (!file.exists())
-		{
-			warning("File <" + args[1] + "> does not exists");
-		}
-		else
-		{
-			scene.resetAll();
-			scripts.loadLevelScript(file.toString());
-		}
+		scripts.loadLevelScene(new SHEpoch(args[1]), new SHLevel(args[2]));
 	}
 	
 	@Override
 	protected String getHelpMessage()
 	{
-		return "Arguments: <path/to/file>";
+		return "Arguments: <epochId> <scenefilename.dps>";
 	}
 
 }

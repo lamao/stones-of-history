@@ -30,7 +30,7 @@ public class SHEpoch
 	
 	/** Displayed name of the epoch */
 	@XStreamAlias("name")
-	private String _name;
+	private String name;
 	
 	/** Order of the epoch. The lowest order the earlier is epoch */
 	@XStreamAlias("order")
@@ -39,6 +39,22 @@ public class SHEpoch
 	/** List of levels in epoch */
 	@XStreamAlias("levels")
 	private List<SHLevel> _levels = new ArrayList<SHLevel>();
+
+	public SHEpoch() {}
+	
+	public SHEpoch(String id, String name, float order)
+	{
+		super();
+		this.id = id;
+		this.name = name;
+		this.order = order;
+	}
+
+	public SHEpoch(String id)
+	{
+		super();
+		this.id = id;
+	}
 
 	public String getId()
 	{
@@ -52,12 +68,12 @@ public class SHEpoch
 
 	public String getName()
 	{
-		return _name;
+		return name;
 	}
 
 	public void setName(String name)
 	{
-		_name = name;
+		this.name = name;
 	}
 
 	public float getOrder()
@@ -86,7 +102,7 @@ public class SHEpoch
 	@Override
 	public String toString()
 	{
-		return _name;
+		return name;
 	}
 	
 }

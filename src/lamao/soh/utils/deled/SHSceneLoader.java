@@ -6,6 +6,7 @@
  */
 package lamao.soh.utils.deled;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -63,6 +64,26 @@ public class SHSceneLoader extends SHDpsLoader
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public SHScene getScene()
+	{
+		return scene;
+	}
+
+	public void setScene(SHScene scene)
+	{
+		this.scene = scene;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void load(File file)
+	{
+		scene.resetAll();
+		super.load(file);
 	}
 	
 //	private void setupSharedEntities()

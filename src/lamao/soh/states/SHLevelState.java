@@ -17,6 +17,7 @@ import com.acarter.scenemonitor.SceneMonitor;
 import com.jme.input.InputHandler;
 import com.jme.light.PointLight;
 import com.jme.math.Vector3f;
+import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
@@ -51,7 +52,7 @@ public class SHLevelState extends BasicGameState
 	
 	private Text _buildNumber = null;
 	
-	private DisplaySystem _display = DisplaySystem.getDisplaySystem();
+	private DisplaySystem displaySystem;
 	
 	private InputHandler inputHandler;
 	
@@ -70,21 +71,27 @@ public class SHLevelState extends BasicGameState
 	
 	// TODO: Move to constructor scene and inputhandler
 	public SHLevelState(SHEventDispatcher dispatcher, 
-			SHBreakoutGameContext context)
+			SHBreakoutGameContext context,
+			DisplaySystem displaySystem)
 	{
 		super(NAME);
 		
 		this.dispatcher = dispatcher;
 		this.context = context;
+		this.displaySystem = displaySystem;
 		
 		PointLight light = new  PointLight();
 		light.setEnabled(true);
-		light.setLocation(new Vector3f(0, 0, 3));
+		light.setLocation(new Vector3f(0, 3, 3));
 		light.setAmbient(ColorRGBA.white.clone());
 		light.setDiffuse(ColorRGBA.white.clone());
-		LightState ls = _display.getRenderer().createLightState();
+		LightState ls = displaySystem.getRenderer().createLightState();
 		ls.attach(light);
 		rootNode.setRenderState(ls);
+		
+		Camera camera = displaySystem.getRenderer().getCamera();
+		camera.setLocation(new Vector3f(0, 13, 18));
+		camera.lookAt(new Vector3f(0, 0, 0), Vector3f.UNIT_Y);
 		
 		initTextLabels();
 		initConsole();
@@ -103,15 +110,15 @@ public class SHLevelState extends BasicGameState
 		_statNode.attachChild(_fps);
 		
 		_info = Text.createDefaultTextLabel("into", "info");
-		_info.setLocalTranslation(_display.getWidth() / 2 - _info.getWidth() / 2, 
+		_info.setLocalTranslation(displaySystem.getWidth() / 2 - _info.getWidth() / 2, 
 				0, 0);
 		_statNode.attachChild(_info);
 		
 		_buildNumber = Text.createDefaultTextLabel("build-number", "BUILD #" + 
 				SHConstants.BUILD_NUMBER);
 		_buildNumber.setLocalTranslation(
-				_display.getWidth() - _buildNumber.getWidth() - 20, 
-				_display.getHeight() - _buildNumber.getHeight(), 0);
+				displaySystem.getWidth() - _buildNumber.getWidth() - 20, 
+				displaySystem.getHeight() - _buildNumber.getHeight(), 0);
 		_statNode.attachChild(_buildNumber);
 	}
 	
@@ -197,8 +204,8 @@ public class SHLevelState extends BasicGameState
 			public void processEvent(SHEvent event)
 			{
 				Text win = Text.createDefaultTextLabel("win", "YOU ARE WINNER");
-				win.setLocalTranslation(_display.getWidth() / 2 - win.getWidth() / 2,
-						_display.getHeight() / 2 - win.getHeight(), 0);
+				win.setLocalTranslation(displaySystem.getWidth() / 2 - win.getWidth() / 2,
+						displaySystem.getHeight() / 2 - win.getHeight(), 0);
 				_statNode.attachChild(win);
 				_statNode.updateRenderState();
 				_pause = true;
@@ -211,8 +218,8 @@ public class SHLevelState extends BasicGameState
 			public void processEvent(SHEvent event)
 			{
 				Text win = Text.createDefaultTextLabel("fail", "YOU ARE LOOSER");
-				win.setLocalTranslation(_display.getWidth() / 2 - win.getWidth() / 2,
-						_display.getHeight() / 2 - win.getHeight(), 0);
+				win.setLocalTranslation(displaySystem.getWidth() / 2 - win.getWidth() / 2,
+						displaySystem.getHeight() / 2 - win.getHeight(), 0);
 				_statNode.attachChild(win);
 				_statNode.updateRenderState();
 				_pause = true;

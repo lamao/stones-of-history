@@ -71,8 +71,8 @@ public class SHUserServiceTest
 	{
 		assertEquals(player.getName(), player2.getName());
         assertEquals(player.getCompletedLevels().size(), player2.getCompletedLevels().size());
-        assertTrue(player.getCompletedLevels().containsAll(player2.getCompletedLevels()));
-        assertTrue(player2.getCompletedLevels().containsAll(player.getCompletedLevels()));
+        assertTrue(player.getCompletedLevels().entrySet().containsAll(player2.getCompletedLevels().entrySet()));
+        assertTrue(player2.getCompletedLevels().entrySet().containsAll(player.getCompletedLevels().entrySet()));
 	}
 	
 	@Test

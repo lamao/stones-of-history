@@ -20,12 +20,14 @@
 	<constructor-arg ref="scene"/>
 </bean>
 
-<bean id="levelService" class="lamao.soh.core.SHScripts">
+<bean id="levelService" class="lamao.soh.core.service.SHLevelService">
 	<constructor-arg ref="dispatcher"/>
 	<constructor-arg ref="scene"/>
 	<constructor-arg ref="gameContext"/>
 	<constructor-arg ref="resourceManager"/>
 	<constructor-arg ref="sceneLoader"/>
+	<constructor-arg ref="constants"/>
+	<constructor-arg ref="gameContextService"/>
 </bean>
 
 <bean id="epochService" class="lamao.soh.core.service.SHEpochService">
@@ -76,6 +78,7 @@
 <bean id="levelState" class="lamao.soh.states.SHLevelState">
 	<constructor-arg ref="dispatcher"/>
 	<constructor-arg ref="gameContext"/>
+	<constructor-arg ref="displaySystem"/>
 	
 	<property name="scene" ref="scene"/>
 	<property name="inputHandler">
@@ -102,6 +105,7 @@
     <constructor-arg ref="gameStateManager"/>
     <constructor-arg ref="gameContext"/>
     <constructor-arg ref="epochService"/>
+    <constructor-arg ref="levelService"/>
 </bean>
 
 </beans> 

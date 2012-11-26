@@ -91,6 +91,47 @@ public class SHSceneLoaderTest extends AbstractJmeTest
 			}
 		}
 	}
+	
+	@Test
+	public void testMultipleLoading()
+	{
+		when(manager.get(SHResourceManager.TYPE_MODEL, "double-ball"))
+			.thenReturn(new Node("ball"));
+		SHScene scene = new SHScene(collisionProcessor, inputHandler);
+		SHSceneLoader loader = new SHSceneLoader(scene, entityFactory);
+		
+		loader.load(new File("data/test/test-level.dps"));
+		loader.load(new File("data/test/test-level.dps"));
+		
+		//assertNull(scene.getEntities("decoration"));
+		assertEquals(2, scene.get("decoration").size());
+		assertEquals(3, scene.get("wall").size());
+		assertEquals(3, scene.get("wall").size());
+		assertEquals(1, scene.get("bottom-wall").size());
+		assertEquals(15, scene.get("brick").size());
+		
+		SHBrick brick = (SHBrick)scene.getEntity("brick", "brick-tank");
+		assertEquals(Integer.MAX_VALUE, brick.getStrength());
+		
+		brick = (SHBrick)scene.getEntity("brick", "brick4");
+		assertTrue(brick.isGlass());
+		
+		brick = (SHBrick)scene.getEntity("brick", "brick1");
+		assertEquals(1, brick.getStrength());
+	
+		Node rootNode = scene.getRootNode();
+		for (Spatial groupSpatial : rootNode.getChildren())
+		{
+			Node group = (Node)groupSpatial;
+			for (Spatial model : group.getChildren())
+			{
+				assertFalse( 
+						SHUtils.areEqual(model.getLocalTranslation(), 
+								new Vector3f(0, 0, 0), 0.001f), 
+						model.getName() + " " + model.getLocalTranslation());
+			}
+		}
+	}
 		
 	
 }

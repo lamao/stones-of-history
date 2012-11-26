@@ -29,7 +29,7 @@ public class SHStickyPaddleHitHandlerTest
 		handler.execute(ball, paddle);
 		assertEquals(0, ball.getModel().getControllerCount());
 		
-		ball.setVelocity(0, -1, 0);
+		ball.setVelocity(0, 0, 1);
 		handler.execute(ball, paddle);
 		assertEquals(1, ball.getControllerCount());
 		assertTrue(ball.getController(0) instanceof SHPaddleSticker);

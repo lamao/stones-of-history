@@ -42,10 +42,10 @@ public class SHBall extends SHEntity
 		_velocity = velocity;
 	}
 	
-	/** Create ball with velocity = (0, 1, 0) */
+	/** Create ball with velocity = (0, 0, -1) */
 	public SHBall(Spatial model)
 	{
-		this(model, Vector3f.UNIT_Y.clone());
+		this(model, new Vector3f(0, 0, -1));
 	}
 	
 	/** Ball without model and same parameters as in {@link #SHBall(Spatial)} */

@@ -23,15 +23,30 @@ public class SHLevel
 	
 	/** Level contents (bricks, walls etc) */
 	@XStreamAlias("scene")
-	private String _scene;
+	private String scene;
 	
 	/** Level introduction - historical overview */
 	@XStreamAlias("intro")
-	private String _intro;
+	private String intro;
 	
 	/** Name of the displayed level name */
 	@XStreamAlias("name")
-	private String _name;
+	private String name;
+	
+	public SHLevel() {}
+	
+	public SHLevel(String id, String name, String intro, String scene)
+	{
+		this.id = id;
+		this.name = name;
+		this.intro = intro;
+		this.scene = scene;
+	}
+	
+	public SHLevel(String id)
+	{
+		this.id = id;
+	}
 
 	
 	public String getId()
@@ -46,32 +61,32 @@ public class SHLevel
 
 	public String getScene()
 	{
-		return _scene;
+		return scene;
 	}
 
 	public void setScene(String scene)
 	{
-		_scene = scene;
+		this.scene = scene;
 	}
 
 	public String getIntro()
 	{
-		return _intro;
+		return intro;
 	}
 
 	public void setIntro(String intro)
 	{
-		_intro = intro;
+		this.intro = intro;
 	}
 
 	public String getName()
 	{
-		return _name;
+		return name;
 	}
 
 	public void setName(String name)
 	{
-		_name = name;
+		this.name = name;
 	}
 	
 	/**
@@ -80,7 +95,7 @@ public class SHLevel
 	@Override
 	public String toString()
 	{
-		return _name;
+		return name;
 	}
 
 }

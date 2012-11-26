@@ -26,7 +26,7 @@ public class SHStickyPaddleHitHandler implements ISHPaddleHitHandler
 	@Override
 	public void execute(SHBall ball, SHPaddle paddle)
 	{
-		if (ball.getVelocity().y < 0)
+		if (ball.getVelocity().z > 0)
 		{
 			Controller controller = null;
 			int n = ball.getControllers().size();

@@ -25,8 +25,8 @@ public class SHDefaultPaddleHitHandler implements ISHPaddleHitHandler
 	@Override
 	public void execute(SHBall ball, SHPaddle paddle)
 	{
-		if (ball.getLocation().y > paddle.getLocation().y &&
-			ball.getVelocity().y <= 0)
+		if (ball.getLocation().z < paddle.getLocation().z &&
+			ball.getVelocity().z >= 0)
 		{
 			BoundingBox paddleBound = (BoundingBox)paddle.getModel().getWorldBound();
 			float ballPos = ball.getLocation().x - paddle.getLocation().x 
@@ -39,7 +39,7 @@ public class SHDefaultPaddleHitHandler implements ISHPaddleHitHandler
 			{
 				newVelocity = ball.getVelocity();
 				newVelocity.x = -newVelocity.x;
-				newVelocity.y = -newVelocity.y;
+				newVelocity.z = -newVelocity.z;
 			}
 			else
 			{
@@ -47,8 +47,8 @@ public class SHDefaultPaddleHitHandler implements ISHPaddleHitHandler
 						/ (0.5f * paddleWidth));
 				newVelocity = new Vector3f(
 						(float)(speed * Math.cos(newAngle)),
-						(float)(speed * Math.sin(newAngle)),
-						0);
+						0,
+						-(float)(speed * Math.sin(newAngle)));
 			}
 			ball.setVelocity(newVelocity);
 		}

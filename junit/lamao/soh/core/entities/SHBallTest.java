@@ -23,7 +23,7 @@ public class SHBallTest
 		SHBall ball = new SHBall();
 		assertNotNull(ball);
 		assertNull(ball.getModel());
-		assertEquals(Vector3f.UNIT_Y, ball.getVelocity());
+		assertEquals(new Vector3f(0, 0, -1), ball.getVelocity());
 		assertFalse(ball.isSuper());
 	}
 

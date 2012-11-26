@@ -6,7 +6,8 @@
  */
 package lamao.soh.core.model.entity;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -23,9 +24,12 @@ public class SHUser
 	@XStreamAlias("name")
 	private String _name;
 	
-	/** List of all available epochs */
+	/** 
+	 * Information about completed levels where key is epoch ID and string
+	 * set is set of ID of completed levels in this epoch 
+	 */
 	@XStreamAlias("completed-levels")
-	private Set<String> completedLevels = new HashSet<String>();
+	private Map<String, Set<String>> completedLevels = new HashMap<String, Set<String>>();
 
 	public String getName()
 	{
@@ -37,12 +41,12 @@ public class SHUser
 		_name = name;
 	}
 
-	public Set<String> getCompletedLevels()
+	public Map<String, Set<String>> getCompletedLevels()
 	{
 		return completedLevels;
 	}
 
-	public void setCompletedLevels(Set<String> completedLevels)
+	public void setCompletedLevels(Map<String, Set<String>> completedLevels)
 	{
 		this.completedLevels = completedLevels;
 	}

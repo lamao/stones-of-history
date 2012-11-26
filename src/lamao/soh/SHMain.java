@@ -12,7 +12,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import lamao.soh.console.SHConsoleState;
-import lamao.soh.core.SHScripts;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.states.SHNiftyState;
 
@@ -37,10 +36,6 @@ public class SHMain
 		
 		ApplicationContext applicationContext = new FileSystemXmlApplicationContext(
 				"data/spring/rootApplicationContext.xml");
-		
-		SHScripts scripts = applicationContext.getBean(SHScripts.class);
-		scripts.loadEpochScript("data/epochs/test_epoch/appearence.txt");
-		scripts.loadLevelScript("data/test/test-level.dps");
 		
 		SHLevelState levelState = applicationContext.getBean(SHLevelState.class);
 		SHConsoleState consoleState = applicationContext.getBean(SHConsoleState.class);

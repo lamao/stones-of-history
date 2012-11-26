@@ -35,36 +35,36 @@ public class SHDefaultPaddleHitHandlerTest
 		SHBall ball = SHEntityCreator.createDefaultBall();
 		
 		// result velocity = -90 degrees
-		ball.setLocation(-2, 2, 0);
-		ball.setVelocity(0, -1, 0);
+		ball.setLocation(-2, 0, -2);
+		ball.setVelocity(0, 0, 1);
 		paddle.onHit(ball);
 		assertTrue(SHUtils.areEqual(new Vector3f(-1, 0, 0), ball.getVelocity(), 0.001f));
 		
 		// result velocity = -45 degrees
-		ball.setLocation(-(float)Math.sqrt(2), 2, 0);
-		ball.setVelocity(0, -1, 0);
+		ball.setLocation(-(float)Math.sqrt(2), 0, -2);
+		ball.setVelocity(0, 0, 1);
 		paddle.onHit(ball);
 		assertTrue(ball.getVelocity().x < 0);
-		assertTrue(ball.getVelocity().y > 0);
-		assertTrue(Math.abs(-ball.getVelocity().x - ball.getVelocity().y) < 0.001f);
+		assertTrue(ball.getVelocity().z < 0);
+		assertTrue(Math.abs(-ball.getVelocity().x + ball.getVelocity().z) < 0.001f);
 		
 		// center of the paddle
-		ball.setLocation(0, 2, 0);	
-		ball.setVelocity(0, -1, 0);
+		ball.setLocation(0, 0, -2);	
+		ball.setVelocity(0, 0, 1);
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(Vector3f.UNIT_Y, ball.getVelocity(), 0.001f));
+		assertTrue(SHUtils.areEqual(new Vector3f(0, 0, -1), ball.getVelocity(), 0.001f));
 		
 		// result velocity = 45 degrees
-		ball.setLocation((float)Math.sqrt(2), 2, 0);
-		ball.setVelocity(0, -1, 0);
+		ball.setLocation((float)Math.sqrt(2), 0, -2);
+		ball.setVelocity(0, 0, 1);
 		paddle.onHit(ball);
 		assertTrue(ball.getVelocity().x > 0);
-		assertTrue(ball.getVelocity().y > 0);
-		assertTrue(Math.abs(ball.getVelocity().x - ball.getVelocity().y) < 0.001f);
+		assertTrue(ball.getVelocity().z < 0);
+		assertTrue(Math.abs(ball.getVelocity().x + ball.getVelocity().z) < 0.001f);
 		
 		// result velocity = 90 degrees
-		ball.setLocation(2, 2, 0);
-		ball.setVelocity(0, -1, 0);
+		ball.setLocation(2, 0, -2);
+		ball.setVelocity(0, 0, 1);
 		paddle.onHit(ball);
 		assertTrue(SHUtils.areEqual(new Vector3f(1, 0, 0), ball.getVelocity(), 0.001f));
 	}
@@ -76,15 +76,15 @@ public class SHDefaultPaddleHitHandlerTest
 		SHBall ball = SHEntityCreator.createDefaultBall();
 		
 		// center of paddle
-		ball.setLocation(0, 2, 0);
-		ball.setVelocity((float)Math.sqrt(2), -(float)Math.sqrt(2), 0);
+		ball.setLocation(0, 0, -2);
+		ball.setVelocity((float)Math.sqrt(2),0,  (float)Math.sqrt(2));
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(new Vector3f(0, 2, 0), ball.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(0, 0, -2), ball.getVelocity(), 
 				0.001f));
 		
 		// other location
-		ball.setLocation(-0.23435f, 2, 0);
-		ball.setVelocity((float)Math.sqrt(2), -(float)Math.sqrt(2), 0);
+		ball.setLocation(-0.23435f, 0, -2);
+		ball.setVelocity((float)Math.sqrt(2), 0, (float)Math.sqrt(2));
 		paddle.onHit(ball);
 		assertTrue(Math.abs(ball.getVelocity().length() - 2) < 0.001f);
 	}
@@ -96,45 +96,45 @@ public class SHDefaultPaddleHitHandlerTest
 		SHPaddle paddle = SHEntityCreator.createDefaultPaddle();
 		
 		// left corner
-		ball.setLocation(-3, 2, 0);
-		ball.setVelocity(1, -1, 0);
+		ball.setLocation(-3, 0, -2);
+		ball.setVelocity(1, 0, 1);
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(new Vector3f(-1, 1, 0), ball.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(-1, 0, -1), ball.getVelocity(), 
 				0.001f));
 		
 		// left upper side
-		ball.setLocation(-3, 1, 0);
-		ball.setVelocity(3, -4, 0);
+		ball.setLocation(-3, 0, -1);
+		ball.setVelocity(3, 0, 4);
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(new Vector3f(-3, 4, 0), ball.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(-3, 0, -4), ball.getVelocity(), 
 				0.001f));
 		
 		// left bottom side
-		ball.setLocation(-3, -1, 0);
-		ball.setVelocity(1, -1, 0);
+		ball.setLocation(-3, 0, 1);
+		ball.setVelocity(1, 0, 1);
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(new Vector3f(1, -1, 0), ball.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(1, 0, 1), ball.getVelocity(), 
 				0.001f));
 		
 		// right corner 
-		ball.setLocation(3, 2, 0);
-		ball.setVelocity(-1, -1, 0);
+		ball.setLocation(3, 0, -2);
+		ball.setVelocity(-1, 0, 1);
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(new Vector3f(1, 1, 0), ball.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(1, 0, -1), ball.getVelocity(), 
 				0.001f));
 		
 		// right upper side 
-		ball.setLocation(3, 1, 0);
-		ball.setVelocity(-3, -2, 0);
+		ball.setLocation(3, 0, -1);
+		ball.setVelocity(-3, 0, 2);
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(new Vector3f(3, 2, 0), ball.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(3, 0, -2), ball.getVelocity(), 
 				0.001f));
 		
 		// right bottom side 
-		ball.setLocation(3, -1, 0);
-		ball.setVelocity(-1, -1, 0);
+		ball.setLocation(3, 0, 1);
+		ball.setVelocity(-1, 0, 1);
 		paddle.onHit(ball);
-		assertTrue(SHUtils.areEqual(new Vector3f(-1, -1, 0), ball.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(-1, 0, 1), ball.getVelocity(), 
 				0.001f));
 		
 	}

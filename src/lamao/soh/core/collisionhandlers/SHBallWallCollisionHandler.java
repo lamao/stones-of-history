@@ -37,7 +37,7 @@ public class SHBallWallCollisionHandler extends SHAbstractCollisiontHandler
 		} 
 		else if (wall.getName().equals("top-wall"))
 		{
-			ball.getVelocity().y = -ball.getVelocity().y;
+			ball.getVelocity().z = -ball.getVelocity().z;
 		}
 		
 		dispatcher.addEventEx("level-wall-hit", this, "wall-type", wall.getName());
