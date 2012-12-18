@@ -1,22 +1,4 @@
-# Blender3D MTL File: 
-# Material Count: 2
+# Exported from DeleD's Wavefront OBJ Exporter 1.0
+# Visit http://www.delgine.com for more information.
 newmtl Material
-Ns 96.078431
-Ka 0.000000 0.000000 0.000000
-Kd 0.000000 0.539902 0.800000
-Ks 0.500000 0.500000 0.500000
-Ni 1.000000
-d 1.000000
-illum 0
-
-
-newmtl Material.001
-Ns 96.078431
-Ka 0.000000 0.000000 0.000000
-Kd 0.744777 0.435500 0.161793
-Ks 0.411526 0.458876 0.278648
-Ni 1.000000
-d 1.000000
-illum 0
-
-
+Kd 0 0.541176470588235 0.8

@@ -7,6 +7,7 @@
 package lamao.soh.core.model.entity;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,6 +50,18 @@ public class SHUser
 	public void setCompletedLevels(Map<String, Set<String>> completedLevels)
 	{
 		this.completedLevels = completedLevels;
+	}
+	
+	/**
+	 * Mark level as completed
+	 * @param epochId ID of parent epoch containing this level
+	 * @param levelId ID of level to mark
+	 */
+	public void addCompletedLevel(String epochId, String levelId) {
+		if (completedLevels.get(epochId) == null) {
+			completedLevels.put(epochId, new HashSet<String>());
+		}
+		completedLevels.get(epochId).add(levelId);
 	}
 
 	@Override

@@ -22,13 +22,11 @@ import lamao.soh.ui.model.ListBoxDisablebleEntry;
 import com.jmex.game.state.GameState;
 import com.jmex.game.state.GameStateManager;
 
-import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
-import de.lessvoid.nifty.screen.Screen;
 
 /**
  * Controller for screen with epochs/levels.
@@ -63,6 +61,16 @@ public class SHEpochsScreenController extends SHBasicScreenController
 		this.levelService = levelService;
 	}
 	
+	public SHEpoch getSelectedEpoch()
+	{
+		return selectedEpoch;
+	}
+
+	public SHLevel getSelectedLevel()
+	{
+		return selectedLevel;
+	}
+
 	/**
 	 * Start playing selected level
 	 */
@@ -78,23 +86,12 @@ public class SHEpochsScreenController extends SHBasicScreenController
 		levelState.setActive(true);
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void bind(Nifty nifty, Screen screen)
-	{
-		super.bind(nifty, screen);
-		
-		fillEpochLists();
-		updatePlayButtonState();
-	}
-	
 	@SuppressWarnings("unchecked")
 	private void fillEpochLists()
 	{
 		ListBox<ListBoxDisablebleEntry<SHEpoch>> epochList = (ListBox<ListBoxDisablebleEntry<SHEpoch>>)
 				getScreen().findNiftyControl("epochsList", ListBox.class);
+		epochList.clear();
 		List<SHEpoch> allEpochs = epochService.getAll();
 		
 		SHEpochLevelItem firstUncompleted = epochService.getFirstUncompletedEpoch(
@@ -116,8 +113,9 @@ public class SHEpochsScreenController extends SHBasicScreenController
 	@SuppressWarnings("unchecked")
 	private void fillLevelLists(SHEpoch epoch)
 	{
-		ListBox<ListBoxDisablebleEntry<SHLevel>> epochList = (ListBox<ListBoxDisablebleEntry<SHLevel>>)
+		ListBox<ListBoxDisablebleEntry<SHLevel>> levelsList = (ListBox<ListBoxDisablebleEntry<SHLevel>>)
 				getScreen().findNiftyControl("levelsList", ListBox.class);
+		levelsList.clear();
 		
 		List<SHLevel> levels = epoch.getLevels();
 		Set<String> completedLevels = gameContext.getPlayer()
@@ -129,7 +127,7 @@ public class SHEpochsScreenController extends SHBasicScreenController
 		boolean enabled = true;
 		for (SHLevel level : levels)
 		{
-			epochList.addItem(new ListBoxDisablebleEntry<SHLevel>(level, enabled));
+			levelsList.addItem(new ListBoxDisablebleEntry<SHLevel>(level, enabled));
 			if (firstUncompleted != null && level == firstUncompleted)
 			{
 				enabled = false;
@@ -185,9 +183,6 @@ public class SHEpochsScreenController extends SHBasicScreenController
 		selectedEpoch = epoch;
     	updatePlayButtonState();
 	    
-    	ListBox<?> levelList = getScreen().findNiftyControl("levelsList", ListBox.class);
-    	levelList.clear();
-    	
 	    if (selectedEpoch == null)
 	    {
 	    	selectLevel(null);
@@ -230,6 +225,16 @@ public class SHEpochsScreenController extends SHBasicScreenController
 		Button playButton = getScreen().findNiftyControl("btnPlay", Button.class);
 		
 		playButton.setEnabled(selectedEpoch != null && selectedLevel != null);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onStartScreen()
+	{
+		fillEpochLists();
+		updatePlayButtonState();
 	}
 	
 }

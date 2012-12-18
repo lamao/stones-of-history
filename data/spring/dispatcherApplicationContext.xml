@@ -120,6 +120,19 @@
 					<constructor-arg ref="scene"/>
 				</bean>
 			</entry>
+			<entry>
+                <key>
+                    <bean class="java.lang.String">
+                        <constructor-arg value="level-completed"/>
+                    </bean>
+                </key>
+                <bean class="lamao.soh.core.eventhandlers.SHMarkLevelCompletedEventHandler">
+                    <constructor-arg ref="dispatcher"/>
+                    <constructor-arg ref="epochsScreenController"/>
+                    <constructor-arg ref="gameContext"/>
+                    <constructor-arg ref="userService"/>
+                </bean>
+            </entry>
 		</map>
 	</property>
 </bean>

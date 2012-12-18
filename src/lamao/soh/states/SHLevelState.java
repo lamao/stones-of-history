@@ -6,7 +6,6 @@
  */
 package lamao.soh.states;
 
-import lamao.soh.SHConstants;
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHScene;
 import lamao.soh.utils.events.ISHEventHandler;
@@ -37,7 +36,9 @@ import com.jmex.game.state.BasicGameState;
  */
 public class SHLevelState extends BasicGameState
 {
-	public final static String NAME = "Level state";
+	private static final String FINAL_MESSAGE = "final-message";
+
+	public static final String NAME = "Level state";
 
 	/** Level for playing */
 	private SHScene _scene = null;
@@ -49,8 +50,6 @@ public class SHLevelState extends BasicGameState
 	private Text _fps = null;
 	
 	private Text _info = null;
-	
-	private Text _buildNumber = null;
 	
 	private DisplaySystem displaySystem;
 	
@@ -113,13 +112,6 @@ public class SHLevelState extends BasicGameState
 		_info.setLocalTranslation(displaySystem.getWidth() / 2 - _info.getWidth() / 2, 
 				0, 0);
 		_statNode.attachChild(_info);
-		
-		_buildNumber = Text.createDefaultTextLabel("build-number", "BUILD #" + 
-				SHConstants.BUILD_NUMBER);
-		_buildNumber.setLocalTranslation(
-				displaySystem.getWidth() - _buildNumber.getWidth() - 20, 
-				displaySystem.getHeight() - _buildNumber.getHeight(), 0);
-		_statNode.attachChild(_buildNumber);
 	}
 	
 	public void initConsole()
@@ -193,6 +185,10 @@ public class SHLevelState extends BasicGameState
 	@Override
 	public void setActive(boolean active)
 	{
+		if (!isActive() && active) {
+			_statNode.detachChildNamed(FINAL_MESSAGE);
+			setPause(false);
+		}
 		super.setActive(active);
 	}
 	
@@ -206,6 +202,7 @@ public class SHLevelState extends BasicGameState
 				Text win = Text.createDefaultTextLabel("win", "YOU ARE WINNER");
 				win.setLocalTranslation(displaySystem.getWidth() / 2 - win.getWidth() / 2,
 						displaySystem.getHeight() / 2 - win.getHeight(), 0);
+				win.setName(FINAL_MESSAGE);
 				_statNode.attachChild(win);
 				_statNode.updateRenderState();
 				_pause = true;
@@ -220,6 +217,7 @@ public class SHLevelState extends BasicGameState
 				Text win = Text.createDefaultTextLabel("fail", "YOU ARE LOOSER");
 				win.setLocalTranslation(displaySystem.getWidth() / 2 - win.getWidth() / 2,
 						displaySystem.getHeight() / 2 - win.getHeight(), 0);
+				win.setName(FINAL_MESSAGE);
 				_statNode.attachChild(win);
 				_statNode.updateRenderState();
 				_pause = true;

@@ -10,13 +10,13 @@
         </level>
         <level>
             <id>l2</id>
-            <scene>level1.dps</scene>
+            <scene>level2.dps</scene>
             <intro>This is description of third test level in second epoch.</intro>
             <name>Second\n   test\n      level</name>
         </level>
         <level>
             <id>l3</id>
-            <scene>level1.dps</scene>
+            <scene>level3.dps</scene>
             <intro>This is description of second (between first and third) test level in 2nd epoch.</intro>
             <name>MIDDLE test LEVEL.:))))0</name>
         </level>

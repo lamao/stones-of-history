@@ -134,12 +134,22 @@ public class SHEpochService
 		});
 	}
 	
+	/**
+	 * Get epoch configuration file in give directory
+	 * @param epochDirectory directory with epoch
+	 * @return {@link File} of epoch configuration
+	 */
 	private File getConfigurationFile(String epochDirectory)
 	{
 		File result = new File(epochDirectory + "/" + epochConfigurationFile);
 		return result;
 	}
 	
+	/**
+	 * Get ID of epoch in given directory
+	 * @param directory directory with epoch
+	 * @return ID of epoch (is directory name)
+	 */
 	private String getEpochId(String directory)
 	{
 		return directory.substring(directory.lastIndexOf("\\") + 1);

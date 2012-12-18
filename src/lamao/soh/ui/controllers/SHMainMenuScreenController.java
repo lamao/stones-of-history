@@ -52,6 +52,10 @@ public class SHMainMenuScreenController extends SHBasicScreenController
 		SHMain.exit();
 	}
 	
+	/**
+	 * Get name of currently selected user
+	 * @return name of current user of 'anonymous' if no use is selected
+	 */
 	public String getUserName()
 	{
 		return gameContext.getPlayer() == null 
@@ -77,6 +81,10 @@ public class SHMainMenuScreenController extends SHBasicScreenController
 		startGameButton.setEnabled(gameContext.getPlayer() != null);
 	}
 	
+	/**
+	 * Loads last selected profile from session info. 
+	 * @return last selected profile or null if it was not found
+	 */
 	private SHUser getUserFromSession()
 	{
 		SHUser result = null;
