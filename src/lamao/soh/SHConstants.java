@@ -35,5 +35,7 @@ public class SHConstants
 	
 	/** Directory where epochs are located */
 	public String EPOCHS_DIR = "data/epochs";
+	
+	public String CURSOR_DEFAULT = "default";
 
 }

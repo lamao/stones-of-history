@@ -86,19 +86,21 @@
 <bean id="niftyState" class="lamao.soh.states.SHNiftyState">
 	<constructor-arg ref="nifty"/>
 	<constructor-arg value="start"/>
+	<constructor-arg ref="constants"/>
 </bean>
 
 <bean id="levelState" class="lamao.soh.states.SHLevelState">
 	<constructor-arg ref="dispatcher"/>
-	<constructor-arg ref="gameContext"/>
 	<constructor-arg ref="displaySystem"/>
 	<constructor-arg ref="nifty"/>
 	<constructor-arg value="ingame"/>
+	<constructor-arg ref="ingameScreenController"/>
 	
 	<property name="scene" ref="scene"/>
 	<property name="inputHandler">
 		<bean class="lamao.soh.core.input.SHLevelStateInputHandler">
 			<constructor-arg ref="levelState"/>
+			<constructor-arg ref="gameStateManager"/>
 		</bean>
 	</property>
 </bean>
@@ -128,6 +130,8 @@
 
 <bean id="ingameScreenController" class="lamao.soh.ui.controllers.SHInGameScreenController">
     <constructor-arg ref="gameContext"/>
+    <constructor-arg ref="constants"/>
+    <constructor-arg ref="gameStateManager"/>
 </bean>
 
 </beans> 

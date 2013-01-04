@@ -6,6 +6,8 @@
  */
 package lamao.soh.states;
 
+import lamao.soh.SHConstants;
+
 import com.jmex.game.state.BasicGameState;
 
 import de.lessvoid.nifty.Nifty;
@@ -18,20 +20,23 @@ public class SHNiftyState extends BasicGameState {
 
 	public static final String NAME = "menu";
 	
-	private static final String CURSOR_DEFAULT = "default";
-	
 	private Nifty nifty;
 	
 	private String startScreen;
 	
+	private SHConstants constants;
+	
 	/**
 	 * @param name
 	 */
-	public SHNiftyState(Nifty nifty, String startScreen)
+	public SHNiftyState(Nifty nifty, 
+			String startScreen,
+			SHConstants constants)
 	{
 		super(NAME);
 		this.nifty = nifty;
 		this.startScreen = startScreen;
+		this.constants = constants;
 	}
 	
 	/**
@@ -68,7 +73,7 @@ public class SHNiftyState extends BasicGameState {
 		}
 		else 
 		{
-			nifty.getNiftyMouse().enableMouseCursor(CURSOR_DEFAULT);
+			nifty.getNiftyMouse().enableMouseCursor(constants.CURSOR_DEFAULT);
 			nifty.gotoScreen(startScreen);
 		}
 	}

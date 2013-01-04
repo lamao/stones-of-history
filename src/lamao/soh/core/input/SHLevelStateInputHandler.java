@@ -12,6 +12,7 @@ import lamao.soh.states.SHLevelState;
 
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
+import com.jmex.game.state.GameStateManager;
 
 /**
  * Input handler for level state that initialize it with default commands.
@@ -21,11 +22,13 @@ import com.jme.input.KeyInput;
  */
 public class SHLevelStateInputHandler extends InputHandler
 {
-	public SHLevelStateInputHandler(SHLevelState levelState)
+	public SHLevelStateInputHandler(
+			SHLevelState levelState,
+			GameStateManager gameStateManager)
 	{
 		addAction(new SHPauseKeyAction(levelState), "pause", 
 				KeyInput.KEY_PAUSE, false);
-		addAction(new SHToMenuKeyAction(levelState), "menu", 
+		addAction(new SHToMenuKeyAction(levelState, gameStateManager), "menu", 
 				KeyInput.KEY_ESCAPE, false);
 	}
 

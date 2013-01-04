@@ -22,16 +22,20 @@ public class SHToMenuKeyAction extends KeyInputAction
 {
 	private SHLevelState levelState;
 	
-	public SHToMenuKeyAction(SHLevelState levelState)
+	private GameStateManager gameStateManager;
+	
+	public SHToMenuKeyAction(SHLevelState levelState,
+			GameStateManager gameStateManager)
 	{
 		this.levelState = levelState;
+		this.gameStateManager = gameStateManager;
 	}
 
 	@Override
 	public void performAction(InputActionEvent evt)
 	{
 		levelState.setActive(false);
-		GameStateManager.getInstance().activateChildNamed(SHNiftyState.NAME);
+		gameStateManager.activateChildNamed(SHNiftyState.NAME);
 	}
 
 }

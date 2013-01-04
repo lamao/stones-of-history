@@ -61,8 +61,6 @@ public class SHLevelState extends BasicGameState
 	/** Dispatcher used to fire events */
 	private SHEventDispatcher dispatcher;
 	
-	private SHBreakoutGameContext context;
-	
 	/** Container for nifty UI elements */
 	private Nifty nifty;
 	
@@ -72,18 +70,18 @@ public class SHLevelState extends BasicGameState
 	
 	// TODO: Move to constructor scene and inputhandler
 	public SHLevelState(SHEventDispatcher dispatcher, 
-			SHBreakoutGameContext context,
 			DisplaySystem displaySystem,
 			Nifty nifty,
-			String startNiftyScreen)
+			String startNiftyScreen,
+			SHInGameScreenController inGameScreenController)
 	{
 		super(NAME);
 		
 		this.dispatcher = dispatcher;
-		this.context = context;
 		this.displaySystem = displaySystem;
 		this.nifty = nifty;
 		this.startNiftyScreen = startNiftyScreen;
+		this.inGameScreenController = inGameScreenController;
 		
 		PointLight light = new  PointLight();
 		light.setEnabled(true);
@@ -97,8 +95,6 @@ public class SHLevelState extends BasicGameState
 		Camera camera = displaySystem.getRenderer().getCamera();
 		camera.setLocation(new Vector3f(0, 13, 18));
 		camera.lookAt(new Vector3f(0, 0, 0), Vector3f.UNIT_Y);
-		
-		setupHandlers();
 		
 		rootNode.updateRenderState();
 		
@@ -132,13 +128,6 @@ public class SHLevelState extends BasicGameState
 		rootNode.updateRenderState();
 	}
 	
-	private void setFps(int value)
-	{
-		Label label = nifty.getCurrentScreen().findNiftyControl(
-				"fpsValue", Label.class);
-		label.setText(String.valueOf(value));
-	}
-	
 	@Override
 	public void update(float tpf)
 	{
@@ -150,7 +139,7 @@ public class SHLevelState extends BasicGameState
 			_scene.update(tpf);
 			dispatcher.update(tpf);
 		}
-		setFps(Math.round(Timer.getTimer().getFrameRate()));
+		inGameScreenController.setFps(Math.round(Timer.getTimer().getFrameRate()));
 		 //SceneMonitor.getMonitor().updateViewer(tpf);
 	}
 	
@@ -188,30 +177,6 @@ public class SHLevelState extends BasicGameState
 			nifty.exit();
 		}
 		super.setActive(active);
-	}
-	
-	private void setupHandlers()
-	{
-		dispatcher.addHandler("level-completed", new ISHEventHandler()
-		{
-			@Override
-			public void processEvent(SHEvent event)
-			{
-				// TODO: display 'level completed message'
-				_pause = true;
-			}
-		});
-		
-		dispatcher.addHandler("level-failed", new ISHEventHandler()
-		{
-			@Override
-			public void processEvent(SHEvent event)
-			{
-				//TODO: display 'level failed' message
-				_pause = true;
-			}
-		});
-		
 	}
 	
 	@Override

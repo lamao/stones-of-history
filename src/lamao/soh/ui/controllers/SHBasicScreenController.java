@@ -67,9 +67,25 @@ public class SHBasicScreenController implements ScreenController
 	}
 	
 	/**
-	 * Create and show window for informational message.
+	 * Create and show window for informational message. 
+	 * @param title - title of window
+	 * @param text - textual message
 	 */
 	public void showInfoWindow(final String title, final String text)
+	{
+		showInfoWindow(title, text, "closeInfoWindow");
+	}
+	
+	/**
+	 * Create and show window for informational message
+	 * @param title - title of window
+	 * @param text - textual message
+	 * @param okHandler - handler for pressing OK button (e.g. closeInfoWindow
+	 * 		for default handler - closing window). It must contain single 
+	 * 		parameter - ID of window being clicked at.
+	 */
+	public void showInfoWindow(final String title, final String text, 
+			final String okHandler) 
 	{
 		final String windowId = "_infoWindow" + nextWindowId++;
 		
@@ -104,7 +120,7 @@ public class SHBasicScreenController implements ScreenController
 						alignCenter();
 						width("50%");
 						height("25%");
-						interactOnClick("closeInfoWindow(" + windowId + ")");
+						interactOnClick(okHandler + "(" + windowId + ")");
 					}});
 				}});
 			}});

@@ -127,11 +127,30 @@
                         <constructor-arg value="level-completed"/>
                     </bean>
                 </key>
-                <bean class="lamao.soh.core.eventhandlers.SHMarkLevelCompletedEventHandler">
+                <list>
+                    <bean class="lamao.soh.core.eventhandlers.SHMarkLevelCompletedEventHandler">
+                        <constructor-arg ref="dispatcher"/>
+                        <constructor-arg ref="epochsScreenController"/>
+                        <constructor-arg ref="gameContext"/>
+                        <constructor-arg ref="userService"/>
+                    </bean>
+                    <bean class="lamao.soh.core.eventhandlers.SHLevelCompletedHandler">
+                        <constructor-arg ref="dispatcher"/>
+                        <constructor-arg ref="ingameScreenController"/>
+                        <constructor-arg ref="levelState"/>
+                    </bean>
+                </list>
+            </entry>
+            <entry>
+                <key>
+                    <bean class="java.lang.String">
+                        <constructor-arg value="level-failed"/>
+                    </bean>
+                </key>
+                <bean class="lamao.soh.core.eventhandlers.SHLevelFailedHandler">
                     <constructor-arg ref="dispatcher"/>
-                    <constructor-arg ref="epochsScreenController"/>
-                    <constructor-arg ref="gameContext"/>
-                    <constructor-arg ref="userService"/>
+                    <constructor-arg ref="ingameScreenController"/>
+                    <constructor-arg ref="levelState"/>
                 </bean>
             </entry>
 		</map>
