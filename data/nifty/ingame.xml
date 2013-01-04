@@ -17,8 +17,16 @@
  
         <panel id="menuPanel" style="panelStyle" childLayout="vertical" valign="center" width="100%" height="100%">
             <panel id="topPanel" style="panelStyle" childLayout="horizontal" height="10%">
-                <control id="bricksLeftLabel" name="label" text=" Bricks: "/>
-                <control id="bricksLeftValue" name="label" text="N/A"/>
+                <panel id="topLeftPanel" style="panelStyle" childLayout="horizontal">
+                    <control id="bricksLeftLabel" name="label" text=" Bricks: "/>
+                    <control id="bricksLeftValue" name="label" text="N/A"/>
+                </panel>
+                <panel id="topRightPanel" style="panelStyle" childLayout="horizontal">
+                    <panel id="SPACER" height="100%" width="50%"/>
+                    <control id="epochName" name="label" text="EPOCH"/>
+                    <panel id="SPACER" height="100%" width="20px"/>                    
+                    <control id="levelName" name="label" text="LEVEL"/>
+                </panel>
             </panel>
             
             <panel id="SPACER" height="80%" width="100%" align="center"/>

@@ -11,6 +11,7 @@ import com.jmex.game.state.GameStateManager;
 
 import lamao.soh.SHConstants;
 import lamao.soh.core.SHBreakoutGameContext;
+import lamao.soh.core.model.SHEpochLevelItem;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.states.SHNiftyState;
 import de.lessvoid.nifty.controls.Label;
@@ -79,6 +80,15 @@ public class SHInGameScreenController extends SHBasicScreenController
 		levelState.setActive(false);
 		
 		gameStateManager.activateChildNamed(SHNiftyState.NAME);
+	}
+	
+	public void setLevelInfo(SHEpochLevelItem levelItem)
+	{
+		Label epochLabel = getScreen().findNiftyControl("epochName", Label.class);
+		Label levelLabel = getScreen().findNiftyControl("levelName", Label.class);
+		
+		epochLabel.setText(levelItem.getEpoch().getName() + "(" + levelItem.getEpoch().getId() + ")");
+		levelLabel.setText(levelItem.getLevel().getName() + "(" + levelItem.getLevel().getId() + ")");
 	}
 	
 	
