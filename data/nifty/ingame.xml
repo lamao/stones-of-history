@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty>
+    <useStyles filename="nifty-default-styles.xml" />
+    <useControls filename="nifty-default-controls.xml" />
+      
+    <style id="panelStyle">
+        <attributes backgroundColor="#0000" align="center"/>
+    </style>  
+    
+    <style id="invisible">
+        <attributes backgroundColor="#0000"/>
+    </style>
+    
+<screen id="ingame" controller="lamao.soh.ui.controllers.SHInGameScreenController">
+ 
+    <layer id="mainLayer" childLayout="vertical" align="center">
+ 
+        <panel id="menuPanel" style="panelStyle" childLayout="vertical" valign="center" width="100%" height="100%">
+            <panel id="topPanel" style="panelStyle" childLayout="horizontal" height="10%">
+                <control id="bricksLeftLabel" name="label" text=" Bricks: "/>
+                <control id="bricksLeftValue" name="label" text="N/A"/>
+            </panel>
+            
+            <panel id="SPACER" height="80%" width="100%" align="center"/>
+            
+            <panel id="bottomPanel" style="panelStyle" childLayout="horizontal" width="100%" height="10%">
+                <control id="fpsLabel" name="label" text=" FPS: "/>
+                <control id="fpsValue" name="label" text="N/A"/>
+            </panel>
+        </panel>
+    </layer>
+</screen>
+
+</nifty>

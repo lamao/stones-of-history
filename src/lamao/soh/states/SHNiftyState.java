@@ -6,16 +6,9 @@
  */
 package lamao.soh.states;
 
-import java.util.List;
-
 import com.jmex.game.state.BasicGameState;
 
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.jme.input.JmeInputSystem;
-import de.lessvoid.nifty.jme.render.JmeRenderDevice;
-import de.lessvoid.nifty.jme.sound.JmeSoundDevice;
-import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.tools.TimeProvider;
 
 /**
  * @author lamao
@@ -34,18 +27,11 @@ public class SHNiftyState extends BasicGameState {
 	/**
 	 * @param name
 	 */
-	public SHNiftyState(String uiConfigurationFile, String startScreen,
-			List<ScreenController> controllers)
+	public SHNiftyState(Nifty nifty, String startScreen)
 	{
 		super(NAME);
+		this.nifty = nifty;
 		this.startScreen = startScreen;
-		
-		nifty = new Nifty(new JmeRenderDevice(), new JmeSoundDevice(), 
-						new JmeInputSystem(), new TimeProvider());
-		
-		ScreenController controllersArray[] = controllers.toArray(new ScreenController[0]);
-		nifty.fromXml(uiConfigurationFile, startScreen, controllersArray);
-		nifty.registerMouseCursor("default", "data/cursors/nifty-cursor.png", 0, 23);
 	}
 	
 	/**

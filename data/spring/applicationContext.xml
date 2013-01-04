@@ -64,23 +64,36 @@
 	
 </bean-->
 
+<bean id="nifty" class="lamao.soh.ui.SHNiftyFactory" factory-method="createNifty">
+    <constructor-arg>
+        <list>
+            <value>data/nifty/main.xml</value>
+            <value>data/nifty/ingame.xml</value>
+        </list>
+    </constructor-arg>
+    <constructor-arg value="start"/>
+    <constructor-arg>
+        <list>
+            <ref bean="mainMenuScreenController"/>
+            <ref bean="profilesScreenController"/>
+            <ref bean="epochsScreenController"/>
+            <ref bean="ingameScreenController"/>
+        </list>
+    </constructor-arg>
+</bean>
+
 <!-- Game states -->
 <bean id="niftyState" class="lamao.soh.states.SHNiftyState">
-	<constructor-arg value="data/nifty/main.xml"/>
+	<constructor-arg ref="nifty"/>
 	<constructor-arg value="start"/>
-	<constructor-arg>
-		<list>
-			<ref bean="mainMenuScreenController"/>
-			<ref bean="profilesScreenController"/>
-			<ref bean="epochsScreenController"/>
-		</list>
-	</constructor-arg>
 </bean>
 
 <bean id="levelState" class="lamao.soh.states.SHLevelState">
 	<constructor-arg ref="dispatcher"/>
 	<constructor-arg ref="gameContext"/>
 	<constructor-arg ref="displaySystem"/>
+	<constructor-arg ref="nifty"/>
+	<constructor-arg value="ingame"/>
 	
 	<property name="scene" ref="scene"/>
 	<property name="inputHandler">
@@ -111,6 +124,10 @@
     <constructor-arg ref="gameContext"/>
     <constructor-arg ref="epochService"/>
     <constructor-arg ref="levelService"/>
+</bean>
+
+<bean id="ingameScreenController" class="lamao.soh.ui.controllers.SHInGameScreenController">
+    <constructor-arg ref="gameContext"/>
 </bean>
 
 </beans> 

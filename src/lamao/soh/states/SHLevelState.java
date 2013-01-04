@@ -8,6 +8,7 @@ package lamao.soh.states;
 
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHScene;
+import lamao.soh.ui.controllers.SHInGameScreenController;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -27,6 +28,9 @@ import com.jme.util.Timer;
 import com.jme.util.geom.Debugger;
 import com.jmex.game.state.BasicGameState;
 
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.Label;
+
 /**
  * Game state for actual game for one level (from starting to winning or
  * loosing).
@@ -37,19 +41,10 @@ import com.jmex.game.state.BasicGameState;
 public class SHLevelState extends BasicGameState
 {
 	private static final String FINAL_MESSAGE = "final-message";
-
 	public static final String NAME = "Level state";
 
 	/** Level for playing */
 	private SHScene _scene = null;
-	
-	/** Node for text objects */
-	private Node _statNode = new Node("stat node");
-	
-	/** Displays FPS */
-	private Text _fps = null;
-	
-	private Text _info = null;
 	
 	private DisplaySystem displaySystem;
 	
@@ -68,16 +63,27 @@ public class SHLevelState extends BasicGameState
 	
 	private SHBreakoutGameContext context;
 	
+	/** Container for nifty UI elements */
+	private Nifty nifty;
+	
+	private String startNiftyScreen;
+	
+	private SHInGameScreenController inGameScreenController;
+	
 	// TODO: Move to constructor scene and inputhandler
 	public SHLevelState(SHEventDispatcher dispatcher, 
 			SHBreakoutGameContext context,
-			DisplaySystem displaySystem)
+			DisplaySystem displaySystem,
+			Nifty nifty,
+			String startNiftyScreen)
 	{
 		super(NAME);
 		
 		this.dispatcher = dispatcher;
 		this.context = context;
 		this.displaySystem = displaySystem;
+		this.nifty = nifty;
+		this.startNiftyScreen = startNiftyScreen;
 		
 		PointLight light = new  PointLight();
 		light.setEnabled(true);
@@ -92,33 +98,14 @@ public class SHLevelState extends BasicGameState
 		camera.setLocation(new Vector3f(0, 13, 18));
 		camera.lookAt(new Vector3f(0, 0, 0), Vector3f.UNIT_Y);
 		
-		initTextLabels();
-		initConsole();
 		setupHandlers();
 		
 		rootNode.updateRenderState();
-		_statNode.updateRenderState();
 		
 		 //SceneMonitor.getMonitor().registerNode(rootNode, "Root Node");
          //SceneMonitor.getMonitor().showViewer(true); 
 	}
 	
-	public void initTextLabels()
-	{
-		_fps = Text.createDefaultTextLabel("fps", "FPS");
-		_statNode.attachChild(_fps);
-		
-		_info = Text.createDefaultTextLabel("into", "info");
-		_info.setLocalTranslation(displaySystem.getWidth() / 2 - _info.getWidth() / 2, 
-				0, 0);
-		_statNode.attachChild(_info);
-	}
-	
-	public void initConsole()
-	{
-		
-	}
-
 	public InputHandler getInputHandler()
 	{
 		return inputHandler;
@@ -144,20 +131,26 @@ public class SHLevelState extends BasicGameState
 		rootNode.attachChild(_scene.getRootNode());
 		rootNode.updateRenderState();
 	}
-
+	
+	private void setFps(int value)
+	{
+		Label label = nifty.getCurrentScreen().findNiftyControl(
+				"fpsValue", Label.class);
+		label.setText(String.valueOf(value));
+	}
+	
 	@Override
 	public void update(float tpf)
 	{
+		nifty.update();
 		inputHandler.update(tpf);
 		if (!_pause)
 		{
 			super.update(tpf);
 			_scene.update(tpf);
 			dispatcher.update(tpf);
-			_info.print(Integer.toString(context.getNumDeletableBricks()));
 		}
-		_fps.print("FPS: " + Math.round(Timer.getTimer().getFrameRate()));
-		
+		setFps(Math.round(Timer.getTimer().getFrameRate()));
 		 //SceneMonitor.getMonitor().updateViewer(tpf);
 	}
 	
@@ -165,9 +158,9 @@ public class SHLevelState extends BasicGameState
 	public void render(float tpf)
 	{
 		super.render(tpf);
+		nifty.render(false);
 		
 		Renderer renderer = DisplaySystem.getDisplaySystem().getRenderer();
-		renderer.draw(_statNode);
 		
 		if (drawBounds)
 		{
@@ -185,9 +178,14 @@ public class SHLevelState extends BasicGameState
 	@Override
 	public void setActive(boolean active)
 	{
-		if (!isActive() && active) {
-			_statNode.detachChildNamed(FINAL_MESSAGE);
+		if (!isActive() && active) 
+		{
 			setPause(false);
+			nifty.gotoScreen(startNiftyScreen);
+		}
+		else if (isActive() && !active)
+		{
+			nifty.exit();
 		}
 		super.setActive(active);
 	}
@@ -199,12 +197,7 @@ public class SHLevelState extends BasicGameState
 			@Override
 			public void processEvent(SHEvent event)
 			{
-				Text win = Text.createDefaultTextLabel("win", "YOU ARE WINNER");
-				win.setLocalTranslation(displaySystem.getWidth() / 2 - win.getWidth() / 2,
-						displaySystem.getHeight() / 2 - win.getHeight(), 0);
-				win.setName(FINAL_MESSAGE);
-				_statNode.attachChild(win);
-				_statNode.updateRenderState();
+				// TODO: display 'level completed message'
 				_pause = true;
 			}
 		});
@@ -214,12 +207,7 @@ public class SHLevelState extends BasicGameState
 			@Override
 			public void processEvent(SHEvent event)
 			{
-				Text win = Text.createDefaultTextLabel("fail", "YOU ARE LOOSER");
-				win.setLocalTranslation(displaySystem.getWidth() / 2 - win.getWidth() / 2,
-						displaySystem.getHeight() / 2 - win.getHeight(), 0);
-				win.setName(FINAL_MESSAGE);
-				_statNode.attachChild(win);
-				_statNode.updateRenderState();
+				//TODO: display 'level failed' message
 				_pause = true;
 			}
 		});

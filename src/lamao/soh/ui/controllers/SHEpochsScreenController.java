@@ -107,7 +107,14 @@ public class SHEpochsScreenController extends SHBasicScreenController
 				enabled = false;
 			}
 		}
-		selectEpoch(firstUncompleted.getEpoch());
+		if (firstUncompleted == null)
+		{
+			selectEpoch(allEpochs.get(allEpochs.size() - 1));
+		}
+		else
+		{
+			selectEpoch(firstUncompleted.getEpoch());
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -132,6 +139,11 @@ public class SHEpochsScreenController extends SHBasicScreenController
 			{
 				enabled = false;
 			}
+		}
+		
+		if (firstUncompleted == null)
+		{
+			firstUncompleted = levels.get(levels.size() - 1);
 		}
 		selectLevel(firstUncompleted);
 	}
