@@ -6,6 +6,8 @@
  */
 package lamao.soh;
 
+import com.jme.math.Vector3f;
+
 /**
  * Defines all game constants.
  * @author lamao
@@ -37,5 +39,7 @@ public class SHConstants
 	public String EPOCHS_DIR = "data/epochs";
 	
 	public String CURSOR_DEFAULT = "default";
+	
+	public Vector3f DEFAULT_BALL_VELOCITY = new Vector3f(-6, 0, -6); 
 
 }
