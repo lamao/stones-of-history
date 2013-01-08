@@ -101,7 +101,7 @@
 	<property name="inputHandler">
 		<bean class="lamao.soh.core.input.SHLevelStateInputHandler">
 			<constructor-arg ref="levelState"/>
-			<constructor-arg ref="gameStateManager"/>
+			<constructor-arg ref="ingameScreenController"/>
 		</bean>
 	</property>
 </bean>

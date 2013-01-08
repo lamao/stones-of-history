@@ -15,7 +15,7 @@
  
     <layer id="mainLayer" childLayout="vertical" align="center">
  
-        <panel id="menuPanel" style="panelStyle" childLayout="vertical" valign="center" width="100%" height="100%">
+        <panel id="topPanel" style="panelStyle" childLayout="vertical" valign="center" width="100%" height="100%">
             <panel id="topPanel" style="panelStyle" childLayout="horizontal" height="10%">
                 <panel id="topLeftPanel" style="panelStyle" childLayout="horizontal">
                     <control id="bricksLeftLabel" name="label" text=" Bricks: "/>
@@ -37,6 +37,37 @@
         </panel>
     </layer>
     
+    <layer id="windows" childLayout="horizontal">
+    
+        <panel id="SPACER1" height="100%" width="25%" backgroundColor="#0000" childLayout="center"/>
+        <panel id="ingamemenu" name="panel" style="panelStyle" childLayout="vertical" visible="false">
+            <panel id="SPACER1" height="35%" width="100%" backgroundColor="#0000" childLayout="center"/>
+            <panel id="menuPanel" style="nifty-panel" childLayout="vertical" align="center" valign="center" width="100%" height="30%">
+	            <panel id="SPACER1" height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	      
+	            <panel id="resume" height="50px" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
+	                <control id="btnResume" name="button" label="Resume" align="center" valign="center" width="100%" height="100%" 
+	                    visibleToMouse="true">
+	                    <interact onClick="resumeGame()"/>
+	                </control>
+	            </panel>
+	     
+	            <panel id="SPACER2" height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	            
+	            <panel id="tomenu" height="50px" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
+	                <control id="btnToMenu" name="button" label="Exit" align="center" valign="center" width="100%" height="100%"
+	                    visibleToMouse="true">
+	                    <interact onClick="exitGame()"/>
+	                </control>
+	            </panel>
+	            
+	            <panel id="SPACER2" height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	 
+	        </panel>
+	        <panel id="SPACER1" height="35%" width="100%" backgroundColor="#0000" childLayout="center"/>
+	    </panel>        
+        <panel id="SPACER1" height="100%" width="25%" backgroundColor="#0000" childLayout="center"/>
+    </layer>
 </screen>
 
 </nifty>

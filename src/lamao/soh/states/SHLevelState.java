@@ -41,7 +41,6 @@ import de.lessvoid.nifty.controls.Label;
  */
 public class SHLevelState extends BasicGameState
 {
-	private static final String FINAL_MESSAGE = "final-message";
 	public static final String NAME = "Level state";
 
 	/** Level for playing */

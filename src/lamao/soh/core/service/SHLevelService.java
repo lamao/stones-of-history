@@ -103,7 +103,7 @@ public class SHLevelService
 		
 		
 		ball.setLocation(0, 0, 7);
-		ball.setVelocity(SHOptions.DefaultBallVelocity);
+		ball.setVelocity(SHOptions.DefaultBallVelocity.clone());
 		ball.addController(new SHPaddleSticker(ball, paddle));
 		
 		scene.add(paddle);

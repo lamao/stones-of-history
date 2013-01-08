@@ -9,10 +9,10 @@ package lamao.soh.core.input;
 import lamao.soh.core.input.keyactions.SHPauseKeyAction;
 import lamao.soh.core.input.keyactions.SHToMenuKeyAction;
 import lamao.soh.states.SHLevelState;
+import lamao.soh.ui.controllers.SHInGameScreenController;
 
 import com.jme.input.InputHandler;
 import com.jme.input.KeyInput;
-import com.jmex.game.state.GameStateManager;
 
 /**
  * Input handler for level state that initialize it with default commands.
@@ -24,11 +24,11 @@ public class SHLevelStateInputHandler extends InputHandler
 {
 	public SHLevelStateInputHandler(
 			SHLevelState levelState,
-			GameStateManager gameStateManager)
+			SHInGameScreenController inGameScreenController)
 	{
 		addAction(new SHPauseKeyAction(levelState), "pause", 
 				KeyInput.KEY_PAUSE, false);
-		addAction(new SHToMenuKeyAction(levelState, gameStateManager), "menu", 
+		addAction(new SHToMenuKeyAction(levelState, inGameScreenController), "menu", 
 				KeyInput.KEY_ESCAPE, false);
 	}
 

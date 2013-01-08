@@ -77,4 +77,13 @@ public class SHNiftyState extends BasicGameState {
 			nifty.gotoScreen(startScreen);
 		}
 	}
+	
+	/**
+	 * Show screen
+	 * @param screenId ID of desired screen
+	 */
+	public void gotoScreen(String screenId)
+	{
+		nifty.gotoScreen(screenId);
+	}
 }

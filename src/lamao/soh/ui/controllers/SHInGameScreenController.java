@@ -6,7 +6,6 @@
  */
 package lamao.soh.ui.controllers;
 
-import com.jmex.game.state.GameState;
 import com.jmex.game.state.GameStateManager;
 
 import lamao.soh.SHConstants;
@@ -16,6 +15,7 @@ import lamao.soh.states.SHLevelState;
 import lamao.soh.states.SHNiftyState;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.window.WindowControl;
+import de.lessvoid.nifty.elements.Element;
 
 /**
  * Screen controller for in-game UI.
@@ -24,11 +24,12 @@ import de.lessvoid.nifty.controls.window.WindowControl;
  */
 public class SHInGameScreenController extends SHBasicScreenController
 {
+	private static final String EPOCHS_SCREEN = "epochs";
+
 	private static final String LEVEL_INFO_PATTERN = "%s (%s)";
+	
 	private SHBreakoutGameContext context;
-	
-	private SHConstants constants;
-	
+	private SHConstants constants;	
 	private GameStateManager gameStateManager;
 	
 	public SHInGameScreenController(SHBreakoutGameContext context,
@@ -76,11 +77,14 @@ public class SHInGameScreenController extends SHBasicScreenController
 				WindowControl.class);
 		infoWindow.closeWindow();
 		getNifty().getNiftyMouse().resetMouseCursor();
-		
-		SHLevelState levelState = (SHLevelState)gameStateManager.getChild(SHLevelState.NAME);
-		levelState.setActive(false);
-		
+		gotoEpochsScreen();
+	}
+	
+	private void gotoEpochsScreen()
+	{
+		gameStateManager.deactivateChildNamed(SHLevelState.NAME);
 		gameStateManager.activateChildNamed(SHNiftyState.NAME);
+		getNifty().gotoScreen(EPOCHS_SCREEN);
 	}
 	
 	public void setLevelInfo(SHEpochLevelItem levelItem)
@@ -107,6 +111,44 @@ public class SHInGameScreenController extends SHBasicScreenController
 		super.onStartScreen();
 	}
 	
+	/**
+	 * Show in-game menu 
+	 */
+	public void showInGameMenu() 
+	{
+		Element menuPanel = getScreen().findElementByName("ingamemenu");
+		menuPanel.show();
+		getNifty().getNiftyMouse().enableMouseCursor(constants.CURSOR_DEFAULT);
+	}
+	
+	/**
+	 * Hide in-game menu
+	 */
+	private void hideInGameMenu()
+	{
+		Element menuPanel = getScreen().findElementByName("ingamemenu");
+		menuPanel.hide();
+	}
+	
+	/**
+	 * Go to epochs menu
+	 */
+	public void exitGame() 
+	{
+		hideInGameMenu();
+		gotoEpochsScreen();
+	}
+	
+	/**
+	 * Close in-game menu and resume game
+	 */
+	public void resumeGame() 
+	{
+		hideInGameMenu();
+		getNifty().getNiftyMouse().resetMouseCursor();
+		SHLevelState levelState = (SHLevelState) gameStateManager.getChild(SHLevelState.NAME);
+		levelState.setPause(false);
+	}
 	
 
 }

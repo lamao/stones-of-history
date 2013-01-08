@@ -7,11 +7,10 @@
 package lamao.soh.core.input.keyactions;
 
 import lamao.soh.states.SHLevelState;
-import lamao.soh.states.SHNiftyState;
+import lamao.soh.ui.controllers.SHInGameScreenController;
 
 import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.KeyInputAction;
-import com.jmex.game.state.GameStateManager;
 
 /**
  * Show main menu
@@ -22,20 +21,20 @@ public class SHToMenuKeyAction extends KeyInputAction
 {
 	private SHLevelState levelState;
 	
-	private GameStateManager gameStateManager;
+	private SHInGameScreenController inGameScreenController;
 	
 	public SHToMenuKeyAction(SHLevelState levelState,
-			GameStateManager gameStateManager)
+			SHInGameScreenController inGameScreenController)
 	{
 		this.levelState = levelState;
-		this.gameStateManager = gameStateManager;
+		this.inGameScreenController = inGameScreenController;
 	}
 
 	@Override
 	public void performAction(InputActionEvent evt)
 	{
-		levelState.setActive(false);
-		gameStateManager.activateChildNamed(SHNiftyState.NAME);
+		levelState.setPause(true);
+		inGameScreenController.showInGameMenu();
 	}
 
 }
