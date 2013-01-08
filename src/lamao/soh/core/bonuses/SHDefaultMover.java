@@ -25,7 +25,7 @@ public class SHDefaultMover extends Controller
 	public SHDefaultMover(Spatial model)
 	{
 		_model = model;
-		_velocity = new Vector3f(0, -1, 0);
+		_velocity = new Vector3f(0, 0, 1);
 	}
 	
 	public SHDefaultMover()

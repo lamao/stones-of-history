@@ -37,7 +37,7 @@ public class SHBallBottomWallCollisionHandler extends SHAbstractCollisiontHandle
 		
 		if (wall.isActive())
 		{
-			ball.getVelocity().y = -ball.getVelocity().y;
+			ball.getVelocity().z = -ball.getVelocity().z;
 			dispatcher.addEvent("level-wall-hit", this);
 		}
 		else
