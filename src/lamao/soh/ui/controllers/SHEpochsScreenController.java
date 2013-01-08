@@ -80,10 +80,11 @@ public class SHEpochsScreenController extends SHBasicScreenController
 		levelService.loadLevelScene(selectedEpoch, selectedLevel);
 		
 		GameState niftyState = manager.getChild(SHNiftyState.NAME); 
-		GameState levelState = manager.getChild(SHLevelState.NAME);
+		SHLevelState levelState = (SHLevelState) manager.getChild(SHLevelState.NAME);
 		
 		niftyState.setActive(false);
 		levelState.setActive(true);
+		levelState.setLevelInfo(new SHEpochLevelItem(selectedEpoch, selectedLevel));
 	}
 	
 	@SuppressWarnings("unchecked")

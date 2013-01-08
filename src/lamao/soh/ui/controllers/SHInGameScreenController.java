@@ -24,6 +24,7 @@ import de.lessvoid.nifty.controls.window.WindowControl;
  */
 public class SHInGameScreenController extends SHBasicScreenController
 {
+	private static final String LEVEL_INFO_PATTERN = "%s (%s)";
 	private SHBreakoutGameContext context;
 	
 	private SHConstants constants;
@@ -87,8 +88,10 @@ public class SHInGameScreenController extends SHBasicScreenController
 		Label epochLabel = getScreen().findNiftyControl("epochName", Label.class);
 		Label levelLabel = getScreen().findNiftyControl("levelName", Label.class);
 		
-		epochLabel.setText(levelItem.getEpoch().getName() + "(" + levelItem.getEpoch().getId() + ")");
-		levelLabel.setText(levelItem.getLevel().getName() + "(" + levelItem.getLevel().getId() + ")");
+		epochLabel.setText(String.format(LEVEL_INFO_PATTERN, 
+				levelItem.getEpoch().getName(), levelItem.getEpoch().getId()));
+		levelLabel.setText(String.format(LEVEL_INFO_PATTERN, 
+				levelItem.getLevel().getName(), levelItem.getLevel().getId()));
 	}
 	
 	

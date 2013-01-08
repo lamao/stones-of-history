@@ -9,6 +9,7 @@ package lamao.soh;
 import java.util.logging.Level;
 
 import com.jme.input.KeyInput;
+import com.jme.math.Vector3f;
 
 /**
  * Options for game
@@ -33,4 +34,6 @@ public class SHOptions
 	
 	/** Log level. Indicates how verbose will be log output */
 	public static Level LogLevel = Level.WARNING;
+	
+	public static Vector3f DefaultBallVelocity = new Vector3f(-6, 0, -6); 
 }

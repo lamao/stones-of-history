@@ -21,11 +21,10 @@
                     <control id="bricksLeftLabel" name="label" text=" Bricks: "/>
                     <control id="bricksLeftValue" name="label" text="N/A"/>
                 </panel>
-                <panel id="topRightPanel" style="panelStyle" childLayout="horizontal">
-                    <panel id="SPACER" height="100%" width="50%"/>
-                    <control id="epochName" name="label" text="EPOCH"/>
-                    <panel id="SPACER" height="100%" width="20px"/>                    
-                    <control id="levelName" name="label" text="LEVEL"/>
+                <panel id="topRightPanel" style="panelStyle" childLayout="horizontal" width="70%">
+                    <control id="epochName" name="label" text="EPOCH" width="45%" valign="top"/>
+                    <panel id="SPACER" height="100%" width="10%"/>                    
+                    <control id="levelName" name="label" text="LEVEL" width="45%" valign="top"/>
                 </panel>
             </panel>
             

@@ -8,6 +8,7 @@ package lamao.soh.states;
 
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHScene;
+import lamao.soh.core.model.SHEpochLevelItem;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
@@ -217,4 +218,8 @@ public class SHLevelState extends BasicGameState
 		this.drawNormals = drawNormals;
 	}
 	
+	public void setLevelInfo(SHEpochLevelItem levelInfo) 
+	{
+		inGameScreenController.setLevelInfo(levelInfo);
+	}
 }

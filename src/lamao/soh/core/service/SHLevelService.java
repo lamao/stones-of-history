@@ -9,6 +9,7 @@ package lamao.soh.core.service;
 import java.io.File;
 
 import lamao.soh.SHConstants;
+import lamao.soh.SHOptions;
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
@@ -102,7 +103,7 @@ public class SHLevelService
 		
 		
 		ball.setLocation(0, 0, 7);
-		ball.setVelocity(-3 , 0, -3);
+		ball.setVelocity(SHOptions.DefaultBallVelocity);
 		ball.addController(new SHPaddleSticker(ball, paddle));
 		
 		scene.add(paddle);
