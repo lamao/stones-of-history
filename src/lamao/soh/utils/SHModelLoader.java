@@ -114,7 +114,7 @@ public class SHModelLoader
         try 
         {
             converter.setProperty("mtllib",modelURL);
-            converter.setProperty("texlib", modelURL);
+            converter.setProperty("texdir", modelURL);
             ByteArrayOutputStream BO=new ByteArrayOutputStream();   
             converter.convert(modelURL.openStream(),BO);
             model = (Spatial)BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));

@@ -1,4 +1,4 @@
 # Exported from DeleD's Wavefront OBJ Exporter 1.0
 # Visit http://www.delgine.com for more information.
-newmtl Material
-Kd 0 0.541176470588235 0.8
+newmtl Floor10
+map_Kd Floor10.jpg
