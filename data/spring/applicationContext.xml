@@ -78,6 +78,7 @@
             <ref bean="profilesScreenController"/>
             <ref bean="epochsScreenController"/>
             <ref bean="ingameScreenController"/>
+            <ref bean="aboutScreenController"/>
         </list>
     </constructor-arg>
 </bean>
@@ -132,6 +133,9 @@
     <constructor-arg ref="gameContext"/>
     <constructor-arg ref="constants"/>
     <constructor-arg ref="gameStateManager"/>
+</bean>
+
+<bean id="aboutScreenController" class="lamao.soh.ui.controllers.SHAboutScreenController">
 </bean>
 
 </beans> 
