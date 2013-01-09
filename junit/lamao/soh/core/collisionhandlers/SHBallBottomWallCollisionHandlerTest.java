@@ -59,7 +59,7 @@ public class SHBallBottomWallCollisionHandlerTest
 		SHBall ball = SHEntityCreator.createDefaultBall("ball", "ball");
 		SHBottomWall wall = new SHBottomWall("wall", "bottom-wall", null);
 		wall.setActive(true);
-		ball.setVelocity(1, 1, 1);
+		ball.setVelocity(1, 0, 1);
 		
 		when(event.getParameter("src", SHBall.class)).thenReturn(ball);
 		when(event.getParameter("dst", SHBottomWall.class)).thenReturn(wall);
@@ -68,7 +68,7 @@ public class SHBallBottomWallCollisionHandlerTest
 		
 		verify(event).getParameter("src", SHBall.class);
 		verify(event).getParameter("dst", SHBottomWall.class);
-		assertTrue(SHUtils.areEqual(ball.getVelocity(), new Vector3f(1, -1, 1), 0.001f));
+		assertTrue(SHUtils.areEqual(ball.getVelocity(), new Vector3f(1, 0, -1), 0.001f));
 		verify(dispatcher).addEvent("level-wall-hit", handler);
 	}
 	

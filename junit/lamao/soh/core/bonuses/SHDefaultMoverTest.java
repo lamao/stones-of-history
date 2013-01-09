@@ -30,12 +30,12 @@ public class SHDefaultMoverTest
 		SHDefaultMover mover = new SHDefaultMover(box);
 		
 		assertNotNull(mover.getModel());
-		assertTrue(SHUtils.areEqual(new Vector3f(0, -1, 0), mover.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(0, 0, 1), mover.getVelocity(), 
 				0.001f));
 		
 		mover = new SHDefaultMover();
 		assertNull(mover.getModel());
-		assertTrue(SHUtils.areEqual(new Vector3f(0, -1, 0), mover.getVelocity(), 
+		assertTrue(SHUtils.areEqual(new Vector3f(0, 0, 1), mover.getVelocity(), 
 				0.001f));
 	}
 	
@@ -48,7 +48,7 @@ public class SHDefaultMoverTest
 		SHDefaultMover mover = new SHDefaultMover(box);
 		
 		mover.update(0.5f);
-		assertTrue(SHUtils.areEqual(new Vector3f(0, -0.5f, 0), 
+		assertTrue(SHUtils.areEqual(new Vector3f(0, 0, 0.5f), 
 				box.getLocalTranslation(), 0.001f));
 	}
 }

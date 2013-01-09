@@ -43,9 +43,9 @@ public class SHDecBallSpeedBonusTest
 	{
 		List<Spatial> balls = new ArrayList<Spatial>();
 		SHBall ball1 = SHEntityCreator.createDefaultBall();
-		ball1.setVelocity(-1, -1, 0);
+		ball1.setVelocity(-1, 0, 1);
 		SHBall ball2 = SHEntityCreator.createDefaultBall();
-		ball2.setVelocity(1, 1, 0);
+		ball2.setVelocity(1, 0, -1);
 		balls.add(ball1);
 		balls.add(ball2);
 		when(scene.get("ball")).thenReturn(balls);
@@ -55,10 +55,10 @@ public class SHDecBallSpeedBonusTest
 		assertNotNull(bonus);
 		bonus.apply(scene);
 		assertTrue(Math.abs(Math.abs(ball1.getVelocity().length() / 
-					new Vector3f(-1, -1, 0).length()) - 
+					new Vector3f(-1, 0, 1).length()) - 
 					(1 - SHDecBallSpeedBonus.DEC_PERCENT)) < 0.001f);
 		assertTrue(Math.abs(Math.abs(ball2.getVelocity().length() / 
-				new Vector3f(1, 1, 0).length()) - 
+				new Vector3f(1, 0, -1).length()) - 
 				(1 - SHDecBallSpeedBonus.DEC_PERCENT)) < 0.001f);
 	}
 	
@@ -67,9 +67,9 @@ public class SHDecBallSpeedBonusTest
 	{
 		List<Spatial> balls = new ArrayList<Spatial>();
 		SHBall ball1 = SHEntityCreator.createDefaultBall();
-		ball1.setVelocity(-1, -1, 0);
+		ball1.setVelocity(-1, 0, 1);
 		SHBall ball2 = SHEntityCreator.createDefaultBall();
-		ball2.setVelocity(1, 1, 0);
+		ball2.setVelocity(1, 0, -1);
 		balls.add(ball1);
 		balls.add(ball2);
 		when(scene.get("ball")).thenReturn(balls);
@@ -79,11 +79,11 @@ public class SHDecBallSpeedBonusTest
 		bonus.apply(scene);
 		
 		assertTrue(Math.abs(Math.abs(ball1.getVelocity().length() / 
-					new Vector3f(-1, -1, 0).length()) - 
+					new Vector3f(-1, 0, 1).length()) - 
 					(1 - SHDecBallSpeedBonus.DEC_PERCENT) * 
 					(1 - SHDecBallSpeedBonus.DEC_PERCENT)) < 0.001f);
 		assertTrue(Math.abs(Math.abs(ball2.getVelocity().length() / 
-				new Vector3f(1, 1, 0).length()) - 
+				new Vector3f(1, 0, -1).length()) - 
 				(1 - SHDecBallSpeedBonus.DEC_PERCENT) * 
 				(1 - SHDecBallSpeedBonus.DEC_PERCENT)) < 0.001f);
 	}
@@ -93,9 +93,9 @@ public class SHDecBallSpeedBonusTest
 	{
 		List<Spatial> balls = new ArrayList<Spatial>();
 		SHBall ball1 = SHEntityCreator.createDefaultBall();
-		ball1.setVelocity(-1, -1, 0);
+		ball1.setVelocity(-1, 0, 1);
 		SHBall ball2 = SHEntityCreator.createDefaultBall();
-		ball2.setVelocity(1, 1, 0);
+		ball2.setVelocity(1, 0, -1);
 		balls.add(ball1);
 		balls.add(ball2);
 		when(scene.get("ball")).thenReturn(balls);
@@ -104,16 +104,16 @@ public class SHDecBallSpeedBonusTest
 		bonus.apply(scene);
 		
 		SHBall ball3 = SHEntityCreator.createDefaultBall();
-		ball3.setVelocity(1, -1, 0);
+		ball3.setVelocity(1, 0, 1);
 		balls.add(ball3);
 		when(scene.get("ball")).thenReturn(balls);
 		
 		bonus.cleanup(scene);
 		assertTrue(Math.abs(ball1.getVelocity().length() - 
-					new Vector3f(-1, -1, 0).length()) < 0.001f);
+					new Vector3f(-1, 0, 1).length()) < 0.001f);
 		assertTrue(Math.abs(ball2.getVelocity().length() - 
-				new Vector3f(1, 1, 0).length()) < 0.001f);
+				new Vector3f(1, 0, -1).length()) < 0.001f);
 		assertTrue(Math.abs(ball3.getVelocity().length() - 
-				new Vector3f(1, -1, 0).length()) < 0.001f);
+				new Vector3f(1, 0, 1).length()) < 0.001f);
 	}
 }

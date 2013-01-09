@@ -52,7 +52,7 @@ public class SHDecBallSpeedBonus extends SHBonus
 			angle = SHUtils.angle(ball.getVelocity());
 			
 			ball.getVelocity().x = (float)Math.cos(angle) * speed * (1 - DEC_PERCENT);
-			ball.getVelocity().y = (float)Math.sin(angle) * speed * (1 - DEC_PERCENT);
+			ball.getVelocity().z = -(float)Math.sin(angle) * speed * (1 - DEC_PERCENT);
 			
 			_balls.add(ball);
 		}
@@ -67,13 +67,13 @@ public class SHDecBallSpeedBonus extends SHBonus
 		{
 			speed = ball.getVelocity().length();			
 			angle = Math.acos(ball.getVelocity().x / Math.abs(speed));
-			if (ball.getVelocity().y < 0)
+			if (ball.getVelocity().z > 0)
 			{
 				angle = 2 * Math.PI - angle;
 			}
 
 			ball.getVelocity().x = (float)Math.cos(angle) * speed / (1 - DEC_PERCENT);
-			ball.getVelocity().y = (float)Math.sin(angle) * speed / (1 - DEC_PERCENT);
+			ball.getVelocity().z = -(float)Math.sin(angle) * speed / (1 - DEC_PERCENT);
 		}
 		_balls.clear();
 	}

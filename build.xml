@@ -12,7 +12,6 @@
 	<property name="native.dir" value="${basedir}/native" />
 	<property name="data.dir" value="${basedir}/data"/>
 	<property name="launchers.dir" value="${basedir}/launchers" />
-<!--	<property name="gui.dir" value="${basedir}/gui" /> -->
 	
 	<property name="readme.file" value="${basedir}/README.txt" />
 	<property name="qatasks.file" value="${basedir}/QATASKS.txt" />
