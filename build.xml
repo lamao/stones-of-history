@@ -13,10 +13,10 @@
 	<property name="data.dir" value="${basedir}/data"/>
 	<property name="launchers.dir" value="${basedir}/launchers" />
 	
-	<property name="readme.file" value="${basedir}/README.txt" />
-	<property name="qatasks.file" value="${basedir}/QATASKS.txt" />
-	<property name="changellog.dev.file" value="${basedir}/DEV_CHANGELOG.txt" />
-	<property name="changellog.release.file" value="${basedir}/CHANGELOG.txt" />
+	<property name="readme.file" value="${basedir}/README.TXT" />
+	<property name="qatasks.file" value="${basedir}/QATASKS.TXT" />
+	<property name="changellog.dev.file" value="${basedir}/DEV_CHANGELOG.TXT" />
+	<property name="changellog.release.file" value="${basedir}/CHANGELOG.TXT" />
 	
 	<property name="suffics.windows" value="win32" />
 	<property name="suffics.linux32" value="lin32" />
