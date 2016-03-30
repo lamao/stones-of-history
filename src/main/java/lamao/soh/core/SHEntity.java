@@ -60,8 +60,6 @@ public class SHEntity extends Node
 		}
 		_model = model;
 		attachChild(model);
-		updateRenderState();
-		updateGeometricState();
 	}
 	
 	/** 

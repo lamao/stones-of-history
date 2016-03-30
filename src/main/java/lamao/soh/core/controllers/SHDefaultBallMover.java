@@ -3,6 +3,7 @@
  */
 package lamao.soh.core.controllers;
 
+import com.jme3.math.Vector3f;
 import lamao.soh.core.entities.SHBall;
 
 /**
@@ -26,7 +27,8 @@ public class SHDefaultBallMover extends SHBallMover {
     @Override
     public void controlUpdate(float time) {
         if (getBall() != null) {
-            getBall().getLocalTranslation().addLocal(getBall().getVelocity().mult(time));
+            Vector3f newLocation = getBall().getLocalTranslation().add(getBall().getVelocity().mult(time));
+            getBall().setLocalTranslation(newLocation);
             getBall().updateModelBound();
         }
     }

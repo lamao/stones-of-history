@@ -31,7 +31,8 @@ public class SHDefaultMover extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-        getSpatial().getLocalTranslation().addLocal(velocity.mult(tpf));
+        Vector3f newLocation = getSpatial().getLocalTranslation().add(velocity.mult(tpf));
+        getSpatial().setLocalTranslation(newLocation);
         getSpatial().updateModelBound();
     }
 

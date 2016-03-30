@@ -106,7 +106,6 @@ public class SHPaddleGunBonus extends SHBonus {
                 bullet.addControl(new SHDefaultBallMover(bullet));
 
                 _scene.add(bullet);
-                bullet.updateGeometricState();
             }
 
         }

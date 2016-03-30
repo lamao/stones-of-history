@@ -44,9 +44,7 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisiontHandler {
                 Vector3f bonusLocation = brick.getLocation().clone();
                 bonusLocation.y = 0;
                 bonus.setLocation(bonusLocation);
-                bonus.updateGeometricState();
                 scene.add(bonus.getType(), bonus);
-                bonus.updateGeometricState();
                 dispatcher.addEventEx("level-bonus-extracted", this, "bonus", bonus);
             }
         }
