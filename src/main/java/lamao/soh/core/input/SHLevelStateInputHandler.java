@@ -6,12 +6,13 @@
  */
 package lamao.soh.core.input;
 
-import lamao.soh.core.input.keyactions.SHPauseKeyAction;
-import lamao.soh.core.input.keyactions.SHToMenuKeyAction;
+import com.jme3.input.InputManager;
+import com.jme3.input.controls.KeyTrigger;
+import lamao.soh.core.input.actions.SHPauseKeyAction;
+import lamao.soh.core.input.actions.SHToMenuKeyAction;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 
-import com.jme3.input.InputHandler;
 import com.jme3.input.KeyInput;
 
 /**
@@ -20,16 +21,21 @@ import com.jme3.input.KeyInput;
  * @author lamao
  *
  */
-public class SHLevelStateInputHandler extends InputHandler
+public class SHLevelStateInputHandler extends InputManager
 {
-	public SHLevelStateInputHandler(
+
+    public static final String ACTION_PAUSE = "pause";
+    public static final String ACTION_MENU = "menu";
+
+    public SHLevelStateInputHandler(
 			SHLevelState levelState,
 			SHInGameScreenController inGameScreenController)
 	{
-		addAction(new SHPauseKeyAction(levelState), "pause",
-				KeyInput.KEY_PAUSE, false);
-		addAction(new SHToMenuKeyAction(levelState, inGameScreenController), "menu",
-				KeyInput.KEY_ESCAPE, false);
+        addMapping(ACTION_PAUSE, new KeyTrigger(KeyInput.KEY_PAUSE));
+		addMapping(ACTION_MENU, new KeyTrigger(KeyInput.KEY_ESCAPE));
+
+        addListener(new SHPauseKeyAction(levelState), ACTION_PAUSE);
+        addListener(new SHToMenuKeyAction(levelState, inGameScreenController), ACTION_MENU);
 	}
 
 }

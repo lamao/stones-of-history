@@ -10,7 +10,7 @@ import lamao.soh.core.controllers.SHDefaultBallMover;
 import lamao.soh.core.controllers.SHPaddleSticker;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
-import lamao.soh.core.input.SHMouseBallLauncher;
+import lamao.soh.core.input.actions.SHMouseBallLauncher;
 
 import com.jme3.scene.Controller;
 

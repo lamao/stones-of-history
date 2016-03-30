@@ -16,7 +16,7 @@ import lamao.soh.core.controllers.SHPaddleSticker;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.core.input.SHBreakoutInputHandler;
-import lamao.soh.core.input.SHMouseBallLauncher;
+import lamao.soh.core.input.actions.SHMouseBallLauncher;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
 import lamao.soh.utils.SHResourceManager;
