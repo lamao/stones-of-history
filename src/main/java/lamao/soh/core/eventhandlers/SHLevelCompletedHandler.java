@@ -1,8 +1,5 @@
-/** 
- * SHLevelCompletedHandler.java 04.01.2013
- * 
- * Copyright 2013 Stones of History
- * All rights reserved. 
+/**
+ * SHLevelCompletedHandler.java 04.01.2013 Copyright 2013 Stones of History All rights reserved.
  */
 package lamao.soh.core.eventhandlers;
 
@@ -13,31 +10,27 @@ import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao
- *
  */
-public class SHLevelCompletedHandler extends SHAbstractEventHandler
-{
-	private SHInGameScreenController inGameScreenController;
-	private SHLevelState levelState;
+public class SHLevelCompletedHandler extends SHAbstractEventHandler {
+    private SHInGameScreenController inGameScreenController;
+    private SHLevelState levelState;
 
-	public SHLevelCompletedHandler(
-			SHEventDispatcher dispatcher,
-			SHLevelState levelState,
-			SHInGameScreenController inGameScreenController)
-	{
-		super(dispatcher);
-		this.levelState = levelState;
-		this.inGameScreenController = inGameScreenController;
-	}
+    public SHLevelCompletedHandler(
+                    SHEventDispatcher dispatcher,
+                    SHLevelState levelState,
+                    SHInGameScreenController inGameScreenController) {
+        super(dispatcher);
+        this.levelState = levelState;
+        this.inGameScreenController = inGameScreenController;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void processEvent(SHEvent event)
-	{
-		levelState.setPause(true);
-		inGameScreenController.showCompletedMessage();
-	};
-	
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void processEvent(SHEvent event) {
+        levelState.setPause(true);
+        inGameScreenController.showCompletedMessage();
+    }
+
 }
