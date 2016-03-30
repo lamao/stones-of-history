@@ -6,9 +6,10 @@
  */
 package lamao.soh.core.controllers;
 
+import com.jme3.renderer.RenderManager;
+import com.jme3.renderer.ViewPort;
+import com.jme3.scene.control.AbstractControl;
 import lamao.soh.core.entities.SHBall;
-
-import com.jme.scene.Controller;
 
 /**
  * Controller for ball moving 
@@ -16,7 +17,7 @@ import com.jme.scene.Controller;
  *
  */
 @SuppressWarnings("serial")
-public abstract class SHBallMover extends Controller
+public abstract class SHBallMover extends AbstractControl
 {
 	private SHBall _ball;
 
@@ -39,4 +40,8 @@ public abstract class SHBallMover extends Controller
 		_ball = ball;
 	}
 
+  @Override
+  protected void controlRender(RenderManager rm, ViewPort vp) {
+
+  }
 }

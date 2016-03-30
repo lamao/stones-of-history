@@ -14,11 +14,11 @@ import lamao.soh.core.controllers.SHPaddleSticker;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 
-import com.jme.input.MouseInput;
-import com.jme.input.action.InputActionEvent;
-import com.jme.input.action.MouseInputAction;
-import com.jme.scene.Controller;
-import com.jme.scene.Spatial;
+import com.jme3.input.MouseInput;
+import com.jme3.input.action.InputActionEvent;
+import com.jme3.input.action.MouseInputAction;
+import com.jme3.scene.Controller;
+import com.jme3.scene.Spatial;
 
 /**
  * Launches ball by mouse click. It removes <code>SHPaddleSticker</code> 

@@ -8,8 +8,7 @@ package lamao.soh;
 
 import java.util.logging.Level;
 
-import com.jme.input.KeyInput;
-import com.jme.math.Vector3f;
+import com.jme3.input.KeyInput;
 
 /**
  * Options for game

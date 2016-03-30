@@ -11,15 +11,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.jme3.collision.CollisionResult;
+import com.jme3.collision.CollisionResults;
+import com.jme3.scene.CollisionData;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 
-import com.jme.intersection.BoundingCollisionResults;
-import com.jme.intersection.CollisionData;
-import com.jme.intersection.CollisionResults;
-import com.jme.intersection.TriangleCollisionResults;
-import com.jme.scene.Node;
-import com.jme.scene.Spatial;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 /**
  * @author lamao
@@ -128,28 +127,20 @@ public class SHCollisionProcessor implements ISHCollisionProcessor
 				{
 					for (Spatial destModel : dest.getChildren())
 					{
-						CollisionResults results = task.isCheckTris() ? 
-								new TriangleCollisionResults() :
-								new BoundingCollisionResults();
-						sourceModel.findCollisions(destModel, results);
+						CollisionResults results = new CollisionResults();
+						sourceModel.collideWith(destModel, results);
 						
 						SHEntity sourceEntity = getEntity(sourceModel);
 						SHEntity destEntity = getEntity(destModel);
-						CollisionData data = null;
-						for (int i = 0; i < results.getNumber(); i++)
+						for (CollisionResult collisionResult : results)
 						{
-							data = results.getCollisionData(i);
-							if (!task.isCheckTris() || (data.getSourceTris().size() > 0 && 
-								data.getTargetTris().size() > 0))
-							{
-								String event = getEventName(task.getSourceType(), 
+								String event = getEventName(task.getSourceType(),
 										task.getDestType());
 								Map<String, Object> params = new HashMap<String, Object>();
-								params.put("data", results.getCollisionData(i));
+								params.put("data", collisionResult);
 								params.put("src", sourceEntity);
 								params.put("dst", destEntity);
 								eventsToSend.add(new SHEvent(event, this, params));
-							}
 						}
 					}
 				}

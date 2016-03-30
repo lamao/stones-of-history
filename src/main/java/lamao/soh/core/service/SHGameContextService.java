@@ -12,7 +12,7 @@ import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.entities.SHBrick;
 
-import com.jme.scene.Spatial;
+import com.jme3.scene.Spatial;
 
 /**
  * @author lamao

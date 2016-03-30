@@ -16,7 +16,7 @@ import lamao.soh.utils.xmlparser.ISHXmlParser;
 
 import org.w3c.dom.Node;
 
-import com.jme.scene.Spatial;
+import com.jme3.scene.Spatial;
 
 /**
  * Treats given spatial as model for entity. Creates entity based on 

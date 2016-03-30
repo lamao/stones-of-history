@@ -6,11 +6,11 @@
  */
 package lamao.soh.console;
 
-import com.jme.input.FirstPersonHandler;
-import com.jme.input.InputHandler;
-import com.jme.renderer.Camera;
-import com.jme.scene.Controller;
-import com.jme.system.DisplaySystem;
+import com.jme3.input.FirstPersonHandler;
+import com.jme3.input.InputHandler;
+import com.jme3.renderer.Camera;
+import com.jme3.scene.Controller;
+import com.jme3.system.DisplaySystem;
 
 import lamao.soh.core.SHScene;
 

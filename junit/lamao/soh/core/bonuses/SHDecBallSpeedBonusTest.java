@@ -21,8 +21,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.*;
 import static org.mockito.Mockito.*;
 
-import com.jme.math.Vector3f;
-import com.jme.scene.Spatial;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 
 /**
  * @author lamao

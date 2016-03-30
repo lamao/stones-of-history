@@ -6,11 +6,11 @@
  */
 package lamao.soh.utils.deled;
 
-import com.jme.renderer.ColorRGBA;
-import com.jme.scene.state.BlendState;
-import com.jme.scene.state.MaterialState;
-import com.jme.scene.state.TextureState;
-import com.jme.system.DisplaySystem;
+import com.jme3.renderer.ColorRGBA;
+import com.jme3.scene.state.BlendState;
+import com.jme3.scene.state.MaterialState;
+import com.jme3.scene.state.TextureState;
+import com.jme3.system.DisplaySystem;
 
 /**
  * Incapsulate information about material (MaterialState, BlendState and

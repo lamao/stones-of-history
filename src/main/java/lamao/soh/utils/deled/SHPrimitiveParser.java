@@ -19,14 +19,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.jme.bounding.BoundingBox;
-import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
-import com.jme.renderer.Renderer;
-import com.jme.scene.Spatial;
-import com.jme.scene.TexCoords;
-import com.jme.scene.TriMesh;
-import com.jme.util.geom.BufferUtils;
+import com.jme3.bounding.BoundingBox;
+import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
+import com.jme3.renderer.Renderer;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.TexCoords;
+import com.jme3.scene.TriMesh;
+import com.jme3.util.geom.BufferUtils;
 
 /**
  * Parses 'scene.primitives.primitive' section of DPS scene file.
@@ -123,7 +123,7 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 		}
 		else
 		{
-			primitive = new com.jme.scene.Node();
+			primitive = new com.jme3.scene.Node();
 			int meshNumber = 0;
 			// create separate mesh for each material
 			for (SHMaterialGroup material : _meshFaces.keySet())
@@ -133,9 +133,9 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 				List<Vector2f> texCoords = _texCoords.get(material);
 				TriMesh mesh = constructTriMesh(v, faces, texCoords, material);
 				mesh.setName("mesh" + meshNumber++);
-				((com.jme.scene.Node)primitive).attachChild(mesh);
+				((com.jme3.scene.Node)primitive).attachChild(mesh);
 			}
-			calculateNodeCenter((com.jme.scene.Node) primitive);
+			calculateNodeCenter((com.jme3.scene.Node) primitive);
 			
 		}
 //		GeometryTool.minimizeVerts(_triMesh, GeometryTool.MV_SAME_COLORS | 
@@ -152,7 +152,7 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 	 * All routines are similar to {@link #calculateMeshCenter(Vector3f[])} 
 	 * @param node node
 	 */
-	private void calculateNodeCenter(com.jme.scene.Node node)
+	private void calculateNodeCenter(com.jme3.scene.Node node)
 	{
 		Vector3f center = new Vector3f(0, 0, 0);
 		for (Spatial spatial : node.getChildren())

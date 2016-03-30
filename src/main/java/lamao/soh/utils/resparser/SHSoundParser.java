@@ -14,8 +14,8 @@ import java.util.logging.Logger;
 import lamao.soh.utils.SHModelLoader;
 import lamao.soh.utils.SHResourceManager;
 
-import com.jmex.audio.AudioSystem;
-import com.jmex.audio.AudioTrack;
+import com.jme3x.audio.AudioSystem;
+import com.jme3x.audio.AudioTrack;
 
 /**
  * Parser for texture configuration. Creats <code>TextureState</code> <br>

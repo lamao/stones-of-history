@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.jme.scene.Spatial;
+import com.jme3.scene.Spatial;
 
 import lamao.soh.utils.SHModelLoader;
 import lamao.soh.utils.SHResourceManager;

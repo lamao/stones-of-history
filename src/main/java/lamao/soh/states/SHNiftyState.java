@@ -8,7 +8,7 @@ package lamao.soh.states;
 
 import lamao.soh.SHConstants;
 
-import com.jmex.game.state.BasicGameState;
+import com.jme3x.game.state.BasicGameState;
 
 import de.lessvoid.nifty.Nifty;
 

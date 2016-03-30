@@ -9,12 +9,12 @@ package lamao.soh.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jme.math.Vector3f;
-import com.jme.scene.Node;
-import com.jme.scene.SharedMesh;
-import com.jme.scene.SharedNode;
-import com.jme.scene.Spatial;
-import com.jme.scene.TriMesh;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
+import com.jme3.scene.SharedMesh;
+import com.jme3.scene.SharedNode;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.TriMesh;
 
 /**
  * Different utility methods

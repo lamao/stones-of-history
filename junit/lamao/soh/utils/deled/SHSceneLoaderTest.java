@@ -21,10 +21,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
-import com.jme.input.InputHandler;
-import com.jme.math.Vector3f;
-import com.jme.scene.Node;
-import com.jme.scene.Spatial;
+import com.jme3.input.InputHandler;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;

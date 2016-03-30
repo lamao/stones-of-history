@@ -6,9 +6,9 @@
  */
 package lamao.soh.core;
 
-import com.jme.math.Vector3f;
-import com.jme.scene.Node;
-import com.jme.scene.Spatial;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 /**
  * Game entity (e.g. ball or box). Has a model as member variable.
@@ -61,7 +61,7 @@ public class SHEntity extends Node
 		_model = model;
 		attachChild(model);
 		updateRenderState();
-		updateGeometricState(0, true);
+		updateGeometricState();
 	}
 	
 	/** 

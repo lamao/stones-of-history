@@ -13,12 +13,12 @@ import java.util.Set;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEventDispatcher;
 
-import com.jme.input.KeyInput;
-import com.jme.input.KeyInputListener;
-import com.jme.renderer.ColorRGBA;
-import com.jme.scene.Text;
-import com.jme.system.DisplaySystem;
-import com.jmex.game.state.BasicGameState;
+import com.jme3.input.KeyInput;
+import com.jme3.input.KeyInputListener;
+import com.jme3.renderer.ColorRGBA;
+import com.jme3.scene.Text;
+import com.jme3.system.DisplaySystem;
+import com.jme3x.game.state.BasicGameState;
 
 /**
  * Game console. Can be used for debugging or any other purposes.

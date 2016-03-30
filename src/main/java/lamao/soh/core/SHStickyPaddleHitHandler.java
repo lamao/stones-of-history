@@ -12,7 +12,7 @@ import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.core.input.SHMouseBallLauncher;
 
-import com.jme.scene.Controller;
+import com.jme3.scene.Controller;
 
 /**
  * Changes ball mover to {@link SHPaddleSticker} and adds 

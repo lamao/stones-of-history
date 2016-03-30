@@ -31,7 +31,7 @@ public class SHDefaultBallMover extends SHBallMover
      * {@inheritDoc}
 	 */
 	@Override
-	public void update(float time)
+	public void controlUpdate(float time)
 	{
 		if (getBall() != null)
 		{

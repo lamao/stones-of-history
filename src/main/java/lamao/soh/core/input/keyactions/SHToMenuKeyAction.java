@@ -9,8 +9,8 @@ package lamao.soh.core.input.keyactions;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 
-import com.jme.input.action.InputActionEvent;
-import com.jme.input.action.KeyInputAction;
+import com.jme3.input.action.InputActionEvent;
+import com.jme3.input.action.KeyInputAction;
 
 /**
  * Show main menu

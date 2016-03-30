@@ -8,7 +8,7 @@ package lamao.soh.core;
 
 import java.util.List;
 
-import com.jme.scene.Node;
+import com.jme3.scene.Node;
 
 /**
  * @author lamao

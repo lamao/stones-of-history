@@ -14,12 +14,12 @@ import java.util.logging.Logger;
 import lamao.soh.utils.SHModelLoader;
 import lamao.soh.utils.SHResourceManager;
 
-import com.jme.image.Texture;
-import com.jme.image.Texture.MagnificationFilter;
-import com.jme.image.Texture.MinificationFilter;
-import com.jme.scene.state.TextureState;
-import com.jme.system.DisplaySystem;
-import com.jme.util.TextureManager;
+import com.jme3.image.Texture;
+import com.jme3.image.Texture.MagnificationFilter;
+import com.jme3.image.Texture.MinificationFilter;
+import com.jme3.scene.state.TextureState;
+import com.jme3.system.DisplaySystem;
+import com.jme3.util.TextureManager;
 
 /**
  * Parser for texture configuration. Creats <code>TextureState</code> <br>

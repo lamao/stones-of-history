@@ -152,7 +152,7 @@ public class SHEpochService
 	 */
 	private String getEpochId(String directory)
 	{
-		return directory.substring(directory.lastIndexOf("\\") + 1);
+		return directory.substring(directory.lastIndexOf(File.separator) + 1);
 	}
 
 	

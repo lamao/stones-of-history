@@ -13,7 +13,7 @@ import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 
 
-import com.jme.math.Vector3f;
+import com.jme3.math.Vector3f;
 
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;

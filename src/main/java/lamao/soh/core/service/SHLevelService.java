@@ -23,9 +23,9 @@ import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.deled.SHSceneLoader;
 import lamao.soh.utils.events.SHEventDispatcher;
 
-import com.jme.input.InputHandler;
-import com.jme.input.MouseInput;
-import com.jme.scene.Spatial;
+import com.jme3.input.InputHandler;
+import com.jme3.input.MouseInput;
+import com.jme3.scene.Spatial;
 
 /**
  * Class with script routines that should be moved to external script file. 

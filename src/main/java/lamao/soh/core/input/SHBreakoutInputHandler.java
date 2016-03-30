@@ -9,10 +9,10 @@ package lamao.soh.core.input;
 import lamao.soh.SHOptions;
 import lamao.soh.core.SHEntity;
 
-import com.jme.input.InputHandler;
-import com.jme.input.RelativeMouse;
-import com.jme.input.action.InputActionEvent;
-import com.jme.input.action.MouseInputAction;
+import com.jme3.input.InputHandler;
+import com.jme3.input.RelativeMouse;
+import com.jme3.input.action.InputActionEvent;
+import com.jme3.input.action.MouseInputAction;
 
 /**
  * Input handler for moving paddle along X-axis.

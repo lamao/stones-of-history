@@ -14,11 +14,11 @@ import lamao.soh.core.entities.SHPaddle;
 
 
 
-import com.jme.bounding.BoundingBox;
-import com.jme.bounding.BoundingSphere;
-import com.jme.math.Vector3f;
-import com.jme.scene.shape.Box;
-import com.jme.scene.shape.Sphere;
+import com.jme3.bounding.BoundingBox;
+import com.jme3.bounding.BoundingSphere;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Sphere;
 
 /**
  * Factory for creating stubs for entities

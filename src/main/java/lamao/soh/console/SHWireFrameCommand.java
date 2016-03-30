@@ -6,9 +6,9 @@
  */
 package lamao.soh.console;
 
-import com.jme.scene.Spatial;
-import com.jme.scene.state.WireframeState;
-import com.jme.system.DisplaySystem;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.state.WireframeState;
+import com.jme3.system.DisplaySystem;
 
 /**
  * Command for switching between normal view and wireframe.

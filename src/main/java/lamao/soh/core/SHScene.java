@@ -9,9 +9,8 @@ package lamao.soh.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jme.input.InputHandler;
-import com.jme.scene.Node;
-import com.jme.scene.Spatial;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 /**
  * Game scene. Contains models and entities related to current game/level.

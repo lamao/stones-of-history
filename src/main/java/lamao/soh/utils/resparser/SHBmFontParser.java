@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 import lamao.soh.utils.SHModelLoader;
 import lamao.soh.utils.SHResourceManager;
 
-import com.jmex.angelfont.BitmapFont;
-import com.jmex.angelfont.BitmapFontLoader;
+import com.jme3x.angelfont.BitmapFont;
+import com.jme3x.angelfont.BitmapFontLoader;
 
 /**
  * Parsers BitmapFont<br>

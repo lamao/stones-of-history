@@ -6,12 +6,12 @@
  */
 package lamao.soh.core.bonuses;
 
-import com.jme.bounding.BoundingBox;
-import com.jme.input.InputHandler;
-import com.jme.input.MouseInput;
-import com.jme.input.action.InputActionEvent;
-import com.jme.input.action.MouseInputAction;
-import com.jme.scene.Spatial;
+import com.jme3.bounding.BoundingBox;
+import com.jme3.input.InputHandler;
+import com.jme3.input.MouseInput;
+import com.jme3.input.action.InputActionEvent;
+import com.jme3.input.action.MouseInputAction;
+import com.jme3.scene.Spatial;
 
 import lamao.soh.SHConstants;
 import lamao.soh.SHOptions;

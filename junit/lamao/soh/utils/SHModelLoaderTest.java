@@ -13,8 +13,8 @@ import lamao.soh.ngutils.AbstractJmeTest;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
-import com.jme.scene.Node;
-import com.jme.scene.Spatial;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 /**
  * @author lamao

@@ -11,17 +11,17 @@ import lamao.soh.core.model.SHEpochLevelItem;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 import lamao.soh.utils.events.SHEventDispatcher;
 
-import com.jme.input.InputHandler;
-import com.jme.light.PointLight;
-import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
-import com.jme.renderer.ColorRGBA;
-import com.jme.renderer.Renderer;
-import com.jme.scene.state.LightState;
-import com.jme.system.DisplaySystem;
-import com.jme.util.Timer;
-import com.jme.util.geom.Debugger;
-import com.jmex.game.state.BasicGameState;
+import com.jme3.input.InputHandler;
+import com.jme3.light.PointLight;
+import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
+import com.jme3.renderer.ColorRGBA;
+import com.jme3.renderer.Renderer;
+import com.jme3.scene.state.LightState;
+import com.jme3.system.DisplaySystem;
+import com.jme3.util.Timer;
+import com.jme3.util.geom.Debugger;
+import com.jme3x.game.state.BasicGameState;
 
 import de.lessvoid.nifty.Nifty;
 

@@ -19,8 +19,8 @@ import lamao.soh.states.SHLevelState;
 import lamao.soh.states.SHNiftyState;
 import lamao.soh.ui.model.ListBoxDisablebleEntry;
 
-import com.jmex.game.state.GameState;
-import com.jmex.game.state.GameStateManager;
+import com.jme3x.game.state.GameState;
+import com.jme3x.game.state.GameStateManager;
 
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.Button;

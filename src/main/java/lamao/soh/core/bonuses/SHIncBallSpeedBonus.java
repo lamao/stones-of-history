@@ -9,7 +9,7 @@ package lamao.soh.core.bonuses;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.jme.scene.Spatial;
+import com.jme3.scene.Spatial;
 
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;

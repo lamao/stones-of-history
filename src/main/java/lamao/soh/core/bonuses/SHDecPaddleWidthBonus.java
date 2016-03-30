@@ -8,7 +8,7 @@ package lamao.soh.core.bonuses;
 
 import lamao.soh.core.SHScene;
 
-import com.jme.scene.Spatial;
+import com.jme3.scene.Spatial;
 
 /**
  * Decreases paddle width by 10%

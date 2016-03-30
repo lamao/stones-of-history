@@ -10,10 +10,10 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.jme.app.AbstractGame.ConfigShowMode;
-import com.jme.scene.Spatial;
-import com.jme.scene.state.CullState;
-import com.jme.scene.state.CullState.Face;
+import com.jme3.app.AbstractGame.ConfigShowMode;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.state.CullState;
+import com.jme3.scene.state.CullState.Face;
 
 import lamao.soh.utils.xmlparser.SHDocXMLParser;
 
@@ -26,7 +26,7 @@ import lamao.soh.utils.xmlparser.SHDocXMLParser;
 public class SHDpsToJme extends SHDpsLoader
 {
 	/** Root node for scene */
-	private com.jme.scene.Node scene = new com.jme.scene.Node("scene-root");
+	private com.jme3.scene.Node scene = new com.jme3.scene.Node("scene-root");
 	
 	public Spatial getResult()
 	{
@@ -50,7 +50,7 @@ public class SHDpsToJme extends SHDpsLoader
 	protected void resetLoader()
 	{
 		super.resetLoader();
-		scene = new com.jme.scene.Node("scene-root");
+		scene = new com.jme3.scene.Node("scene-root");
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class SHDpsToJme extends SHDpsLoader
 	
 	public static void main(String[] args)
 	{
-		com.jme.app.SimpleGame game = new com.jme.app.SimpleGame()
+		com.jme3.app.SimpleGame game = new com.jme3.app.SimpleGame()
 		{
 			@Override
 			protected void simpleInitGame()

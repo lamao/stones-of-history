@@ -13,7 +13,7 @@ import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.entities.SHBall;
 
-import com.jme.scene.Spatial;
+import com.jme3.scene.Spatial;
 
 /**
  * Decreases ball speed

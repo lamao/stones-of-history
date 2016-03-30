@@ -20,8 +20,8 @@ import org.mockito.stubbing.Answer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.jme.scene.Node;
-import com.jme.scene.Spatial;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.*;

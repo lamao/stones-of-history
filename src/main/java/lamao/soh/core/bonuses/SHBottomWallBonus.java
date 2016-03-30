@@ -6,7 +6,7 @@
  */
 package lamao.soh.core.bonuses;
 
-import com.jme.scene.Spatial;
+import com.jme3.scene.Spatial;
 
 import lamao.soh.core.SHScene;
 import lamao.soh.core.entities.SHBottomWall;

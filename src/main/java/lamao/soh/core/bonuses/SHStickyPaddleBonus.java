@@ -14,8 +14,8 @@ import lamao.soh.core.controllers.SHPaddleSticker;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 
-import com.jme.scene.Controller;
-import com.jme.scene.Spatial;
+import com.jme3.scene.Controller;
+import com.jme3.scene.Spatial;
 
 /**
  * Makes paddle sticky.

@@ -19,12 +19,8 @@ public class SHCollisionTask
 	/** Type of destination entity */
 	private String destType = null;
 	
-	/** Bounding or triangle collision detection */
-	private boolean checkTris = false;
-
-	public SHCollisionTask(String sourceType, String destType, boolean checkTris)
+	public SHCollisionTask(String sourceType, String destType)
 	{
-		this.checkTris = checkTris;
 		this.destType = destType;
 		this.sourceType = sourceType;
 	}
@@ -49,16 +45,6 @@ public class SHCollisionTask
 		this.destType = destType;
 	}
 
-	public boolean isCheckTris()
-	{
-		return checkTris;
-	}
-
-	public void setCheckTris(boolean checkTris)
-	{
-		this.checkTris = checkTris;
-	}
-
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -79,6 +65,6 @@ public class SHCollisionTask
 	@Override
 	public String toString()
 	{
-		return "<" + sourceType + ", " + destType + ", " + checkTris + ">"; 
+		return "<" + sourceType + ", " + destType + ">";
 	}
 }

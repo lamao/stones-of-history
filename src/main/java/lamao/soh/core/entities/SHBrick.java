@@ -9,7 +9,7 @@ package lamao.soh.core.entities;
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.bonuses.SHBonus;
 
-import com.jme.scene.Spatial;
+import com.jme3.scene.Spatial;
 
 /**
  * Brick game entity.<br>

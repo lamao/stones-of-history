@@ -11,8 +11,8 @@ import lamao.soh.core.input.keyactions.SHToMenuKeyAction;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 
-import com.jme.input.InputHandler;
-import com.jme.input.KeyInput;
+import com.jme3.input.InputHandler;
+import com.jme3.input.KeyInput;
 
 /**
  * Input handler for level state that initialize it with default commands.

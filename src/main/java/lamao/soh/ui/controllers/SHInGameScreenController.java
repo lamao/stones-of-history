@@ -6,7 +6,7 @@
  */
 package lamao.soh.ui.controllers;
 
-import com.jmex.game.state.GameStateManager;
+import com.jme3x.game.state.GameStateManager;
 
 import lamao.soh.SHConstants;
 import lamao.soh.core.SHBreakoutGameContext;

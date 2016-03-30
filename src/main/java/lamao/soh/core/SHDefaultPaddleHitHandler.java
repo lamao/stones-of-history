@@ -9,8 +9,8 @@ package lamao.soh.core;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 
-import com.jme.bounding.BoundingBox;
-import com.jme.math.Vector3f;
+import com.jme3.bounding.BoundingBox;
+import com.jme3.math.Vector3f;
 
 /**
  * Default paddle hit handler. When ball hits paddle its new velocity 
@@ -29,9 +29,9 @@ public class SHDefaultPaddleHitHandler implements ISHPaddleHitHandler
 			ball.getVelocity().z >= 0)
 		{
 			BoundingBox paddleBound = (BoundingBox)paddle.getModel().getWorldBound();
-			float ballPos = ball.getLocation().x - paddle.getLocation().x 
-					+ paddleBound.xExtent;
-			float paddleWidth = paddleBound.xExtent * 2;
+			float ballPos = ball.getLocation().x - paddle.getLocation().x
+					+ paddleBound.getXExtent();
+			float paddleWidth = paddleBound.getXExtent() * 2;
 			float speed = ball.getVelocity().length();
 			Vector3f newVelocity = null;
 			

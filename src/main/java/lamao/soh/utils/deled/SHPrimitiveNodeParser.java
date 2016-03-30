@@ -8,8 +8,8 @@ package lamao.soh.utils.deled;
 
 import java.util.Map;
 
-import com.jme.scene.Node;
-import com.jme.scene.Spatial;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 /**
  * Adds parsed spatial to the root node. It builds just a 3D jME scene and 

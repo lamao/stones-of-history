@@ -17,12 +17,12 @@ import lamao.soh.utils.xmlparser.SHDocXMLParser;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.jme.image.Texture;
-import com.jme.image.Texture.MagnificationFilter;
-import com.jme.image.Texture.MinificationFilter;
-import com.jme.renderer.ColorRGBA;
-import com.jme.system.DisplaySystem;
-import com.jme.util.TextureManager;
+import com.jme3.image.Texture;
+import com.jme3.image.Texture.MagnificationFilter;
+import com.jme3.image.Texture.MinificationFilter;
+import com.jme3.renderer.ColorRGBA;
+import com.jme3.system.DisplaySystem;
+import com.jme3.util.TextureManager;
 
 /**
  * Parser for 'scene.materials.category.material' subtree of DPS scene file.

@@ -8,12 +8,11 @@ package lamao.soh.core;
 
 import java.util.Map;
 
+import com.jme3.scene.Spatial;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.entities.SHBottomWall;
 import lamao.soh.core.entities.SHBrick;
 import lamao.soh.utils.SHResourceManager;
-
-import com.jme.scene.Spatial;
 
 /**
  * Entity factory for stones of history.

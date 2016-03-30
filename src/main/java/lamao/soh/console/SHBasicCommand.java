@@ -6,7 +6,7 @@
  */
 package lamao.soh.console;
 
-import com.jme.renderer.ColorRGBA;
+import com.jme3.renderer.ColorRGBA;
 
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;

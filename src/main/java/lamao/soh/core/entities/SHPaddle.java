@@ -10,7 +10,7 @@ import lamao.soh.core.ISHPaddleHitHandler;
 import lamao.soh.core.SHDefaultPaddleHitHandler;
 import lamao.soh.core.SHEntity;
 
-import com.jme.scene.Spatial;
+import com.jme3.scene.Spatial;
 
 /**
  * Paddle game entity.<br>

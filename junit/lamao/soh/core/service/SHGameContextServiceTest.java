@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.jme.scene.Spatial;
+import com.jme3.scene.Spatial;
 
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.mockito.Mockito.when;

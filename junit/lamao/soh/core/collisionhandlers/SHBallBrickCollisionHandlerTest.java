@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.jme.math.Vector3f;
+import com.jme3.math.Vector3f;
 
 /**
  * @author lamao

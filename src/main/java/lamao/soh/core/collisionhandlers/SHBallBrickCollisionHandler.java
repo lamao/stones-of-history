@@ -8,13 +8,14 @@ package lamao.soh.core.collisionhandlers;
 
 import java.nio.FloatBuffer;
 
-import com.jme.intersection.CollisionData;
-import com.jme.intersection.CollisionResults;
-import com.jme.intersection.TriangleCollisionResults;
-import com.jme.math.FastMath;
-import com.jme.math.Vector3f;
-import com.jme.scene.TriMesh;
-import com.jme.util.geom.BufferUtils;
+import com.jme3.collision.CollisionResult;
+import com.jme3.intersection.CollisionData;
+import com.jme3.intersection.CollisionResults;
+import com.jme3.intersection.TriangleCollisionResults;
+import com.jme3.math.FastMath;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.TriMesh;
+import com.jme3.util.geom.BufferUtils;
 
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
@@ -42,9 +43,10 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisiontHandler
 	{
 		SHBrick brick = event.getParameter("dst", SHBrick.class);
 		SHBall ball = event.getParameter("src", SHBall.class);
+    CollisionResult collisionResult = event.getParameter("data", CollisionResult.class);
 		
 		dispatcher.addEventEx("level-brick-hit", this, "brick", brick);
-		onHit(ball, brick);
+		onHit(ball, brick, collisionResult);
 		if (brick.getStrength() <= 0)
 		{
 			scene.remove(brick);
@@ -57,9 +59,9 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisiontHandler
 				Vector3f bonusLocation = brick.getLocation().clone();
 				bonusLocation.y = 0;
 				bonus.setLocation(bonusLocation);
-				bonus.updateGeometricState(0, true);
+				bonus.updateGeometricState();
 				scene.add(bonus.getType(), bonus);
-				bonus.updateGeometricState(0, true);
+				bonus.updateGeometricState();
 				dispatcher.addEventEx("level-bonus-extracted", this, 
 						"bonus", bonus);
 			}
@@ -75,7 +77,7 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisiontHandler
 	 * <b>NOTE:</b> It is supposed that bricks really intersects with ball.
 	 * Method doesn't check this.
 	 */
-	public void onHit(SHBall ball, SHBrick brick)
+	public void onHit(SHBall ball, SHBrick brick, CollisionResult collisionResult)
 	{
 		if (ball.isSuper())
 		{
@@ -92,57 +94,14 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisiontHandler
 			return;
 		}
 		
-		CollisionResults results = new TriangleCollisionResults();
-		ball.findCollisions(brick, results);
-		if (results.getNumber() > 0 && 
-			results.getCollisionData(0).getTargetTris().size() > 0)
-		{
-			CollisionData data = results.getCollisionData(0);
-			TriMesh target = (TriMesh)data.getTargetMesh();
-			
-			Vector3f totalNormal = new Vector3f();
-			Vector3f v1 = new Vector3f();
-			Vector3f v2 = new Vector3f();
-			Vector3f v3 = new Vector3f();
-			FloatBuffer vertices = target.getVertexBuffer();
-			int[] indexBuffer = new int[3];
-			int index = 0;
-			for (int i = 0; i < data.getTargetTris().size(); i++)
-			{
-				index = data.getTargetTris().get(i);
-				target.getTriangle(index, indexBuffer);
-				BufferUtils.populateFromBuffer(v1, vertices, indexBuffer[0]);
-				BufferUtils.populateFromBuffer(v2, vertices, indexBuffer[1]);
-				BufferUtils.populateFromBuffer(v3, vertices, indexBuffer[2]);
-				
-				totalNormal.addLocal(computeTriNormal(v1, v2, v3));
-			}
-			
-			totalNormal.divideLocal(data.getSourceTris().size());
-			totalNormal.y = 0;
-			
-			
-			Vector3f ballVelocity = ball.getVelocity();
-			float velocityAngle = SHUtils.angle(ballVelocity.mult(-1));
-			float normalAngle = SHUtils.angle(totalNormal);
-			float resultAngle = velocityAngle + 2 * (normalAngle - velocityAngle);
-			float speed = ballVelocity.length();
-			ballVelocity.x = FastMath.cos(resultAngle) * speed;
-			ballVelocity.z = -FastMath.sin(resultAngle) * speed;
-		}
-		
+    Vector3f ballVelocity = ball.getVelocity();
+    float velocityAngle = SHUtils.angle(ballVelocity.mult(-1));
+    float normalAngle = SHUtils.angle(collisionResult.getContactNormal());
+    float resultAngle = velocityAngle + 2 * (normalAngle - velocityAngle);
+    float speed = ballVelocity.length();
+    ballVelocity.x = FastMath.cos(resultAngle) * speed;
+    ballVelocity.z = -FastMath.sin(resultAngle) * speed;
+
 	}
 	
-	/**
-	 * Computes normal for given triangle.
-	 */
-	private Vector3f computeTriNormal(Vector3f v1, Vector3f v2, Vector3f v3)
-	{
-		
-		Vector3f result = v1.subtractLocal(v2);
-		result = v1.cross(v3.subtract(v2));
-		result.normalizeLocal();//.multLocal(-1);
-		return result;
-	}
-
 }

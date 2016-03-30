@@ -16,9 +16,9 @@ import java.net.URL;
 
 import lamao.soh.utils.deled.SHDpsToJme;
 
-import com.jme.scene.Spatial;
-import com.jme.util.export.binary.BinaryImporter;
-import com.jmex.model.converters.ObjToJme;
+import com.jme3.scene.Spatial;
+import com.jme3.util.export.binary.BinaryImporter;
+import com.jme3x.model.converters.ObjToJme;
 
 /**
  * Imports models from different file formats

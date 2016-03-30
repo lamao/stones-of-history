@@ -8,8 +8,8 @@ package lamao.soh.core.controllers;
 
 import lamao.soh.core.entities.SHBall;
 
-import com.jme.math.Vector3f;
-import com.jme.scene.Spatial;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 
 /**
  * Follows the given target (assumed it is paddle model).
@@ -40,7 +40,7 @@ public class SHPaddleSticker extends SHBallMover
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(float time)
+	public void controlUpdate(float time)
 	{
 		getBall().setLocation(_target.getLocalTranslation().subtract(_distance));
 	}

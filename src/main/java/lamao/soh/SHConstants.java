@@ -6,7 +6,7 @@
  */
 package lamao.soh;
 
-import com.jme.math.Vector3f;
+import com.jme3.math.Vector3f;
 
 /**
  * Defines all game constants.
@@ -40,6 +40,6 @@ public class SHConstants
 	
 	public String CURSOR_DEFAULT = "default";
 	
-	public Vector3f DEFAULT_BALL_VELOCITY = new Vector3f(-6, 0, -6); 
+	public Vector3f DEFAULT_BALL_VELOCITY = new Vector3f(-6, 0, -6);
 
 }
