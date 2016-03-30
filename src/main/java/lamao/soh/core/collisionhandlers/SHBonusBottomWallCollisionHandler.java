@@ -1,8 +1,6 @@
-/* 
- * SHBonusBottomWallCollisionHandler.java 01.05.2010
- * 
- * Copyright 2010 Stones of History
- * All rights reserved. 
+/*
+ * SHBonusBottomWallCollisionHandler.java 01.05.2010 Copyright 2010 Stones of History All rights
+ * reserved.
  */
 package lamao.soh.core.collisionhandlers;
 
@@ -13,24 +11,20 @@ import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao
- *
  */
-public class SHBonusBottomWallCollisionHandler extends SHAbstractCollisiontHandler
-{
-	
-	public SHBonusBottomWallCollisionHandler(SHEventDispatcher dispatcher,
-			SHScene scene)
-	{
-		super(dispatcher, scene);
-	}
+public class SHBonusBottomWallCollisionHandler extends SHAbstractCollisiontHandler {
 
-	@Override
-	public void processEvent(SHEvent event)
-	{
-		SHBonus bonus = event.getParameter("src", SHBonus.class);
-		scene.remove(bonus);
-		dispatcher.addEventEx("level-bonus-destroyed", this, 
-				"bonus", bonus); 
-	}
+    public SHBonusBottomWallCollisionHandler(
+                    SHEventDispatcher dispatcher,
+                    SHScene scene) {
+        super(dispatcher, scene);
+    }
+
+    @Override
+    public void processEvent(SHEvent event) {
+        SHBonus bonus = event.getParameter("src", SHBonus.class);
+        scene.remove(bonus);
+        dispatcher.addEventEx("level-bonus-destroyed", this, "bonus", bonus);
+    }
 
 }

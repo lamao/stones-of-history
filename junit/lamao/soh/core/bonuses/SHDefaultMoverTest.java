@@ -8,6 +8,7 @@ package lamao.soh.core.bonuses;
 
 import lamao.soh.core.SHUtils;
 
+import lamao.soh.core.controllers.SHDefaultMover;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 

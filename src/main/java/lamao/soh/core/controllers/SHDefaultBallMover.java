@@ -27,7 +27,7 @@ public class SHDefaultBallMover extends SHBallMover {
     public void controlUpdate(float time) {
         if (getBall() != null) {
             getBall().getLocalTranslation().addLocal(getBall().getVelocity().mult(time));
-//            getBall().updateWorldBound();
+            getBall().updateModelBound();
         }
     }
 
