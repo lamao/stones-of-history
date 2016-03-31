@@ -12,6 +12,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
+import com.jme3.scene.VertexBuffer;
+import com.jme3.util.BufferUtils;
 import lamao.soh.utils.xmlparser.ISHXmlParser;
 import lamao.soh.utils.xmlparser.SHDocXMLParser;
 
@@ -22,11 +26,7 @@ import org.w3c.dom.NodeList;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.Renderer;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.TexCoords;
-import com.jme3.scene.TriMesh;
-import com.jme3.util.geom.BufferUtils;
 
 /**
  * Parses 'scene.primitives.primitive' section of DPS scene file.
@@ -119,7 +119,7 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 			SHMaterialGroup material = (SHMaterialGroup)_meshFaces.keySet().toArray()[0];
 			List<Integer> faces = _meshFaces.get(material);
 			List<Vector2f> texCoords = _texCoords.get(material);
-			primitive = constructTriMesh(v, faces, texCoords, material);
+			primitive = constructGeometry(v, faces, texCoords, material);
 		}
 		else
 		{
@@ -131,15 +131,13 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 				// create faces array
 				List<Integer> faces = _meshFaces.get(material);
 				List<Vector2f> texCoords = _texCoords.get(material);
-				TriMesh mesh = constructTriMesh(v, faces, texCoords, material);
-				mesh.setName("mesh" + meshNumber++);
-				((com.jme3.scene.Node)primitive).attachChild(mesh);
+				Geometry geometry = constructGeometry(v, faces, texCoords, material);
+                geometry.setName("mesh" + meshNumber++);
+				((com.jme3.scene.Node)primitive).attachChild(geometry);
 			}
 			calculateNodeCenter((com.jme3.scene.Node) primitive);
 			
 		}
-//		GeometryTool.minimizeVerts(_triMesh, GeometryTool.MV_SAME_COLORS | 
-//				GeometryTool.MV_SAME_NORMALS);
 		primitive.setModelBound(new BoundingBox());
 		primitive.updateModelBound();
 		return primitive;
@@ -176,8 +174,8 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 	 * @param material - material of mesh
 	 * @return
 	 */
-	private TriMesh constructTriMesh(Vector3f[] vertices, List<Integer> faces, 
-			List<Vector2f> texCoords, SHMaterialGroup material)
+	private Geometry constructGeometry(Vector3f[] vertices, List<Integer> faces,
+                                       List<Vector2f> texCoords, SHMaterialGroup material)
 	{
 		int i = 0;
 		
@@ -191,7 +189,6 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 		Vector3f localTranslation = calculateMeshCenter(v);
 		
 		
-		i = 0;
 		// create faces array
 		int[] f = new int[faces.size()];
 		i = 0;
@@ -211,22 +208,22 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 			}
 		}
 
-		TriMesh mesh = new TriMesh();
+		Mesh mesh = new Mesh();
 		FloatBuffer normals = computeNormals(v, f);
 		// create trimesh
-		mesh.reconstruct(BufferUtils.createFloatBuffer(v), normals, null, 
-				TexCoords.makeNew(tex), 
-				BufferUtils.createIntBuffer(f));
+        mesh.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(v));
+        mesh.setBuffer(VertexBuffer.Type.Normal, 1, normals);
+        mesh.setBuffer(VertexBuffer.Type.TexCoord, 2, BufferUtils.createFloatBuffer(tex));
+        mesh.setBuffer(VertexBuffer.Type.Index, 3, BufferUtils.createIntBuffer(f));
 
-//		_normalGenerator.generateNormals(mesh, FastMath.PI / 4);
-		applyMaterial(mesh, material);
-		mesh.updateRenderState();
+        Geometry geometry = new Geometry("", mesh);
+		applyMaterial(geometry, material);
 
-		mesh.setLocalTranslation(localTranslation);
-		mesh.setModelBound(new BoundingBox());
-		mesh.updateModelBound();
+		geometry.setLocalTranslation(localTranslation);
+        geometry.setModelBound(new BoundingBox());
+		geometry.updateModelBound();
 		
-		return mesh;
+		return geometry;
 	}
 	
 	/**
@@ -309,22 +306,17 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
         return BufferUtils.createFloatBuffer(normals);
     }
 	
-	private void applyMaterial(TriMesh mesh, SHMaterialGroup m)
+	private void applyMaterial(Geometry geometry, SHMaterialGroup m)
 	{
-		if (m.m != null)
+        if (m.m != null)
 		{
-			mesh.setRenderState(m.m);
-		}
-		if (m.as != null)
-		{
-			mesh.setRenderState(m.as);
-			mesh.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
-		}
-		if (m.ts != null)
-		{
-			mesh.setRenderState(m.ts);
-		}
-		
+            if (m.t != null)
+            {
+                m.m.setTexture("ColorMap", m.t);
+            }
+            geometry.setMaterial(m.m);
+        }
+
 	}
 	
 	/** Parses vertices of primitive */
@@ -363,7 +355,7 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 			{
 				_meshFaces.put(_faceMaterial, new LinkedList<Integer>());
 			}
-			if (_faceMaterial.ts != null && _texCoords.get(_faceMaterial) == null)
+			if (_faceMaterial.t != null && _texCoords.get(_faceMaterial) == null)
 			{
 				_texCoords.put(_faceMaterial, new LinkedList<Vector2f>());
 			}
@@ -402,7 +394,7 @@ abstract class SHPrimitiveParser extends SHDocXMLParser
 			{
 				vertex = (Element)polygon.item(i);
 				_faceVertices.add(Integer.parseInt(vertex.getAttribute("vid")));
-				if (_faceMaterial.ts != null)
+				if (_faceMaterial.t != null)
 				{
 					texCoords.add(new Vector2f(
 							Float.parseFloat(vertex.getAttribute("u0")),

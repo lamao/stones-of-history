@@ -10,10 +10,11 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.jme3.app.AbstractGame.ConfigShowMode;
+import com.jme3.app.SimpleApplication;
+import com.jme3.light.DirectionalLight;
+import com.jme3.light.PointLight;
+import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.state.CullState;
-import com.jme3.scene.state.CullState.Face;
 
 import lamao.soh.utils.xmlparser.SHDocXMLParser;
 
@@ -80,27 +81,21 @@ public class SHDpsToJme extends SHDpsLoader
 	
 	public static void main(String[] args)
 	{
-		com.jme3.app.SimpleGame game = new com.jme3.app.SimpleGame()
+		SimpleApplication game = new SimpleApplication()
 		{
 			@Override
-			protected void simpleInitGame()
-			{
+            public void simpleInitApp() {
 //				rootNode.attachChild(SHModelLoader.load(new File("data/epochs/test_epoch/level1.obj")));
 				SHDpsToJme loader = new SHDpsToJme();
 				loader.load(new File(
 //						"data/test/test-level.dps"));
 						"data/epochs/test_epoch/level1.dps"));
 				rootNode.attachChild(loader.getResult());
-				
-				
-				CullState cs = display.getRenderer().createCullState();
-				cs.setCullFace(Face.Back);
-				rootNode.setRenderState(cs);
-				rootNode.updateRenderState();
-				
+
+                PointLight light = new PointLight();
+                light.setColor(ColorRGBA.White.clone());
 			}
-		};
-		game.setConfigShowMode(ConfigShowMode.AlwaysShow);
+        };
 		game.start();
 	}
 	

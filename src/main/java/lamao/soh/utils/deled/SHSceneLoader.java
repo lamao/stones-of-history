@@ -85,29 +85,5 @@ public class SHSceneLoader extends SHDpsLoader
 		scene.resetAll();
 		super.load(file);
 	}
-	
-//	private void setupSharedEntities()
-//	{
-//		SHResourceManager theme = SHGamePack.manager;
-//		SHBall ball = new SHBall();
-//		ball.setType("ball");
-//		ball.setName("ball" + ball);
-//		Spatial model = (Spatial)theme.get(SHResourceManager.TYPE_MODEL, "ball");
-//		model = SHUtils.createSharedModel("ball" + ball, model);
-//		ball.setModel(model);
-//		
-//		SHPaddle paddle = new SHPaddle(model);
-//		paddle.setType("paddle");
-//		paddle.setName("paddle");
-//		model = (Spatial)theme.get(SHResourceManager.TYPE_MODEL, "paddle");
-//		paddle.setModel(model);
-//		paddle.setLocation(0, -7, 0);
-//		_scene.addEntity(paddle);
-//		
-//		
-//		ball.setLocation(-0, -6.3f, 0);
-//		ball.setVelocity(-3 ,3 ,0);
-//		ball.getRoot().addController(new SHPaddleSticker(ball, paddle.getRoot()));
-//		_scene.addEntity(ball);
-//	}
+
 }

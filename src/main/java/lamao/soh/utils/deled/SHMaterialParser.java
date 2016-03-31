@@ -6,23 +6,21 @@
  */
 package lamao.soh.utils.deled;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.jme3.asset.AssetManager;
+import com.jme3.material.RenderState;
+import com.jme3.math.ColorRGBA;
+import com.jme3.texture.Texture;
 import lamao.soh.utils.xmlparser.ISHXmlParser;
 import lamao.soh.utils.xmlparser.SHDocXMLParser;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import com.jme3.image.Texture;
-import com.jme3.image.Texture.MagnificationFilter;
-import com.jme3.image.Texture.MinificationFilter;
-import com.jme3.renderer.ColorRGBA;
-import com.jme3.system.DisplaySystem;
-import com.jme3.util.TextureManager;
 
 /**
  * Parser for 'scene.materials.category.material' subtree of DPS scene file.
@@ -42,6 +40,9 @@ class SHMaterialParser extends SHDocXMLParser
 	
 	/** URL to the texture folder */
 	private URL _textureLocation = null;
+
+    // TODO: Initialize it
+    private AssetManager assetManager;
 	
 	public SHMaterialParser(Map<String, SHMaterialGroup> materials,
 			URL textureLocation)
@@ -69,22 +70,18 @@ class SHMaterialParser extends SHDocXMLParser
 		@Override
 		public void parse(Node node)
 		{
-			Element color = (Element)node;
-			_lastMaterial.m.setDiffuse(new ColorRGBA(
-					Integer.parseInt(color.getAttribute("r")),
-					Integer.parseInt(color.getAttribute("g")),
-					Integer.parseInt(color.getAttribute("b")),
-					Integer.parseInt(color.getAttribute("a"))));
-			_lastMaterial.m.getDiffuse().multLocal(1.0f / 255);
-			_lastMaterial.m.setShininess(96);
-//			_lastMaterial.m.setAmbient(new ColorRGBA(.2f, .2f, .2f, 1));
-//			_lastMaterial.m.setSpecular(ColorRGBA.white.clone());
-//			_lastMaterial.m.setEnabled(true);
-//			_lastMS.setSpecular(new ColorRGBA(0.5f, 0.5f, 0.5f, 1));
-//			_lastMS.setAmbient(ColorRGBA.black.clone());
+			Element colorNode = (Element)node;
+            ColorRGBA materialColor = new ColorRGBA(
+                Integer.parseInt(colorNode.getAttribute("r")),
+                Integer.parseInt(colorNode.getAttribute("g")),
+                Integer.parseInt(colorNode.getAttribute("b")),
+                Integer.parseInt(colorNode.getAttribute("a")));
+            materialColor.multLocal(1.0f / 255);
+			_lastMaterial.m.setColor(SHMaterialGroup.MATERIAL_COLOR_DIFFUSE, materialColor);
+			_lastMaterial.m.setFloat(SHMaterialGroup.MATERIAL_ATTR_SHININESS, 96);
 			if (((Element)node.getParentNode()).getAttribute("blend").equals("alphablend"))
 			{
-				_lastMaterial.createBlendState();
+				_lastMaterial.m.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 			}
 		}
 	}
@@ -95,29 +92,13 @@ class SHMaterialParser extends SHDocXMLParser
 		@Override
 		public void parse(Node node)
 		{
-			try
-			{
-				Element texElement = (Element)node;
-				URL texURL = new URL(_textureLocation 
-						+ texElement.getAttribute("file").replace("\\", "/"));
-				
-				Texture tx = TextureManager.loadTexture(
-						texURL,
-						MinificationFilter.BilinearNearestMipMap,
-						MagnificationFilter.Bilinear);
-				// TODO: Implement different types of wrap mode
-				tx.setWrap(Texture.WrapMode.Repeat);
-				
-				_lastMaterial.ts = DisplaySystem.getDisplaySystem()
-						.getRenderer().createTextureState();
-				_lastMaterial.ts.setTexture(tx);
-				
-			}
-			catch (MalformedURLException e)
-			{
-				logger.warning("Can't load textuer");
-				e.printStackTrace();
-			}
+            Element texElement = (Element)node;
+            String texturePath = _textureLocation + texElement.getAttribute("file").replace("\\", File.separator);
+            Texture tx = assetManager.loadTexture(texturePath);
+            // TODO: Implement different types of wrap mode
+            tx.setWrap(Texture.WrapMode.Repeat);
+
+            _lastMaterial.t = tx;
 		}
 	}
 }
