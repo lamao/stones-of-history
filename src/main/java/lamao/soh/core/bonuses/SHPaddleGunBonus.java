@@ -4,11 +4,9 @@
 package lamao.soh.core.bonuses;
 
 import com.jme3.bounding.BoundingBox;
-import com.jme3.input.InputHandler;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
-import com.jme3.input.action.InputActionEvent;
-import com.jme3.input.action.MouseInputAction;
+import com.jme3.input.controls.ActionListener;
 import com.jme3.scene.Spatial;
 
 import lamao.soh.SHConstants;
@@ -32,16 +30,12 @@ public class SHPaddleGunBonus extends SHBonus {
     /** Fire action which will be added after ball activation */
     private SHMouseGunAction action = null;
 
-    private InputHandler inputHandler;
-
     private SHResourceManager manager;
 
     public SHPaddleGunBonus(
                     Spatial model,
-                    InputHandler inputHandler,
                     SHResourceManager resourceManager) {
         super(model);
-        this.inputHandler = inputHandler;
         this.manager = resourceManager;
         setDuration(DEFAULT_DURATION);
     }
@@ -56,7 +50,6 @@ public class SHPaddleGunBonus extends SHBonus {
         paddle.setModel(gunModel);
 
         action = new SHMouseGunAction(scene);
-        inputHandler.addAction(action);
 
     }
 
@@ -68,12 +61,11 @@ public class SHPaddleGunBonus extends SHBonus {
 
         paddle.setModel(model);
 
-        inputHandler.removeAction(action);
         action = null;
     }
 
     /** Class handler for fire-bullet action */
-    private class SHMouseGunAction extends MouseInputAction {
+    private class SHMouseGunAction implements ActionListener {
         private SHScene _scene = null;
 
         private float _timeSinceLastFire = 1000000;
@@ -85,10 +77,9 @@ public class SHPaddleGunBonus extends SHBonus {
         }
 
         @Override
-        public void performAction(InputActionEvent evt) {
-            _timeSinceLastFire += evt.getTime();
-            if (MouseInput.get().isButtonDown(SHOptions.FireButton)
-                            && _timeSinceLastFire > FIRE_INTERVAL) {
+        public void onAction(String name, boolean isPressed, float tpf) {
+            _timeSinceLastFire += tpf;
+            if (_timeSinceLastFire > FIRE_INTERVAL) {
                 _timeSinceLastFire = 0;
                 SHPaddle paddle = _scene.getEntity("paddle", "paddle", SHPaddle.class);
                 BoundingBox bound = (BoundingBox) paddle.getModel().getWorldBound();
@@ -98,14 +89,16 @@ public class SHPaddleGunBonus extends SHBonus {
                 bullet.setName("bullet" + bullet);
                 bullet.setSuper(true);
                 bullet.setVelocity(0, 2, 0);
-                Spatial bulletModel = SHUtils.createSharedModel("bullet" + bullet, (Spatial) manager
-                                .get(SHResourceManager.TYPE_MODEL, SHConstants.BULLET));
-                bullet.setModel(bulletModel);
-                bullet.setLocation(paddle.getLocation().x, paddle.getLocation().y + bound.getYExtent(),
-                                0);
-                bullet.addControl(new SHDefaultBallMover(bullet));
-
-                _scene.add(bullet);
+                Spatial bulletModel = null;
+                throw new UnsupportedOperationException();
+//                SHUtils.createSharedModel("bullet" + bullet, (Spatial) manager
+//                                .get(SHResourceManager.TYPE_MODEL, SHConstants.BULLET));
+//                bullet.setModel(bulletModel);
+//                bullet.setLocation(paddle.getLocation().x, paddle.getLocation().y + bound.getYExtent(),
+//                                0);
+//                bullet.addControl(new SHDefaultBallMover(bullet));
+//
+//                _scene.add(bullet);
             }
 
         }

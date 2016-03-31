@@ -78,8 +78,7 @@ public class SHLevelService {
         ball.setType("ball");
         ball.setName("ball" + ball);
         Spatial model = (Spatial) resourceManager.get(SHResourceManager.TYPE_MODEL, "ball");
-        model = SHUtils.createSharedModel("shared-ball", model);
-        ball.setModel(model);
+        ball.setModel(model.clone());
 
         SHPaddle paddle = new SHPaddle();
         paddle.setType("paddle");

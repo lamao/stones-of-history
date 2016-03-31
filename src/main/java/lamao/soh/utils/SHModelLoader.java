@@ -14,11 +14,10 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import com.jme3.export.binary.BinaryImporter;
 import lamao.soh.utils.deled.SHDpsToJme;
 
 import com.jme3.scene.Spatial;
-import com.jme3.util.export.binary.BinaryImporter;
-import com.jme3x.model.converters.ObjToJme;
 
 /**
  * Imports models from different file formats
@@ -109,21 +108,22 @@ public class SHModelLoader
 	
 	public static Spatial loadObj(URL modelURL) 
 	{
-		Spatial model = null;
-        ObjToJme converter=new ObjToJme();
-        try 
-        {
-            converter.setProperty("mtllib",modelURL);
-            converter.setProperty("texdir", modelURL);
-            ByteArrayOutputStream BO=new ByteArrayOutputStream();   
-            converter.convert(modelURL.openStream(),BO);
-            model = (Spatial)BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
-        }
-        catch (IOException e) 
-        {
-            System.err.println("Failed to load Obj file" + e);
-        }
-        return model;
+        throw new UnsupportedOperationException();
+//		Spatial model = null;
+//        ObjToJme converter = new ObjToJme();
+//        try
+//        {
+//            converter.setProperty("mtllib",modelURL);
+//            converter.setProperty("texdir", modelURL);
+//            ByteArrayOutputStream BO=new ByteArrayOutputStream();
+//            converter.convert(modelURL.openStream(),BO);
+//            model = (Spatial)BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
+//        }
+//        catch (IOException e)
+//        {
+//            System.err.println("Failed to load Obj file" + e);
+//        }
+//        return model;
     }
 	
 	public static Spatial loadDps(File file)

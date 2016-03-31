@@ -19,13 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import lamao.soh.utils.resparser.ISHResourceParser;
-import lamao.soh.utils.resparser.SHBmFontParser;
-import lamao.soh.utils.resparser.SHModelParser;
-import lamao.soh.utils.resparser.SHSoundParser;
-import lamao.soh.utils.resparser.SHTextureParser;
-import lamao.soh.utils.resparser.SHTtFontParser;
-
 /**
  * Class for managing and loading all game resources (sounds, textures).
  * It is implemented as Singleton pattern.
@@ -60,8 +53,8 @@ public class SHResourceManager
 	/** Map of loader for each supported type. There may be no parser for
 	 * particular type. So it can be only stored but not loaded.
 	 */
-	private Map<String, ISHResourceParser> _parsers =
-			new HashMap<String, ISHResourceParser>();
+//	private Map<String, ISHResourceParser> _parsers =
+//			new HashMap<String, ISHResourceParser>();
 	
 	private Map<String, Map<String, Object>> _resources = 
 			new HashMap<String, Map<String, Object>>();
@@ -71,11 +64,11 @@ public class SHResourceManager
 	
 	public SHResourceManager()
 	{
-		setParser(TYPE_MODEL, new SHModelParser());
-		setParser(TYPE_TEXTURE, new SHTextureParser());
-		setParser(TYPE_SOUND, new SHSoundParser());
-		setParser(TYPE_BMFONT, new SHBmFontParser());
-		setParser(TYPE_TTFONT, new SHTtFontParser());
+//		setParser(TYPE_MODEL, new SHModelParser());
+//		setParser(TYPE_TEXTURE, new SHTextureParser());
+//		setParser(TYPE_SOUND, new SHSoundParser());
+//		setParser(TYPE_BMFONT, new SHBmFontParser());
+//		setParser(TYPE_TTFONT, new SHTtFontParser());
 	}
 	
 	/**
@@ -103,33 +96,33 @@ public class SHResourceManager
 //			   _resources.get(type) != null;
 //	}
 	
-	public ISHResourceParser getParser(String type)
-	{
-		return _parsers.get(type);
-	}
+//	public ISHResourceParser getParser(String type)
+//	{
+//		return _parsers.get(type);
+//	}
 	
 	/**
 	 * Sets given parser for specified type. If there is parser for such type
 	 * it will be overridden. If such type is not yet supported it will be
 	 * added to supported types 
-	 * @param type - resource type
-	 * @param parser - parser for specified resource type
+//	 * @param type - resource type
+//	 * @param parser - parser for specified resource type
 	 */
-	public void setParser(String type, ISHResourceParser parser)
-	{
-		_parsers.put(type, parser);
-	}
-	
-	public void removeParser(String type)
-	{
-		_parsers.remove(type);
-	}
-	
-	public Map<String, ISHResourceParser> getParsers()
-	{
-		return _parsers;
-	}
-	
+//	public void setParser(String type, ISHResourceParser parser)
+//	{
+//		_parsers.put(type, parser);
+//	}
+//
+//	public void removeParser(String type)
+//	{
+//		_parsers.remove(type);
+//	}
+//
+//	public Map<String, ISHResourceParser> getParsers()
+//	{
+//		return _parsers;
+//	}
+//
 	public Map<String, Map<String, Object>> getResources()
 	{
 		return _resources;
@@ -302,24 +295,25 @@ public class SHResourceManager
 	 */
 	public int parseOneLine(String line)
 	{
-		int result = 0;
-		if (line != null && line.length() > 0 
-				&& !line.startsWith(COMMENT_PREFIX))
-		{
-			Map<String, String> args = split(line);
-			String type = args.get(ISHResourceParser.TYPE_KEY);
-			if (getParser(type) == null)
-			{
-				_logger.warning("Type <" + args.get(type) + 
-						"> is not supported");
-			}
-			else
-			{
-				getParser(type).parse(args, this);
-			}
-			result = 1;
-		}
-		return result;
+        throw new UnsupportedOperationException();
+//		int result = 0;
+//		if (line != null && line.length() > 0
+//				&& !line.startsWith(COMMENT_PREFIX))
+//		{
+//			Map<String, String> args = split(line);
+//			String type = args.get(ISHResourceParser.TYPE_KEY);
+//			if (getParser(type) == null)
+//			{
+//				_logger.warning("Type <" + args.get(type) +
+//						"> is not supported");
+//			}
+//			else
+//			{
+//				getParser(type).parse(args, this);
+//			}
+//			result = 1;
+//		}
+//		return result;
 	}
 
 	/**

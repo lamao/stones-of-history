@@ -15,9 +15,6 @@ import lamao.soh.states.SHNiftyState;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import com.jmex.game.StandardGame;
-import com.jmex.game.state.GameStateManager;
-
 /**
  * Enter point into the program.
  * @author lamao
@@ -45,7 +42,7 @@ public class SHMain
 		GAME.getStateManager().attach(levelState);
         GAME.getStateManager().attach(niftyState);
         GAME.getStateManager().attach(consoleState);
-		niftyState.setActive(true);
+		niftyState.setEnabled(true);
 	}
 	
 	public static void exit() 

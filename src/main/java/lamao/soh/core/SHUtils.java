@@ -10,11 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
-import com.jme3.scene.SharedMesh;
-import com.jme3.scene.SharedNode;
-import com.jme3.scene.Spatial;
-import com.jme3.scene.TriMesh;
 
 /**
  * Different utility methods
@@ -53,26 +48,6 @@ public class SHUtils
 			angle = (float)(2 * Math.PI - angle);
 		}
 		return angle;
-	}
-	
-	/**
-	 * Creates shared mesh or shared node using <code>source</code>
-	 * @param name - name of shared spatial
-	 * @param source - source model
-	 * @return shared spatial
-	 */
-	public static Spatial createSharedModel(String name, Spatial source)
-	{
-		Spatial result = null;
-		if (source instanceof TriMesh)
-		{
-			result = new SharedMesh(name, (TriMesh)source);
-		}
-		else if (source instanceof Node)
-		{
-			result = new SharedNode(name, (Node)source);
-		}
-		return result;
 	}
 	
 	/**

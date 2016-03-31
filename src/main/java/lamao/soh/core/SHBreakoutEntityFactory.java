@@ -68,7 +68,7 @@ public class SHBreakoutEntityFactory implements ISHEntityFactory {
                     Class<?> klass = Class.forName(className);
                     entity = (SHBonus) klass.newInstance();
                     Spatial model = (Spatial) manager.get(SHResourceManager.TYPE_MODEL, bonusName);
-                    entity.setModel(SHUtils.createSharedModel(entity + "bonus", model));
+                    entity.setModel(model.clone());
                 } catch (ClassNotFoundException e) {
                 } catch (InstantiationException e) {
                 } catch (IllegalAccessException e) {
