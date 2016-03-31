@@ -6,9 +6,9 @@
  */
 package lamao.soh.states;
 
+import com.jme3.app.state.AbstractAppState;
+import com.jme3.renderer.RenderManager;
 import lamao.soh.SHConstants;
-
-import com.jme3x.game.state.BasicGameState;
 
 import de.lessvoid.nifty.Nifty;
 
@@ -16,7 +16,7 @@ import de.lessvoid.nifty.Nifty;
  * @author lamao
  *
  */
-public class SHNiftyState extends BasicGameState {
+public class SHNiftyState extends AbstractAppState {
 
 	public static final String NAME = "menu";
 	
@@ -26,14 +26,11 @@ public class SHNiftyState extends BasicGameState {
 	
 	private SHConstants constants;
 	
-	/**
-	 * @param name
-	 */
-	public SHNiftyState(Nifty nifty, 
+	public SHNiftyState(Nifty nifty,
 			String startScreen,
 			SHConstants constants)
 	{
-		super(NAME);
+		super();
 		this.nifty = nifty;
 		this.startScreen = startScreen;
 		this.constants = constants;
@@ -43,9 +40,9 @@ public class SHNiftyState extends BasicGameState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(float tpf)
+	public void render(RenderManager renderManager)
 	{
-		super.render(tpf);
+		super.render(renderManager);
 		nifty.render(false);
 	}
 	
@@ -63,10 +60,10 @@ public class SHNiftyState extends BasicGameState {
 	* {@inheritDoc}
 	*/
 	@Override
-	public void setActive(boolean active)
+	public void setEnabled(boolean enabled)
 	{
-		super.setActive(active);
-		if (!active) 
+		super.setEnabled(enabled);
+		if (!enabled)
 		{
 			nifty.getNiftyMouse().resetMouseCursor();
 			nifty.exit();

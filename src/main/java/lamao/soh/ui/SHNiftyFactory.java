@@ -8,12 +8,16 @@ package lamao.soh.ui;
 
 import java.util.List;
 
+import com.jme3.app.SimpleApplication;
+import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioRenderer;
+import com.jme3.niftygui.InputSystemJme;
+import com.jme3.niftygui.NiftyJmeDisplay;
+import com.jme3.niftygui.RenderDeviceJme;
+import com.jme3.niftygui.SoundDeviceJme;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.jme.input.JmeInputSystem;
-import de.lessvoid.nifty.jme.render.JmeRenderDevice;
-import de.lessvoid.nifty.jme.sound.JmeSoundDevice;
 import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.tools.TimeProvider;
+import de.lessvoid.nifty.spi.time.impl.FastTimeProvider;
 
 /**
  * Factory class to create {@link Nifty} instanse
@@ -29,12 +33,17 @@ public class SHNiftyFactory
 	 * @param controllers list of screen controllers for screens in UI
 	 * @return instantiated {@link Nifty} object
 	 */
-	public static Nifty createNifty(List<String> configurationFiles,
+	public static Nifty createNifty(
+            SimpleApplication simpleApplication,
+            List<String> configurationFiles,
 			String startScreen,
 			List<ScreenController> controllers)
 	{
-		Nifty nifty = new Nifty(new JmeRenderDevice(), new JmeSoundDevice(), 
-				new JmeInputSystem(), new TimeProvider());
+		Nifty nifty = new Nifty(
+                new RenderDeviceJme(new NiftyJmeDisplay()),
+                new SoundDeviceJme(simpleApplication.getAssetManager(), simpleApplication.getAudioRenderer()),
+				new InputSystemJme(simpleApplication.getInputManager()),
+                new FastTimeProvider());
 		if (configurationFiles.size() > 0) 
 		{
 			String firstFile = configurationFiles.get(0);

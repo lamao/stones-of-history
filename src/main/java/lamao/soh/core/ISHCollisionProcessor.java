@@ -1,8 +1,5 @@
-/* 
- * ISHCollisionProcessor.java 16.09.2012
- * 
- * Copyright 2012 Stones of History
- * All rights reserved. 
+/*
+ * ISHCollisionProcessor.java 16.09.2012 Copyright 2012 Stones of History All rights reserved.
  */
 package lamao.soh.core;
 
@@ -12,40 +9,38 @@ import com.jme3.scene.Node;
 
 /**
  * @author lamao
- *
  */
-public interface ISHCollisionProcessor
-{
+public interface ISHCollisionProcessor {
 
-	/**
-	 * Get all collision tasks specified for this processor
-	 * @return
-	 */
-	List<SHCollisionTask> getCollisionTasks();
+    /**
+     * Get all collision tasks specified for this processor
+     * @return
+     */
+    List<SHCollisionTask> getCollisionTasks();
 
-	/**
-	 * Add collision task
-	 * @param task - collision task
-	 */
-	void addCollisionTask(SHCollisionTask task);
-	
-	/**
-	 * Sets collisions tasks. Replaces current tasks
-	 * @param tasks - list of tasks to set
-	 */
-	void setCollisionTasks(List<SHCollisionTask> tasks);
+    /**
+     * Add collision task
+     * @param task - collision task
+     */
+    void addCollisionTask(SHCollisionTask task);
 
-	/**
-	 * Remove collision task
-	 * @param task
-	 */
-	void removeCollisionTask(SHCollisionTask task);
+    /**
+     * Sets collisions tasks. Replaces current tasks
+     * @param tasks - list of tasks to set
+     */
+    void setCollisionTasks(List<SHCollisionTask> tasks);
 
-	/**
-	 * Check for collission between entities in this rootNode and fire event if
-	 * it was happened. Only those pairs will be checked that have collision task
-	 * @param rootNode - rootNode of the scene
-	 */
-	void processCollisions(Node rootNode);
+    /**
+     * Remove collision task
+     * @param task
+     */
+    void removeCollisionTask(SHCollisionTask task);
+
+    /**
+     * Check for collission between entities in this rootNode and fire event if it was happened.
+     * Only those pairs will be checked that have collision task
+     * @param rootNode - rootNode of the scene
+     */
+    void processCollisions(Node rootNode);
 
 }

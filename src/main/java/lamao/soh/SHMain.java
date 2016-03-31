@@ -9,6 +9,7 @@ package lamao.soh;
 import java.util.logging.Logger;
 
 import lamao.soh.console.SHConsoleState;
+import lamao.soh.core.Application;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.states.SHNiftyState;
 import org.springframework.context.ApplicationContext;
@@ -24,13 +25,13 @@ import com.jmex.game.state.GameStateManager;
  */
 public class SHMain
 {
-	private static StandardGame GAME = null;
+	private static Application GAME = null;
 
 	public static void main(String args[])
 	{
 		Logger.getLogger("").setLevel(SHOptions.LogLevel);
 		
-		GAME = new StandardGame("Stones of History");
+		GAME = new Application();
 		GAME.start();
 		
 		ApplicationContext applicationContext = new FileSystemXmlApplicationContext(
@@ -40,16 +41,16 @@ public class SHMain
 		SHConsoleState consoleState = applicationContext.getBean(SHConsoleState.class);
 		SHNiftyState niftyState = applicationContext.getBean(SHNiftyState.class);
 		
-		GameStateManager gameStateManager = GameStateManager.getInstance();
-		gameStateManager.attachChild(levelState);
-		gameStateManager.attachChild(niftyState);
-		gameStateManager.attachChild(consoleState);
+
+		GAME.getStateManager().attach(levelState);
+        GAME.getStateManager().attach(niftyState);
+        GAME.getStateManager().attach(consoleState);
 		niftyState.setActive(true);
 	}
 	
 	public static void exit() 
 	{
-		GAME.shutdown();
+		GAME.stop();
 	}
 	
 }

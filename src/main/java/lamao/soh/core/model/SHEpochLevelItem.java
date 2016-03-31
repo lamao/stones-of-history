@@ -1,8 +1,5 @@
-/** 
- * Pair.java 23.11.2012
- * 
- * Copyright 2012 Stones of History
- * All rights reserved. 
+/**
+ * Pair.java 23.11.2012 Copyright 2012 Stones of History All rights reserved.
  */
 package lamao.soh.core.model;
 
@@ -12,42 +9,35 @@ import lamao.soh.core.model.entity.SHLevel;
 /**
  * Pair of epoch and level
  * @author lamao
- *
  */
-public class SHEpochLevelItem
-{
-	private SHEpoch epoch;
-	
-	private SHLevel level;
+public class SHEpochLevelItem {
+    private SHEpoch epoch;
 
-	public SHEpochLevelItem()
-	{
-	}
+    private SHLevel level;
 
-	public SHEpochLevelItem(SHEpoch epoch, SHLevel level)
-	{
-		this.epoch = epoch;
-		this.level = level;
-	}
+    public SHEpochLevelItem() {}
 
-	public SHEpoch getEpoch()
-	{
-		return epoch;
-	}
+    public SHEpochLevelItem(
+                    SHEpoch epoch,
+                    SHLevel level) {
+        this.epoch = epoch;
+        this.level = level;
+    }
 
-	public void setEpoch(SHEpoch epoch)
-	{
-		this.epoch = epoch;
-	}
+    public SHEpoch getEpoch() {
+        return epoch;
+    }
 
-	public SHLevel getLevel()
-	{
-		return level;
-	}
+    public void setEpoch(SHEpoch epoch) {
+        this.epoch = epoch;
+    }
 
-	public void setLevel(SHLevel level)
-	{
-		this.level = level;
-	}
+    public SHLevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(SHLevel level) {
+        this.level = level;
+    }
 
 }

@@ -6,7 +6,7 @@
  */
 package lamao.soh.ui.controllers;
 
-import com.jme3x.game.state.GameStateManager;
+import com.jme3.app.state.AppStateManager;
 
 import lamao.soh.SHConstants;
 import lamao.soh.core.SHBreakoutGameContext;
@@ -30,11 +30,11 @@ public class SHInGameScreenController extends SHBasicScreenController
 	
 	private SHBreakoutGameContext context;
 	private SHConstants constants;	
-	private GameStateManager gameStateManager;
+	private AppStateManager gameStateManager;
 	
 	public SHInGameScreenController(SHBreakoutGameContext context,
 			SHConstants constants,
-			GameStateManager gameStateManager)
+            AppStateManager gameStateManager)
 	{
 		this.context = context;
 		this.constants = constants;
@@ -58,7 +58,7 @@ public class SHInGameScreenController extends SHBasicScreenController
 			label.setText(String.valueOf(value));
 		}
 	}
-	
+
 	public void showCompletedMessage()
 	{
 		showInfoWindow("COMPLETED", "LEVEL COMPLETED", "onLevelFinished");
@@ -82,8 +82,8 @@ public class SHInGameScreenController extends SHBasicScreenController
 	
 	private void gotoEpochsScreen()
 	{
-		gameStateManager.deactivateChildNamed(SHLevelState.NAME);
-		gameStateManager.activateChildNamed(SHNiftyState.NAME);
+		gameStateManager.getState(SHLevelState.class).setEnabled(false);
+		gameStateManager.getState(SHNiftyState.class).setEnabled(true);
 		getNifty().gotoScreen(EPOCHS_SCREEN);
 	}
 	
@@ -146,7 +146,7 @@ public class SHInGameScreenController extends SHBasicScreenController
 	{
 		hideInGameMenu();
 		getNifty().getNiftyMouse().resetMouseCursor();
-		SHLevelState levelState = (SHLevelState) gameStateManager.getChild(SHLevelState.NAME);
+		SHLevelState levelState =  gameStateManager.getState(SHLevelState.class);
 		levelState.setPause(false);
 	}
 	
