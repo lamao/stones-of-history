@@ -7,8 +7,6 @@
 package lamao.soh.console;
 
 import com.jme3.scene.Spatial;
-import com.jme3.scene.state.WireframeState;
-import com.jme3.system.DisplaySystem;
 
 /**
  * Command for switching between normal view and wireframe.
@@ -19,14 +17,10 @@ public class SHWireFrameCommand extends SHBasicCommand
 	/** Spatial for applying command */
 	private Spatial _spatial = null;
 	
-	private DisplaySystem displaySystem;
-	
-	
-	public SHWireFrameCommand(Spatial spatial, DisplaySystem displaySystem)
+	public SHWireFrameCommand(Spatial spatial)
 	{
 		super(1, 1);
 		_spatial = spatial;
-		this.displaySystem = displaySystem;
 	}
 	
 	public Spatial getSpatial()
@@ -42,14 +36,15 @@ public class SHWireFrameCommand extends SHBasicCommand
 	@Override
 	protected void processCommand(String[] args)
 	{
-		if (_spatial != null)
-		{
-			boolean wired = Boolean.parseBoolean(args[1]);
-			WireframeState ws = displaySystem.getRenderer().createWireframeState();
-			ws.setEnabled(wired);
-			_spatial.setRenderState(ws);
-			_spatial.updateRenderState();
-		}
+        warning("Disabled");
+//		if (_spatial != null)
+//		{
+//			boolean wired = Boolean.parseBoolean(args[1]);
+//			WireframeState ws = displaySystem.getRenderer().createWireframeState();
+//			ws.setEnabled(wired);
+//			_spatial.setRenderState(ws);
+//			_spatial.updateRenderState();
+//		}
 		
 	}
 	

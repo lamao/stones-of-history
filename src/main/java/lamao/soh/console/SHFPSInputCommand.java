@@ -6,12 +6,6 @@
  */
 package lamao.soh.console;
 
-import com.jme3.input.FirstPersonHandler;
-import com.jme3.input.InputHandler;
-import com.jme3.renderer.Camera;
-import com.jme3.scene.Controller;
-import com.jme3.system.DisplaySystem;
-
 import lamao.soh.core.SHScene;
 
 /**
@@ -32,56 +26,57 @@ public class SHFPSInputCommand extends SHBasicCommand
 	@Override
 	public void processCommand(String[] args)
 	{
-		Boolean enable = Boolean.valueOf(args[1]);
-		FPSInputController controller = findController();
-		if (enable) 
-		{
-			if (controller == null)
-			{
-				scene.getRootNode().addController(new FPSInputController(scene));
-			}
-		}
-		else if (controller != null)
-		{
-			scene.getRootNode().removeController(controller);
-		}
+        warning("Disabled");
+//		Boolean enable = Boolean.valueOf(args[1]);
+//		FPSInputController controller = findController();
+//		if (enable)
+//		{
+//			if (controller == null)
+//			{
+//				scene.getRootNode().addController(new FPSInputController(scene));
+//			}
+//		}
+//		else if (controller != null)
+//		{
+//			scene.getRootNode().removeController(controller);
+//		}
 	}
 	
-	private FPSInputController findController()
-	{
-		for (Controller controller : scene.getRootNode().getControllers())
-		{
-			if (controller instanceof FPSInputController)
-			{
-				return (FPSInputController) controller;
-			}
-		}
-		return null;
-	}
-	
-	@SuppressWarnings("serial")
-	public class FPSInputController extends Controller
-	{
-		private InputHandler input = null;
-		
-		public FPSInputController(SHScene scene)
-		{
-			DisplaySystem display = DisplaySystem.getDisplaySystem();
-			Camera cam = display.getRenderer().getCamera();
-			input = new FirstPersonHandler(cam);
-		}
-		@Override
-		public void update(float time)
-		{
-			input.update(time);
-		}
-	}
-	
-	@Override
-	protected String getHelpMessage()
-	{
-		return "Arguments: true|false";
-	}
-	
+//	private FPSInputController findController()
+//	{
+//		for (Controller controller : scene.getRootNode().getControllers())
+//		{
+//			if (controller instanceof FPSInputController)
+//			{
+//				return (FPSInputController) controller;
+//			}
+//		}
+//		return null;
+//	}
+//
+//	@SuppressWarnings("serial")
+//	public class FPSInputController extends Controller
+//	{
+//		private InputHandler input = null;
+//
+//		public FPSInputController(SHScene scene)
+//		{
+//			DisplaySystem display = DisplaySystem.getDisplaySystem();
+//			Camera cam = display.getRenderer().getCamera();
+//			input = new FirstPersonHandler(cam);
+//		}
+//		@Override
+//		public void update(float time)
+//		{
+//			input.update(time);
+//		}
+//	}
+//
+//	@Override
+//	protected String getHelpMessage()
+//	{
+//		return "Arguments: true|false";
+//	}
+//
 
 }

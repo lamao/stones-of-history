@@ -6,9 +6,9 @@
  */
 package lamao.soh.console;
 
+import com.jme3.app.SimpleApplication;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.system.DisplaySystem;
 
 /**
  * Console command to setup camera location
@@ -17,14 +17,14 @@ import com.jme3.system.DisplaySystem;
  */
 public class SHCameraDirectionCommand extends SHBasicCommand
 {
-	private DisplaySystem displaySystem;
+	private SimpleApplication simpleApplication;
 	
 	
 	
-	public SHCameraDirectionCommand(DisplaySystem displaySystem)
+	public SHCameraDirectionCommand(SimpleApplication simpleApplication)
 	{
 		super(3, 3);
-		this.displaySystem = displaySystem;
+		this.simpleApplication = simpleApplication;
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class SHCameraDirectionCommand extends SHBasicCommand
 	{
 		try
 		{
-    		Camera camera = displaySystem.getRenderer().getCamera();
+    		Camera camera = simpleApplication.getCamera();
     		camera.lookAt(new Vector3f(
     				Float.parseFloat(args[1]),
     				Float.parseFloat(args[2]),

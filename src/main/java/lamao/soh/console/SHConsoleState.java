@@ -10,15 +10,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.jme3.app.state.AbstractAppState;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.math.ColorRGBA;
+import lamao.soh.core.Application;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 import com.jme3.input.KeyInput;
-import com.jme3.input.KeyInputListener;
-import com.jme3.renderer.ColorRGBA;
-import com.jme3.scene.Text;
-import com.jme3.system.DisplaySystem;
-import com.jme3x.game.state.BasicGameState;
 
 /**
  * Game console. Can be used for debugging or any other purposes.
@@ -35,7 +36,7 @@ import com.jme3x.game.state.BasicGameState;
  * maintained. You should do it youself.
  * @author lamao
  */
-public class SHConsoleState extends BasicGameState implements KeyInputListener
+public class SHConsoleState extends AbstractAppState implements ActionListener
 {
 	/** Name of this game state */
 	public final static String STATE_NAME = "console";
@@ -56,40 +57,41 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	public final static int DEFAULT_LINES_NUMBER = 10;
 	
 	/** Default console color (used for commands */
-	public final static ColorRGBA DEFAULT_COLOR = ColorRGBA.white.clone();
+	public final static ColorRGBA DEFAULT_COLOR = ColorRGBA.White.clone();
 	
 	/** Default color for messages */
-	public final static ColorRGBA INFO_COLOR = ColorRGBA.gray.clone();
+	public final static ColorRGBA INFO_COLOR = ColorRGBA.Gray.clone();
 	
 	/** Default color for warnings */
-	public final static ColorRGBA WARNING_COLOR = ColorRGBA.yellow.clone();
+	public final static ColorRGBA WARNING_COLOR = ColorRGBA.Yellow.clone();
 	
 	/** Default color for errors */
-	public final static ColorRGBA ERROR_COLOR = ColorRGBA.red.clone();
-		
-	
-	/** Characters used for splitting command into arguments */
+	public final static ColorRGBA ERROR_COLOR = ColorRGBA.Red.clone();
+
+
+    /** Characters used for splitting command into arguments */
 	private final static String SPLITTERS = "[ =]";
-	
-	/** Registered commands */
-	private SHEventDispatcher _commands = new SHEventDispatcher();
+
+    /** Registered commands */
+	private SHEventDispatcher commands = new SHEventDispatcher();
 
 	/** Visual text components for displaying commands */
-	private Text[] _console = null;
+	private BitmapText[] console = null;
 	
 	/** Key which switches console on/off */
-	private int _switchKey = KeyInput.KEY_GRAVE;
+	private int switchKey = KeyInput.KEY_GRAVE;
 
-	/** Command history. _history[0] - the latest command */
-	private SHCapacityList<String> _history = null;
+	/** Command history. history[0] - the latest command */
+	private SHCapacityList<String> history = null;
 	
 	/** Index of currently selected command from history */
 	private int _historyIndex = -1;
-	
+
+    private Application application;
+
 	public SHConsoleState(String name)
 	{
 		this(KeyInput.KEY_GRAVE, DEFAULT_HISTORY_SIZE, DEFAULT_LINES_NUMBER);
-		setName(name);
 	}
 	
 	public SHConsoleState()
@@ -99,17 +101,13 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	
 	public SHConsoleState(int switchKey, int historySize, int numLines)
 	{
-		super(STATE_NAME);
-		_switchKey = switchKey;
-		_history = new SHCapacityList<String>(historySize);
+		this.switchKey = switchKey;
+		history = new SHCapacityList<String>(historySize);
 		
 		initGUI(numLines);
-		bindKeys();
-		
-		initDefaultCommands();
-		
-		rootNode.updateRenderState();
-	}
+        bindKeys();
+        initDefaultCommands();
+    }
 	
 	private void initDefaultCommands()
 	{
@@ -120,27 +118,27 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	/** Initializes all gui */
 	private void initGUI(int numLines)
 	{
-		DisplaySystem display = DisplaySystem.getDisplaySystem();
-		
-		_console = new Text[numLines];
+
+        BitmapFont guiFont = application.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
+		console = new BitmapText[numLines];
 		for (int i = 0; i < numLines; i++)
 		{
-			_console[i] = Text.createDefaultTextLabel("console" + i, "");
-			_console[i].setLocalTranslation(0, display.getHeight() 
-					- _console[i].getHeight() * (numLines - i), 0);
-			rootNode.attachChild(_console[i]);
+			console[i] = new BitmapText(guiFont);
+            console[i].setSize(guiFont.getCharSet().getRenderedSize());
+			console[i].setLocalTranslation(0, console[i].getHeight() * (numLines - i), 0);
+
+            application.getGuiNode().attachChild(console[i]);
 		}
-		_console[0].print(PROMT);
+		console[0].setText(PROMT);
 	}
 	
 	private void bindKeys()
 	{
-		KeyInput.get().addListener(this);
 	}
 	
 	public void add(String command, ISHEventHandler handler)
 	{
-		_commands.addHandler(command, handler);
+		commands.addHandler(command, handler);
 	}
 	
 	/**
@@ -150,7 +148,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	 */
 	public void setCommands(Map<String, ISHEventHandler> commands)
 	{
-		_commands.reset();
+		this.commands.reset();
 		initDefaultCommands();
 		for (Map.Entry<String, ISHEventHandler> command : commands.entrySet())
 		{
@@ -160,16 +158,16 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	
 	public Set<String> getSupportedCommands()
 	{
-		return _commands.getHandledEvents();
+		return commands.getHandledEvents();
 	}
 	
 	/** Returns text, currently showed in console */
 	public String[] getContents()
 	{
-		String[] result = new String[_console.length];
-		for (int i = 0; i < _console.length; i++)
+		String[] result = new String[console.length];
+		for (int i = 0; i < console.length; i++)
 		{
-			result[i] = _console[i].getText().toString();
+			result[i] = console[i].getText().toString();
 		}
 		return result;
 	}
@@ -187,7 +185,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		
 		saveCommand(cmd);
 		
-		if (!_commands.hasHandler(name))
+		if (!commands.hasHandler(name))
 		{
 			warning("Command <" + name +"> is not supported");
 		}
@@ -197,7 +195,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 			Map<String, Object> args = new HashMap<String, Object>();
 			args.put("args", arguments);
 			args.put("console", this);
-			_commands.addEvent(name, this, args);
+			commands.addEvent(name, this, args);
 		}
 	}
 	
@@ -205,71 +203,71 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	/** Saves command to history */
 	private void saveCommand(String cmd)
 	{
-		_history.add(0, cmd);
+		history.add(0, cmd);
 	}
-	
-	@Override
-	public void onKey(char character, int keyCode, boolean pressed)
-	{
-		if (!pressed)
+
+    @Override
+    public void onAction(String name, boolean isPressed, float tpf)
+    {
+		if (!isPressed)
 		{
 			return;
 		}
 		
-		if (keyCode == _switchKey)
+		if (name.equals(InputMapping.SWITCH.getName()))
 		{
-			setActive(!isActive());
+			setEnabled(!isEnabled());
 			return;
 		}
 		
-		if (!isActive())
+		if (!isEnabled())
 		{
 			return;
 		}
 		
-		if (keyCode == KeyInput.KEY_RETURN)
+		if (name.equals(InputMapping.EXECUTE.getName()))
 		{
-			String cmd = _console[0].getText().toString();
+			String cmd = console[0].getText().toString();
 			cmd = cmd.substring(PROMT.length(), cmd.length());
 			scrollUp();			
 			execute(cmd);
 			_historyIndex = -1;
 		}
-		else if (keyCode == KeyInput.KEY_BACK)
+		else if (name.equals(InputMapping.DELETE_LAST_CHARACTER.getName()))
 		{
-			if (KeyInput.get().isControlDown())
+//			if (KeyInput.get().isControlDown())
+//			{
+//				setText("");
+//			}
+//			else
 			{
-				setText("");
-			}
-			else
-			{
-				StringBuffer s = _console[0].getText();
+				String s = console[0].getText();
 				if (s.length() > PROMT.length())
 				{
-					s.deleteCharAt(s.length() - 1);
+					console[0].setText(s.substring(0, s.length() - 1));
 				}
 			}
 		}
-		else if (keyCode == KeyInput.KEY_UP)
+		else if (name.equals(InputMapping.PREVIOUS_COMMAND.getName()))
 		{
-			if (_history.isEmpty())
+			if (history.isEmpty())
 			{
 				info("Command history is empty");
 			}
 			else
 			{
 				_historyIndex++;
-				if (_historyIndex >= _history.size())
+				if (_historyIndex >= history.size())
 				{
-					_historyIndex = _history.size() - 1;
+					_historyIndex = history.size() - 1;
 					info("Command {" + _historyIndex + "} is the oldest saved command");
 				}
-				setText(_history.get(_historyIndex));
+				setText(history.get(_historyIndex));
 			}
 		}
-		else if (keyCode == KeyInput.KEY_DOWN)
+		else if (name.equals(InputMapping.NEXT_COMMAND.getName()))
 		{
-			if (_history.isEmpty())
+			if (history.isEmpty())
 			{
 				info("Command history is empty");
 			}
@@ -281,13 +279,13 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 					_historyIndex = 0;
 					info("Command {" + _historyIndex + "} is the latest saved command");
 				}
-				setText(_history.get(_historyIndex));
+				setText(history.get(_historyIndex));
 			}
 		}
-		else if (isValidCharacter(character) && !Character.isISOControl(character))
-		{
-			_console[0].getText().append(character);
-		}
+//		else if (isValidCharacter(character) && !Character.isISOControl(character))
+//		{
+//			console[0].setText(console[0].getText() + character);
+//		}
 		
 	}
 	
@@ -300,13 +298,13 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	}
 
 	@Override
-	public void setActive(boolean active)
+	public void setEnabled(boolean enabled)
 	{
-		if (active)
+		if (enabled)
 		{
 			setText("");
 		}
-		super.setActive(active);
+		super.setEnabled(enabled);
 	}
 	
 	/** Print message and scroll console one line up */
@@ -314,7 +312,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	{
 		setText(message, color);
 		scrollUp();
-		_console[0].print(PROMT);
+		console[0].setText(PROMT);
 	}
 	
 	public void info(String message)
@@ -339,8 +337,8 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		{
 			message = "";
 		}
-		_console[0].setTextColor(color);
-		_console[0].print(PROMT + message);
+		console[0].setColor(color);
+		console[0].setText(PROMT + message);
 	}
 	
 	private void setText(String message)
@@ -351,17 +349,17 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 	/** Scrolls all lines up one line */ 
 	private void scrollUp()
 	{
-		if (_console[0].getText().indexOf(PROMT) == 0)
+		if (console[0].getText().indexOf(PROMT) == 0)
 		{
-			_console[0].getText().replace(0, PROMT.length(), "");
+			console[0].setText(console[0].getText().substring(PROMT.length()));
 		}
-		for (int i = _console.length - 1; i > 0; i--)
+		for (int i = console.length - 1; i > 0; i--)
 		{
-			_console[i].setTextColor(_console[i - 1].getTextColor());
-			_console[i].print(_console[i - 1].getText());
+			console[i].setColor(console[i - 1].getColor());
+			console[i].setText(console[i - 1].getText());
 		}
-		_console[0].setTextColor(DEFAULT_COLOR);
-		_console[0].print(PROMT);
+		console[0].setColor(DEFAULT_COLOR);
+		console[0].setText(PROMT);
 	}
 	
 	/** 'exit' command */ 
@@ -370,7 +368,7 @@ public class SHConsoleState extends BasicGameState implements KeyInputListener
 		@Override
 		public void processCommand(String[] args)
 		{
-			setActive(false);
+			setEnabled(false);
 		}
 	}
 

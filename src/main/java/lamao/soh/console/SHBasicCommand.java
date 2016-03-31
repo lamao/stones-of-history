@@ -6,7 +6,7 @@
  */
 package lamao.soh.console;
 
-import com.jme3.renderer.ColorRGBA;
+import com.jme3.math.ColorRGBA;
 
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEvent;
@@ -26,7 +26,7 @@ public abstract class SHBasicCommand implements ISHEventHandler
 	private int _maxNumArgs = Integer.MAX_VALUE;
 	
 	/** Link to console for internal usage */
-	private SHConsoleState _console = null;
+	private SHConsoleState console = null;
 	
 	/** Argument to get help message about command */
 	public final static String HELP_ARG = "?";
@@ -65,7 +65,7 @@ public abstract class SHBasicCommand implements ISHEventHandler
 	public void processEvent(SHEvent event)
 	{
 		String[] args = event.getParameter(SHConsoleState.ARGS_KEY, String[].class);
-		_console = event.getParameter(SHConsoleState.CONSOLE_KEY, SHConsoleState.class);
+		console = event.getParameter(SHConsoleState.CONSOLE_KEY, SHConsoleState.class);
 		if (args == null)
 		{
 			error("Command is not typed");
@@ -95,33 +95,33 @@ public abstract class SHBasicCommand implements ISHEventHandler
 	
 	protected void print(String message, ColorRGBA color)
 	{
-		if (_console != null)
+		if (console != null)
 		{
-			_console.print(message, color);
+			console.print(message, color);
 		}
 	}
 	
 	protected void info(String message)
 	{
-		if (_console != null)
+		if (console != null)
 		{
-			_console.info(message);
+			console.info(message);
 		}
 	}
 	
 	protected void warning(String message)
 	{
-		if (_console != null)
+		if (console != null)
 		{
-			_console.warning(message);
+			console.warning(message);
 		}
 	}
 	
 	protected void error(String message)
 	{
-		if (_console != null)
+		if (console != null)
 		{
-			_console.error(message);
+			console.error(message);
 		}
 	}
 
