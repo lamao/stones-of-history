@@ -48,7 +48,8 @@ public class SHEpochsScreenController extends SHBasicScreenController
 	/**
 	 *
 	 */
-	public SHEpochsScreenController(AppStateManager manager,
+	public SHEpochsScreenController(
+            AppStateManager manager,
 			SHBreakoutGameContext gameContext,
 			SHEpochService epochService,
 			SHLevelService levelService)

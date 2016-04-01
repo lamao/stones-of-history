@@ -28,21 +28,16 @@ public class SHMain
 	{
 		Logger.getLogger("").setLevel(SHOptions.LogLevel);
 		
-		GAME = new Application();
-		GAME.start();
-		
 		ApplicationContext applicationContext = new FileSystemXmlApplicationContext(
 				"data/spring/rootApplicationContext.xml");
-		
-		SHLevelState levelState = applicationContext.getBean(SHLevelState.class);
-		SHConsoleState consoleState = applicationContext.getBean(SHConsoleState.class);
-		SHNiftyState niftyState = applicationContext.getBean(SHNiftyState.class);
-		
 
-		GAME.getStateManager().attach(levelState);
-        GAME.getStateManager().attach(niftyState);
-        GAME.getStateManager().attach(consoleState);
-		niftyState.setEnabled(true);
+		SHLevelState levelState = applicationContext.getBean(SHLevelState.class);
+        SHConsoleState consoleState = applicationContext.getBean(SHConsoleState.class);
+        SHNiftyState niftyState = applicationContext.getBean(SHNiftyState.class);
+
+        GAME = applicationContext.getBean(Application.class);
+        GAME.getStateManager().attachAll(levelState, consoleState, niftyState);
+        GAME.start();
 	}
 	
 	public static void exit() 

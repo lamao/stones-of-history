@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.ColorRGBA;
-import lamao.soh.core.Application;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEventDispatcher;
 
@@ -87,7 +87,7 @@ public class SHConsoleState extends AbstractAppState implements ActionListener
 	/** Index of currently selected command from history */
 	private int _historyIndex = -1;
 
-    private Application application;
+    private SimpleApplication application;
 
 	public SHConsoleState(String name)
 	{

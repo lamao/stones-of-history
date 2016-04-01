@@ -6,12 +6,13 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+<!-- Main application -->
+<bean id="application" class="lamao.soh.core.Application" >
+    <constructor-arg value="assets"/>
+</bean>
+
+<bean id="appStateManager" factory-bean="application" factory-method="getStateManager"/>
 <!--  Engine beans -->
-<bean id="gameStateManager" class="com.jmex.game.state.GameStateManager" 
-	factory-method="getInstance"/>
-	
-<bean id="displaySystem" class="com.jme.system.DisplaySystem" 
-	factory-method="getDisplaySystem"/>
 
 <!-- Services -->
 <bean id="constants" class="lamao.soh.SHConstants"/>
@@ -51,7 +52,6 @@
 
 <bean id="scene" class="lamao.soh.core.SHScene">
 	<constructor-arg ref="collisionProcessor"/>
-	<constructor-arg ref="inGameInputHandler"/>
 </bean>
 
 <bean id="sceneLoader" class="lamao.soh.utils.deled.SHSceneLoader">
@@ -59,12 +59,8 @@
 	<constructor-arg ref="entityFactory"/>
 </bean>
 
-<bean id="inGameInputHandler" class="com.jme.input.InputHandler"/>
-<!--bean id="inGameInputHandler" class="lamao.soh.core.input.SHBreakoutInputHandler">
-	
-</bean-->
-
 <bean id="nifty" class="lamao.soh.ui.SHNiftyFactory" factory-method="createNifty">
+    <constructor-arg ref="application"/>
     <constructor-arg>
         <list>
             <value>data/nifty/main.xml</value>
@@ -92,7 +88,6 @@
 
 <bean id="levelState" class="lamao.soh.states.SHLevelState">
 	<constructor-arg ref="dispatcher"/>
-	<constructor-arg ref="displaySystem"/>
 	<constructor-arg ref="nifty"/>
 	<constructor-arg value="ingame"/>
 	<constructor-arg ref="ingameScreenController"/>
@@ -106,8 +101,7 @@
 	</property>
 </bean>
 
-<bean id="levelStateRootNode" factory-bean="levelState" 
-	factory-method="getRootNode"/>
+<bean id="levelStateRootNode" factory-bean="levelState" factory-method="getRootNode"/>
 	
 <!--  Nifty screen controllers -->
 <bean id="mainMenuScreenController" class="lamao.soh.ui.controllers.SHMainMenuScreenController">
@@ -123,7 +117,7 @@
 </bean>
 
 <bean id="epochsScreenController" class="lamao.soh.ui.controllers.SHEpochsScreenController">
-    <constructor-arg ref="gameStateManager"/>
+    <constructor-arg ref="appStateManager"/>
     <constructor-arg ref="gameContext"/>
     <constructor-arg ref="epochService"/>
     <constructor-arg ref="levelService"/>
@@ -132,7 +126,7 @@
 <bean id="ingameScreenController" class="lamao.soh.ui.controllers.SHInGameScreenController">
     <constructor-arg ref="gameContext"/>
     <constructor-arg ref="constants"/>
-    <constructor-arg ref="gameStateManager"/>
+    <constructor-arg ref="appStateManager"/>
 </bean>
 
 <bean id="aboutScreenController" class="lamao.soh.ui.controllers.SHAboutScreenController">

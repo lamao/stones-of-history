@@ -7,7 +7,6 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Node;
-import lamao.soh.core.Application;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.model.SHEpochLevelItem;
 import lamao.soh.ui.controllers.SHInGameScreenController;
@@ -16,7 +15,6 @@ import lamao.soh.utils.events.SHEventDispatcher;
 import com.jme3.light.PointLight;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.renderer.Renderer;
 
 import de.lessvoid.nifty.Nifty;
 
@@ -25,7 +23,6 @@ import de.lessvoid.nifty.Nifty;
  * @author lamao
  */
 public class SHLevelState extends AbstractAppState {
-    public static final String NAME = "Level state";
 
     /** Level for playing */
     private SHScene scene = null;
@@ -36,7 +33,7 @@ public class SHLevelState extends AbstractAppState {
     /** Indicates whether draw normals for scene */
     private boolean drawNormals = false;
 
-    private boolean _pause = false;
+    private boolean pause = false;
 
     /** Dispatcher used to fire events */
     private SHEventDispatcher dispatcher;
@@ -90,7 +87,7 @@ public class SHLevelState extends AbstractAppState {
     @Override
     public void update(float tpf) {
         nifty.update();
-        if (!_pause) {
+        if (!pause) {
             super.update(tpf);
             scene.update(tpf);
             dispatcher.update(tpf);
@@ -121,11 +118,11 @@ public class SHLevelState extends AbstractAppState {
     }
 
     public void setPause(boolean pause) {
-        _pause = pause;
+        this.pause = pause;
     }
 
     public boolean isPause() {
-        return _pause;
+        return pause;
     }
 
     public boolean isDrawBounds() {

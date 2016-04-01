@@ -29,9 +29,12 @@ dependencies {
     compile "com.jme3:jme3-terrain:$jmeVersion"
     compile "com.jme3:jme3-blender:$jmeVersion"
     compile "com.jme3:jme3-jbullet:$jmeVersion"
-    compile "com.jme3:jme3-niftygui:$jmeVersion"
     compile "com.jme3:jme3-desktop:$jmeVersion"
     compile "com.jme3:jme3-lwjgl:$jmeVersion"
+
+    // Nifty
+    runtime 'org.bushe:eventbus:1.4'
+    compile "com.jme3:jme3-niftygui:$jmeVersion"
 
     // Mockito
     compile 'org.mockito:mockito-core:1.9.0'

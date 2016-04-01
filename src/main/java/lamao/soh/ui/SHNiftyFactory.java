@@ -9,8 +9,6 @@ package lamao.soh.ui;
 import java.util.List;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioRenderer;
 import com.jme3.niftygui.InputSystemJme;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.niftygui.RenderDeviceJme;
@@ -39,23 +37,24 @@ public class SHNiftyFactory
 			String startScreen,
 			List<ScreenController> controllers)
 	{
-		Nifty nifty = new Nifty(
-                new RenderDeviceJme(new NiftyJmeDisplay()),
-                new SoundDeviceJme(simpleApplication.getAssetManager(), simpleApplication.getAudioRenderer()),
-				new InputSystemJme(simpleApplication.getInputManager()),
-                new FastTimeProvider());
-		if (configurationFiles.size() > 0) 
+        NiftyJmeDisplay niftyJmeDisplay = new NiftyJmeDisplay(
+                simpleApplication.getAssetManager(),
+                simpleApplication.getInputManager(),
+                simpleApplication.getAudioRenderer(),
+                simpleApplication.getGuiViewPort());
+        Nifty nifty = niftyJmeDisplay.getNifty();
+		if (configurationFiles.size() > 0)
 		{
 			String firstFile = configurationFiles.get(0);
-			ScreenController controllersArray[] = controllers.toArray(new ScreenController[0]);
-			nifty.fromXml(firstFile, startScreen, controllersArray);
+			nifty.fromXml(firstFile, startScreen, controllers.toArray(new ScreenController[0]));
 		}
 		
 		for (int i = 1; i < configurationFiles.size(); i++)
 		{
 			nifty.addXml(configurationFiles.get(i));
 		}
-		
+
+        simpleApplication.getGuiViewPort().addProcessor(niftyJmeDisplay);
 		nifty.registerMouseCursor("default", "data/cursors/nifty-cursor.png", 0, 23);
 		
 		return nifty;

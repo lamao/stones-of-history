@@ -15,7 +15,7 @@ import com.jme3.scene.Spatial;
  */
 public class SHScene {
     /** Root node of the scene */
-    private Node _rootNode = new Node("scene-root");
+    private Node rootNode = new Node("scene-root");
 
     private ISHCollisionProcessor collisionProcessor;
 
@@ -26,11 +26,11 @@ public class SHScene {
     }
 
     public void setRootNode(Node rootNode) {
-        _rootNode = rootNode;
+        this.rootNode = rootNode;
     }
 
     public Node getRootNode() {
-        return _rootNode;
+        return rootNode;
     }
 
     public ISHCollisionProcessor getCollisionProcessor() {
@@ -45,10 +45,10 @@ public class SHScene {
      * @return number of model groups in the scene
      */
     public int getNumberOfTypes() {
-        if (_rootNode.getChildren() == null) {
+        if (rootNode.getChildren() == null) {
             return 0;
         }
-        return _rootNode.getChildren().size();
+        return rootNode.getChildren().size();
     }
 
     /**
@@ -56,7 +56,7 @@ public class SHScene {
      * @return list of models of given types
      */
     public List<Spatial> get(String type) {
-        Spatial typeNode = _rootNode.getChild(type);
+        Spatial typeNode = rootNode.getChild(type);
         if (typeNode instanceof Node) {
             return ((Node) typeNode).getChildren();
         }
@@ -80,7 +80,7 @@ public class SHScene {
     }
 
     public Spatial get(String type, String name) {
-        Spatial typeNode = _rootNode.getChild(type);
+        Spatial typeNode = rootNode.getChild(type);
         if (typeNode instanceof Node) {
             return ((Node) typeNode).getChild(name);
         }
@@ -106,10 +106,10 @@ public class SHScene {
      * @param model
      */
     public void add(String type, Spatial model) {
-        Node nodeGroup = (Node) _rootNode.getChild(type);
+        Node nodeGroup = (Node) rootNode.getChild(type);
         if (nodeGroup == null) {
             nodeGroup = new Node(type);
-            _rootNode.attachChild(nodeGroup);
+            rootNode.attachChild(nodeGroup);
         }
         nodeGroup.attachChild(model);
     }
@@ -125,11 +125,11 @@ public class SHScene {
      * @param model
      */
     public void remove(String type, Spatial model) {
-        Node nodeGroup = (Node) _rootNode.getChild(type);
+        Node nodeGroup = (Node) rootNode.getChild(type);
         if (nodeGroup != null) {
             nodeGroup.detachChild(model);
             if (nodeGroup.getChildren().isEmpty()) {
-                _rootNode.detachChild(nodeGroup);
+                rootNode.detachChild(nodeGroup);
             }
         }
     }
@@ -147,7 +147,7 @@ public class SHScene {
      * @param tpf
      */
     public void update(float tpf) {
-        collisionProcessor.processCollisions(_rootNode);
+        collisionProcessor.processCollisions(rootNode);
     }
 
     /**
@@ -155,7 +155,7 @@ public class SHScene {
      * method is cleaning the scene loading other level
      */
     public void reset() {
-        _rootNode.detachAllChildren();
+        rootNode.detachAllChildren();
     }
 
     /**
