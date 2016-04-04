@@ -3,6 +3,7 @@
  */
 package lamao.soh.states;
 
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.RenderManager;
@@ -45,18 +46,25 @@ public class SHLevelState extends AbstractAppState {
 
     private SHInGameScreenController inGameScreenController;
 
+
+    private SimpleApplication application;
+
     private Node rootNode;
 
     private Camera camera;
 
-    // TODO: Move to constructor scene and inputhandler
+    // TODO: Move to constructor scene
     public SHLevelState(
+                    SimpleApplication application,
                     SHEventDispatcher dispatcher,
                     Nifty nifty,
                     String startNiftyScreen,
                     SHInGameScreenController inGameScreenController) {
         super();
 
+        this.application = application;
+        rootNode = application.getRootNode();
+        camera = application.getCamera();
         this.dispatcher = dispatcher;
         this.nifty = nifty;
         this.startNiftyScreen = startNiftyScreen;
@@ -97,7 +105,7 @@ public class SHLevelState extends AbstractAppState {
     @Override
     public void render(RenderManager renderManager) {
         super.render(renderManager);
-        nifty.render(false);
+//        nifty.render(false);
     }
 
     @Override
@@ -143,5 +151,13 @@ public class SHLevelState extends AbstractAppState {
 
     public void setLevelInfo(SHEpochLevelItem levelInfo) {
         inGameScreenController.setLevelInfo(levelInfo);
+    }
+
+    /**
+     * Used in Spring context
+     * @return
+     */
+    public Node getRootNode() {
+        return rootNode;
     }
 }

@@ -7,9 +7,7 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 <!-- Main application -->
-<bean id="application" class="lamao.soh.core.Application" >
-    <constructor-arg value="assets"/>
-</bean>
+<!-- bean 'application' is injected in context by java code -->
 
 <bean id="appStateManager" factory-bean="application" factory-method="getStateManager"/>
 <!--  Engine beans -->
@@ -63,8 +61,8 @@
     <constructor-arg ref="application"/>
     <constructor-arg>
         <list>
-            <value>data/nifty/main.xml</value>
-            <value>data/nifty/ingame.xml</value>
+            <value>nifty/main.xml</value>
+            <value>nifty/ingame.xml</value>
         </list>
     </constructor-arg>
     <constructor-arg value="start"/>
@@ -87,18 +85,13 @@
 </bean>
 
 <bean id="levelState" class="lamao.soh.states.SHLevelState">
+    <constructor-arg ref="application"/>
 	<constructor-arg ref="dispatcher"/>
 	<constructor-arg ref="nifty"/>
 	<constructor-arg value="ingame"/>
 	<constructor-arg ref="ingameScreenController"/>
 	
 	<property name="scene" ref="scene"/>
-	<property name="inputHandler">
-		<bean class="lamao.soh.core.input.SHLevelStateInputHandler">
-			<constructor-arg ref="levelState"/>
-			<constructor-arg ref="ingameScreenController"/>
-		</bean>
-	</property>
 </bean>
 
 <bean id="levelStateRootNode" factory-bean="levelState" factory-method="getRootNode"/>

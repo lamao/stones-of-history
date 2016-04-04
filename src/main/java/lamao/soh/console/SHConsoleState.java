@@ -38,9 +38,6 @@ import com.jme3.input.KeyInput;
  */
 public class SHConsoleState extends AbstractAppState implements ActionListener
 {
-	/** Name of this game state */
-	public final static String STATE_NAME = "console";
-	
 	/** Promt for console */
 	public  final static String PROMT = "> ";
 
@@ -89,18 +86,14 @@ public class SHConsoleState extends AbstractAppState implements ActionListener
 
     private SimpleApplication application;
 
-	public SHConsoleState(String name)
+	public SHConsoleState(SimpleApplication application)
 	{
-		this(KeyInput.KEY_GRAVE, DEFAULT_HISTORY_SIZE, DEFAULT_LINES_NUMBER);
+		this(application, KeyInput.KEY_GRAVE, DEFAULT_HISTORY_SIZE, DEFAULT_LINES_NUMBER);
 	}
 	
-	public SHConsoleState()
+	public SHConsoleState(SimpleApplication application, int switchKey, int historySize, int numLines)
 	{
-		this(STATE_NAME);
-	}
-	
-	public SHConsoleState(int switchKey, int historySize, int numLines)
-	{
+        this.application = application;
 		this.switchKey = switchKey;
 		history = new SHCapacityList<String>(historySize);
 		
