@@ -12,10 +12,12 @@ import java.util.Set;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
+import com.jme3.asset.AssetManager;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.ColorRGBA;
+import com.jme3.scene.Node;
 import lamao.soh.utils.events.ISHEventHandler;
 import lamao.soh.utils.events.SHEventDispatcher;
 
@@ -82,9 +84,15 @@ public class SHConsoleState extends AbstractAppState implements ActionListener
 	private SHCapacityList<String> history = null;
 	
 	/** Index of currently selected command from history */
-	private int _historyIndex = -1;
+	private int historyIndex = -1;
 
     private SimpleApplication application;
+
+    private Node rootNode;
+
+    private Node applicationGuiNode;
+
+    private AssetManager assetManager;
 
 	public SHConsoleState(SimpleApplication application)
 	{
@@ -94,8 +102,11 @@ public class SHConsoleState extends AbstractAppState implements ActionListener
 	public SHConsoleState(SimpleApplication application, int switchKey, int historySize, int numLines)
 	{
         this.application = application;
+        applicationGuiNode = application.getRootNode();
+        assetManager = application.getAssetManager();
 		this.switchKey = switchKey;
 		history = new SHCapacityList<String>(historySize);
+        rootNode = new Node("console");
         setEnabled(false);
 		
 		initGUI(numLines);
@@ -113,7 +124,7 @@ public class SHConsoleState extends AbstractAppState implements ActionListener
 	private void initGUI(int numLines)
 	{
 
-        BitmapFont guiFont = application.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
+        BitmapFont guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
 		console = new BitmapText[numLines];
 		for (int i = 0; i < numLines; i++)
 		{
@@ -121,7 +132,7 @@ public class SHConsoleState extends AbstractAppState implements ActionListener
             console[i].setSize(guiFont.getCharSet().getRenderedSize());
 			console[i].setLocalTranslation(0, console[i].getHeight() * (numLines - i), 0);
 
-            application.getGuiNode().attachChild(console[i]);
+            applicationGuiNode.attachChild(console[i]);
 		}
 		console[0].setText(PROMT);
 	}
@@ -225,7 +236,7 @@ public class SHConsoleState extends AbstractAppState implements ActionListener
 			cmd = cmd.substring(PROMT.length(), cmd.length());
 			scrollUp();			
 			execute(cmd);
-			_historyIndex = -1;
+			historyIndex = -1;
 		}
 		else if (name.equals(InputMapping.DELETE_LAST_CHARACTER.getName()))
 		{
@@ -250,13 +261,13 @@ public class SHConsoleState extends AbstractAppState implements ActionListener
 			}
 			else
 			{
-				_historyIndex++;
-				if (_historyIndex >= history.size())
+				historyIndex++;
+				if (historyIndex >= history.size())
 				{
-					_historyIndex = history.size() - 1;
-					info("Command {" + _historyIndex + "} is the oldest saved command");
+					historyIndex = history.size() - 1;
+					info("Command {" + historyIndex + "} is the oldest saved command");
 				}
-				setText(history.get(_historyIndex));
+				setText(history.get(historyIndex));
 			}
 		}
 		else if (name.equals(InputMapping.NEXT_COMMAND.getName()))
@@ -267,13 +278,13 @@ public class SHConsoleState extends AbstractAppState implements ActionListener
 			}
 			else
 			{
-				_historyIndex--;
-				if (_historyIndex < 0)
+				historyIndex--;
+				if (historyIndex < 0)
 				{
-					_historyIndex = 0;
-					info("Command {" + _historyIndex + "} is the latest saved command");
+					historyIndex = 0;
+					info("Command {" + historyIndex + "} is the latest saved command");
 				}
-				setText(history.get(_historyIndex));
+				setText(history.get(historyIndex));
 			}
 		}
 //		else if (isValidCharacter(character) && !Character.isISOControl(character))
@@ -294,10 +305,12 @@ public class SHConsoleState extends AbstractAppState implements ActionListener
 	@Override
 	public void setEnabled(boolean enabled)
 	{
-		if (enabled)
-		{
+        if (!isEnabled() && enabled) {
 			setText("");
-		}
+            applicationGuiNode.attachChild(rootNode);
+		} else if (isEnabled() && !enabled) {
+            applicationGuiNode.detachChild(rootNode);
+        }
 		super.setEnabled(enabled);
 	}
 	

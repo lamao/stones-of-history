@@ -15,7 +15,7 @@
  
     <layer id="mainLayer" childLayout="vertical" align="center">
  
-	 	<panel id="SPACER" height="25%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	 	<panel height="25%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
  
  		<panel id="menuPanel" style="nifty-panel" childLayout="vertical" align="center" valign="center" width="50%" height="50%">
  			<!-- <effect>
@@ -26,7 +26,7 @@
  
  			<control id="helloLabel" name="label" text="Hello, ${CALL.getUserName()}" width="90%" height="5%" align="center"/>
  			
- 			<panel id="SPACER1" height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+ 			<panel height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
       
       		<panel id="gameStart" height="20%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
       			<control id="btnStart" name="button" label="Start Game" align="center" valign="center" width="100%" height="100%" 
@@ -35,7 +35,7 @@
 	        	</control>
 	      	</panel>
 	 
-	      	<panel id="SPACER2" height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	      	<panel height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
 	      	
 	      	<panel id="showProfiles" height="20%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
 	        	<control id="btnProfiles" name="button" label="Profiles" align="center" valign="center" width="100%" height="100%"
@@ -44,7 +44,7 @@
 	        	</control>
 	      	</panel>
 	      	
-	      	<panel id="SPACER2" height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	      	<panel height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
 	 
             <panel id="about" height="20%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
                 <control id="btnAbout" name="button" label="About" align="center" valign="center" width="100%" height="100%"
@@ -53,7 +53,7 @@
                 </control>
             </panel>
           
-            <panel id="SPACER2" height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+            <panel height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
 	 
 	      	<panel id="gameExit" height="20%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
 	        	<control id="btnExit" name="button" label="Exit" align="center" valign="center" width="100%" height="100%"
@@ -62,11 +62,11 @@
 	        	</control>
 	      	</panel>
 	      
-	      	<panel id="SPACER2" height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	      	<panel height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
  
  		</panel>
  		
- 		<panel id="SPACER" height="25%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+ 		<panel height="25%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
     </layer>
  
 </screen>
@@ -75,7 +75,7 @@
  
     <layer id="mainLayer" childLayout="vertical" align="center">
  
-	 	<panel id="SPACER" height="10%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	 	<panel height="10%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
  
  		<panel id="menuPanel" style="nifty-panel" childLayout="vertical" align="center" valign="center" width="50%" height="80%">
  			<!-- <effect>
@@ -84,15 +84,15 @@
 	          	<onHover name="pulsate" scaleFactor="0.008" startColor="#EE7F" endColor="#EE7F" post="true"/>
 	        </effect> -->
  
- 			<panel id="SPACER" height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+ 			<panel height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
       
       		<panel id="profiles" height="78%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center" visibleToMouse="true">
       			<control id="listProfiles" name="listBox" vertical="optional" horizontal="optional" displayItems="12" width="100%" height="100%"/>
       			
-      			<panel id="SPACER" height="*" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+      			<panel height="*" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
 	      	</panel>
 	      	
-	      	<panel id="SPACER" height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	      	<panel height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
       
       		<panel id="buttons" height="10%" width="90%" align="center" backgroundColor="#BBBF" childLayout="horizontal" visibleToMouse="true">
       			<control id="btnSelect" name="button" label="Select" align="center" valign="center" width="25%" height="100%">
@@ -108,14 +108,14 @@
         			<interact onClick="gotoScreen(start)"/>
 	        	</control>
 	        	
-	        	<panel id="SPACER" height="100%" width="*" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	        	<panel height="100%" width="*" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
 	      	</panel>
 	 
-	      	<panel id="SPACER" height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	      	<panel height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
 	      	
  		</panel>
  		
- 		<panel id="SPACER" height="10%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+ 		<panel height="10%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
     </layer>
     
     <layer id="windows" childLayout="absolute">
@@ -155,7 +155,7 @@
 			                 viewConverterClass="lamao.soh.ui.ListBoxDisablableViewConverter"/>
 			      </panel>
 			      
-			      <panel id="SPACER" height="10px"/>
+			      <panel height="10px"/>
 			      
 			      <panel id="levelsPanel" childLayout="vertical" height="*">
 	                  <control id="levelsLabel" name="label" text="Levels"/>
@@ -164,7 +164,7 @@
 	              </panel>
               </panel>
               
-              <panel id="SPACER" width="10px"/>
+              <panel width="10px"/>
               
               <panel id="detailsPanel" style="nifty-panel-no-shadow" childLayout="vertical">
                   <control id="detailsTitleLabel" name="label" text="Details" width="100%"/>
@@ -181,7 +181,7 @@
 		            <interact onClick="gotoScreen(start)"/>
 		        </control>
 		        
-		        <panel id="SPACER" width="*"/>
+		        <panel width="*"/>
 		        
 		        <control id="btnPlay" name="button" label="Play" align="right" valign="center">
 		            <interact onClick="startGame()"/>
@@ -193,7 +193,7 @@
 
 <screen id="about" controller="lamao.soh.ui.controllers.SHAboutScreenController">
     <layer id="epochsLayer" childLayout="vertical" align="center">
-        <panel id="SPACER" height="10%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+        <panel height="10%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
         
         <panel id="listPanel" style="nifty-panel-no-shadow" childLayout="vertical" align="center" width="50%">
             <control id="labelAbout" name="label" text="${CALL.getAboutContents()}" width="100%"/>
@@ -202,7 +202,7 @@
             </control>
         </panel>
         
-        <panel id="SPACER" height="25%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+        <panel height="25%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
     </layer>
 </screen>
 </nifty>
