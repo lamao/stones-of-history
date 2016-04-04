@@ -1,6 +1,8 @@
 package lamao.soh.core;
 
+import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppState;
 import com.jme3.asset.plugins.FileLocator;
 import lamao.soh.SHConstants;
@@ -21,16 +23,25 @@ public class Application extends SimpleApplication {
 
     public Application(List<String> assetsLocations) {
         this.assetsLocations = assetsLocations;
+        setShowSettings(false);
+        setDisplayFps(false);
     }
 
     @Override
     public void simpleInitApp() {
         registerPathToAssets();
 
+        detachDefaultStates();
         initializeBeans();
 
         AppState niftyState = getStateManager().getState(SHNiftyState.class);
         niftyState.setEnabled(true);
+
+    }
+
+    private void detachDefaultStates() {
+        getStateManager().detach(getStateManager().getState(StatsAppState.class));
+        getStateManager().detach(getStateManager().getState(FlyCamAppState.class));
     }
 
     private void registerPathToAssets() {
@@ -50,6 +61,7 @@ public class Application extends SimpleApplication {
         SHLevelState levelState = applicationContext.getBean(SHLevelState.class);
         SHConsoleState consoleState = applicationContext.getBean(SHConsoleState.class);
         SHNiftyState niftyState = applicationContext.getBean(SHNiftyState.class);
+
 
         getStateManager().attachAll(levelState, consoleState, niftyState);
     }

@@ -69,6 +69,7 @@ public class SHLevelState extends AbstractAppState {
         this.nifty = nifty;
         this.startNiftyScreen = startNiftyScreen;
         this.inGameScreenController = inGameScreenController;
+        setEnabled(false);
 
         PointLight light = new PointLight();
         light.setPosition(new Vector3f(0, 3, 3));

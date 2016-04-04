@@ -61,8 +61,8 @@
     <constructor-arg ref="application"/>
     <constructor-arg>
         <list>
-            <value>nifty/main.xml</value>
-            <value>nifty/ingame.xml</value>
+            <value>interface/main.xml</value>
+            <value>interface/ingame.xml</value>
         </list>
     </constructor-arg>
     <constructor-arg value="start"/>

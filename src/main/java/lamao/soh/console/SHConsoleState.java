@@ -96,6 +96,7 @@ public class SHConsoleState extends AbstractAppState implements ActionListener
         this.application = application;
 		this.switchKey = switchKey;
 		history = new SHCapacityList<String>(historySize);
+        setEnabled(false);
 		
 		initGUI(numLines);
         bindKeys();

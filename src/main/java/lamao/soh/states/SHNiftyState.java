@@ -18,8 +18,6 @@ import de.lessvoid.nifty.Nifty;
  */
 public class SHNiftyState extends AbstractAppState {
 
-	public static final String NAME = "menu";
-	
 	private Nifty nifty;
 	
 	private String startScreen;
@@ -34,6 +32,7 @@ public class SHNiftyState extends AbstractAppState {
 		this.nifty = nifty;
 		this.startScreen = startScreen;
 		this.constants = constants;
+        setEnabled(false);
 	}
 	
 	/**
