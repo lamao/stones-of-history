@@ -15,7 +15,6 @@ import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
-import lamao.soh.utils.deled.SHSceneLoader;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 import com.jme3.scene.Spatial;
@@ -31,8 +30,6 @@ public class SHLevelService {
 
     private SHBreakoutGameContext context;
 
-    private SHSceneLoader sceneLoader;
-
     private SHConstants constants;
 
     private SHGameContextService gameContextService;
@@ -43,14 +40,12 @@ public class SHLevelService {
                     SHEventDispatcher dispatcher,
                     SHScene scene,
                     SHBreakoutGameContext context,
-                    SHSceneLoader sceneLoader,
                     SHConstants constants,
                     SHGameContextService gameContextService,
                     AssetManager assetManager) {
         this.dispatcher = dispatcher;
         this.scene = scene;
         this.context = context;
-        this.sceneLoader = sceneLoader;
         this.constants = constants;
         this.gameContextService = gameContextService;
         this.assetManager = assetManager;
@@ -60,10 +55,12 @@ public class SHLevelService {
         String pathToEpochModels = getPathToEpoch(epoch);
         assetManager.registerLocator(pathToEpochModels, FileLocator.class);
 
-        sceneLoader.load(level.getScene());
+        Spatial sceneModel = assetManager.loadModel(level.getScene());
+        scene.getRootNode().attachChild(sceneModel);
         levelStartupScript(epoch);
 
         assetManager.unregisterLocator(pathToEpochModels, FileLocator.class);
+
     }
 
     private String getPathToEpoch(SHEpoch epoch) {

@@ -36,7 +36,6 @@
 	<constructor-arg ref="dispatcher"/>
 	<constructor-arg ref="scene"/>
 	<constructor-arg ref="gameContext"/>
-	<constructor-arg ref="sceneLoader"/>
 	<constructor-arg ref="constants"/>
 	<constructor-arg ref="gameContextService"/>
     <constructor-arg ref="assetManager"/>
@@ -63,12 +62,6 @@
 
 <bean id="scene" class="lamao.soh.core.SHScene">
 	<constructor-arg ref="collisionProcessor"/>
-</bean>
-
-<bean id="sceneLoader" class="lamao.soh.utils.deled.SHSceneLoader">
-	<constructor-arg ref="scene"/>
-	<constructor-arg ref="entityFactory"/>
-    <constructor-arg ref="assetManager"/>
 </bean>
 
 <bean id="nifty" class="lamao.soh.ui.SHNiftyFactory" factory-method="createNifty">
