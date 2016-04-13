@@ -6,8 +6,6 @@
  */
 package lamao.soh;
 
-import java.util.logging.Logger;
-
 import lamao.soh.core.Application;
 
 /**
