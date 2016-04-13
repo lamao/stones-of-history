@@ -16,6 +16,7 @@ import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
 import lamao.soh.core.service.SHEpochService;
 import lamao.soh.core.service.SHLevelService;
+import lamao.soh.states.LoadLevelState;
 import lamao.soh.states.SHLevelState;
 import lamao.soh.states.SHNiftyState;
 import lamao.soh.ui.model.ListBoxDisablebleEntry;
@@ -39,8 +40,6 @@ public class SHEpochsScreenController extends SHBasicScreenController
 
 	private SHEpochService epochService;
 
-	private SHLevelService levelService;
-
 	private SHEpoch selectedEpoch;
 
 	private SHLevel selectedLevel;
@@ -51,13 +50,11 @@ public class SHEpochsScreenController extends SHBasicScreenController
 	public SHEpochsScreenController(
             AppStateManager manager,
 			SHBreakoutGameContext gameContext,
-			SHEpochService epochService,
-			SHLevelService levelService)
+			SHEpochService epochService)
 	{
 		this.manager = manager;
 		this.gameContext = gameContext;
 		this.epochService = epochService;
-		this.levelService = levelService;
 	}
 
 	public SHEpoch getSelectedEpoch()
@@ -75,15 +72,14 @@ public class SHEpochsScreenController extends SHBasicScreenController
 	 */
 	public void startGame()
 	{
-		levelService.loadEpochAppearence(selectedEpoch.getId());
-		levelService.loadLevelScene(selectedEpoch, selectedLevel);
+        SHNiftyState niftyState = manager.getState(SHNiftyState.class);
+        LoadLevelState loadLevelState = manager.getState(LoadLevelState.class);
 
-		SHNiftyState niftyState = manager.getState(SHNiftyState.class);
-		SHLevelState levelState = manager.getState(SHLevelState.class);
+        loadLevelState.setEpoch(selectedEpoch);
+        loadLevelState.setLevel(selectedLevel);
 
-		niftyState.setEnabled(false);
-		levelState.setEnabled(true);
-		levelState.setLevelInfo(new SHEpochLevelItem(selectedEpoch, selectedLevel));
+        niftyState.setEnabled(false);
+        loadLevelState.setEnabled(true);
 	}
 
 	@SuppressWarnings("unchecked")

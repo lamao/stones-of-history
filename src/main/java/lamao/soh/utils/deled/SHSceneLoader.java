@@ -10,7 +10,11 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.jme3.asset.AssetManager;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import lamao.soh.core.ISHEntityFactory;
+import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
 import lamao.soh.utils.xmlparser.SHDocXMLParser;
 
@@ -18,15 +22,18 @@ import lamao.soh.utils.xmlparser.SHDocXMLParser;
  * @author lamao
  *
  */
-public class SHSceneLoader extends SHDpsLoader
+public class SHSceneLoader
 {
 	/** Scene where load data from file */
-	private SHScene scene = null;
+	private SHScene scene;
+
+    private AssetManager assetManager;
 	
 	private ISHEntityFactory entityFactory;
 
-	public SHSceneLoader(SHScene scene, ISHEntityFactory entityFactory)
+	public SHSceneLoader(SHScene scene, ISHEntityFactory entityFactory, AssetManager assetManager)
 	{
+        this.assetManager = assetManager;
 		this.scene = scene;
 		this.entityFactory = entityFactory;
 	}
@@ -36,34 +43,7 @@ public class SHSceneLoader extends SHDpsLoader
 	 */
 	protected void resetLoader()
 	{
-		super.resetLoader();
 		scene.reset();
-	}
-
-	/**
-	 * Builds XML parser for scene.
-	 * @return
-	 */
-	protected SHDocXMLParser buildSceneParser()
-	{
-		try
-		{
-			URL textureLocation = new URL("jar:file:" + 
-					getFileName().replace("\\", "/") + "!/Textures/");
-			
-			SHDocXMLParser parser = new SHDocXMLParser();
-			parser.addParser("scene.materials.category.material", 
-					new SHMaterialParser(getMaterials(), textureLocation));
-			parser.addParser("scene.primitives.primitive", 
-					new SHPrimitiveEntityParser(getMaterials(), scene, 
-					entityFactory));
-			return parser;
-		}
-		catch (MalformedURLException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 	public SHScene getScene()
@@ -77,13 +57,24 @@ public class SHSceneLoader extends SHDpsLoader
 	}
 	
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void load(File file)
+     * @param pathToScene
+     */
+	public void load(String pathToScene)
 	{
 		scene.resetAll();
-		super.load(file);
+        Node sceneModel = (Node) assetManager.loadModel(pathToScene);
+        processSceneModel(sceneModel);
+        scene.getRootNode().attachChild(sceneModel);
 	}
+
+    private void processSceneModel(Node sceneModel) {
+        for (Spatial group : sceneModel.getChildren()) {
+            if (group instanceof Node) {
+                Node groupAsNode = (Node)group;
+                for (Spatial item : groupAsNode.getChildren()) {
+                }
+            }
+        }
+    }
 
 }

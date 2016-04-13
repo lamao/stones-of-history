@@ -5,7 +5,7 @@
     <levels>
         <level>
             <id>l1</id>
-            <scene>level1.dps</scene>
+            <scene>level1.j3o</scene>
             <intro>This is description of first test level.</intro>
             <name>First test level</name>
         </level>
@@ -22,4 +22,62 @@
             <name>MIDDLE test LEVEL.:))))0</name>
         </level>
     </levels>
+    <common-resources>
+        <entry>
+            <string>ball</string>
+            <resource>
+                <location>models/ball.obj</location>
+            </resource>
+        </entry>
+        <entry>
+            <string>paddle</string>
+            <resource>
+                <location>models/paddle.obj</location>
+            </resource>
+        </entry>
+        <!--<resource>-->
+            <!--<name>inc-paddle-width</name>-->
+            <!--<location>models/inc-paddle-width.obj</location>-->
+        <!--</resource>-->
+        <!--<resource>-->
+            <!--<name>dec-paddle-width</name>-->
+            <!--<location>models/dec-paddle-width.obj</location>-->
+        <!--</resource>-->
+        <!--<resource>-->
+            <!--<name>double-ball</name>-->
+            <!--<location>models/double-ball.obj</location>-->
+        <!--</resource>-->
+        <!--<resource>-->
+            <!--<name>paddle-gun</name>-->
+            <!--<location>models/paddle-gun-bonus.obj</location>-->
+        <!--</resource>-->
+        <!--<resource>-->
+            <!--<name>paddle-gun-model</name>-->
+            <!--<location>models/paddle-gun.obj</location>-->
+        <!--</resource>-->
+        <!--<resource>-->
+            <!--<name>bullet</name>-->
+            <!--<location>models/bullet.obj</location>-->
+        <!--</resource>-->
+        <!--<resource>-->
+            <!--<name>inc-ball-speed</name>-->
+            <!--<location>models/inc-ball-speed-bonus.obj</location>-->
+        <!--</resource>-->
+        <!--<resource>-->
+            <!--<name>dec-ball-speed</name>-->
+            <!--<location>models/dec-ball-speed-bonus.obj</location>-->
+        <!--</resource>-->
+        <!--<resource>-->
+            <!--<name>double-ball</name>-->
+            <!--<location>models/double-ball-bonus.obj</location>-->
+        <!--</resource>-->
+        <!--<resource>-->
+            <!--<name>sticky-paddle</name>-->
+            <!--<location>models/sticky-paddle-bonus.obj</location>-->
+        <!--</resource>-->
+        <!--<resource>-->
+            <!--<name>bottom-wall</name>-->
+            <!--<location>models/bottom-wall-bonus.obj</location>-->
+        <!--</resource>-->
+    </common-resources>
 </epoch>

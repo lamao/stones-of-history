@@ -60,7 +60,7 @@ public class SHResourceManager
 			new HashMap<String, Map<String, Object>>();
 	
 	/** List which represents resource file to parse */
-	private List<String> _config = new LinkedList<String>();
+	private List<String> config = new LinkedList<String>();
 	
 	public SHResourceManager()
 	{
@@ -214,18 +214,18 @@ public class SHResourceManager
 		{
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 			String line = null;
-			_config.clear();
+			config.clear();
 			do
 			{
 				line = reader.readLine();
 				if (line != null)
 				{
-					_config.add(line);
+					config.add(line);
 				}
 			}
 			while (line != null); 
 			reader.close();
-			refine(_config);
+			refine(config);
 		}
 		catch (IOException e)
 		{
@@ -235,7 +235,7 @@ public class SHResourceManager
 	
 	public List<String> getConfig()
 	{
-		return _config;
+		return config;
 	}
 	
 	/** 
@@ -273,7 +273,7 @@ public class SHResourceManager
 	public int loadAll(InputStream is)
 	{
 		readConfig(is);
-		return parseConfig(_config);
+		return parseConfig(config);
 	}
 	
 	public int parseConfig(List<String> config)

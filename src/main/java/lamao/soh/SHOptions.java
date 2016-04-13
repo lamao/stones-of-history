@@ -31,6 +31,4 @@ public class SHOptions
 	/** Mouse button for firing from gun */
 	public static int FireButton = 0;
 	
-	/** Log level. Indicates how verbose will be log output */
-	public static Level LogLevel = Level.WARNING;
 }

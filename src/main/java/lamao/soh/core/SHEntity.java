@@ -16,41 +16,43 @@ public class SHEntity extends Node {
     public static final String ENTITY_TYPE_DEFAULT = "default";
 
     /** Type of the entity */
-    private String _type = ENTITY_TYPE_DEFAULT;
+    private String type = ENTITY_TYPE_DEFAULT;
 
     /**
      * Collidable model for this entity. Other spatials attached to the root node are treated as
      * decoration, effect etc.
      */
-    private Spatial _model = null;
+    private Spatial model = null;
 
     public SHEntity(
                     String type,
                     String name,
                     Spatial model) {
         this(model);
-        _type = type;
+        this.type = type;
         setName(name);
     }
 
     public SHEntity(
                     Spatial model) {
         this();
-        _model = model;
-        attachChild(model);
+        this.model = model;
+        if (model != null) {
+            attachChild(model);
+        }
     }
 
     public SHEntity() {}
 
     public Spatial getModel() {
-        return _model;
+        return model;
     }
 
     public void setModel(Spatial model) {
-        if (_model != null) {
-            detachChild(_model);
+        if (this.model != null) {
+            detachChild(this.model);
         }
-        _model = model;
+        this.model = model;
         attachChild(model);
     }
 
@@ -76,11 +78,11 @@ public class SHEntity extends Node {
     }
 
     public String getType() {
-        return _type;
+        return type;
     }
 
     public void setType(String type) {
-        _type = type;
+        this.type = type;
     }
 
 }

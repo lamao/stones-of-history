@@ -57,13 +57,6 @@ public class Application extends SimpleApplication {
 
         FileSystemXmlApplicationContext applicationContext = new FileSystemXmlApplicationContext(
             new String[] {SHConstants.SPRING_CONFIG_LOCATION}, genericApplicationContext);
-
-        SHLevelState levelState = applicationContext.getBean(SHLevelState.class);
-        SHConsoleState consoleState = applicationContext.getBean(SHConsoleState.class);
-        SHNiftyState niftyState = applicationContext.getBean(SHNiftyState.class);
-
-
-        getStateManager().attachAll(levelState, consoleState, niftyState);
     }
 
 

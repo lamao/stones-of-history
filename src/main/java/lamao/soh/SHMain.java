@@ -21,8 +21,6 @@ public class SHMain
 
 	public static void main(String args[])
 	{
-		Logger.getLogger("").setLevel(SHOptions.LogLevel);
-		
         GAME = new Application(SHConstants.PATHS_TO_ASSETS);
         GAME.start();
 	}

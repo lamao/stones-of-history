@@ -10,6 +10,19 @@
 <!-- bean 'application' is injected in context by java code -->
 
 <bean id="appStateManager" factory-bean="application" factory-method="getStateManager"/>
+<bean id="assetManager" factory-bean="application" factory-method="getAssetManager"/>
+
+<bean id="stateInjector" class="lamao.soh.core.AppStatesInjector">
+    <constructor-arg ref="appStateManager"/>
+    <constructor-arg>
+        <list>
+            <ref bean="levelState"/>
+            <ref bean="niftyState"/>
+            <ref bean="consoleState"/>
+            <ref bean="loadLevelState"/>
+        </list>
+    </constructor-arg>
+</bean>
 <!--  Engine beans -->
 
 <!-- Services -->
@@ -23,10 +36,10 @@
 	<constructor-arg ref="dispatcher"/>
 	<constructor-arg ref="scene"/>
 	<constructor-arg ref="gameContext"/>
-	<constructor-arg ref="resourceManager"/>
 	<constructor-arg ref="sceneLoader"/>
 	<constructor-arg ref="constants"/>
 	<constructor-arg ref="gameContextService"/>
+    <constructor-arg ref="assetManager"/>
 </bean>
 
 <bean id="epochService" class="lamao.soh.core.service.SHEpochService">
@@ -55,6 +68,7 @@
 <bean id="sceneLoader" class="lamao.soh.utils.deled.SHSceneLoader">
 	<constructor-arg ref="scene"/>
 	<constructor-arg ref="entityFactory"/>
+    <constructor-arg ref="assetManager"/>
 </bean>
 
 <bean id="nifty" class="lamao.soh.ui.SHNiftyFactory" factory-method="createNifty">
@@ -94,6 +108,11 @@
 	<property name="scene" ref="scene"/>
 </bean>
 
+<bean id="loadLevelState" class="lamao.soh.states.LoadLevelState">
+    <constructor-arg ref="levelService"/>
+    <constructor-arg ref="appStateManager"/>
+</bean>
+
 <bean id="levelStateRootNode" factory-bean="levelState" factory-method="getRootNode"/>
 	
 <!--  Nifty screen controllers -->
@@ -113,7 +132,6 @@
     <constructor-arg ref="appStateManager"/>
     <constructor-arg ref="gameContext"/>
     <constructor-arg ref="epochService"/>
-    <constructor-arg ref="levelService"/>
 </bean>
 
 <bean id="ingameScreenController" class="lamao.soh.ui.controllers.SHInGameScreenController">

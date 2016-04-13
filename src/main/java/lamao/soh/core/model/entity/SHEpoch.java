@@ -4,7 +4,9 @@
 package lamao.soh.core.model.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
@@ -31,7 +33,10 @@ public class SHEpoch {
 
     /** List of levels in epoch */
     @XStreamAlias("levels")
-    private List<SHLevel> _levels = new ArrayList<SHLevel>();
+    private List<SHLevel> levels = new ArrayList<SHLevel>();
+
+    @XStreamAlias("common-resources")
+    private Map<String, Resource> commonResources = new HashMap<String, Resource>();
 
     public SHEpoch() {}
 
@@ -76,11 +81,19 @@ public class SHEpoch {
     }
 
     public List<SHLevel> getLevels() {
-        return _levels;
+        return levels;
     }
 
     public void setLevels(List<SHLevel> levels) {
-        _levels = levels;
+        this.levels = levels;
+    }
+
+    public Map<String, Resource> getCommonResources() {
+        return commonResources;
+    }
+
+    public void setCommonResources(Map<String, Resource> commonResources) {
+        this.commonResources = commonResources;
     }
 
     /**

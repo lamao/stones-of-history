@@ -5,22 +5,19 @@ package lamao.soh.core.service;
 
 import java.io.File;
 
+import com.jme3.asset.AssetManager;
+import com.jme3.asset.plugins.FileLocator;
 import lamao.soh.SHConstants;
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHScene;
-import lamao.soh.core.SHUtils;
 import lamao.soh.core.controllers.SHPaddleSticker;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
-import lamao.soh.core.input.SHBreakoutInputHandler;
-import lamao.soh.core.input.actions.SHMouseBallLauncher;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
-import lamao.soh.utils.SHResourceManager;
 import lamao.soh.utils.deled.SHSceneLoader;
 import lamao.soh.utils.events.SHEventDispatcher;
 
-import com.jme3.input.MouseInput;
 import com.jme3.scene.Spatial;
 
 /**
@@ -28,15 +25,11 @@ import com.jme3.scene.Spatial;
  * @author lamao
  */
 public class SHLevelService {
-    private static final String EPOCH_APPEARENCE_FILE = "appearence.txt";
-
     private SHEventDispatcher dispatcher;
 
     private SHScene scene;
 
     private SHBreakoutGameContext context;
-
-    private SHResourceManager resourceManager;
 
     private SHSceneLoader sceneLoader;
 
@@ -44,46 +37,52 @@ public class SHLevelService {
 
     private SHGameContextService gameContextService;
 
+    private AssetManager assetManager;
+
     public SHLevelService(
                     SHEventDispatcher dispatcher,
                     SHScene scene,
                     SHBreakoutGameContext context,
-                    SHResourceManager resourceManager,
                     SHSceneLoader sceneLoader,
                     SHConstants constants,
-                    SHGameContextService gameContextService) {
+                    SHGameContextService gameContextService,
+                    AssetManager assetManager) {
         this.dispatcher = dispatcher;
         this.scene = scene;
         this.context = context;
-        this.resourceManager = resourceManager;
         this.sceneLoader = sceneLoader;
         this.constants = constants;
         this.gameContextService = gameContextService;
-    }
-
-    public void loadEpochAppearence(String epochId) {
-        File file = new File(constants.EPOCHS_DIR + "/" + epochId + "/" + EPOCH_APPEARENCE_FILE);
-        resourceManager.clear();
-        resourceManager.loadAll(file);
+        this.assetManager = assetManager;
     }
 
     public void loadLevelScene(SHEpoch epoch, SHLevel level) {
-        String levelSceneFile = constants.EPOCHS_DIR + "/" + epoch.getId() + "/" + level.getScene();
-        sceneLoader.load(new File(levelSceneFile));
-        levelStartupScript();
+        String pathToEpochModels = getPathToEpoch(epoch);
+        assetManager.registerLocator(pathToEpochModels, FileLocator.class);
+
+        sceneLoader.load(level.getScene());
+        levelStartupScript(epoch);
+
+        assetManager.unregisterLocator(pathToEpochModels, FileLocator.class);
     }
 
-    private final void levelStartupScript() {
+    private String getPathToEpoch(SHEpoch epoch) {
+        return constants.EPOCHS_DIR + File.separator + epoch.getId() + File.separator;
+    }
+
+    private final void levelStartupScript(SHEpoch epoch) {
         SHBall ball = new SHBall();
         ball.setType("ball");
         ball.setName("ball" + ball);
-        Spatial model = (Spatial) resourceManager.get(SHResourceManager.TYPE_MODEL, "ball");
+        String ballLocation = epoch.getCommonResources().get("ball").getLocation();
+        Spatial model = assetManager.loadModel(ballLocation);
         ball.setModel(model.clone());
 
         SHPaddle paddle = new SHPaddle();
         paddle.setType("paddle");
         paddle.setName("paddle");
-        model = (Spatial) resourceManager.get(SHResourceManager.TYPE_MODEL, "paddle");
+        String paddleLocation = epoch.getCommonResources().get("paddle").getLocation();
+        model = assetManager.loadModel(paddleLocation);
         paddle.setModel(model);
         paddle.setLocation(0, 0, 7);
 

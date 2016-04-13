@@ -32,12 +32,11 @@ public class SHConstants
 	public static final String PADDLE_GUN = "paddle-gun-model";
 	public static final String DECORATION = "decoration";
 	public static final String BULLET = "bullet";
-
     public static List<String> PATHS_TO_ASSETS = Arrays.asList("data", "assets");
-	
+
 	/** Directory where player's profiles are stored */
 	public final String PLAYERS_DIR = "data/players/";
-	
+
 	/** Directory where epochs are located */
 	public final String EPOCHS_DIR = "data/epochs";
 

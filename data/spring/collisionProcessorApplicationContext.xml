@@ -5,6 +5,7 @@
 
 <bean id="collisionProcessor" class="lamao.soh.core.SHCollisionProcessor">
 	<constructor-arg ref="dispatcher"/>
+    <property name="enabled" value="false"/>
 	<property name="collisionTasks">
 		<list>
 			<bean class="lamao.soh.core.SHCollisionTask">

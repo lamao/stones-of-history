@@ -30,6 +30,8 @@ public class SHCollisionProcessor implements ISHCollisionProcessor {
 
     private SHEventDispatcher dispatcher;
 
+    private boolean enabled = true;
+
     /**
      * Creates collision processor
      * @param dispatcher - used to fire events when found collision
@@ -79,6 +81,14 @@ public class SHCollisionProcessor implements ISHCollisionProcessor {
         this.dispatcher = dispatcher;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     /**
      * Checks if this model is entity and return it if so
      * @param model - model to check
@@ -97,9 +107,13 @@ public class SHCollisionProcessor implements ISHCollisionProcessor {
      */
     @Override
     public void processCollisions(Node rootNode) {
+        if (!isEnabled()) {
+            return;
+        }
+
         List<SHEvent> eventsToSend = new LinkedList<SHEvent>();
-        Node source = null;
-        Node dest = null;
+        Node source;
+        Node dest;
         for (SHCollisionTask task : collisionTasks) {
             source = (Node) rootNode.getChild(task.getSourceType());
             dest = (Node) rootNode.getChild(task.getDestType());
