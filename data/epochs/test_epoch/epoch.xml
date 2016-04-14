@@ -26,13 +26,13 @@
         <entry>
             <string>ball</string>
             <resource>
-                <location>models/ball.obj</location>
+                <location>models/ball.j3o</location>
             </resource>
         </entry>
         <entry>
             <string>paddle</string>
             <resource>
-                <location>models/paddle.obj</location>
+                <location>models/paddle.j3o</location>
             </resource>
         </entry>
         <!--<resource>-->

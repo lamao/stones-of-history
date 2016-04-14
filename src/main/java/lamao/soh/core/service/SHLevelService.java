@@ -63,10 +63,10 @@ public class SHLevelService {
         String pathToEpochModels = getPathToEpoch(epoch);
         assetManager.registerLocator(pathToEpochModels, FileLocator.class);
 
-        Spatial sceneModel = assetManager.loadModel(level.getScene());
-        createGameEntities((Node) sceneModel);
+        Node scene = (Node) assetManager.loadModel(level.getScene());
+        createGameEntities(scene);
 
-        scene.getRootNode().attachChild(sceneModel);
+        this.scene.setRootNode(scene);
         levelStartupScript(epoch);
 
         assetManager.unregisterLocator(pathToEpochModels, FileLocator.class);
@@ -77,9 +77,9 @@ public class SHLevelService {
         return constants.EPOCHS_DIR + File.separator + epoch.getId() + File.separator;
     }
 
-    private void createGameEntities(Node sceneModel) {
+    private void createGameEntities(Node scene) {
 
-        for (Spatial group : sceneModel.getChildren()) {
+        for (Spatial group : scene.getChildren()) {
             if (group instanceof Node) {
                 Node groupAsNode = (Node) group;
                 for (Spatial entityModel : groupAsNode.getChildren()) {
@@ -110,7 +110,7 @@ public class SHLevelService {
         paddle.setModel(model);
         paddle.setLocation(0, 0, 7);
 
-        ball.setLocation(0, 0, 7);
+        ball.setLocation(0, 0, 6);
         ball.setVelocity(constants.DEFAULT_BALL_VELOCITY.clone());
         ball.addControl(new SHPaddleSticker(ball, paddle));
 

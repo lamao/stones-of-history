@@ -90,7 +90,6 @@ public class SHLevelState extends AbstractAppState {
             rootNode.detachChild(this.scene.getRootNode());
         }
         this.scene = scene;
-        rootNode.attachChild(this.scene.getRootNode());
     }
 
     @Override
@@ -106,12 +105,14 @@ public class SHLevelState extends AbstractAppState {
     @Override
     public void render(RenderManager renderManager) {
         super.render(renderManager);
-//        nifty.render(false);
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         if (!isEnabled() && enabled) {
+            if (!rootNode.hasChild(scene.getRootNode())) {
+                rootNode.attachChild(scene.getRootNode());
+            }
             setPause(false);
             nifty.gotoScreen(startNiftyScreen);
         } else if (isEnabled() && !enabled) {
