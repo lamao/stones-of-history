@@ -59,17 +59,18 @@ public class SHActivateBonusCommand extends SHBasicCommand
 	@Override
 	public void processCommand(String[] args)
 	{
-		SHBonus bonus = (SHBonus) entityFactory.createEntity(
-				SHUtils.buildMap("type bonus|name " + args[1]));
-		if (bonus == null)
-		{
-			warning("Can't create bonus <" + args[1] + ">");
-		}
-		else			
-		{
-			new SHBonusPaddleCollisionHandler(dispatcher, scene)
-				.processEvent(new SHEvent("", this, SHUtils.buildEventMap("src", bonus)));
-		}
+        warning("Not implemented");
+//		SHBonus bonus = (SHBonus) entityFactory.createEntity(
+//				SHUtils.buildMap("type bonus|name " + args[1]));
+//		if (bonus == null)
+//		{
+//			warning("Can't create bonus <" + args[1] + ">");
+//		}
+//		else
+//		{
+//			new SHBonusPaddleCollisionHandler(dispatcher, scene)
+//				.processEvent(new SHEvent("", this, SHUtils.buildEventMap("src", bonus)));
+//		}
 		
 	}
 	

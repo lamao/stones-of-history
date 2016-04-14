@@ -7,8 +7,12 @@ import java.io.File;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.plugins.FileLocator;
+import com.jme3.scene.Node;
 import lamao.soh.SHConstants;
+import lamao.soh.core.ISHEntityFactory;
+import lamao.soh.core.SHBreakoutEntityFactory;
 import lamao.soh.core.SHBreakoutGameContext;
+import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.controllers.SHPaddleSticker;
 import lamao.soh.core.entities.SHBall;
@@ -36,19 +40,23 @@ public class SHLevelService {
 
     private AssetManager assetManager;
 
+    private ISHEntityFactory entityFactory;
+
     public SHLevelService(
                     SHEventDispatcher dispatcher,
                     SHScene scene,
                     SHBreakoutGameContext context,
                     SHConstants constants,
                     SHGameContextService gameContextService,
-                    AssetManager assetManager) {
+                    AssetManager assetManager,
+                    ISHEntityFactory entityFactory) {
         this.dispatcher = dispatcher;
         this.scene = scene;
         this.context = context;
         this.constants = constants;
         this.gameContextService = gameContextService;
         this.assetManager = assetManager;
+        this.entityFactory = entityFactory;
     }
 
     public void loadLevelScene(SHEpoch epoch, SHLevel level) {
@@ -56,6 +64,8 @@ public class SHLevelService {
         assetManager.registerLocator(pathToEpochModels, FileLocator.class);
 
         Spatial sceneModel = assetManager.loadModel(level.getScene());
+        createGameEntities((Node) sceneModel);
+
         scene.getRootNode().attachChild(sceneModel);
         levelStartupScript(epoch);
 
@@ -65,6 +75,23 @@ public class SHLevelService {
 
     private String getPathToEpoch(SHEpoch epoch) {
         return constants.EPOCHS_DIR + File.separator + epoch.getId() + File.separator;
+    }
+
+    private void createGameEntities(Node sceneModel) {
+
+        for (Spatial group : sceneModel.getChildren()) {
+            if (group instanceof Node) {
+                Node groupAsNode = (Node) group;
+                for (Spatial entityModel : groupAsNode.getChildren()) {
+                    SHEntity entity = entityFactory.createEntity(entityModel);
+                    if (entity != null) {
+                        entity.setModel(entityModel);
+                        groupAsNode.detachChild(entityModel);
+                        groupAsNode.attachChild(entity);
+                    }
+                }
+            }
+        }
     }
 
     private final void levelStartupScript(SHEpoch epoch) {

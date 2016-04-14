@@ -33,27 +33,28 @@ public class SHSetBonusCommand extends SHBasicCommand
 	@Override
 	public void processCommand(String[] args)
 	{
-		String brickName = args[1];
-		String bonusName = args[2];
-		SHBonus bonus = (SHBonus) entityFactory.createEntity(SHUtils.buildMap(
-				"type bonus|name " + bonusName));
-		if (bonus == null)
-		{
-			warning("Can't create bonus <" + args[2] + ">");
-		}
-		else 
-		{
-			//TODO: Change hardcoded 'brick' type to constant from brick class.
-			SHBrick brick = scene.getEntity("brick", brickName, SHBrick.class);
-			if (brick == null)
-			{
-				warning("Can't find brick <" + args[1] + ">");
-			}
-			else
-			{
-				brick.setBonus(bonus);
-			}
-		}
+        warning("Not implemented");
+//		String brickName = args[1];
+//		String bonusName = args[2];
+//		SHBonus bonus = (SHBonus) entityFactory.createEntity(SHUtils.buildMap(
+//				"type bonus|name " + bonusName));
+//		if (bonus == null)
+//		{
+//			warning("Can't create bonus <" + args[2] + ">");
+//		}
+//		else
+//		{
+//			//TODO: Change hardcoded 'brick' type to constant from brick class.
+//			SHBrick brick = scene.getEntity("brick", brickName, SHBrick.class);
+//			if (brick == null)
+//			{
+//				warning("Can't find brick <" + args[1] + ">");
+//			}
+//			else
+//			{
+//				brick.setBonus(bonus);
+//			}
+//		}
 
 	}
 	

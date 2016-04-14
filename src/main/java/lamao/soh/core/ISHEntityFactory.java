@@ -3,6 +3,8 @@
  */
 package lamao.soh.core;
 
+import com.jme3.scene.Spatial;
+
 import java.util.Map;
 
 /**
@@ -10,5 +12,5 @@ import java.util.Map;
  * @author lamao
  */
 public interface ISHEntityFactory {
-    public SHEntity createEntity(Map<String, String> metadata);
+    public SHEntity createEntity(Spatial metadata);
 }

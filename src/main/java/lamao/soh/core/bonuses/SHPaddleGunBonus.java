@@ -3,20 +3,15 @@
  */
 package lamao.soh.core.bonuses;
 
+import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingBox;
-import com.jme3.input.InputManager;
-import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.scene.Spatial;
 
 import lamao.soh.SHConstants;
-import lamao.soh.SHOptions;
 import lamao.soh.core.SHScene;
-import lamao.soh.core.SHUtils;
-import lamao.soh.core.controllers.SHDefaultBallMover;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
-import lamao.soh.utils.SHResourceManager;
 
 /**
  * Attaches gun to paddle.
@@ -30,13 +25,13 @@ public class SHPaddleGunBonus extends SHBonus {
     /** Fire action which will be added after ball activation */
     private SHMouseGunAction action = null;
 
-    private SHResourceManager manager;
+    private AssetManager manager;
 
     public SHPaddleGunBonus(
                     Spatial model,
-                    SHResourceManager resourceManager) {
+                    AssetManager assetManager) {
         super(model);
-        this.manager = resourceManager;
+        this.manager = assetManager;
         setDuration(DEFAULT_DURATION);
     }
 
@@ -44,12 +39,13 @@ public class SHPaddleGunBonus extends SHBonus {
     public void apply(SHScene scene) {
         SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 
-        Spatial gunModel = (Spatial) manager.get(SHResourceManager.TYPE_MODEL,
-                        SHConstants.PADDLE_GUN);
+        throw new UnsupportedOperationException();
+//        Spatial gunModel = (Spatial) manager.get(SHResourceManager.TYPE_MODEL,
+//                        SHConstants.PADDLE_GUN);
+//
+//        paddle.setModel(gunModel);
 
-        paddle.setModel(gunModel);
-
-        action = new SHMouseGunAction(scene);
+//        action = new SHMouseGunAction(scene);
 
     }
 
@@ -57,11 +53,12 @@ public class SHPaddleGunBonus extends SHBonus {
     public void cleanup(SHScene scene) {
         SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 
-        Spatial model = (Spatial) manager.get(SHResourceManager.TYPE_MODEL, SHConstants.PADDLE);
-
-        paddle.setModel(model);
-
-        action = null;
+        throw new UnsupportedOperationException();
+//        Spatial model = (Spatial) manager.get(SHResourceManager.TYPE_MODEL, SHConstants.PADDLE);
+//
+//        paddle.setModel(model);
+//
+//        action = null;
     }
 
     /** Class handler for fire-bullet action */

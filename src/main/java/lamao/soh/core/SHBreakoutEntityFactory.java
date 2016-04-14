@@ -3,39 +3,34 @@
  */
 package lamao.soh.core;
 
-import java.util.Map;
-
+import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.entities.SHBottomWall;
 import lamao.soh.core.entities.SHBrick;
-import lamao.soh.utils.SHResourceManager;
 
 /**
  * Entity factory for stones of history.
  * @author lamao
  */
 public class SHBreakoutEntityFactory implements ISHEntityFactory {
-    private SHResourceManager manager;
+    private AssetManager assetManager;
 
-    public SHBreakoutEntityFactory(SHResourceManager manager)
+    public SHBreakoutEntityFactory(AssetManager assetManager)
 	{
 		super();
-		this.manager = manager;
+		this.assetManager = assetManager;
 	}
 
     @Override
-    public SHEntity createEntity(Map<String, String> metadata) {
-        if (metadata == null) {
-            return null;
-        }
-        String type = metadata.get("type");
+    public SHEntity createEntity(Spatial model) {
+        String type = model.getUserData("type");
 
         SHEntity entity = null;
         if (type != null) {
             if (type.equals("brick")) {
                 SHBrick brick = new SHBrick();
-                String value = metadata.get("strength");
+                String value = model.getUserData("strength");
                 if (value != null) {
                     if (value.equals("super")) {
                         brick.setStrength(Integer.MAX_VALUE);
@@ -43,16 +38,17 @@ public class SHBreakoutEntityFactory implements ISHEntityFactory {
                         brick.setStrength(Integer.parseInt(value));
                     }
                 }
-                value = metadata.get("glass");
+                value = model.getUserData("glass");
                 if (value != null) {
                     brick.setGlass(Boolean.parseBoolean(value));
                 }
 
-                value = metadata.get("bonus");
+                value = model.getUserData("bonus");
                 if (value != null) {
-                    SHBonus bonus = (SHBonus) createEntity(
-                                    SHUtils.buildMap("type bonus|name " + value));
-                    brick.setBonus(bonus);
+                    throw new UnsupportedOperationException();
+//                    SHBonus bonus = (SHBonus) createEntity(
+//                                    SHUtils.buildMap("type bonus|name " + value));
+//                    brick.setBonus(bonus);
                 }
 
                 entity = brick;
@@ -62,13 +58,14 @@ public class SHBreakoutEntityFactory implements ISHEntityFactory {
                 entity = new SHEntity();
             } else if (type.equals("bonus")) {
                 try {
-                    String bonusName = metadata.get("name");
+                    String bonusName = model.getUserData("name");
                     String className = SHUtils.getClassName("lamao.soh.core.bonuses.SH", bonusName,
                                     "Bonus");
                     Class<?> klass = Class.forName(className);
                     entity = (SHBonus) klass.newInstance();
-                    Spatial model = (Spatial) manager.get(SHResourceManager.TYPE_MODEL, bonusName);
-                    entity.setModel(model.clone());
+                    throw new UnsupportedOperationException();
+//                    Spatial model = (Spatial) manager.get(SHResourceManager.TYPE_MODEL, bonusName);
+//                    entity.setModel(model.clone());
                 } catch (ClassNotFoundException e) {
                 } catch (InstantiationException e) {
                 } catch (IllegalAccessException e) {
