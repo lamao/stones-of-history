@@ -42,7 +42,6 @@ public class SHNiftyState extends AbstractAppState {
 	public void render(RenderManager renderManager)
 	{
 		super.render(renderManager);
-//		nifty.render(false);
 	}
 	
 	/**

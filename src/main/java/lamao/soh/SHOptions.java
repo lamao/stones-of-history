@@ -17,18 +17,10 @@ import com.jme3.input.KeyInput;
  */
 public class SHOptions
 {
-	public static float PaddleMouseSensitivity = 0.05f;
+	public static float PaddleMouseSensitivity = 7f;
 	public static float PaddleKeyboardSensitivity = 20f;
 	
 	public static int PaddleLeftKey = KeyInput.KEY_LEFT;
 	public static int PaddleRightKey = KeyInput.KEY_RIGHT;
-	
-	/** Mouse button for releasing ball when paddle is stick or at the begin
-	 * of the level
-	 */
-	public static int ReleaseBallButton = 0;
-	
-	/** Mouse button for firing from gun */
-	public static int FireButton = 0;
 	
 }

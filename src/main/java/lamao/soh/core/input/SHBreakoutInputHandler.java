@@ -6,29 +6,22 @@ package lamao.soh.core.input;
 import com.jme3.input.controls.AnalogListener;
 import lamao.soh.SHOptions;
 import lamao.soh.core.SHEntity;
+import lamao.soh.core.SHScene;
+
+import java.util.logging.Logger;
 
 /**
  * Input handler for moving paddle along X-axis.
  * @author lamao
  */
 public class SHBreakoutInputHandler implements AnalogListener {
-    /** Controlled spatial */
-    private SHEntity entity;
 
+    private SHScene scene;
     private float leftConstraint = -7;
     private float rightConstraint = 7;
 
-    public SHBreakoutInputHandler(
-                    SHEntity entity) {
-        this.entity = entity;
-    }
-
-    public SHEntity getModel() {
-        return entity;
-    }
-
-    public void setModel(SHEntity entity) {
-        this.entity = entity;
+    public SHBreakoutInputHandler(SHScene scene) {
+        this.scene = scene;
     }
 
     public void setConstraints(float left, float right) {
@@ -36,16 +29,34 @@ public class SHBreakoutInputHandler implements AnalogListener {
         rightConstraint = right;
     }
 
+    public SHScene getScene() {
+        return scene;
+    }
+
+    public void setScene(SHScene scene) {
+        this.scene = scene;
+    }
+
     @Override
     public void onAnalog(String name, float value, float tpf) {
-        float newX = entity.getLocation().x + value * tpf * SHOptions.PaddleMouseSensitivity;
+
+        SHEntity entity = scene.getEntity("paddle", "paddle");
+
+        float dispacement = 0;
+        if ("paddle-left".equals(name)) {
+            dispacement = -value;
+        } else if ("paddle-right".equals(name)) {
+            dispacement = value;
+        }
+
+        float newX = entity.getLocation().x + dispacement * SHOptions.PaddleMouseSensitivity;
         if (newX > rightConstraint) {
             newX = rightConstraint;
         } else if (newX < leftConstraint) {
             newX = leftConstraint;
         }
 
-        entity.getLocation().x = newX;
+        entity.setLocation(newX, entity.getLocation().y, entity.getLocation().z);
     }
 
 }

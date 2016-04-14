@@ -5,10 +5,15 @@ package lamao.soh.states;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
+import com.jme3.input.InputManager;
+import com.jme3.input.MouseInput;
+import com.jme3.input.controls.InputListener;
+import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Node;
 import lamao.soh.core.SHScene;
+import lamao.soh.core.input.SHBreakoutInputHandler;
 import lamao.soh.core.model.SHEpochLevelItem;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -53,13 +58,18 @@ public class SHLevelState extends AbstractAppState {
 
     private Camera camera;
 
+    private InputManager inputManager;
+
+    private SHBreakoutInputHandler paddleInputListener;
+
     // TODO: Move to constructor scene
     public SHLevelState(
                     SimpleApplication application,
                     SHEventDispatcher dispatcher,
                     Nifty nifty,
                     String startNiftyScreen,
-                    SHInGameScreenController inGameScreenController) {
+                    SHInGameScreenController inGameScreenController,
+                    InputManager inputManager) {
         super();
 
         this.application = application;
@@ -69,6 +79,7 @@ public class SHLevelState extends AbstractAppState {
         this.nifty = nifty;
         this.startNiftyScreen = startNiftyScreen;
         this.inGameScreenController = inGameScreenController;
+        this.inputManager = inputManager;
         setEnabled(false);
 
         PointLight light = new PointLight();
@@ -79,6 +90,24 @@ public class SHLevelState extends AbstractAppState {
         camera.setLocation(new Vector3f(0, 13, 18));
         camera.lookAt(new Vector3f(0, 0, 0), Vector3f.UNIT_Y);
 
+        initInputListeners();
+
+    }
+
+    private void initInputListeners() {
+        inputManager.addMapping("paddle-left", new MouseAxisTrigger(MouseInput.AXIS_X, true));
+        inputManager.addMapping("paddle-right", new MouseAxisTrigger(MouseInput.AXIS_X, false));
+
+        paddleInputListener = new SHBreakoutInputHandler(scene);
+        paddleInputListener.setConstraints(-7, 7);
+    }
+
+    private void enabledInputListeners() {
+        inputManager.addListener(paddleInputListener, "paddle-left", "paddle-right");
+    }
+
+    private void disableInputListeners() {
+        inputManager.removeListener(paddleInputListener);
     }
 
     public SHScene getScene() {
@@ -90,6 +119,7 @@ public class SHLevelState extends AbstractAppState {
             rootNode.detachChild(this.scene.getRootNode());
         }
         this.scene = scene;
+        paddleInputListener.setScene(scene);
     }
 
     @Override
@@ -113,9 +143,12 @@ public class SHLevelState extends AbstractAppState {
             if (!rootNode.hasChild(scene.getRootNode())) {
                 rootNode.attachChild(scene.getRootNode());
             }
+            enabledInputListeners();
+            inputManager.setCursorVisible(false);
             setPause(false);
             nifty.gotoScreen(startNiftyScreen);
         } else if (isEnabled() && !enabled) {
+            disableInputListeners();
             nifty.exit();
         }
         super.setEnabled(enabled);

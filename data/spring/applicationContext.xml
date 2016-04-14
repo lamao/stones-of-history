@@ -11,6 +11,7 @@
 
 <bean id="appStateManager" factory-bean="application" factory-method="getStateManager"/>
 <bean id="assetManager" factory-bean="application" factory-method="getAssetManager"/>
+<bean id="inputManager" factory-bean="application" factory-method="getInputManager"/>
 
 <bean id="stateInjector" class="lamao.soh.core.AppStatesInjector">
     <constructor-arg ref="appStateManager"/>
@@ -96,6 +97,7 @@
 	<constructor-arg ref="nifty"/>
 	<constructor-arg value="ingame"/>
 	<constructor-arg ref="ingameScreenController"/>
+    <constructor-arg ref="inputManager"/>
 	
 	<property name="scene" ref="scene"/>
 </bean>
