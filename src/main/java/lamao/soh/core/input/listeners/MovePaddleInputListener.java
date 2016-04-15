@@ -1,27 +1,26 @@
 /*
  * SHPaddleInputHandler.java 25.03.2010 Copyright 2010 Stones of History All rights reserved.
  */
-package lamao.soh.core.input;
+package lamao.soh.core.input.listeners;
 
 import com.jme3.input.controls.AnalogListener;
 import lamao.soh.SHOptions;
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
-
-import java.util.logging.Logger;
+import lamao.soh.states.SHLevelState;
 
 /**
  * Input handler for moving paddle along X-axis.
  * @author lamao
  */
-public class SHBreakoutInputHandler implements AnalogListener {
+public class MovePaddleInputListener implements AnalogListener {
 
-    private SHScene scene;
+    private SHLevelState levelState;
     private float leftConstraint = -7;
     private float rightConstraint = 7;
 
-    public SHBreakoutInputHandler(SHScene scene) {
-        this.scene = scene;
+    public MovePaddleInputListener(SHLevelState levelAppState) {
+        this.levelState = levelAppState;
     }
 
     public void setConstraints(float left, float right) {
@@ -29,17 +28,10 @@ public class SHBreakoutInputHandler implements AnalogListener {
         rightConstraint = right;
     }
 
-    public SHScene getScene() {
-        return scene;
-    }
-
-    public void setScene(SHScene scene) {
-        this.scene = scene;
-    }
-
     @Override
     public void onAnalog(String name, float value, float tpf) {
 
+        SHScene scene = levelState.getScene();
         SHEntity entity = scene.getEntity("paddle", "paddle");
 
         float dispacement = 0;

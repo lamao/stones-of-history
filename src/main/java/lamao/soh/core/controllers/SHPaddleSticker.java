@@ -3,6 +3,9 @@
  */
 package lamao.soh.core.controllers;
 
+import com.jme3.renderer.RenderManager;
+import com.jme3.renderer.ViewPort;
+import com.jme3.scene.control.AbstractControl;
 import lamao.soh.core.entities.SHBall;
 
 import com.jme3.math.Vector3f;
@@ -13,22 +16,27 @@ import com.jme3.scene.Spatial;
  * @author lamao
  */
 @SuppressWarnings("serial")
-public class SHPaddleSticker extends SHBallMover {
+public class SHPaddleSticker extends AbstractControl {
     private Spatial target = null;
 
     /** Distance to target */
     private Vector3f distance = null;
 
     public SHPaddleSticker(
-                    SHBall ball,
                     Spatial target) {
-        super(ball);
         this.target = target;
-        distance = target.getLocalTranslation().subtract(ball.getLocation());
     }
 
     public Spatial getTarget() {
         return target;
+    }
+
+    @Override
+    public void setSpatial(Spatial spatial) {
+        super.setSpatial(spatial);
+        if (spatial != null) {
+            distance = target.getLocalTranslation().subtract(spatial.getLocalTranslation());
+        }
     }
 
     /**
@@ -36,7 +44,12 @@ public class SHPaddleSticker extends SHBallMover {
      */
     @Override
     public void controlUpdate(float time) {
-        getBall().setLocation(target.getLocalTranslation().subtract(distance));
+        getSpatial().setLocalTranslation(target.getLocalTranslation().subtract(distance));
+    }
+
+    @Override
+    protected void controlRender(RenderManager rm, ViewPort vp) {
+
     }
 
 }

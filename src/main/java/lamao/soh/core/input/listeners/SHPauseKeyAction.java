@@ -1,7 +1,7 @@
 /**
  * SHPauseKeyAction.java 16.11.2012 Copyright 2012 Stones of History All rights reserved.
  */
-package lamao.soh.core.input.actions;
+package lamao.soh.core.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
 import lamao.soh.states.SHLevelState;

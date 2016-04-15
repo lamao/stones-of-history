@@ -4,7 +4,7 @@
  * Copyright 2010 Stones of History
  * All rights reserved. 
  */
-package lamao.soh.core.input.actions;
+package lamao.soh.core.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
 import lamao.soh.core.SHDefaultPaddleHitHandler;
@@ -15,6 +15,7 @@ import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 
 import com.jme3.scene.Spatial;
+import lamao.soh.states.SHLevelState;
 
 /**
  * Launches ball by mouse click. It removes <code>SHPaddleSticker</code> 
@@ -24,30 +25,30 @@ import com.jme3.scene.Spatial;
  * @author lamao
  *
  */
-public class SHMouseBallLauncher implements ActionListener
+public class LaunchBallInputListener implements ActionListener
 {
-	/** Level where find balls to launch */
-	private SHScene scene = null;
-	
+	private SHLevelState levelState;
+
 	// TODO: Remove this variable
 	/** Class for calculation ball velocity after launching */
 	private SHDefaultPaddleHitHandler handler = new SHDefaultPaddleHitHandler();
 	
-	public SHMouseBallLauncher(SHScene scene)
+	public LaunchBallInputListener(SHLevelState state)
 	{
-		this.scene = scene;
+		this.levelState = state;
 	}
 
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
 		if (!isPressed)
 		{
+            SHScene scene = levelState.getScene();
 			SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 			for (Spatial e : scene.get("ball"))
 			{
 				SHBall ball = (SHBall)e;
                 ball.removeControl(SHPaddleSticker.class);
-                ball.addControl(new SHDefaultBallMover(ball));
+                ball.addControl(new SHDefaultBallMover());
                 handler.execute(ball, paddle);
 			}
 			

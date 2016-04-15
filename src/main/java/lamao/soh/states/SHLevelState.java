@@ -7,13 +7,14 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
-import com.jme3.input.controls.InputListener;
 import com.jme3.input.controls.MouseAxisTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Node;
 import lamao.soh.core.SHScene;
-import lamao.soh.core.input.SHBreakoutInputHandler;
+import lamao.soh.core.input.listeners.LaunchBallInputListener;
+import lamao.soh.core.input.listeners.MovePaddleInputListener;
 import lamao.soh.core.model.SHEpochLevelItem;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -29,6 +30,10 @@ import de.lessvoid.nifty.Nifty;
  * @author lamao
  */
 public class SHLevelState extends AbstractAppState {
+
+    public static final String INPUT_ACTION_PADDLE_LEFT = "paddle-left";
+    public static final String INPUT_ACTION_PADDLE_RIGHT = "paddle-right";
+    public static final String INPUT_ACTION_BALL_LAUNCH = "ball-launch";
 
     /** Level for playing */
     private SHScene scene = null;
@@ -60,7 +65,9 @@ public class SHLevelState extends AbstractAppState {
 
     private InputManager inputManager;
 
-    private SHBreakoutInputHandler paddleInputListener;
+    private MovePaddleInputListener paddleInputListener;
+
+    private LaunchBallInputListener launchBallInputListener;
 
     // TODO: Move to constructor scene
     public SHLevelState(
@@ -95,19 +102,20 @@ public class SHLevelState extends AbstractAppState {
     }
 
     private void initInputListeners() {
-        inputManager.addMapping("paddle-left", new MouseAxisTrigger(MouseInput.AXIS_X, true));
-        inputManager.addMapping("paddle-right", new MouseAxisTrigger(MouseInput.AXIS_X, false));
-
-        paddleInputListener = new SHBreakoutInputHandler(scene);
-        paddleInputListener.setConstraints(-7, 7);
+        paddleInputListener = new MovePaddleInputListener(this);
+        launchBallInputListener = new LaunchBallInputListener(this);
+        inputManager.addListener(paddleInputListener, INPUT_ACTION_PADDLE_LEFT, INPUT_ACTION_PADDLE_RIGHT);
+        inputManager.addListener(launchBallInputListener, INPUT_ACTION_BALL_LAUNCH);
     }
 
-    private void enabledInputListeners() {
-        inputManager.addListener(paddleInputListener, "paddle-left", "paddle-right");
+    private void setupInputMappings() {
+        inputManager.addMapping(INPUT_ACTION_PADDLE_LEFT, new MouseAxisTrigger(MouseInput.AXIS_X, true));
+        inputManager.addMapping(INPUT_ACTION_PADDLE_RIGHT, new MouseAxisTrigger(MouseInput.AXIS_X, false));
+        inputManager.addMapping(INPUT_ACTION_BALL_LAUNCH, new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
     }
 
-    private void disableInputListeners() {
-        inputManager.removeListener(paddleInputListener);
+    private void clearInputMappings() {
+        inputManager.clearMappings();
     }
 
     public SHScene getScene() {
@@ -119,7 +127,6 @@ public class SHLevelState extends AbstractAppState {
             rootNode.detachChild(this.scene.getRootNode());
         }
         this.scene = scene;
-        paddleInputListener.setScene(scene);
     }
 
     @Override
@@ -143,12 +150,13 @@ public class SHLevelState extends AbstractAppState {
             if (!rootNode.hasChild(scene.getRootNode())) {
                 rootNode.attachChild(scene.getRootNode());
             }
-            enabledInputListeners();
-            inputManager.setCursorVisible(false);
+            setupInputMappings();
+            // TODO: Uncomment for game
+//            inputManager.setCursorVisible(false);
             setPause(false);
             nifty.gotoScreen(startNiftyScreen);
         } else if (isEnabled() && !enabled) {
-            disableInputListeners();
+            clearInputMappings();
             nifty.exit();
         }
         super.setEnabled(enabled);
