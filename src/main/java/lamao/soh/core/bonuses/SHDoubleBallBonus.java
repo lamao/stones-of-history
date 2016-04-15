@@ -33,14 +33,13 @@ public class SHDoubleBallBonus extends SHBonus {
     @Override
     public void apply(SHScene scene) {
         List<Spatial> balls = scene.get("ball");
-        int n = balls.size();
-        SHBall ball = null;
-        SHBall newBall = null;
+        SHBall ball;
+        SHBall newBall;
         float angle;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < balls.size(); i++) {
             ball = (SHBall) balls.get(i);
             newBall = ball.clone();
-            newBall.addControl(new SHDefaultBallMover(newBall));
+            newBall.addControl(new SHDefaultBallMover());
 
             angle = SHUtils.angle(ball.getVelocity());
             setVelocityAngle(ball, angle + (float) Math.PI / 8);

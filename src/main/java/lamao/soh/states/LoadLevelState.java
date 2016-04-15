@@ -5,7 +5,6 @@ import com.jme3.app.state.AppStateManager;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
 import lamao.soh.core.service.SHLevelService;
-import sun.rmi.runtime.Log;
 
 import java.util.logging.Logger;
 
