@@ -1,4 +1,11 @@
 <player>
   <name>lamao</name>
-  <completed-levels/>
+  <completed-levels>
+    <entry>
+      <string>test_epoch</string>
+      <set>
+        <string>l1</string>
+      </set>
+    </entry>
+  </completed-levels>
 </player>

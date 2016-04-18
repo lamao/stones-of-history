@@ -24,7 +24,7 @@ public class SHBonusBottomWallCollisionHandler extends SHAbstractCollisionHandle
     @Override
     public void processEvent(SHEvent event) {
         SHBonus bonus = event.getParameter("src", SHBonus.class);
-        SHScene scene = levelState.getScene();
+        SHScene scene = getLevelState().getScene();
         scene.remove(bonus);
         dispatcher.addEventEx("level-bonus-destroyed", this, "bonus", bonus);
     }

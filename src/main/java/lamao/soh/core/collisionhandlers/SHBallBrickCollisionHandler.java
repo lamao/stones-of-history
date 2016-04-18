@@ -4,7 +4,9 @@
 package lamao.soh.core.collisionhandlers;
 
 import com.jme3.collision.CollisionResult;
+import com.jme3.collision.CollisionResults;
 import com.jme3.math.FastMath;
+import com.jme3.math.Triangle;
 import com.jme3.math.Vector3f;
 
 import lamao.soh.core.SHScene;
@@ -31,11 +33,11 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
     public void processEvent(SHEvent event) {
         SHBrick brick = event.getParameter("dst", SHBrick.class);
         SHBall ball = event.getParameter("src", SHBall.class);
-        CollisionResult collisionResult = event.getParameter("data", CollisionResult.class);
-        SHScene scene = levelState.getScene();
+        CollisionResults collisionResults = event.getParameter("data", CollisionResults.class);
+        SHScene scene = getLevelState().getScene();
 
         dispatcher.addEventEx("level-brick-hit", this, "brick", brick);
-        onHit(ball, brick, collisionResult);
+        onHit(ball, brick, collisionResults);
         if (brick.getStrength() <= 0) {
             scene.remove(brick);
             dispatcher.addEventEx("level-brick-deleted", this, "brick", brick);
@@ -61,7 +63,7 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
      * <b>NOTE:</b> It is supposed that bricks really intersects with ball. Method doesn't check
      * this.
      */
-    public void onHit(SHBall ball, SHBrick brick, CollisionResult collisionResult) {
+    public void onHit(SHBall ball, SHBrick brick, CollisionResults collisionResults) {
         if (ball.isSuper()) {
             if (brick.getStrength() != Integer.MAX_VALUE) {
                 brick.setStrength(0);
@@ -74,9 +76,16 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
             return;
         }
 
+        Vector3f contactNormal = Vector3f.ZERO.clone();
+        for (CollisionResult collisionResult : collisionResults) {
+            Triangle contactTriangle = collisionResult.getTriangle(null);
+            contactNormal.addLocal(contactTriangle.getNormal());
+        }
+        contactNormal.divideLocal(collisionResults.size()).normalizeLocal();
+
         Vector3f ballVelocity = ball.getVelocity();
         float velocityAngle = SHUtils.angle(ballVelocity.mult(-1));
-        float normalAngle = SHUtils.angle(collisionResult.getContactNormal());
+        float normalAngle = SHUtils.angle(contactNormal);
         float resultAngle = velocityAngle + 2 * (normalAngle - velocityAngle);
         float speed = ballVelocity.length();
         ballVelocity.x = FastMath.cos(resultAngle) * speed;

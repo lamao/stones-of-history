@@ -30,7 +30,7 @@ public class SHBallBottomWallCollisionHandler extends SHAbstractCollisionHandler
     public void processEvent(SHEvent event) {
         SHBall ball = event.getParameter("src", SHBall.class);
         SHBottomWall wall = event.getParameter("dst", SHBottomWall.class);
-        SHScene scene = levelState.getScene();
+        SHScene scene = getLevelState().getScene();
 
         if (wall.isActive()) {
             ball.getVelocity().z = -ball.getVelocity().z;

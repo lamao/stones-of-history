@@ -13,12 +13,13 @@ import lamao.soh.utils.events.SHEventDispatcher;
  */
 public abstract class SHAbstractCollisionHandler extends SHAbstractEventHandler {
 
-    protected SHLevelState levelState;
+    private SHLevelState levelState;
 
     public SHAbstractCollisionHandler(
         SHEventDispatcher dispatcher,
         SHLevelState levelState) {
         super(dispatcher);
+        this.levelState = levelState;
     }
 
     public SHLevelState getLevelState() {

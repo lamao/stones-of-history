@@ -24,7 +24,7 @@ public class SHBulletWallCollisionHandler extends SHAbstractCollisionHandler {
     @Override
     public void processEvent(SHEvent event) {
         SHBall bullet = event.getParameter("src", SHBall.class);
-        SHScene scene = levelState.getScene();
+        SHScene scene = getLevelState().getScene();
         scene.remove(bullet);
     }
 }
