@@ -7,6 +7,7 @@ import java.io.File;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.plugins.FileLocator;
+import com.jme3.bounding.BoundingSphere;
 import com.jme3.scene.Node;
 import lamao.soh.SHConstants;
 import lamao.soh.core.ISHEntityFactory;

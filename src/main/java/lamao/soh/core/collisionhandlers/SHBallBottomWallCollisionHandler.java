@@ -6,6 +6,7 @@ package lamao.soh.core.collisionhandlers;
 
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBottomWall;
+import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 import lamao.soh.core.SHScene;
@@ -14,21 +15,22 @@ import lamao.soh.core.SHScene;
  * Handler for ball collision with bottom wall
  * @author lamao
  */
-public class SHBallBottomWallCollisionHandler extends SHAbstractCollisiontHandler {
+public class SHBallBottomWallCollisionHandler extends SHAbstractCollisionHandler {
     /**
      * @param dispatcher
-     * @param scene
+     * @param levelState
      */
     public SHBallBottomWallCollisionHandler(
                     SHEventDispatcher dispatcher,
-                    SHScene scene) {
-        super(dispatcher, scene);
+                    SHLevelState levelState) {
+        super(dispatcher, levelState);
     }
 
     @Override
     public void processEvent(SHEvent event) {
         SHBall ball = event.getParameter("src", SHBall.class);
         SHBottomWall wall = event.getParameter("dst", SHBottomWall.class);
+        SHScene scene = levelState.getScene();
 
         if (wall.isActive()) {
             ball.getVelocity().z = -ball.getVelocity().z;

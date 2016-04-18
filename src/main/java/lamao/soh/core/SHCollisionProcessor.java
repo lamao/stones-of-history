@@ -23,6 +23,10 @@ import com.jme3.scene.Spatial;
 public class SHCollisionProcessor implements ISHCollisionProcessor {
     private static final String EVENT_NAME_PATTERN = "scene-collision-%s-%s";
 
+    public static final String EVENT_PARAM_SOURCE_ENTITY = "src";
+    public static final String EVENT_PARAM_DESTINATION_ENTITY = "dst";
+    public static final String EVENT_PARAM_COLLISION_DATA = "data";
+
     /**
      * Pairs of entity types to check for collision.
      */
@@ -90,19 +94,6 @@ public class SHCollisionProcessor implements ISHCollisionProcessor {
     }
 
     /**
-     * Checks if this model is entity and return it if so
-     * @param model - model to check
-     * @return entity or null if model is not an entity
-     */
-    private SHEntity getEntity(Spatial model) {
-        if (model instanceof SHEntity) {
-            return (SHEntity) model;
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -121,16 +112,14 @@ public class SHCollisionProcessor implements ISHCollisionProcessor {
                 for (Spatial sourceModel : source.getChildren()) {
                     for (Spatial destModel : dest.getChildren()) {
                         CollisionResults results = new CollisionResults();
-                        sourceModel.collideWith(destModel, results);
+                        destModel.collideWith(sourceModel.getWorldBound(), results);
 
-                        SHEntity sourceEntity = getEntity(sourceModel);
-                        SHEntity destEntity = getEntity(destModel);
-                        for (CollisionResult collisionResult : results) {
+                        if (results.size() > 0) {
                             String event = getEventName(task.getSourceType(), task.getDestType());
                             Map<String, Object> params = new HashMap<String, Object>();
-                            params.put("data", collisionResult);
-                            params.put("src", sourceEntity);
-                            params.put("dst", destEntity);
+                            params.put(EVENT_PARAM_COLLISION_DATA, results);
+                            params.put(EVENT_PARAM_SOURCE_ENTITY, sourceModel);
+                            params.put(EVENT_PARAM_DESTINATION_ENTITY, destModel);
                             eventsToSend.add(new SHEvent(event, this, params));
                         }
                     }

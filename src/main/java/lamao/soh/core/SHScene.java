@@ -15,7 +15,7 @@ import com.jme3.scene.Spatial;
  */
 public class SHScene {
     /** Root node of the scene */
-    private Node rootNode = new Node("scene-root");
+    private Node rootNode;
 
     private ISHCollisionProcessor collisionProcessor;
 

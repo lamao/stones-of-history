@@ -7,23 +7,25 @@ package lamao.soh.core.collisionhandlers;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.eventhandlers.SHBonusTimeOverEventHandler;
+import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao
  */
-public class SHBonusPaddleCollisionHandler extends SHAbstractCollisiontHandler {
+public class SHBonusPaddleCollisionHandler extends SHAbstractCollisionHandler {
 
     public SHBonusPaddleCollisionHandler(
                     SHEventDispatcher dispatcher,
-                    SHScene scene) {
-        super(dispatcher, scene);
+                    SHLevelState levelState) {
+        super(dispatcher, levelState);
     }
 
     @Override
     public void processEvent(SHEvent event) {
         SHBonus bonus = event.getParameter("src", SHBonus.class);
+        SHScene scene = levelState.getScene();
 
         scene.remove(bonus);
         boolean needAdd = true;

@@ -6,23 +6,25 @@ package lamao.soh.core.collisionhandlers;
 
 import lamao.soh.core.SHScene;
 import lamao.soh.core.entities.SHBall;
+import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao
  */
-public class SHBulletWallCollisionHandler extends SHAbstractCollisiontHandler {
+public class SHBulletWallCollisionHandler extends SHAbstractCollisionHandler {
 
     public SHBulletWallCollisionHandler(
                     SHEventDispatcher dispatcher,
-                    SHScene scene) {
-        super(dispatcher, scene);
+                    SHLevelState levelState) {
+        super(dispatcher, levelState);
     }
 
     @Override
     public void processEvent(SHEvent event) {
         SHBall bullet = event.getParameter("src", SHBall.class);
+        SHScene scene = levelState.getScene();
         scene.remove(bullet);
     }
 }

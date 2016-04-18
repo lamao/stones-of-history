@@ -13,17 +13,18 @@ import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.controllers.SHDefaultMover;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBrick;
+import lamao.soh.states.SHLevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * @author lamao
  */
-public class SHBallBrickCollisionHandler extends SHAbstractCollisiontHandler {
+public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
     public SHBallBrickCollisionHandler(
                     SHEventDispatcher dispatcher,
-                    SHScene scene) {
-        super(dispatcher, scene);
+                    SHLevelState levelState) {
+        super(dispatcher, levelState);
     }
 
     @Override
@@ -31,6 +32,7 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisiontHandler {
         SHBrick brick = event.getParameter("dst", SHBrick.class);
         SHBall ball = event.getParameter("src", SHBall.class);
         CollisionResult collisionResult = event.getParameter("data", CollisionResult.class);
+        SHScene scene = levelState.getScene();
 
         dispatcher.addEventEx("level-brick-hit", this, "brick", brick);
         onHit(ball, brick, collisionResult);
