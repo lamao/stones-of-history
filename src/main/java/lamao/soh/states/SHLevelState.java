@@ -6,7 +6,9 @@ package lamao.soh.states;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.ColorRGBA;
@@ -109,9 +111,15 @@ public class SHLevelState extends AbstractAppState {
     }
 
     private void setupInputMappings() {
-        inputManager.addMapping(INPUT_ACTION_PADDLE_LEFT, new MouseAxisTrigger(MouseInput.AXIS_X, true));
-        inputManager.addMapping(INPUT_ACTION_PADDLE_RIGHT, new MouseAxisTrigger(MouseInput.AXIS_X, false));
-        inputManager.addMapping(INPUT_ACTION_BALL_LAUNCH, new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
+        inputManager.addMapping(INPUT_ACTION_PADDLE_LEFT,
+            new MouseAxisTrigger(MouseInput.AXIS_X, true),
+            new KeyTrigger(KeyInput.KEY_LEFT));
+        inputManager.addMapping(INPUT_ACTION_PADDLE_RIGHT,
+            new MouseAxisTrigger(MouseInput.AXIS_X, false),
+            new KeyTrigger(KeyInput.KEY_RIGHT));
+        inputManager.addMapping(INPUT_ACTION_BALL_LAUNCH,
+            new MouseButtonTrigger(MouseInput.BUTTON_RIGHT),
+            new KeyTrigger(KeyInput.KEY_SPACE));
     }
 
     private void clearInputMappings() {

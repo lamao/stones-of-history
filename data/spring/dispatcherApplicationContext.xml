@@ -77,17 +77,17 @@
                     <constructor-arg ref="levelState"/>
                 </bean>
             </entry>
-			<!--<entry>-->
-				<!--<key>-->
-					<!--<bean class="java.lang.String">-->
-						<!--<constructor-arg value="scene-collision-ball-paddle"/>-->
-					<!--</bean>-->
-				<!--</key>-->
-				<!--<bean class="lamao.soh.core.collisionhandlers.SHBallPaddleCollisionHandler">-->
-					<!--<constructor-arg ref="dispatcher"/>-->
-					<!--<constructor-arg ref="scene"/>-->
-				<!--</bean>-->
-			<!--</entry>-->
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="scene-collision-ball-paddle"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.core.collisionhandlers.SHBallPaddleCollisionHandler">
+					<constructor-arg ref="dispatcher"/>
+					<constructor-arg ref="levelState"/>
+				</bean>
+			</entry>
 			<!--<entry>-->
 				<!--<key>-->
 					<!--<bean class="java.lang.String">-->
