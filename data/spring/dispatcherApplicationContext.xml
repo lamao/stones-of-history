@@ -122,17 +122,17 @@
 					<!--<constructor-arg ref="scene"/>-->
 				<!--</bean>-->
 			<!--</entry>-->
-			<!--<entry>-->
-				<!--<key>-->
-					<!--<bean class="java.lang.String">-->
-						<!--<constructor-arg value="scene-collision-ball-bottom-wall"/>-->
-					<!--</bean>-->
-				<!--</key>-->
-				<!--<bean class="lamao.soh.core.collisionhandlers.SHBallBottomWallCollisionHandler">-->
-					<!--<constructor-arg ref="dispatcher"/>-->
-					<!--<constructor-arg ref="scene"/>-->
-				<!--</bean>-->
-			<!--</entry>-->
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="scene-collision-ball-bottom-wall"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.core.collisionhandlers.SHBallBottomWallCollisionHandler">
+					<constructor-arg ref="dispatcher"/>
+					<constructor-arg ref="levelState"/>
+				</bean>
+			</entry>
 			<!--<entry>-->
 				<!--<key>-->
 					<!--<bean class="java.lang.String">-->

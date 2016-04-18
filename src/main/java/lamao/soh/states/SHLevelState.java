@@ -99,8 +99,6 @@ public class SHLevelState extends AbstractAppState {
         camera.setLocation(new Vector3f(0, 13, 18));
         camera.lookAt(new Vector3f(0, 0, 0), Vector3f.UNIT_Y);
 
-        initInputListeners();
-
     }
 
     private void initInputListeners() {
@@ -122,7 +120,7 @@ public class SHLevelState extends AbstractAppState {
             new KeyTrigger(KeyInput.KEY_SPACE));
     }
 
-    private void clearInputMappings() {
+    private void clearMappings() {
         inputManager.clearMappings();
     }
 
@@ -158,13 +156,17 @@ public class SHLevelState extends AbstractAppState {
             if (!rootNode.hasChild(scene.getRootNode())) {
                 rootNode.attachChild(scene.getRootNode());
             }
+            initInputListeners();
             setupInputMappings();
             // TODO: Uncomment for game
 //            inputManager.setCursorVisible(false);
             setPause(false);
             nifty.gotoScreen(startNiftyScreen);
         } else if (isEnabled() && !enabled) {
-            clearInputMappings();
+            clearMappings();
+            if (scene != null) {
+                rootNode.detachChild(scene.getRootNode());
+            }
             nifty.exit();
         }
         super.setEnabled(enabled);
