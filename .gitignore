@@ -2,9 +2,12 @@
 /build
 /test-output
 /*.log
+/data/players/*.xml
 /data/test/players/*.xml
 /data/test/session/*.xml
 /stones-of-history.iml
+/stones-of-history.ipr
+/stones-of-history.iws
 /.idea
 /.gradle
 /session.xml
