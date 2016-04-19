@@ -84,8 +84,7 @@ public class SHInGameScreenController extends SHBasicScreenController
 	private void gotoEpochsScreen()
 	{
 		stateService.detach(LevelState.class);
-		stateService.attach(SHNiftyState.class);
-		stateService.get(SHNiftyState.class).gotoScreen(EPOCHS_SCREEN);
+		getNifty().gotoScreen(EPOCHS_SCREEN);
 	}
 	
 	public void setLevelInfo(SHEpochLevelItem levelItem)
@@ -148,7 +147,7 @@ public class SHInGameScreenController extends SHBasicScreenController
 		hideInGameMenu();
 		getNifty().getNiftyMouse().resetMouseCursor();
 		LevelState levelState = stateService.get(LevelState.class);
-		levelState.setEnabled(false);
+		levelState.setEnabled(true);
 	}
 	
 

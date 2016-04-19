@@ -52,6 +52,7 @@ public class LoadLevelState extends BasicAppState {
         LOG.info("Finish loading level");
 
         getStateService().detach(LoadLevelState.class);
+        getStateService().attach(SHNiftyState.class);
         getStateService().attach(LevelState.class);
     }
 }

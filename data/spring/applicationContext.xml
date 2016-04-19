@@ -63,7 +63,6 @@
         <list>
             <value>interface/main.xml</value>
             <value>interface/ingame.xml</value>
-            <value>interface/blank.xml</value>
         </list>
     </constructor-arg>
     <constructor-arg value="start"/>
@@ -89,7 +88,6 @@
 <bean id="levelState" class="lamao.soh.states.LevelState">
     <constructor-arg ref="stateService"/>
 	<constructor-arg ref="dispatcher"/>
-	<constructor-arg ref="nifty"/>
 	<constructor-arg value="ingame"/>
 	<constructor-arg ref="ingameScreenController"/>
 

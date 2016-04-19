@@ -54,9 +54,6 @@ public class LevelState extends BasicAppState {
     /** Dispatcher used to fire events */
     private SHEventDispatcher dispatcher;
 
-    /** Container for nifty UI elements */
-    private Nifty nifty;
-
     private String startNiftyScreen;
 
     private SHInGameScreenController inGameScreenController;
@@ -79,13 +76,11 @@ public class LevelState extends BasicAppState {
     public LevelState(
         StateService stateService,
         SHEventDispatcher dispatcher,
-        Nifty nifty,
         String startNiftyScreen,
         SHInGameScreenController inGameScreenController) {
         super(stateService);
 
         this.dispatcher = dispatcher;
-        this.nifty = nifty;
         this.startNiftyScreen = startNiftyScreen;
         this.inGameScreenController = inGameScreenController;
 
@@ -120,7 +115,8 @@ public class LevelState extends BasicAppState {
         rootNode.attachChild(localRootNode);
         // TODO: Uncomment for game
 //            inputManager.setCursorVisible(false);
-        nifty.gotoScreen(startNiftyScreen);
+
+        getStateService().get(SHNiftyState.class).gotoScreen(startNiftyScreen);
     }
 
     @Override
@@ -130,8 +126,6 @@ public class LevelState extends BasicAppState {
         clearInputMappings();
 
         rootNode.detachChild(localRootNode);
-
-        nifty.exit();
 
     }
 
@@ -177,7 +171,6 @@ public class LevelState extends BasicAppState {
 
     @Override
     public void update(float tpf) {
-        nifty.update();
         if (isEnabled()) {
             super.update(tpf);
             scene.update(tpf);
