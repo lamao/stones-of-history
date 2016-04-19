@@ -21,6 +21,8 @@ import lamao.soh.core.input.listeners.LaunchBallInputListener;
 import lamao.soh.core.input.listeners.MovePaddleInputListener;
 import lamao.soh.core.input.listeners.ToMenuInputListener;
 import lamao.soh.core.model.SHEpochLevelItem;
+import lamao.soh.core.model.entity.SHEpoch;
+import lamao.soh.core.model.entity.SHLevel;
 import lamao.soh.core.service.StateService;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -45,12 +47,6 @@ public class LevelState extends BasicAppState {
     /** Level for playing */
     private SHScene scene = null;
 
-    /** Indicates where draw bounding volumes or not */
-    private boolean drawBounds = false;
-
-    /** Indicates whether draw normals for scene */
-    private boolean drawNormals = false;
-
     /** Dispatcher used to fire events */
     private SHEventDispatcher dispatcher;
 
@@ -71,6 +67,8 @@ public class LevelState extends BasicAppState {
     private ToMenuInputListener toMenuInputListener;
 
     private Node localRootNode;
+
+    private SHEpochLevelItem levelInfo;
 
     // TODO: Move to constructor scene
     public LevelState(
@@ -117,6 +115,7 @@ public class LevelState extends BasicAppState {
 //            inputManager.setCursorVisible(false);
 
         getStateService().get(SHNiftyState.class).gotoScreen(startNiftyScreen);
+        inGameScreenController.setLevelInfo(levelInfo);
     }
 
     @Override
@@ -167,6 +166,10 @@ public class LevelState extends BasicAppState {
             rootNode.detachChild(this.scene.getRootNode());
         }
         this.scene = scene;
+    }
+
+    public void setLevelInfo(SHEpochLevelItem levelInfo) {
+        this.levelInfo = levelInfo;
     }
 
     @Override

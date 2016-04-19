@@ -11,13 +11,13 @@
         </level>
         <level>
             <id>l2</id>
-            <scene>level2.dps</scene>
+            <scene>level1.j3o</scene>
             <intro>This is description of SECOND test level.</intro>
             <name>Second\n   test\n      level</name>
         </level>
         <level>
             <id>l3</id>
-            <scene>level3.dps</scene>
+            <scene>level1.j3o</scene>
             <intro>This is description of middle (between first and second) test level.</intro>
             <name>MIDDLE test LEVEL.:))))0</name>
         </level>

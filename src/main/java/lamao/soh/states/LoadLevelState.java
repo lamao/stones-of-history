@@ -2,6 +2,7 @@ package lamao.soh.states;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
+import lamao.soh.core.model.SHEpochLevelItem;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
 import lamao.soh.core.service.SHLevelService;
@@ -50,6 +51,9 @@ public class LoadLevelState extends BasicAppState {
         LOG.info("Start loading level");
         levelService.loadLevelScene(epoch, level);
         LOG.info("Finish loading level");
+
+        LevelState levelState = getStateService().get(LevelState.class);
+        levelState.setLevelInfo(new SHEpochLevelItem(epoch, level));
 
         getStateService().detach(LoadLevelState.class);
         getStateService().attach(SHNiftyState.class);
