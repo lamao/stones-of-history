@@ -7,7 +7,7 @@ import com.jme3.input.controls.AnalogListener;
 import lamao.soh.SHOptions;
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 
 /**
  * Input handler for moving paddle along X-axis.
@@ -15,11 +15,11 @@ import lamao.soh.states.SHLevelState;
  */
 public class MovePaddleInputListener implements AnalogListener {
 
-    private SHLevelState levelState;
+    private LevelState levelState;
     private float leftConstraint = -7;
     private float rightConstraint = 7;
 
-    public MovePaddleInputListener(SHLevelState levelAppState) {
+    public MovePaddleInputListener(LevelState levelAppState) {
         this.levelState = levelAppState;
     }
 

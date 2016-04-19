@@ -4,10 +4,9 @@
  */
 package lamao.soh.core.collisionhandlers;
 
-import lamao.soh.core.SHScene;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 
@@ -18,7 +17,7 @@ public class SHBallPaddleCollisionHandler extends SHAbstractCollisionHandler {
 
     public SHBallPaddleCollisionHandler(
                     SHEventDispatcher dispatcher,
-                    SHLevelState levelState) {
+                    LevelState levelState) {
         super(dispatcher, levelState);
     }
 

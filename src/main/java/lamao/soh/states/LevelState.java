@@ -21,6 +21,7 @@ import lamao.soh.core.input.listeners.LaunchBallInputListener;
 import lamao.soh.core.input.listeners.MovePaddleInputListener;
 import lamao.soh.core.input.listeners.ToMenuInputListener;
 import lamao.soh.core.model.SHEpochLevelItem;
+import lamao.soh.core.service.StateService;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 import lamao.soh.utils.events.SHEventDispatcher;
 
@@ -34,12 +35,12 @@ import de.lessvoid.nifty.Nifty;
  * Game state for actual game for one level (from starting to winning or loosing).
  * @author lamao
  */
-public class SHLevelState extends BasicAppState {
+public class LevelState extends BasicAppState {
 
-    public static final String INPUT_ACTION_PADDLE_LEFT = "paddle-left";
-    public static final String INPUT_ACTION_PADDLE_RIGHT = "paddle-right";
-    public static final String INPUT_ACTION_BALL_LAUNCH = "ball-launch";
-    public static final String INPUT_ACTION_SHOW_GAME_MENU = "show-game-menu";
+    private static final String INPUT_ACTION_PADDLE_LEFT = "paddle-left";
+    private static final String INPUT_ACTION_PADDLE_RIGHT = "paddle-right";
+    private static final String INPUT_ACTION_BALL_LAUNCH = "ball-launch";
+    private static final String INPUT_ACTION_SHOW_GAME_MENU = "show-game-menu";
 
     /** Level for playing */
     private SHScene scene = null;
@@ -49,8 +50,6 @@ public class SHLevelState extends BasicAppState {
 
     /** Indicates whether draw normals for scene */
     private boolean drawNormals = false;
-
-    private boolean pause = false;
 
     /** Dispatcher used to fire events */
     private SHEventDispatcher dispatcher;
@@ -74,19 +73,21 @@ public class SHLevelState extends BasicAppState {
 
     private ToMenuInputListener toMenuInputListener;
 
+    private Node localRootNode;
+
     // TODO: Move to constructor scene
-    public SHLevelState(
-                    SHEventDispatcher dispatcher,
-                    Nifty nifty,
-                    String startNiftyScreen,
-                    SHInGameScreenController inGameScreenController) {
-        super();
+    public LevelState(
+        StateService stateService,
+        SHEventDispatcher dispatcher,
+        Nifty nifty,
+        String startNiftyScreen,
+        SHInGameScreenController inGameScreenController) {
+        super(stateService);
 
         this.dispatcher = dispatcher;
         this.nifty = nifty;
         this.startNiftyScreen = startNiftyScreen;
         this.inGameScreenController = inGameScreenController;
-        setEnabled(false);
 
         paddleInputListener = new MovePaddleInputListener(this);
         launchBallInputListener = new LaunchBallInputListener(this);
@@ -96,27 +97,42 @@ public class SHLevelState extends BasicAppState {
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
+        super.initialize(stateManager, app);
+
         SimpleApplication simpleApplication = (SimpleApplication)app;
         rootNode = simpleApplication.getRootNode();
         camera = simpleApplication.getCamera();
         inputManager = simpleApplication.getInputManager();
 
+        localRootNode = new Node("level-root-node");
+
         PointLight light = new PointLight();
         light.setPosition(new Vector3f(0, 3, 3));
         light.setColor(ColorRGBA.White.clone());
-        rootNode.addLight(light);
+        localRootNode.addLight(light);
 
         camera.setLocation(new Vector3f(0, 13, 18));
         camera.lookAt(new Vector3f(0, 0, 0), Vector3f.UNIT_Y);
 
-        super.initialize(stateManager, app);
+        setupInputMappings();
+
+        localRootNode.attachChild(scene.getRootNode());
+        rootNode.attachChild(localRootNode);
+        // TODO: Uncomment for game
+//            inputManager.setCursorVisible(false);
+        nifty.gotoScreen(startNiftyScreen);
     }
 
     @Override
     public void cleanup() {
         super.cleanup();
 
-        rootNode.removeLight(rootNode.getLocalLightList().iterator().next());
+        clearInputMappings();
+
+        rootNode.detachChild(localRootNode);
+
+        nifty.exit();
+
     }
 
 
@@ -138,7 +154,14 @@ public class SHLevelState extends BasicAppState {
     }
 
     private void clearInputMappings() {
-        inputManager.clearMappings();
+        inputManager.deleteMapping(INPUT_ACTION_PADDLE_LEFT);
+        inputManager.deleteMapping(INPUT_ACTION_PADDLE_RIGHT);
+        inputManager.deleteMapping(INPUT_ACTION_BALL_LAUNCH);
+        inputManager.deleteMapping(INPUT_ACTION_SHOW_GAME_MENU);
+
+        inputManager.removeListener(paddleInputListener);
+        inputManager.removeListener(launchBallInputListener);
+        inputManager.removeListener(toMenuInputListener);
     }
 
     public SHScene getScene() {
@@ -155,7 +178,7 @@ public class SHLevelState extends BasicAppState {
     @Override
     public void update(float tpf) {
         nifty.update();
-        if (!pause) {
+        if (isEnabled()) {
             super.update(tpf);
             scene.update(tpf);
             dispatcher.update(tpf);
@@ -165,59 +188,6 @@ public class SHLevelState extends BasicAppState {
     @Override
     public void render(RenderManager renderManager) {
         super.render(renderManager);
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        if (isInitialized()) {
-            if (!isEnabled() && enabled) {
-                if (!rootNode.hasChild(scene.getRootNode())) {
-                    rootNode.attachChild(scene.getRootNode());
-                }
-                setupInputMappings();
-                // TODO: Uncomment for game
-//            inputManager.setCursorVisible(false);
-                setPause(false);
-                nifty.gotoScreen(startNiftyScreen);
-            } else if (isEnabled() && !enabled) {
-                clearInputMappings();
-                if (scene != null) {
-                    rootNode.detachChild(scene.getRootNode());
-                }
-                nifty.exit();
-            }
-        }
-        super.setEnabled(enabled);
-    }
-
-
-
-    public void setPause(boolean pause) {
-        this.pause = pause;
-    }
-
-    public boolean isPause() {
-        return pause;
-    }
-
-    public boolean isDrawBounds() {
-        return drawBounds;
-    }
-
-    public void setDrawBounds(boolean drawBounds) {
-        this.drawBounds = drawBounds;
-    }
-
-    public boolean isDrawNormals() {
-        return drawNormals;
-    }
-
-    public void setDrawNormals(boolean drawNormals) {
-        this.drawNormals = drawNormals;
-    }
-
-    public void setLevelInfo(SHEpochLevelItem levelInfo) {
-        inGameScreenController.setLevelInfo(levelInfo);
     }
 
     /**

@@ -6,11 +6,14 @@
  */
 package lamao.soh.states;
 
+import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.renderer.RenderManager;
 import lamao.soh.SHConstants;
 
 import de.lessvoid.nifty.Nifty;
+import lamao.soh.core.service.StateService;
 
 /**
  * @author lamao
@@ -18,7 +21,7 @@ import de.lessvoid.nifty.Nifty;
  */
 public class SHNiftyState extends BasicAppState {
 
-	private Nifty nifty;
+    private Nifty nifty;
 	
 	private String startScreen;
 	
@@ -26,51 +29,26 @@ public class SHNiftyState extends BasicAppState {
 	
 	public SHNiftyState(Nifty nifty,
 			String startScreen,
-			SHConstants constants)
+			SHConstants constants,
+            StateService stateService)
 	{
-		super();
+		super(stateService);
 		this.nifty = nifty;
 		this.startScreen = startScreen;
 		this.constants = constants;
-        setEnabled(false);
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void render(RenderManager renderManager)
-	{
-		super.render(renderManager);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void update(float tpf)
-	{
-		super.update(tpf);
-		nifty.update();
-	}
-	
-	/**
-	* {@inheritDoc}
-	*/
-	@Override
-	public void setEnabled(boolean enabled)
-	{
-		super.setEnabled(enabled);
-		if (!enabled)
-		{
-			nifty.getNiftyMouse().resetMouseCursor();
-			nifty.exit();
-		}
-		else 
-		{
-			nifty.getNiftyMouse().enableMouseCursor(constants.CURSOR_DEFAULT);
-			nifty.gotoScreen(startScreen);
-		}
+    @Override
+    public void initialize(AppStateManager stateManager, Application app) {
+        super.initialize(stateManager, app);
+        nifty.getNiftyMouse().enableMouseCursor(constants.CURSOR_DEFAULT);
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        nifty.getNiftyMouse().resetMouseCursor();
+        nifty.exit();
 	}
 	
 	/**
@@ -81,4 +59,8 @@ public class SHNiftyState extends BasicAppState {
 	{
 		nifty.gotoScreen(screenId);
 	}
+
+    public void gotoStartScreen() {
+        nifty.gotoScreen(startScreen);
+    }
 }

@@ -11,7 +11,8 @@ import com.jme3.app.state.AppStateManager;
 import lamao.soh.SHConstants;
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.model.SHEpochLevelItem;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.core.service.StateService;
+import lamao.soh.states.LevelState;
 import lamao.soh.states.SHNiftyState;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.window.WindowControl;
@@ -30,15 +31,15 @@ public class SHInGameScreenController extends SHBasicScreenController
 	
 	private SHBreakoutGameContext context;
 	private SHConstants constants;	
-	private AppStateManager gameStateManager;
+	private StateService stateService;
 	
 	public SHInGameScreenController(SHBreakoutGameContext context,
 			SHConstants constants,
-            AppStateManager gameStateManager)
+            StateService stateService)
 	{
 		this.context = context;
 		this.constants = constants;
-		this.gameStateManager = gameStateManager;
+		this.stateService = stateService;
 	}
 	
 	/**
@@ -82,9 +83,9 @@ public class SHInGameScreenController extends SHBasicScreenController
 	
 	private void gotoEpochsScreen()
 	{
-		gameStateManager.getState(SHLevelState.class).setEnabled(false);
-		gameStateManager.getState(SHNiftyState.class).setEnabled(true);
-		getNifty().gotoScreen(EPOCHS_SCREEN);
+		stateService.detach(LevelState.class);
+		stateService.attach(SHNiftyState.class);
+		stateService.get(SHNiftyState.class).gotoScreen(EPOCHS_SCREEN);
 	}
 	
 	public void setLevelInfo(SHEpochLevelItem levelItem)
@@ -146,8 +147,8 @@ public class SHInGameScreenController extends SHBasicScreenController
 	{
 		hideInGameMenu();
 		getNifty().getNiftyMouse().resetMouseCursor();
-		SHLevelState levelState =  gameStateManager.getState(SHLevelState.class);
-		levelState.setPause(false);
+		LevelState levelState = stateService.get(LevelState.class);
+		levelState.setEnabled(false);
 	}
 	
 

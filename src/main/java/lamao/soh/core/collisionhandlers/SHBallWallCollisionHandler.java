@@ -6,11 +6,8 @@ package lamao.soh.core.collisionhandlers;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Spatial;
-import lamao.soh.core.SHEntity;
-import lamao.soh.core.SHScene;
 import lamao.soh.core.entities.SHBall;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 
@@ -19,7 +16,7 @@ import lamao.soh.utils.events.SHEventDispatcher;
  */
 public class SHBallWallCollisionHandler extends SHAbstractCollisionHandler {
 
-    public SHBallWallCollisionHandler(SHEventDispatcher dispatcher, SHLevelState levelState) {
+    public SHBallWallCollisionHandler(SHEventDispatcher dispatcher, LevelState levelState) {
         super(dispatcher, levelState);
     }
 

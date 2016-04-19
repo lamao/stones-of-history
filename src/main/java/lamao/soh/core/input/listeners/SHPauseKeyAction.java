@@ -4,25 +4,25 @@
 package lamao.soh.core.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 
 /**
  * Pauses game
  * @author lamao
  */
 public class SHPauseKeyAction implements ActionListener {
-    private SHLevelState levelState;
+    private LevelState levelState;
 
     /**
      * 
      */
     public SHPauseKeyAction(
-                    SHLevelState levelState) {
+                    LevelState levelState) {
         this.levelState = levelState;
     }
 
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
-        levelState.setPause(!levelState.isPause());
+        levelState.setEnabled(!levelState.isEnabled());
     }
 }

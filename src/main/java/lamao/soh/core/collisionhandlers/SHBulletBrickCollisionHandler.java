@@ -6,7 +6,7 @@ package lamao.soh.core.collisionhandlers;
 
 import lamao.soh.core.SHScene;
 import lamao.soh.core.entities.SHBall;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 
@@ -20,7 +20,7 @@ public class SHBulletBrickCollisionHandler extends SHBallBrickCollisionHandler {
      */
     public SHBulletBrickCollisionHandler(
                     SHEventDispatcher dispatcher,
-                    SHLevelState levelState) {
+                    LevelState levelState) {
         super(dispatcher, levelState);
     }
 

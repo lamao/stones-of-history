@@ -6,7 +6,7 @@ package lamao.soh.core.collisionhandlers;
 
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBottomWall;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 import lamao.soh.core.SHScene;
@@ -22,7 +22,7 @@ public class SHBallBottomWallCollisionHandler extends SHAbstractCollisionHandler
      */
     public SHBallBottomWallCollisionHandler(
                     SHEventDispatcher dispatcher,
-                    SHLevelState levelState) {
+                    LevelState levelState) {
         super(dispatcher, levelState);
     }
 

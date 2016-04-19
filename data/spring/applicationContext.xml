@@ -13,17 +13,6 @@
 <bean id="assetManager" factory-bean="application" factory-method="getAssetManager"/>
 <bean id="inputManager" factory-bean="application" factory-method="getInputManager"/>
 
-<bean id="stateInjector" class="lamao.soh.core.AppStatesInjector">
-    <constructor-arg ref="appStateManager"/>
-    <constructor-arg>
-        <list>
-            <ref bean="levelState"/>
-            <ref bean="niftyState"/>
-            <ref bean="consoleState"/>
-            <ref bean="loadLevelState"/>
-        </list>
-    </constructor-arg>
-</bean>
 <!--  Engine beans -->
 
 <!-- Services -->
@@ -53,6 +42,10 @@
 
 <bean id="sessionService" class="lamao.soh.core.service.SHSessionService"/>
 
+<bean id="stateService" class="lamao.soh.core.service.StateService">
+    <constructor-arg ref="appStateManager"/>
+</bean>
+
 <!-- Game beans -->
 <bean id="gameContext" class="lamao.soh.core.SHBreakoutGameContext"/>
 
@@ -70,6 +63,7 @@
         <list>
             <value>interface/main.xml</value>
             <value>interface/ingame.xml</value>
+            <value>interface/blank.xml</value>
         </list>
     </constructor-arg>
     <constructor-arg value="start"/>
@@ -89,9 +83,11 @@
 	<constructor-arg ref="nifty"/>
 	<constructor-arg value="start"/>
 	<constructor-arg ref="constants"/>
+    <constructor-arg ref="stateService"/>
 </bean>
 
-<bean id="levelState" class="lamao.soh.states.SHLevelState">
+<bean id="levelState" class="lamao.soh.states.LevelState">
+    <constructor-arg ref="stateService"/>
 	<constructor-arg ref="dispatcher"/>
 	<constructor-arg ref="nifty"/>
 	<constructor-arg value="ingame"/>
@@ -102,6 +98,7 @@
 
 <bean id="loadLevelState" class="lamao.soh.states.LoadLevelState">
     <constructor-arg ref="levelService"/>
+    <constructor-arg ref="stateService"/>
 </bean>
 
 <bean id="levelStateRootNode" factory-bean="levelState" factory-method="getRootNode"/>
@@ -120,7 +117,7 @@
 </bean>
 
 <bean id="epochsScreenController" class="lamao.soh.ui.controllers.SHEpochsScreenController">
-    <constructor-arg ref="appStateManager"/>
+    <constructor-arg ref="stateService"/>
     <constructor-arg ref="gameContext"/>
     <constructor-arg ref="epochService"/>
 </bean>
@@ -128,7 +125,7 @@
 <bean id="ingameScreenController" class="lamao.soh.ui.controllers.SHInGameScreenController">
     <constructor-arg ref="gameContext"/>
     <constructor-arg ref="constants"/>
-    <constructor-arg ref="appStateManager"/>
+    <constructor-arg ref="stateService"/>
 </bean>
 
 <bean id="aboutScreenController" class="lamao.soh.ui.controllers.SHAboutScreenController">

@@ -15,7 +15,7 @@ import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 
 import com.jme3.scene.Spatial;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 
 /**
  * Launches ball by mouse click. It removes <code>SHPaddleSticker</code> 
@@ -27,13 +27,13 @@ import lamao.soh.states.SHLevelState;
  */
 public class LaunchBallInputListener implements ActionListener
 {
-	private SHLevelState levelState;
+	private LevelState levelState;
 
 	// TODO: Remove this variable
 	/** Class for calculation ball velocity after launching */
 	private SHDefaultPaddleHitHandler handler = new SHDefaultPaddleHitHandler();
 	
-	public LaunchBallInputListener(SHLevelState state)
+	public LaunchBallInputListener(LevelState state)
 	{
 		this.levelState = state;
 	}

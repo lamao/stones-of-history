@@ -15,7 +15,7 @@ import lamao.soh.core.bonuses.SHBonus;
 import lamao.soh.core.controllers.SHDefaultMover;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBrick;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
 
@@ -25,7 +25,7 @@ import lamao.soh.utils.events.SHEventDispatcher;
 public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
     public SHBallBrickCollisionHandler(
                     SHEventDispatcher dispatcher,
-                    SHLevelState levelState) {
+                    LevelState levelState) {
         super(dispatcher, levelState);
     }
 

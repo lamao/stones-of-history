@@ -1,10 +1,11 @@
 package lamao.soh.states;
 
-import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
 import lamao.soh.core.service.SHLevelService;
+import lamao.soh.core.service.StateService;
 
 import java.util.logging.Logger;
 
@@ -21,9 +22,9 @@ public class LoadLevelState extends BasicAppState {
 
     private SHLevel level;
 
-    public LoadLevelState(SHLevelService levelService) {
+    public LoadLevelState(SHLevelService levelService, StateService stateService) {
+        super(stateService);
         this.levelService = levelService;
-        setEnabled(false);
     }
 
     public SHEpoch getEpoch() {
@@ -43,15 +44,14 @@ public class LoadLevelState extends BasicAppState {
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
-        if (!isEnabled() && enabled) {
-            LOG.info("Start loading level");
-            levelService.loadLevelScene(epoch, level);
-            LOG.info("Finish loading level");
-            SHLevelState levelState = getStateManager().getState(SHLevelState.class);
-            levelState.setEnabled(true);
-        } else {
-            super.setEnabled(enabled);
-        }
+    public void initialize(AppStateManager stateManager, Application app) {
+        super.initialize(stateManager, app);
+
+        LOG.info("Start loading level");
+        levelService.loadLevelScene(epoch, level);
+        LOG.info("Finish loading level");
+
+        getStateService().detach(LoadLevelState.class);
+        getStateService().attach(LevelState.class);
     }
 }

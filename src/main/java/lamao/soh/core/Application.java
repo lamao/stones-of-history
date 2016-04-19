@@ -6,8 +6,7 @@ import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppState;
 import com.jme3.asset.plugins.FileLocator;
 import lamao.soh.SHConstants;
-import lamao.soh.console.SHConsoleState;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.core.service.StateService;
 import lamao.soh.states.SHNiftyState;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
@@ -21,6 +20,8 @@ public class Application extends SimpleApplication {
 
     private List<String> assetsLocations;
 
+    private FileSystemXmlApplicationContext applicationContext;
+
     public Application(List<String> assetsLocations) {
         this.assetsLocations = assetsLocations;
         setShowSettings(false);
@@ -32,16 +33,18 @@ public class Application extends SimpleApplication {
         registerPathToAssets();
 
         detachDefaultStates();
+        clearDefaultInputMapping();
         initializeBeans();
-
-        AppState niftyState = getStateManager().getState(SHNiftyState.class);
-        niftyState.setEnabled(true);
-
+        showMainMenu();
     }
 
     private void detachDefaultStates() {
         getStateManager().detach(getStateManager().getState(StatsAppState.class));
         getStateManager().detach(getStateManager().getState(FlyCamAppState.class));
+    }
+
+    private void clearDefaultInputMapping() {
+        getInputManager().clearMappings();
     }
 
     private void registerPathToAssets() {
@@ -55,8 +58,14 @@ public class Application extends SimpleApplication {
         genericApplicationContext.getBeanFactory().registerSingleton(SHConstants.SPRING_APPLICATION_BEAN_NAME, this);
         genericApplicationContext.refresh();
 
-        FileSystemXmlApplicationContext applicationContext = new FileSystemXmlApplicationContext(
+        applicationContext = new FileSystemXmlApplicationContext(
             new String[] {SHConstants.SPRING_CONFIG_LOCATION}, genericApplicationContext);
+    }
+
+    private void showMainMenu() {
+        StateService stateService = applicationContext.getBean(StateService.class);
+        stateService.attach(SHNiftyState.class);
+        stateService.get(SHNiftyState.class).gotoStartScreen();
     }
 
 

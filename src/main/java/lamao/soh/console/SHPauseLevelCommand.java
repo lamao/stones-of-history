@@ -6,7 +6,7 @@
  */
 package lamao.soh.console;
 
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 
 /**
  * Console command to pause level
@@ -15,9 +15,9 @@ import lamao.soh.states.SHLevelState;
  */
 public class SHPauseLevelCommand extends SHBasicCommand
 {
-	private SHLevelState levelState;
+	private LevelState levelState;
 	
-	public SHPauseLevelCommand(SHLevelState levelState)
+	public SHPauseLevelCommand(LevelState levelState)
 	{
 		this.levelState = levelState;
 	}
@@ -25,6 +25,6 @@ public class SHPauseLevelCommand extends SHBasicCommand
 	@Override
 	public void processCommand(String[] args)
 	{
-		levelState.setPause(Boolean.parseBoolean(args[1]));
+		levelState.setEnabled(Boolean.parseBoolean(args[1]));
 	}
 }

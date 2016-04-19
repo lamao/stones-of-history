@@ -3,7 +3,7 @@
  */
 package lamao.soh.core.eventhandlers;
 
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -13,11 +13,11 @@ import lamao.soh.utils.events.SHEventDispatcher;
  */
 public class SHLevelFailedHandler extends SHAbstractEventHandler {
     private SHInGameScreenController inGameScreenController;
-    private SHLevelState levelState;
+    private LevelState levelState;
 
     public SHLevelFailedHandler(
                     SHEventDispatcher dispatcher,
-                    SHLevelState levelState,
+                    LevelState levelState,
                     SHInGameScreenController inGameScreenController) {
         super(dispatcher);
         this.levelState = levelState;
@@ -29,7 +29,7 @@ public class SHLevelFailedHandler extends SHAbstractEventHandler {
      */
     @Override
     public void processEvent(SHEvent event) {
-        levelState.setPause(true);
+        levelState.setEnabled(false);
         inGameScreenController.showFailedMessage();
     }
 

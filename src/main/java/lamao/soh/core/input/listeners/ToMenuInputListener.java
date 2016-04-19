@@ -4,7 +4,7 @@
 package lamao.soh.core.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 
 /**
@@ -12,12 +12,12 @@ import lamao.soh.ui.controllers.SHInGameScreenController;
  * @author lamao
  */
 public class ToMenuInputListener implements ActionListener {
-    private SHLevelState levelState;
+    private LevelState levelState;
 
     private SHInGameScreenController inGameScreenController;
 
     public ToMenuInputListener(
-        SHLevelState levelState,
+        LevelState levelState,
         SHInGameScreenController inGameScreenController) {
         this.levelState = levelState;
         this.inGameScreenController = inGameScreenController;
@@ -25,7 +25,7 @@ public class ToMenuInputListener implements ActionListener {
 
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
-        levelState.setPause(true);
+        levelState.setEnabled(false);
         inGameScreenController.showInGameMenu();
     }
 }

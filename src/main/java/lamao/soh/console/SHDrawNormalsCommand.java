@@ -6,7 +6,7 @@
  */
 package lamao.soh.console;
 
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 
 /**
  * @author lamao
@@ -14,9 +14,9 @@ import lamao.soh.states.SHLevelState;
  */
 public class SHDrawNormalsCommand extends SHBasicCommand
 {
-	private SHLevelState levelState;
+	private LevelState levelState;
 	
-	public SHDrawNormalsCommand(SHLevelState levelState)
+	public SHDrawNormalsCommand(LevelState levelState)
 	{
 		this.levelState = levelState;
 	}
@@ -24,6 +24,7 @@ public class SHDrawNormalsCommand extends SHBasicCommand
 	@Override
 	public void processCommand(String[] args)
 	{
-		levelState.setDrawNormals(Boolean.parseBoolean(args[1]));
+        warning("Disabled command");
+//		levelState.setDrawNormals(Boolean.parseBoolean(args[1]));
 	}
 }

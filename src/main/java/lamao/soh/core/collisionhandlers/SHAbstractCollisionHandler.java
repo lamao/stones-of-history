@@ -3,9 +3,8 @@
  */
 package lamao.soh.core.collisionhandlers;
 
-import lamao.soh.core.SHScene;
 import lamao.soh.core.eventhandlers.SHAbstractEventHandler;
-import lamao.soh.states.SHLevelState;
+import lamao.soh.states.LevelState;
 import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
@@ -13,20 +12,20 @@ import lamao.soh.utils.events.SHEventDispatcher;
  */
 public abstract class SHAbstractCollisionHandler extends SHAbstractEventHandler {
 
-    private SHLevelState levelState;
+    private LevelState levelState;
 
     public SHAbstractCollisionHandler(
         SHEventDispatcher dispatcher,
-        SHLevelState levelState) {
+        LevelState levelState) {
         super(dispatcher);
         this.levelState = levelState;
     }
 
-    public SHLevelState getLevelState() {
+    public LevelState getLevelState() {
         return levelState;
     }
 
-    public void setLevelState(SHLevelState scene) {
+    public void setLevelState(LevelState scene) {
         this.levelState = levelState;
     }
 
