@@ -16,7 +16,7 @@ import de.lessvoid.nifty.Nifty;
  * @author lamao
  *
  */
-public class SHNiftyState extends AbstractAppState {
+public class SHNiftyState extends BasicAppState {
 
 	private Nifty nifty;
 	

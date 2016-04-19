@@ -11,21 +11,18 @@ import java.util.logging.Logger;
 /**
  * Created by Vycheslav Mischeryakov on 13.04.16.
  */
-public class LoadLevelState extends AbstractAppState {
+public class LoadLevelState extends BasicAppState {
 
     private static final Logger LOG = Logger.getLogger(LoadLevelState.class.getName());
 
     private SHLevelService levelService;
 
-    private AppStateManager stateManager;
-
     private SHEpoch epoch;
 
     private SHLevel level;
 
-    public LoadLevelState(SHLevelService levelService, AppStateManager stateManager) {
+    public LoadLevelState(SHLevelService levelService) {
         this.levelService = levelService;
-        this.stateManager = stateManager;
         setEnabled(false);
     }
 
@@ -51,7 +48,7 @@ public class LoadLevelState extends AbstractAppState {
             LOG.info("Start loading level");
             levelService.loadLevelScene(epoch, level);
             LOG.info("Finish loading level");
-            SHLevelState levelState = stateManager.getState(SHLevelState.class);
+            SHLevelState levelState = getStateManager().getState(SHLevelState.class);
             levelState.setEnabled(true);
         } else {
             super.setEnabled(enabled);

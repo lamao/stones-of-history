@@ -3,8 +3,10 @@
  */
 package lamao.soh.states;
 
+import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
@@ -17,6 +19,7 @@ import com.jme3.scene.Node;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.input.listeners.LaunchBallInputListener;
 import lamao.soh.core.input.listeners.MovePaddleInputListener;
+import lamao.soh.core.input.listeners.ToMenuInputListener;
 import lamao.soh.core.model.SHEpochLevelItem;
 import lamao.soh.ui.controllers.SHInGameScreenController;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -31,11 +34,12 @@ import de.lessvoid.nifty.Nifty;
  * Game state for actual game for one level (from starting to winning or loosing).
  * @author lamao
  */
-public class SHLevelState extends AbstractAppState {
+public class SHLevelState extends BasicAppState {
 
     public static final String INPUT_ACTION_PADDLE_LEFT = "paddle-left";
     public static final String INPUT_ACTION_PADDLE_RIGHT = "paddle-right";
     public static final String INPUT_ACTION_BALL_LAUNCH = "ball-launch";
+    public static final String INPUT_ACTION_SHOW_GAME_MENU = "show-game-menu";
 
     /** Level for playing */
     private SHScene scene = null;
@@ -58,9 +62,6 @@ public class SHLevelState extends AbstractAppState {
 
     private SHInGameScreenController inGameScreenController;
 
-
-    private SimpleApplication application;
-
     private Node rootNode;
 
     private Camera camera;
@@ -71,25 +72,34 @@ public class SHLevelState extends AbstractAppState {
 
     private LaunchBallInputListener launchBallInputListener;
 
+    private ToMenuInputListener toMenuInputListener;
+
     // TODO: Move to constructor scene
     public SHLevelState(
-                    SimpleApplication application,
                     SHEventDispatcher dispatcher,
                     Nifty nifty,
                     String startNiftyScreen,
-                    SHInGameScreenController inGameScreenController,
-                    InputManager inputManager) {
+                    SHInGameScreenController inGameScreenController) {
         super();
 
-        this.application = application;
-        rootNode = application.getRootNode();
-        camera = application.getCamera();
         this.dispatcher = dispatcher;
         this.nifty = nifty;
         this.startNiftyScreen = startNiftyScreen;
         this.inGameScreenController = inGameScreenController;
-        this.inputManager = inputManager;
         setEnabled(false);
+
+        paddleInputListener = new MovePaddleInputListener(this);
+        launchBallInputListener = new LaunchBallInputListener(this);
+        toMenuInputListener = new ToMenuInputListener(this, inGameScreenController);
+
+    }
+
+    @Override
+    public void initialize(AppStateManager stateManager, Application app) {
+        SimpleApplication simpleApplication = (SimpleApplication)app;
+        rootNode = simpleApplication.getRootNode();
+        camera = simpleApplication.getCamera();
+        inputManager = simpleApplication.getInputManager();
 
         PointLight light = new PointLight();
         light.setPosition(new Vector3f(0, 3, 3));
@@ -99,14 +109,16 @@ public class SHLevelState extends AbstractAppState {
         camera.setLocation(new Vector3f(0, 13, 18));
         camera.lookAt(new Vector3f(0, 0, 0), Vector3f.UNIT_Y);
 
+        super.initialize(stateManager, app);
     }
 
-    private void initInputListeners() {
-        paddleInputListener = new MovePaddleInputListener(this);
-        launchBallInputListener = new LaunchBallInputListener(this);
-        inputManager.addListener(paddleInputListener, INPUT_ACTION_PADDLE_LEFT, INPUT_ACTION_PADDLE_RIGHT);
-        inputManager.addListener(launchBallInputListener, INPUT_ACTION_BALL_LAUNCH);
+    @Override
+    public void cleanup() {
+        super.cleanup();
+
+        rootNode.removeLight(rootNode.getLocalLightList().iterator().next());
     }
+
 
     private void setupInputMappings() {
         inputManager.addMapping(INPUT_ACTION_PADDLE_LEFT,
@@ -118,9 +130,14 @@ public class SHLevelState extends AbstractAppState {
         inputManager.addMapping(INPUT_ACTION_BALL_LAUNCH,
             new MouseButtonTrigger(MouseInput.BUTTON_RIGHT),
             new KeyTrigger(KeyInput.KEY_SPACE));
+        inputManager.addMapping(INPUT_ACTION_SHOW_GAME_MENU, new KeyTrigger(KeyInput.KEY_ESCAPE));
+
+        inputManager.addListener(paddleInputListener, INPUT_ACTION_PADDLE_LEFT, INPUT_ACTION_PADDLE_RIGHT);
+        inputManager.addListener(launchBallInputListener, INPUT_ACTION_BALL_LAUNCH);
+        inputManager.addListener(toMenuInputListener, INPUT_ACTION_SHOW_GAME_MENU);
     }
 
-    private void clearMappings() {
+    private void clearInputMappings() {
         inputManager.clearMappings();
     }
 
@@ -152,31 +169,28 @@ public class SHLevelState extends AbstractAppState {
 
     @Override
     public void setEnabled(boolean enabled) {
-        if (!isEnabled() && enabled) {
-            if (!rootNode.hasChild(scene.getRootNode())) {
-                rootNode.attachChild(scene.getRootNode());
-            }
-            initInputListeners();
-            setupInputMappings();
-            // TODO: Uncomment for game
+        if (isInitialized()) {
+            if (!isEnabled() && enabled) {
+                if (!rootNode.hasChild(scene.getRootNode())) {
+                    rootNode.attachChild(scene.getRootNode());
+                }
+                setupInputMappings();
+                // TODO: Uncomment for game
 //            inputManager.setCursorVisible(false);
-            setPause(false);
-            nifty.gotoScreen(startNiftyScreen);
-        } else if (isEnabled() && !enabled) {
-            clearMappings();
-            if (scene != null) {
-                rootNode.detachChild(scene.getRootNode());
+                setPause(false);
+                nifty.gotoScreen(startNiftyScreen);
+            } else if (isEnabled() && !enabled) {
+                clearInputMappings();
+                if (scene != null) {
+                    rootNode.detachChild(scene.getRootNode());
+                }
+                nifty.exit();
             }
-            nifty.exit();
         }
         super.setEnabled(enabled);
     }
 
-    @Override
-    public void cleanup() {
-        super.cleanup();
 
-    }
 
     public void setPause(boolean pause) {
         this.pause = pause;

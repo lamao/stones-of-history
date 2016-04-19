@@ -92,19 +92,16 @@
 </bean>
 
 <bean id="levelState" class="lamao.soh.states.SHLevelState">
-    <constructor-arg ref="application"/>
 	<constructor-arg ref="dispatcher"/>
 	<constructor-arg ref="nifty"/>
 	<constructor-arg value="ingame"/>
 	<constructor-arg ref="ingameScreenController"/>
-    <constructor-arg ref="inputManager"/>
-	
+
 	<property name="scene" ref="scene"/>
 </bean>
 
 <bean id="loadLevelState" class="lamao.soh.states.LoadLevelState">
     <constructor-arg ref="levelService"/>
-    <constructor-arg ref="appStateManager"/>
 </bean>
 
 <bean id="levelStateRootNode" factory-bean="levelState" factory-method="getRootNode"/>

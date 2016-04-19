@@ -11,14 +11,14 @@ import lamao.soh.ui.controllers.SHInGameScreenController;
  * Show main menu
  * @author lamao
  */
-public class SHToMenuKeyAction implements ActionListener {
+public class ToMenuInputListener implements ActionListener {
     private SHLevelState levelState;
 
     private SHInGameScreenController inGameScreenController;
 
-    public SHToMenuKeyAction(
-                    SHLevelState levelState,
-                    SHInGameScreenController inGameScreenController) {
+    public ToMenuInputListener(
+        SHLevelState levelState,
+        SHInGameScreenController inGameScreenController) {
         this.levelState = levelState;
         this.inGameScreenController = inGameScreenController;
     }
