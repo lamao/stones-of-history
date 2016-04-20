@@ -6,8 +6,6 @@ package lamao.soh.core;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 import lamao.soh.core.bonuses.SHBonus;
-import lamao.soh.core.entities.SHBottomWall;
-import lamao.soh.core.entities.SHBrick;
 
 /**
  * Entity factory for stones of history.
@@ -28,34 +26,31 @@ public class SHBreakoutEntityFactory implements ISHEntityFactory {
 
         SHEntity entity = null;
         if (type != null) {
-            if (type.equals("brick")) {
-                SHBrick brick = new SHBrick();
-                String value = model.getUserData("strength");
-                if (value != null) {
-                    if (value.equals("super")) {
-                        brick.setStrength(Integer.MAX_VALUE);
-                    } else {
-                        brick.setStrength(Integer.parseInt(value));
-                    }
-                }
-                value = model.getUserData("glass");
-                if (value != null) {
-                    brick.setGlass(Boolean.parseBoolean(value));
-                }
-
-                value = model.getUserData("bonus");
-                if (value != null) {
-                    throw new UnsupportedOperationException();
+            if (false) {
+//            if (type.equals("brick")) {
+//                throw new UnsupportedOperationException();
+//                SHBrick brick = new SHBrick();
+//                String value = model.getUserData("strength");
+//                if (value != null) {
+//                    if (value.equals("super")) {
+//                        brick.setStrength(Integer.MAX_VALUE);
+//                    } else {
+//                        brick.setStrength(Integer.parseInt(value));
+//                    }
+//                }
+//                value = model.getUserData("glass");
+//                if (value != null) {
+//                    brick.setGlass(Boolean.parseBoolean(value));
+//                }
+//
+//                value = model.getUserData("bonus");
+//                if (value != null) {
 //                    SHBonus bonus = (SHBonus) createEntity(
 //                                    SHUtils.buildMap("type bonus|name " + value));
 //                    brick.setBonus(bonus);
-                }
-
-                entity = brick;
-            } else if (type.equals("bottom-wall")) {
-                entity = new SHBottomWall();
-            } else if (type.equals("wall")) {
-                entity = new SHEntity();
+//                }
+//
+//                entity = brick;
             } else if (type.equals("bonus")) {
                 try {
                     String bonusName = model.getUserData("name");

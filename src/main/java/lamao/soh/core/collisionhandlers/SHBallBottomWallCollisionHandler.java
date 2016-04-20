@@ -4,8 +4,9 @@
  */
 package lamao.soh.core.collisionhandlers;
 
+import com.jme3.scene.Spatial;
+import lamao.soh.core.EntityProperties;
 import lamao.soh.core.entities.SHBall;
-import lamao.soh.core.entities.SHBottomWall;
 import lamao.soh.states.LevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -29,10 +30,10 @@ public class SHBallBottomWallCollisionHandler extends SHAbstractCollisionHandler
     @Override
     public void processEvent(SHEvent event) {
         SHBall ball = event.getParameter("src", SHBall.class);
-        SHBottomWall wall = event.getParameter("dst", SHBottomWall.class);
+        Spatial wall = event.getParameter("dst", Spatial.class);
         SHScene scene = getLevelState().getScene();
 
-        if (wall.isActive()) {
+        if (wall.getUserData(EntityProperties.IS_ACTIVE)) {
             ball.getVelocity().z = -ball.getVelocity().z;
             dispatcher.addEvent("level-wall-hit", this);
         } else {

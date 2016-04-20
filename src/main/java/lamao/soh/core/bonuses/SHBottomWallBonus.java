@@ -5,8 +5,8 @@ package lamao.soh.core.bonuses;
 
 import com.jme3.scene.Spatial;
 
+import lamao.soh.core.EntityProperties;
 import lamao.soh.core.SHScene;
-import lamao.soh.core.entities.SHBottomWall;
 
 /**
  * Activates bottom wall (e.i. player is not failed when ball contact with bottom wall
@@ -29,14 +29,14 @@ public class SHBottomWallBonus extends SHBonus {
 
     @Override
     public void apply(SHScene scene) {
-        SHBottomWall wall = scene.getEntity("bottom-wall", "bottom-wall", SHBottomWall.class);
-        wall.setActive(true);
+        Spatial wall = scene.getEntity("bottom-wall", "bottom-wall", Spatial.class);
+        wall.setUserData(EntityProperties.IS_ACTIVE, true);
     }
 
     @Override
     public void cleanup(SHScene scene) {
-        SHBottomWall wall = scene.getEntity("bottom-wall", "bottom-wall", SHBottomWall.class);
-        wall.setActive(false);
+        Spatial wall = scene.getEntity("bottom-wall", "bottom-wall", Spatial.class);
+        wall.setUserData(EntityProperties.IS_ACTIVE, false);
     }
 
 }

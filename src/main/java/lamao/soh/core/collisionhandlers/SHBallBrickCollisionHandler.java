@@ -9,12 +9,12 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Triangle;
 import com.jme3.math.Vector3f;
 
+import com.jme3.scene.Spatial;
+import lamao.soh.core.EntityConstants;
+import lamao.soh.core.EntityProperties;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
-import lamao.soh.core.bonuses.SHBonus;
-import lamao.soh.core.controllers.SHDefaultMover;
 import lamao.soh.core.entities.SHBall;
-import lamao.soh.core.entities.SHBrick;
 import lamao.soh.states.LevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -31,26 +31,26 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
 
     @Override
     public void processEvent(SHEvent event) {
-        SHBrick brick = event.getParameter("dst", SHBrick.class);
+        Spatial brick = event.getParameter("dst", Spatial.class);
         SHBall ball = event.getParameter("src", SHBall.class);
         CollisionResults collisionResults = event.getParameter("data", CollisionResults.class);
         SHScene scene = getLevelState().getScene();
 
         dispatcher.addEventEx("level-brick-hit", this, "brick", brick);
         onHit(ball, brick, collisionResults);
-        if (brick.getStrength() <= 0) {
+        if (SHUtils.getProperty(brick, EntityProperties.STRENGTH, Integer.class) <= 0) {
             scene.remove(brick);
             dispatcher.addEventEx("level-brick-deleted", this, "brick", brick);
 
-            SHBonus bonus = brick.getBonus();
-            if (bonus != null) {
-                bonus.addControl(new SHDefaultMover());
-                Vector3f bonusLocation = brick.getLocation().clone();
-                bonusLocation.y = 0;
-                bonus.setLocation(bonusLocation);
-                scene.add(bonus.getType(), bonus);
-                dispatcher.addEventEx("level-bonus-extracted", this, "bonus", bonus);
-            }
+//            SHBonus bonus = brick.getBonus();
+//            if (bonus != null) {
+//                bonus.addControl(new SHDefaultMover());
+//                Vector3f bonusLocation = brick.getLocalTranslation().clone();
+//                bonusLocation.y = 0;
+//                bonus.setLocation(bonusLocation);
+//                scene.add(bonus.getType(), bonus);
+//                dispatcher.addEventEx("level-bonus-extracted", this, "bonus", bonus);
+//            }
         }
     }
 
@@ -63,16 +63,22 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
      * <b>NOTE:</b> It is supposed that bricks really intersects with ball. Method doesn't check
      * this.
      */
-    public void onHit(SHBall ball, SHBrick brick, CollisionResults collisionResults) {
+    public void onHit(SHBall ball, Spatial brick, CollisionResults collisionResults) {
+        int brickStrength = brick.getUserData(EntityProperties.STRENGTH);
+
         if (ball.isSuper()) {
-            if (brick.getStrength() != Integer.MAX_VALUE) {
-                brick.setStrength(0);
+            if (!isBrickSuperBrick(brickStrength)) {
+                brick.setUserData(EntityProperties.STRENGTH, 0);
                 return;
             }
         }
 
-        brick.hit();
-        if (brick.isGlass()) {
+
+        if (!isBrickSuperBrick(brickStrength)) {
+            brick.setUserData(EntityProperties.STRENGTH, brickStrength - 1);
+        }
+
+        if (isBrickGlassBrick(brick)) {
             return;
         }
 
@@ -92,5 +98,15 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
         ballVelocity.z = -FastMath.sin(resultAngle) * speed;
 
     }
+
+    private Boolean isBrickGlassBrick(Spatial brick) {
+        Boolean isGlass = brick.getUserData(EntityProperties.IS_GLASS);
+        return isGlass != null && isGlass.booleanValue();
+    }
+
+    private boolean isBrickSuperBrick(int brickStrength) {
+        return brickStrength == EntityConstants.BRICK_SUPER_STRENGTH;
+    }
+
 
 }

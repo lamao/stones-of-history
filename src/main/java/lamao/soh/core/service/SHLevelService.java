@@ -10,6 +10,7 @@ import com.jme3.asset.plugins.FileLocator;
 import com.jme3.bounding.BoundingSphere;
 import com.jme3.scene.Node;
 import lamao.soh.SHConstants;
+import lamao.soh.core.EntityConstants;
 import lamao.soh.core.ISHEntityFactory;
 import lamao.soh.core.SHBreakoutEntityFactory;
 import lamao.soh.core.SHBreakoutGameContext;
@@ -112,7 +113,7 @@ public class SHLevelService {
         paddle.setLocation(0, 0, 7);
 
         ball.setLocation(0, 0, 6);
-        ball.setVelocity(constants.DEFAULT_BALL_VELOCITY.clone());
+        ball.setVelocity(EntityConstants.BALL_DEFAULT_VELOCITY.clone());
         ball.addControl(new SHPaddleSticker(paddle));
 
         scene.add(paddle);

@@ -28,7 +28,7 @@ public class StateService {
         if (get(state.getClass()) == null) {
             states.add(state);
         } else {
-            throw new IllegalArgumentException(String.format("%s state has been already registered"));
+            throw new IllegalArgumentException(String.format("%s state has been already registered", state));
         }
     }
 
@@ -49,10 +49,11 @@ public class StateService {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends AppState> T get(Class<T> stateClass) {
         for (AppState state : states) {
             if (state.getClass().equals(stateClass)) {
-                return (T)state;
+                return (T) state;
             }
         }
         return null;

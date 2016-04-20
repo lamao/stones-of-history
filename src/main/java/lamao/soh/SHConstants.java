@@ -42,7 +42,7 @@ public class SHConstants
 
 	public final String CURSOR_DEFAULT = "default";
 	
-	public final Vector3f DEFAULT_BALL_VELOCITY = new Vector3f(-6, 0, -6);
+
 
     public static final String SPRING_CONFIG_LOCATION = "data/spring/rootApplicationContext.xml";
     public static final String SPRING_APPLICATION_BEAN_NAME = "application";

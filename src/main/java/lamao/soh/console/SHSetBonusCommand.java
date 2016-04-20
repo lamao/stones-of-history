@@ -11,7 +11,6 @@ import lamao.soh.core.ISHEntityFactory;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.bonuses.SHBonus;
-import lamao.soh.core.entities.SHBrick;
 
 /**
  * Adds bonus to brick 

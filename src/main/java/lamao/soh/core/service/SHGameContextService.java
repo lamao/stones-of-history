@@ -5,11 +5,14 @@ package lamao.soh.core.service;
 
 import java.util.List;
 
+import lamao.soh.core.EntityConstants;
+import lamao.soh.core.EntityProperties;
+import lamao.soh.core.EntityTypes;
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHScene;
-import lamao.soh.core.entities.SHBrick;
 
 import com.jme3.scene.Spatial;
+import lamao.soh.core.SHUtils;
 
 /**
  * @author lamao
@@ -25,12 +28,10 @@ public class SHGameContextService {
 
     public void updateNumberOfDeletableBricks(SHBreakoutGameContext context) {
         int numberOfDeletableBricks = 0;
-        List<Spatial> bricks = scene.get("brick");
+        List<Spatial> bricks = scene.get(EntityTypes.BRICK);
         if (bricks != null) {
-            SHBrick brick = null;
-            for (Spatial e : bricks) {
-                brick = (SHBrick) e;
-                if (brick.getStrength() != Integer.MAX_VALUE) {
+            for (Spatial brick : bricks) {
+                if (SHUtils.getProperty(brick, EntityProperties.STRENGTH, Integer.class) != EntityConstants.BRICK_SUPER_STRENGTH) {
                     numberOfDeletableBricks++;
                 }
             }

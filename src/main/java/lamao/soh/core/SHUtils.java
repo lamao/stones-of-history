@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 
 /**
  * Different utility methods
@@ -116,5 +117,10 @@ public class SHUtils
 		}
 		return parameters;
 	}
+
+    public static <T> T getProperty(Spatial spatial, String propertyName, Class<T> propertyClass) {
+        T value = spatial.getUserData(propertyName);
+        return value;
+    }
 	
 }

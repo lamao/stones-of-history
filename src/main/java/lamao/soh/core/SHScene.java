@@ -96,7 +96,7 @@ public class SHScene {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends SHEntity> T getEntity(String type, String name, Class<T> clazz) {
+    public <T extends Spatial> T getEntity(String type, String name, Class<T> clazz) {
         return (T) getEntity(type, name);
     }
 
@@ -138,8 +138,16 @@ public class SHScene {
      * Remove model of specified type. If model is the only model of this type, type will be
      * removed.
      */
-    public void remove(SHEntity entity) {
-        remove(entity.getType(), entity);
+    public void remove(Spatial entity) {
+        if (entity instanceof SHEntity) {
+            SHEntity entityAsSHEntity = (SHEntity)entity;
+            remove(entityAsSHEntity.getType(), entityAsSHEntity);
+        } else if (entity.getUserData(EntityProperties.TYPE) != null) {
+            remove((String)entity.getUserData(EntityProperties.TYPE), entity);
+        } else {
+            throw new IllegalArgumentException("Given spatial is not an entity. Does not have 'type' property");
+        }
+
     }
 
     /**
