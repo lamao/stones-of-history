@@ -122,5 +122,10 @@ public class SHUtils
         T value = spatial.getUserData(propertyName);
         return value;
     }
+
+    public static boolean getPropertyAsBoolean(Spatial spatial, String propertyName) {
+        Boolean value = spatial.getUserData(propertyName);
+        return value != null && value.booleanValue();
+    }
 	
 }

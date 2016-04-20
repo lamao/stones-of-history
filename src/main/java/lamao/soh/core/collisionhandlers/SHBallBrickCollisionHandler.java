@@ -67,18 +67,18 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
         int brickStrength = brick.getUserData(EntityProperties.STRENGTH);
 
         if (ball.isSuper()) {
-            if (!isBrickSuperBrick(brickStrength)) {
+            if (!SHUtils.getPropertyAsBoolean(brick, EntityProperties.IS_SUPER)) {
                 brick.setUserData(EntityProperties.STRENGTH, 0);
                 return;
             }
         }
 
 
-        if (!isBrickSuperBrick(brickStrength)) {
+        if (!SHUtils.getPropertyAsBoolean(brick, EntityProperties.IS_SUPER)) {
             brick.setUserData(EntityProperties.STRENGTH, brickStrength - 1);
         }
 
-        if (isBrickGlassBrick(brick)) {
+        if (SHUtils.getPropertyAsBoolean(brick, EntityProperties.IS_GLASS)) {
             return;
         }
 
@@ -96,17 +96,6 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
         float speed = ballVelocity.length();
         ballVelocity.x = FastMath.cos(resultAngle) * speed;
         ballVelocity.z = -FastMath.sin(resultAngle) * speed;
-
     }
-
-    private Boolean isBrickGlassBrick(Spatial brick) {
-        Boolean isGlass = brick.getUserData(EntityProperties.IS_GLASS);
-        return isGlass != null && isGlass.booleanValue();
-    }
-
-    private boolean isBrickSuperBrick(int brickStrength) {
-        return brickStrength == EntityConstants.BRICK_SUPER_STRENGTH;
-    }
-
 
 }

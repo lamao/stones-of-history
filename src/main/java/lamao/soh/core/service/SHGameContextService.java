@@ -31,7 +31,7 @@ public class SHGameContextService {
         List<Spatial> bricks = scene.get(EntityTypes.BRICK);
         if (bricks != null) {
             for (Spatial brick : bricks) {
-                if (SHUtils.getProperty(brick, EntityProperties.STRENGTH, Integer.class) != EntityConstants.BRICK_SUPER_STRENGTH) {
+                if (!SHUtils.getPropertyAsBoolean(brick, EntityProperties.IS_SUPER)) {
                     numberOfDeletableBricks++;
                 }
             }
