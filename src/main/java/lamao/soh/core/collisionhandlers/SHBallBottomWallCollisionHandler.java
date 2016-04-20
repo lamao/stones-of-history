@@ -4,9 +4,10 @@
  */
 package lamao.soh.core.collisionhandlers;
 
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import lamao.soh.core.EntityProperties;
-import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.SHUtils;
 import lamao.soh.states.LevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -29,16 +30,17 @@ public class SHBallBottomWallCollisionHandler extends SHAbstractCollisionHandler
 
     @Override
     public void processEvent(SHEvent event) {
-        SHBall ball = event.getParameter("src", SHBall.class);
+        Spatial ball = event.getParameter("src", Spatial.class);
         Spatial wall = event.getParameter("dst", Spatial.class);
         SHScene scene = getLevelState().getScene();
 
         if (wall.getUserData(EntityProperties.IS_ACTIVE)) {
-            ball.getVelocity().z = -ball.getVelocity().z;
+            Vector3f ballVelocity = ball.getUserData(EntityProperties.VELOCITY);
+            ballVelocity.z = -ballVelocity.z;
             dispatcher.addEvent("level-wall-hit", this);
         } else {
             scene.remove(ball);
-            if (scene.get(ball.getType()) == null) {
+            if (scene.get(SHUtils.getProperty(ball, EntityProperties.TYPE, String.class)) == null) {
                 dispatcher.addEvent("level-failed", this);
             }
         }

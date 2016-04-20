@@ -3,9 +3,10 @@
  */
 package lamao.soh.core;
 
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 import lamao.soh.core.controllers.SHDefaultBallMover;
 import lamao.soh.core.controllers.SHPaddleSticker;
-import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 
 /**
@@ -16,8 +17,9 @@ import lamao.soh.core.entities.SHPaddle;
  */
 public class SHStickyPaddleHitHandler implements ISHPaddleHitHandler {
     @Override
-    public void execute(SHBall ball, SHPaddle paddle) {
-        if (ball.getVelocity().z > 0) {
+    public void execute(Spatial ball, SHPaddle paddle) {
+        Vector3f ballVelocity = ball.getUserData(EntityProperties.VELOCITY);
+        if (ballVelocity.z > 0) {
             ball.removeControl(SHDefaultBallMover.class);
             ball.addControl(new SHPaddleSticker(paddle));
         }

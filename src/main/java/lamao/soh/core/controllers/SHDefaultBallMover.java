@@ -6,8 +6,9 @@ package lamao.soh.core.controllers;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
-import lamao.soh.core.entities.SHBall;
+import lamao.soh.core.EntityProperties;
 
 /**
  * Moves ball taking into account its velocity
@@ -21,11 +22,9 @@ public class SHDefaultBallMover extends AbstractControl {
      */
     @Override
     public void controlUpdate(float time) {
-        if (getSpatial() != null && getSpatial() instanceof SHBall) {
-            SHBall ball = (SHBall) getSpatial();
-            Vector3f newLocation = getSpatial().getLocalTranslation().add(ball.getVelocity().mult(time));
-            getSpatial().setLocalTranslation(newLocation);
-        }
+        Vector3f ballVelocity = getSpatial().getUserData(EntityProperties.VELOCITY);
+        Vector3f newLocation = getSpatial().getLocalTranslation().add(ballVelocity.mult(time));
+        getSpatial().setLocalTranslation(newLocation);
     }
 
     @Override

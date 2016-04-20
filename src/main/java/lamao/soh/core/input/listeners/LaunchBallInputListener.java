@@ -11,7 +11,6 @@ import lamao.soh.core.SHDefaultPaddleHitHandler;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.controllers.SHDefaultBallMover;
 import lamao.soh.core.controllers.SHPaddleSticker;
-import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 
 import com.jme3.scene.Spatial;
@@ -44,9 +43,8 @@ public class LaunchBallInputListener implements ActionListener
 		{
             SHScene scene = levelState.getScene();
 			SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
-			for (Spatial e : scene.get("ball"))
+			for (Spatial ball : scene.get("ball"))
 			{
-				SHBall ball = (SHBall)e;
                 ball.removeControl(SHPaddleSticker.class);
                 ball.addControl(new SHDefaultBallMover());
                 handler.execute(ball, paddle);

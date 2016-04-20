@@ -51,7 +51,7 @@ public class SHPaddle extends SHEntity {
      * Handles intersection with ball.
      * @param ball - ball
      */
-    public void onHit(SHBall ball) {
+    public void onHit(Spatial ball) {
         if (hitHandler != null) {
             hitHandler.execute(ball, this);
         }

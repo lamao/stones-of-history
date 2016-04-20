@@ -3,12 +3,12 @@
  */
 package lamao.soh.core.bonuses;
 
+import lamao.soh.core.EntityTypes;
 import lamao.soh.core.SHDefaultPaddleHitHandler;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHStickyPaddleHitHandler;
 import lamao.soh.core.controllers.SHDefaultBallMover;
 import lamao.soh.core.controllers.SHPaddleSticker;
-import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 
 import com.jme3.scene.Spatial;
@@ -43,8 +43,7 @@ public class SHStickyPaddleBonus extends SHBonus {
         SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
         paddle.setHitHandler(new SHDefaultPaddleHitHandler());
 
-        for (Spatial entity : scene.get("ball")) {
-            SHBall ball = (SHBall) entity;
+        for (Spatial ball : scene.get(EntityTypes.BALL)) {
             ball.removeControl(SHPaddleSticker.class);
             ball.addControl(new SHDefaultBallMover());
         }

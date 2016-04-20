@@ -3,7 +3,7 @@
  */
 package lamao.soh.core;
 
-import lamao.soh.core.entities.SHBall;
+import com.jme3.scene.Spatial;
 import lamao.soh.core.entities.SHPaddle;
 
 /**
@@ -16,5 +16,5 @@ public interface ISHPaddleHitHandler {
      * @param ball - ball
      * @param paddle - ball
      */
-    public void execute(SHBall ball, SHPaddle paddle);
+    public void execute(Spatial ball, SHPaddle paddle);
 }

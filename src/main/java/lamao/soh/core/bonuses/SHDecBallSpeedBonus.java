@@ -6,9 +6,11 @@ package lamao.soh.core.bonuses;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.jme3.math.Vector3f;
+import lamao.soh.core.EntityProperties;
+import lamao.soh.core.EntityTypes;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
-import lamao.soh.core.entities.SHBall;
 
 import com.jme3.scene.Spatial;
 
@@ -21,7 +23,7 @@ public class SHDecBallSpeedBonus extends SHBonus {
     public final static float DURATION = 5;
     public final static float DEC_PERCENT = 0.5f;
 
-    private List<SHBall> _balls = new LinkedList<SHBall>();
+    private List<Spatial> _balls = new LinkedList<Spatial>();
 
     public SHDecBallSpeedBonus(
                     Spatial model) {
@@ -37,13 +39,13 @@ public class SHDecBallSpeedBonus extends SHBonus {
     public void apply(SHScene scene) {
         float speed;
         double angle;
-        for (Spatial entity : scene.get("ball")) {
-            SHBall ball = (SHBall) entity;
-            speed = ball.getVelocity().length();
-            angle = SHUtils.angle(ball.getVelocity());
+        for (Spatial ball : scene.get(EntityTypes.BALL)) {
+            Vector3f ballVelocity = ball.getUserData(EntityProperties.VELOCITY);
+            speed = ballVelocity.length();
+            angle = SHUtils.angle(ballVelocity);
 
-            ball.getVelocity().x = (float) Math.cos(angle) * speed * (1 - DEC_PERCENT);
-            ball.getVelocity().z = -(float) Math.sin(angle) * speed * (1 - DEC_PERCENT);
+            ballVelocity.x = (float) Math.cos(angle) * speed * (1 - DEC_PERCENT);
+            ballVelocity.z = -(float) Math.sin(angle) * speed * (1 - DEC_PERCENT);
 
             _balls.add(ball);
         }
@@ -53,15 +55,16 @@ public class SHDecBallSpeedBonus extends SHBonus {
     public void cleanup(SHScene scene) {
         float speed;
         double angle;
-        for (SHBall ball : _balls) {
-            speed = ball.getVelocity().length();
-            angle = Math.acos(ball.getVelocity().x / Math.abs(speed));
-            if (ball.getVelocity().z > 0) {
+        for (Spatial ball : _balls) {
+            Vector3f ballVelocity = ball.getUserData(EntityProperties.VELOCITY);
+            speed = ballVelocity.length();
+            angle = Math.acos(ballVelocity.x / Math.abs(speed));
+            if (ballVelocity.z > 0) {
                 angle = 2 * Math.PI - angle;
             }
 
-            ball.getVelocity().x = (float) Math.cos(angle) * speed / (1 - DEC_PERCENT);
-            ball.getVelocity().z = -(float) Math.sin(angle) * speed / (1 - DEC_PERCENT);
+            ballVelocity.x = (float) Math.cos(angle) * speed / (1 - DEC_PERCENT);
+            ballVelocity.z = -(float) Math.sin(angle) * speed / (1 - DEC_PERCENT);
         }
         _balls.clear();
     }

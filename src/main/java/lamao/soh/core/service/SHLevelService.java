@@ -11,13 +11,14 @@ import com.jme3.bounding.BoundingSphere;
 import com.jme3.scene.Node;
 import lamao.soh.SHConstants;
 import lamao.soh.core.EntityConstants;
+import lamao.soh.core.EntityProperties;
+import lamao.soh.core.EntityTypes;
 import lamao.soh.core.ISHEntityFactory;
 import lamao.soh.core.SHBreakoutEntityFactory;
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.controllers.SHPaddleSticker;
-import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
@@ -97,23 +98,21 @@ public class SHLevelService {
     }
 
     private final void levelStartupScript(SHEpoch epoch) {
-        SHBall ball = new SHBall();
-        ball.setType("ball");
-        ball.setName("ball" + ball);
         String ballLocation = epoch.getCommonResources().get("ball").getLocation();
-        Spatial model = assetManager.loadModel(ballLocation);
-        ball.setModel(model.clone());
+        Spatial ball = assetManager.loadModel(ballLocation);
+        ball.setUserData(EntityProperties.TYPE, EntityTypes.BALL);
+        ball.setName("ball" + ball);
+        ball.setLocalTranslation(0, 0, 6);
+        ball.setUserData(EntityProperties.VELOCITY, EntityConstants.BALL_DEFAULT_VELOCITY.clone());
+
 
         SHPaddle paddle = new SHPaddle();
         paddle.setType("paddle");
         paddle.setName("paddle");
         String paddleLocation = epoch.getCommonResources().get("paddle").getLocation();
-        model = assetManager.loadModel(paddleLocation);
-        paddle.setModel(model);
+        paddle.setModel(assetManager.loadModel(paddleLocation));
         paddle.setLocation(0, 0, 7);
 
-        ball.setLocation(0, 0, 6);
-        ball.setVelocity(EntityConstants.BALL_DEFAULT_VELOCITY.clone());
         ball.addControl(new SHPaddleSticker(paddle));
 
         scene.add(paddle);

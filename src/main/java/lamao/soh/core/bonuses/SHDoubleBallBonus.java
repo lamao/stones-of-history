@@ -5,12 +5,13 @@ package lamao.soh.core.bonuses;
 
 import java.util.List;
 
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
+import lamao.soh.core.EntityProperties;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.controllers.SHDefaultBallMover;
-import lamao.soh.core.entities.SHBall;
 
 /**
  * Doubles number of balls
@@ -33,15 +34,16 @@ public class SHDoubleBallBonus extends SHBonus {
     @Override
     public void apply(SHScene scene) {
         List<Spatial> balls = scene.get("ball");
-        SHBall ball;
-        SHBall newBall;
+        Spatial ball;
+        Spatial newBall;
         float angle;
         for (int i = 0; i < balls.size(); i++) {
-            ball = (SHBall) balls.get(i);
+            ball = balls.get(i);
+            Vector3f ballVelocity = ball.getUserData(EntityProperties.VELOCITY);
             newBall = ball.clone();
             newBall.addControl(new SHDefaultBallMover());
 
-            angle = SHUtils.angle(ball.getVelocity());
+            angle = SHUtils.angle(ballVelocity);
             setVelocityAngle(ball, angle + (float) Math.PI / 8);
             setVelocityAngle(newBall, angle - (float) Math.PI / 8);
             scene.add(newBall);
@@ -53,9 +55,10 @@ public class SHDoubleBallBonus extends SHBonus {
      * @param ball - ball
      * @param angle - new velocity
      */
-    private void setVelocityAngle(SHBall ball, float angle) {
-        float speed = ball.getVelocity().length();
-        ball.setVelocity((float) Math.cos(angle) * speed, 0, -(float) Math.sin(angle) * speed);
+    private void setVelocityAngle(Spatial ball, float angle) {
+        float speed = SHUtils.getProperty(ball, EntityProperties.VELOCITY, Vector3f.class).length();
+        Vector3f newVelocity = new Vector3f((float) Math.cos(angle) * speed, 0, -(float) Math.sin(angle) * speed);
+        ball.setUserData(EntityProperties.VELOCITY, newVelocity);
     }
 
     @Override

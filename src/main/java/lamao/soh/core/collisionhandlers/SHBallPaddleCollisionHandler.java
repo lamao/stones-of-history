@@ -4,7 +4,7 @@
  */
 package lamao.soh.core.collisionhandlers;
 
-import lamao.soh.core.entities.SHBall;
+import com.jme3.scene.Spatial;
 import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.states.LevelState;
 import lamao.soh.utils.events.SHEvent;
@@ -23,7 +23,7 @@ public class SHBallPaddleCollisionHandler extends SHAbstractCollisionHandler {
 
     @Override
     public void processEvent(SHEvent event) {
-        SHBall ball = event.getParameter("src", SHBall.class);
+        Spatial ball = event.getParameter("src", Spatial.class);
         SHPaddle paddle = event.getParameter("dst", SHPaddle.class);
 
         dispatcher.addEvent("level-paddle-hit", this, null);

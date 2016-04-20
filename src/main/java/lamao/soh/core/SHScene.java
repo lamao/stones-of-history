@@ -114,8 +114,15 @@ public class SHScene {
         nodeGroup.attachChild(model);
     }
 
-    public void add(SHEntity entity) {
-        add(entity.getType(), entity);
+    public void add(Spatial entity) {
+        if (entity instanceof  SHEntity) {
+            SHEntity entityAsSHEntity = (SHEntity) entity;
+            add(entityAsSHEntity.getType(), entityAsSHEntity);
+        } else if (entity.getUserData(EntityProperties.TYPE) != null) {
+            add((String)entity.getUserData(EntityProperties.TYPE), entity);
+        } else {
+            throw new IllegalArgumentException("Given spatial is not an entity. Does not have 'type' property");
+        }
     }
 
     /**

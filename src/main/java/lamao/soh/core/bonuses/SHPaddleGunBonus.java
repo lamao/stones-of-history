@@ -8,9 +8,7 @@ import com.jme3.bounding.BoundingBox;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.scene.Spatial;
 
-import lamao.soh.SHConstants;
 import lamao.soh.core.SHScene;
-import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHPaddle;
 
 /**
@@ -81,13 +79,13 @@ public class SHPaddleGunBonus extends SHBonus {
                 SHPaddle paddle = _scene.getEntity("paddle", "paddle", SHPaddle.class);
                 BoundingBox bound = (BoundingBox) paddle.getModel().getWorldBound();
 
-                SHBall bullet = new SHBall();
-                bullet.setType("bullet");
-                bullet.setName("bullet" + bullet);
-                bullet.setSuper(true);
-                bullet.setVelocity(0, 2, 0);
-                Spatial bulletModel = null;
                 throw new UnsupportedOperationException();
+//                SHBall bullet = new SHBall();
+//                bullet.setType("bullet");
+//                bullet.setName("bullet" + bullet);
+//                bullet.setSuper(true);
+//                bullet.setVelocity(0, 2, 0);
+//                Spatial bulletModel = null;
 //                SHUtils.createSharedModel("bullet" + bullet, (Spatial) manager
 //                                .get(SHResourceManager.TYPE_MODEL, SHConstants.BULLET));
 //                bullet.setModel(bulletModel);

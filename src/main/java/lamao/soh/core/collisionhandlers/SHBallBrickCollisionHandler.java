@@ -14,7 +14,6 @@ import lamao.soh.core.EntityConstants;
 import lamao.soh.core.EntityProperties;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
-import lamao.soh.core.entities.SHBall;
 import lamao.soh.states.LevelState;
 import lamao.soh.utils.events.SHEvent;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -32,7 +31,7 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
     @Override
     public void processEvent(SHEvent event) {
         Spatial brick = event.getParameter("dst", Spatial.class);
-        SHBall ball = event.getParameter("src", SHBall.class);
+        Spatial ball = event.getParameter("src", Spatial.class);
         CollisionResults collisionResults = event.getParameter("data", CollisionResults.class);
         SHScene scene = getLevelState().getScene();
 
@@ -63,10 +62,10 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
      * <b>NOTE:</b> It is supposed that bricks really intersects with ball. Method doesn't check
      * this.
      */
-    public void onHit(SHBall ball, Spatial brick, CollisionResults collisionResults) {
+    public void onHit(Spatial ball, Spatial brick, CollisionResults collisionResults) {
         int brickStrength = brick.getUserData(EntityProperties.STRENGTH);
 
-        if (ball.isSuper()) {
+        if (SHUtils.getPropertyAsBoolean(ball, EntityProperties.IS_SUPER)) {
             if (!SHUtils.getPropertyAsBoolean(brick, EntityProperties.IS_SUPER)) {
                 brick.setUserData(EntityProperties.STRENGTH, 0);
                 return;
@@ -89,7 +88,7 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
         }
         contactNormal.divideLocal(collisionResults.size()).normalizeLocal();
 
-        Vector3f ballVelocity = ball.getVelocity();
+        Vector3f ballVelocity = ball.getUserData(EntityProperties.VELOCITY);
         float velocityAngle = SHUtils.angle(ballVelocity.mult(-1));
         float normalAngle = SHUtils.angle(contactNormal);
         float resultAngle = velocityAngle + 2 * (normalAngle - velocityAngle);

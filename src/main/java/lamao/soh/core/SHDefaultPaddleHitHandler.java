@@ -3,7 +3,7 @@
  */
 package lamao.soh.core;
 
-import lamao.soh.core.entities.SHBall;
+import com.jme3.scene.Spatial;
 import lamao.soh.core.entities.SHPaddle;
 
 import com.jme3.bounding.BoundingBox;
@@ -17,17 +17,19 @@ import com.jme3.math.Vector3f;
  */
 public class SHDefaultPaddleHitHandler implements ISHPaddleHitHandler {
     @Override
-    public void execute(SHBall ball, SHPaddle paddle) {
-        if (ball.getLocation().z < paddle.getLocation().z && ball.getVelocity().z >= 0) {
+    public void execute(Spatial ball, SHPaddle paddle) {
+        Vector3f ballVelocity = ball.getUserData(EntityProperties.VELOCITY);
+
+        if (ball.getLocalTranslation().z < paddle.getLocation().z && ballVelocity.z >= 0) {
             BoundingBox paddleBound = (BoundingBox) paddle.getModel().getWorldBound();
-            float ballPos = ball.getLocation().x - paddle.getLocation().x
+            float ballPos = ball.getLocalTranslation().x - paddle.getLocation().x
                             + paddleBound.getXExtent();
             float paddleWidth = paddleBound.getXExtent() * 2;
-            float speed = ball.getVelocity().length();
+            float speed = ballVelocity.length();
             Vector3f newVelocity = null;
 
             if (ballPos < 0 || ballPos > paddleWidth) {
-                newVelocity = ball.getVelocity();
+                newVelocity = ballVelocity;
                 newVelocity.x = -newVelocity.x;
                 newVelocity.z = -newVelocity.z;
             } else {
@@ -35,7 +37,7 @@ public class SHDefaultPaddleHitHandler implements ISHPaddleHitHandler {
                 newVelocity = new Vector3f((float) (speed * Math.cos(newAngle)), 0,
                                 -(float) (speed * Math.sin(newAngle)));
             }
-            ball.setVelocity(newVelocity);
+            ball.setUserData(EntityProperties.VELOCITY, newVelocity);
         }
     }
 

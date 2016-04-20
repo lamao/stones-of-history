@@ -9,4 +9,5 @@ public interface EntityProperties {
     String STRENGTH = "strength";
     String IS_GLASS = "isGlass";
     String IS_SUPER = "isSuper";
+    String VELOCITY = "velocity";
 }
