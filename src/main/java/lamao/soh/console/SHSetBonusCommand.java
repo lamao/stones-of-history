@@ -7,7 +7,6 @@
 
 package lamao.soh.console;
 
-import lamao.soh.core.ISHEntityFactory;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.SHUtils;
 import lamao.soh.core.bonuses.SHBonus;
@@ -20,13 +19,11 @@ import lamao.soh.core.bonuses.SHBonus;
 public class SHSetBonusCommand extends SHBasicCommand
 {
 	private SHScene scene;
-	private ISHEntityFactory entityFactory;
-	
-	public SHSetBonusCommand(SHScene scene, ISHEntityFactory entityFactory)
+
+	public SHSetBonusCommand(SHScene scene)
 	{
 		super(2, 2);
 		this.scene = scene;
-		this.entityFactory = entityFactory;
 	}
 	
 	@Override

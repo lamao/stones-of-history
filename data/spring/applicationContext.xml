@@ -29,7 +29,6 @@
 	<constructor-arg ref="constants"/>
 	<constructor-arg ref="gameContextService"/>
     <constructor-arg ref="assetManager"/>
-    <constructor-arg ref="entityFactory"/>
 </bean>
 
 <bean id="epochService" class="lamao.soh.core.service.SHEpochService">
@@ -48,10 +47,6 @@
 
 <!-- Game beans -->
 <bean id="gameContext" class="lamao.soh.core.SHBreakoutGameContext"/>
-
-<bean id="entityFactory" class="lamao.soh.core.SHBreakoutEntityFactory">
-	<constructor-arg ref="assetManager"/>
-</bean>
 
 <bean id="scene" class="lamao.soh.core.SHScene">
 	<constructor-arg ref="collisionProcessor"/>

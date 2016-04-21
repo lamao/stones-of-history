@@ -27,23 +27,24 @@ public class SHBonusPaddleCollisionHandler extends SHAbstractCollisionHandler {
         SHBonus bonus = event.getParameter("src", SHBonus.class);
         SHScene scene = getLevelState().getScene();
 
-        scene.remove(bonus);
-        boolean needAdd = true;
-        if (bonus.isAddictive()) {
-            String eventName = "bonus-over-" + bonus.getType();
-            if (dispatcher.hasTimeEvent(eventName)) {
-                needAdd = false;
-                dispatcher.prolongTimeEvent(eventName, bonus.getDuration());
-                dispatcher.addEventEx("level-bonus-prolongated", this, "bonus", bonus);
-            }
-        }
-        if (needAdd) {
-            String eventType = "bonus-over-" + bonus;
-            dispatcher.addEventExWithTime(eventType, this, bonus.getDuration(), "bonus", bonus);
-            dispatcher.addHandler(eventType, new SHBonusTimeOverEventHandler(dispatcher, scene));
-            bonus.apply(scene);
-            dispatcher.addEventEx("level-bonus-activated", this, "bonus", bonus);
-        }
+        throw new UnsupportedOperationException();
+//        scene.remove(bonus);
+//        boolean needAdd = true;
+//        if (bonus.isAddictive()) {
+//            String eventName = "bonus-over-" + bonus.getType();
+//            if (dispatcher.hasTimeEvent(eventName)) {
+//                needAdd = false;
+//                dispatcher.prolongTimeEvent(eventName, bonus.getDuration());
+//                dispatcher.addEventEx("level-bonus-prolongated", this, "bonus", bonus);
+//            }
+//        }
+//        if (needAdd) {
+//            String eventType = "bonus-over-" + bonus;
+//            dispatcher.addEventExWithTime(eventType, this, bonus.getDuration(), "bonus", bonus);
+//            dispatcher.addHandler(eventType, new SHBonusTimeOverEventHandler(dispatcher, scene));
+//            bonus.apply(scene);
+//            dispatcher.addEventEx("level-bonus-activated", this, "bonus", bonus);
+//        }
     }
 
 }

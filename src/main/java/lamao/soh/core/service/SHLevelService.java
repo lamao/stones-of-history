@@ -7,15 +7,12 @@ import java.io.File;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.plugins.FileLocator;
-import com.jme3.bounding.BoundingSphere;
 import com.jme3.scene.Node;
 import lamao.soh.SHConstants;
 import lamao.soh.core.EntityConstants;
 import lamao.soh.core.EntityProperties;
 import lamao.soh.core.EntityTypes;
-import lamao.soh.core.ISHEntityFactory;
 import lamao.soh.core.SHBreakoutGameContext;
-import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.controllers.SHPaddleSticker;
 import lamao.soh.core.model.entity.SHEpoch;
@@ -41,23 +38,19 @@ public class SHLevelService {
 
     private AssetManager assetManager;
 
-    private ISHEntityFactory entityFactory;
-
     public SHLevelService(
                     SHEventDispatcher dispatcher,
                     SHScene scene,
                     SHBreakoutGameContext context,
                     SHConstants constants,
                     SHGameContextService gameContextService,
-                    AssetManager assetManager,
-                    ISHEntityFactory entityFactory) {
+                    AssetManager assetManager) {
         this.dispatcher = dispatcher;
         this.scene = scene;
         this.context = context;
         this.constants = constants;
         this.gameContextService = gameContextService;
         this.assetManager = assetManager;
-        this.entityFactory = entityFactory;
     }
 
     public void loadLevelScene(SHEpoch epoch, SHLevel level) {

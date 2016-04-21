@@ -6,7 +6,6 @@ package lamao.soh.core.input.listeners;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.scene.Spatial;
 import lamao.soh.SHOptions;
-import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
 import lamao.soh.states.LevelState;
 

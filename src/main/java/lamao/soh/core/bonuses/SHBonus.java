@@ -5,7 +5,6 @@ package lamao.soh.core.bonuses;
 
 import com.jme3.scene.Spatial;
 
-import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
 
 /**
@@ -13,7 +12,7 @@ import lamao.soh.core.SHScene;
  * @author lamao
  */
 @SuppressWarnings("serial")
-public abstract class SHBonus extends SHEntity {
+public abstract class SHBonus {
     /** Duration of bonus. NaN for persistent bonus (e.g. additional life) */
     private float duration = 0;
 
@@ -24,7 +23,8 @@ public abstract class SHBonus extends SHEntity {
 
     public SHBonus(
                     Spatial model) {
-        super(model);
+        throw new UnsupportedOperationException();
+//        super(model);
     }
 
     public SHBonus() {
