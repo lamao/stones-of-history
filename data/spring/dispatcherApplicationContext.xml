@@ -83,7 +83,7 @@
 						<constructor-arg value="scene-collision-ball-paddle"/>
 					</bean>
 				</key>
-				<bean class="lamao.soh.core.collisionhandlers.SHBallPaddleCollisionHandler">
+				<bean class="lamao.soh.core.collisionhandlers.SHDefaultBallPaddleCollisionHandler">
 					<constructor-arg ref="dispatcher"/>
 					<constructor-arg ref="levelState"/>
 				</bean>

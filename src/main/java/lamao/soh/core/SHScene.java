@@ -64,16 +64,16 @@ public class SHScene {
     }
 
     /**
-     * Returns only those spatials of type <code>type</type> that are subclasses of SHEntity
+     * Returns only spatials of type <code>type</type>
      * @param type - type name
-     * @return list of entities of that type. All Spatial instances are skipped
+     * @return list of entities of that type.
      */
-    public List<SHEntity> getEntities(String type) {
+    public List<Spatial> getEntities(String type) {
         List<Spatial> spatials = get(type);
-        List<SHEntity> entities = new ArrayList<SHEntity>();
+        List<Spatial> entities = new ArrayList<Spatial>();
         for (Spatial spatial : spatials) {
-            if (spatial instanceof SHEntity) {
-                entities.add((SHEntity) spatial);
+            if (spatial.getUserData(EntityProperties.TYPE) != null) {
+                entities.add(spatial);
             }
         }
         return entities;
@@ -87,17 +87,12 @@ public class SHScene {
         return null;
     }
 
-    public SHEntity getEntity(String type, String name) {
+    public Spatial getEntity(String type, String name) {
         Spatial possibleResult = get(type, name);
-        if (possibleResult instanceof SHEntity) {
-            return (SHEntity) possibleResult;
+        if (possibleResult.getUserData(EntityProperties.TYPE) != null) {
+            return possibleResult;
         }
         return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T extends Spatial> T getEntity(String type, String name, Class<T> clazz) {
-        return (T) getEntity(type, name);
     }
 
     /**
@@ -115,10 +110,7 @@ public class SHScene {
     }
 
     public void add(Spatial entity) {
-        if (entity instanceof  SHEntity) {
-            SHEntity entityAsSHEntity = (SHEntity) entity;
-            add(entityAsSHEntity.getType(), entityAsSHEntity);
-        } else if (entity.getUserData(EntityProperties.TYPE) != null) {
+        if (entity.getUserData(EntityProperties.TYPE) != null) {
             add((String)entity.getUserData(EntityProperties.TYPE), entity);
         } else {
             throw new IllegalArgumentException("Given spatial is not an entity. Does not have 'type' property");
@@ -146,10 +138,7 @@ public class SHScene {
      * removed.
      */
     public void remove(Spatial entity) {
-        if (entity instanceof SHEntity) {
-            SHEntity entityAsSHEntity = (SHEntity)entity;
-            remove(entityAsSHEntity.getType(), entityAsSHEntity);
-        } else if (entity.getUserData(EntityProperties.TYPE) != null) {
+        if (entity.getUserData(EntityProperties.TYPE) != null) {
             remove((String)entity.getUserData(EntityProperties.TYPE), entity);
         } else {
             throw new IllegalArgumentException("Given spatial is not an entity. Does not have 'type' property");

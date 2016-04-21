@@ -14,12 +14,10 @@ import lamao.soh.core.EntityConstants;
 import lamao.soh.core.EntityProperties;
 import lamao.soh.core.EntityTypes;
 import lamao.soh.core.ISHEntityFactory;
-import lamao.soh.core.SHBreakoutEntityFactory;
 import lamao.soh.core.SHBreakoutGameContext;
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.controllers.SHPaddleSticker;
-import lamao.soh.core.entities.SHPaddle;
 import lamao.soh.core.model.entity.SHEpoch;
 import lamao.soh.core.model.entity.SHLevel;
 import lamao.soh.utils.events.SHEventDispatcher;
@@ -67,7 +65,6 @@ public class SHLevelService {
         assetManager.registerLocator(pathToEpochModels, FileLocator.class);
 
         Node scene = (Node) assetManager.loadModel(level.getScene());
-        createGameEntities(scene);
 
         this.scene.setRootNode(scene);
         levelStartupScript(epoch);
@@ -80,23 +77,6 @@ public class SHLevelService {
         return constants.EPOCHS_DIR + File.separator + epoch.getId() + File.separator;
     }
 
-    private void createGameEntities(Node scene) {
-
-        for (Spatial group : scene.getChildren()) {
-            if (group instanceof Node) {
-                Node groupAsNode = (Node) group;
-                for (Spatial entityModel : groupAsNode.getChildren()) {
-                    SHEntity entity = entityFactory.createEntity(entityModel);
-                    if (entity != null) {
-                        entity.setModel(entityModel);
-                        groupAsNode.detachChild(entityModel);
-                        groupAsNode.attachChild(entity);
-                    }
-                }
-            }
-        }
-    }
-
     private final void levelStartupScript(SHEpoch epoch) {
         String ballLocation = epoch.getCommonResources().get("ball").getLocation();
         Spatial ball = assetManager.loadModel(ballLocation);
@@ -106,12 +86,11 @@ public class SHLevelService {
         ball.setUserData(EntityProperties.VELOCITY, EntityConstants.BALL_DEFAULT_VELOCITY.clone());
 
 
-        SHPaddle paddle = new SHPaddle();
-        paddle.setType("paddle");
-        paddle.setName("paddle");
         String paddleLocation = epoch.getCommonResources().get("paddle").getLocation();
-        paddle.setModel(assetManager.loadModel(paddleLocation));
-        paddle.setLocation(0, 0, 7);
+        Spatial paddle = assetManager.loadModel(paddleLocation);
+        paddle.setUserData(EntityProperties.TYPE, EntityTypes.PADDLE);
+        paddle.setName("paddle");
+        paddle.setLocalTranslation(0, 0, 7);
 
         ball.addControl(new SHPaddleSticker(paddle));
 

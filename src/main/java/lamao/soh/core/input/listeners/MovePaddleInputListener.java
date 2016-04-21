@@ -4,6 +4,7 @@
 package lamao.soh.core.input.listeners;
 
 import com.jme3.input.controls.AnalogListener;
+import com.jme3.scene.Spatial;
 import lamao.soh.SHOptions;
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;
@@ -32,7 +33,7 @@ public class MovePaddleInputListener implements AnalogListener {
     public void onAnalog(String name, float value, float tpf) {
 
         SHScene scene = levelState.getScene();
-        SHEntity entity = scene.getEntity("paddle", "paddle");
+        Spatial entity = scene.getEntity("paddle", "paddle");
 
         float dispacement = 0;
         if ("paddle-left".equals(name)) {
@@ -41,14 +42,14 @@ public class MovePaddleInputListener implements AnalogListener {
             dispacement = value;
         }
 
-        float newX = entity.getLocation().x + dispacement * SHOptions.PaddleMouseSensitivity;
+        float newX = entity.getLocalTranslation().x + dispacement * SHOptions.PaddleMouseSensitivity;
         if (newX > rightConstraint) {
             newX = rightConstraint;
         } else if (newX < leftConstraint) {
             newX = leftConstraint;
         }
 
-        entity.setLocation(newX, entity.getLocation().y, entity.getLocation().z);
+        entity.setLocalTranslation(newX, entity.getLocalTranslation().y, entity.getLocalTranslation().z);
     }
 
 }

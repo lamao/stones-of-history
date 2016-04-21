@@ -28,14 +28,14 @@ public class SHIncPaddleWidthBonus extends SHBonus {
 
     @Override
     public void apply(SHScene scene) {
-        Spatial paddle = scene.getEntity("paddle", "paddle").getModel();
+        Spatial paddle = scene.getEntity("paddle", "paddle");
         paddle.getLocalScale().x *= (1 + INCREASE_PERCENT);
         paddle.updateModelBound();
     }
 
     @Override
     public void cleanup(SHScene scene) {
-        Spatial paddle = scene.getEntity("paddle", "paddle").getModel();
+        Spatial paddle = scene.getEntity("paddle", "paddle");
         paddle.getLocalScale().x /= (1 + INCREASE_PERCENT);
         paddle.updateModelBound();
     }

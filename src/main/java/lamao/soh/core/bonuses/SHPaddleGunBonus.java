@@ -9,7 +9,6 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.scene.Spatial;
 
 import lamao.soh.core.SHScene;
-import lamao.soh.core.entities.SHPaddle;
 
 /**
  * Attaches gun to paddle.
@@ -35,9 +34,8 @@ public class SHPaddleGunBonus extends SHBonus {
 
     @Override
     public void apply(SHScene scene) {
-        SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
-
         throw new UnsupportedOperationException();
+//        SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 //        Spatial gunModel = (Spatial) manager.get(SHResourceManager.TYPE_MODEL,
 //                        SHConstants.PADDLE_GUN);
 //
@@ -49,9 +47,9 @@ public class SHPaddleGunBonus extends SHBonus {
 
     @Override
     public void cleanup(SHScene scene) {
-        SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 
         throw new UnsupportedOperationException();
+//        SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
 //        Spatial model = (Spatial) manager.get(SHResourceManager.TYPE_MODEL, SHConstants.PADDLE);
 //
 //        paddle.setModel(model);
@@ -76,10 +74,10 @@ public class SHPaddleGunBonus extends SHBonus {
             _timeSinceLastFire += tpf;
             if (_timeSinceLastFire > FIRE_INTERVAL) {
                 _timeSinceLastFire = 0;
-                SHPaddle paddle = _scene.getEntity("paddle", "paddle", SHPaddle.class);
-                BoundingBox bound = (BoundingBox) paddle.getModel().getWorldBound();
-
                 throw new UnsupportedOperationException();
+//                SHPaddle paddle = _scene.getEntity("paddle", "paddle", SHPaddle.class);
+//                BoundingBox bound = (BoundingBox) paddle.getModel().getWorldBound();
+//
 //                SHBall bullet = new SHBall();
 //                bullet.setType("bullet");
 //                bullet.setName("bullet" + bullet);

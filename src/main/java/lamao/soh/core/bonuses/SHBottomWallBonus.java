@@ -29,13 +29,13 @@ public class SHBottomWallBonus extends SHBonus {
 
     @Override
     public void apply(SHScene scene) {
-        Spatial wall = scene.getEntity("bottom-wall", "bottom-wall", Spatial.class);
+        Spatial wall = scene.getEntity("bottom-wall", "bottom-wall");
         wall.setUserData(EntityProperties.IS_ACTIVE, true);
     }
 
     @Override
     public void cleanup(SHScene scene) {
-        Spatial wall = scene.getEntity("bottom-wall", "bottom-wall", Spatial.class);
+        Spatial wall = scene.getEntity("bottom-wall", "bottom-wall");
         wall.setUserData(EntityProperties.IS_ACTIVE, false);
     }
 

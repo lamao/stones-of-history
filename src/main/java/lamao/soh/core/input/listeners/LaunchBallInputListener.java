@@ -7,14 +7,13 @@
 package lamao.soh.core.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
-import lamao.soh.core.SHDefaultPaddleHitHandler;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.controllers.SHDefaultBallMover;
 import lamao.soh.core.controllers.SHPaddleSticker;
-import lamao.soh.core.entities.SHPaddle;
 
 import com.jme3.scene.Spatial;
 import lamao.soh.states.LevelState;
+import lamao.soh.utils.events.SHEventDispatcher;
 
 /**
  * Launches ball by mouse click. It removes <code>SHPaddleSticker</code> 
@@ -28,13 +27,12 @@ public class LaunchBallInputListener implements ActionListener
 {
 	private LevelState levelState;
 
-	// TODO: Remove this variable
-	/** Class for calculation ball velocity after launching */
-	private SHDefaultPaddleHitHandler handler = new SHDefaultPaddleHitHandler();
-	
-	public LaunchBallInputListener(LevelState state)
+    private SHEventDispatcher dispatcher;
+
+	public LaunchBallInputListener(LevelState state, SHEventDispatcher dispatcher)
 	{
 		this.levelState = state;
+        this.dispatcher = dispatcher;
 	}
 
     @Override
@@ -42,12 +40,13 @@ public class LaunchBallInputListener implements ActionListener
 		if (!isPressed)
 		{
             SHScene scene = levelState.getScene();
-			SHPaddle paddle = scene.getEntity("paddle", "paddle", SHPaddle.class);
+			Spatial paddle = scene.getEntity("paddle", "paddle");
 			for (Spatial ball : scene.get("ball"))
 			{
                 ball.removeControl(SHPaddleSticker.class);
                 ball.addControl(new SHDefaultBallMover());
-                handler.execute(ball, paddle);
+
+                dispatcher.addEventEx("scene-collision-ball-paddle", this, "src", ball, "dst", paddle);
 			}
 			
 		}

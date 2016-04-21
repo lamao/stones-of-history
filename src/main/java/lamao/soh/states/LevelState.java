@@ -83,7 +83,7 @@ public class LevelState extends BasicAppState {
         this.inGameScreenController = inGameScreenController;
 
         paddleInputListener = new MovePaddleInputListener(this);
-        launchBallInputListener = new LaunchBallInputListener(this);
+        launchBallInputListener = new LaunchBallInputListener(this, dispatcher);
         toMenuInputListener = new ToMenuInputListener(this, inGameScreenController);
 
     }
