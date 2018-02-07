@@ -4,3 +4,8 @@
 /*.log
 /data/test/players/*.xml
 /data/test/session/*.xml
+/stones-of-history.iml
+/.idea
+/.gradle
+/session.xml
+/classes

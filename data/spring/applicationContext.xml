@@ -6,12 +6,14 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+<!-- Main application -->
+<!-- bean 'application' is injected in context by java code -->
+
+<bean id="appStateManager" factory-bean="application" factory-method="getStateManager"/>
+<bean id="assetManager" factory-bean="application" factory-method="getAssetManager"/>
+<bean id="inputManager" factory-bean="application" factory-method="getInputManager"/>
+
 <!--  Engine beans -->
-<bean id="gameStateManager" class="com.jmex.game.state.GameStateManager" 
-	factory-method="getInstance"/>
-	
-<bean id="displaySystem" class="com.jme.system.DisplaySystem" 
-	factory-method="getDisplaySystem"/>
 
 <!-- Services -->
 <bean id="constants" class="lamao.soh.SHConstants"/>
@@ -24,10 +26,10 @@
 	<constructor-arg ref="dispatcher"/>
 	<constructor-arg ref="scene"/>
 	<constructor-arg ref="gameContext"/>
-	<constructor-arg ref="resourceManager"/>
-	<constructor-arg ref="sceneLoader"/>
 	<constructor-arg ref="constants"/>
 	<constructor-arg ref="gameContextService"/>
+    <constructor-arg ref="assetManager"/>
+    <constructor-arg ref="entityFactory"/>
 </bean>
 
 <bean id="epochService" class="lamao.soh.core.service.SHEpochService">
@@ -40,35 +42,27 @@
 
 <bean id="sessionService" class="lamao.soh.core.service.SHSessionService"/>
 
+<bean id="stateService" class="lamao.soh.core.service.StateService">
+    <constructor-arg ref="appStateManager"/>
+</bean>
+
 <!-- Game beans -->
 <bean id="gameContext" class="lamao.soh.core.SHBreakoutGameContext"/>
 
-<bean id="resourceManager" class="lamao.soh.utils.SHResourceManager"/>
-
 <bean id="entityFactory" class="lamao.soh.core.SHBreakoutEntityFactory">
-	<constructor-arg ref="resourceManager"/>
+	<constructor-arg ref="assetManager"/>
 </bean>
 
 <bean id="scene" class="lamao.soh.core.SHScene">
 	<constructor-arg ref="collisionProcessor"/>
-	<constructor-arg ref="inGameInputHandler"/>
 </bean>
-
-<bean id="sceneLoader" class="lamao.soh.utils.deled.SHSceneLoader">
-	<constructor-arg ref="scene"/>
-	<constructor-arg ref="entityFactory"/>
-</bean>
-
-<bean id="inGameInputHandler" class="com.jme.input.InputHandler"/>
-<!--bean id="inGameInputHandler" class="lamao.soh.core.input.SHBreakoutInputHandler">
-	
-</bean-->
 
 <bean id="nifty" class="lamao.soh.ui.SHNiftyFactory" factory-method="createNifty">
+    <constructor-arg ref="application"/>
     <constructor-arg>
         <list>
-            <value>data/nifty/main.xml</value>
-            <value>data/nifty/ingame.xml</value>
+            <value>interface/main.xml</value>
+            <value>interface/ingame.xml</value>
         </list>
     </constructor-arg>
     <constructor-arg value="start"/>
@@ -88,26 +82,24 @@
 	<constructor-arg ref="nifty"/>
 	<constructor-arg value="start"/>
 	<constructor-arg ref="constants"/>
+    <constructor-arg ref="stateService"/>
 </bean>
 
-<bean id="levelState" class="lamao.soh.states.SHLevelState">
+<bean id="levelState" class="lamao.soh.states.LevelState">
+    <constructor-arg ref="stateService"/>
 	<constructor-arg ref="dispatcher"/>
-	<constructor-arg ref="displaySystem"/>
-	<constructor-arg ref="nifty"/>
 	<constructor-arg value="ingame"/>
 	<constructor-arg ref="ingameScreenController"/>
-	
+
 	<property name="scene" ref="scene"/>
-	<property name="inputHandler">
-		<bean class="lamao.soh.core.input.SHLevelStateInputHandler">
-			<constructor-arg ref="levelState"/>
-			<constructor-arg ref="ingameScreenController"/>
-		</bean>
-	</property>
 </bean>
 
-<bean id="levelStateRootNode" factory-bean="levelState" 
-	factory-method="getRootNode"/>
+<bean id="loadLevelState" class="lamao.soh.states.LoadLevelState">
+    <constructor-arg ref="levelService"/>
+    <constructor-arg ref="stateService"/>
+</bean>
+
+<bean id="levelStateRootNode" factory-bean="levelState" factory-method="getRootNode"/>
 	
 <!--  Nifty screen controllers -->
 <bean id="mainMenuScreenController" class="lamao.soh.ui.controllers.SHMainMenuScreenController">
@@ -123,16 +115,15 @@
 </bean>
 
 <bean id="epochsScreenController" class="lamao.soh.ui.controllers.SHEpochsScreenController">
-    <constructor-arg ref="gameStateManager"/>
+    <constructor-arg ref="stateService"/>
     <constructor-arg ref="gameContext"/>
     <constructor-arg ref="epochService"/>
-    <constructor-arg ref="levelService"/>
 </bean>
 
 <bean id="ingameScreenController" class="lamao.soh.ui.controllers.SHInGameScreenController">
     <constructor-arg ref="gameContext"/>
     <constructor-arg ref="constants"/>
-    <constructor-arg ref="gameStateManager"/>
+    <constructor-arg ref="stateService"/>
 </bean>
 
 <bean id="aboutScreenController" class="lamao.soh.ui.controllers.SHAboutScreenController">

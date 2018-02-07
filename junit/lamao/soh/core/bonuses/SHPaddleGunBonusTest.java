@@ -14,10 +14,10 @@ import lamao.soh.ngutils.AbstractJmeTest;
 import lamao.soh.utils.SHResourceManager;
 
 
-import com.jme.input.InputHandler;
-import com.jme.input.action.MouseInputAction;
-import com.jme.math.Vector3f;
-import com.jme.scene.Spatial;
+import com.jme3.input.InputHandler;
+import com.jme3.input.action.MouseInputAction;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 
 import org.mockito.Mock;
 import org.testng.annotations.BeforeMethod;

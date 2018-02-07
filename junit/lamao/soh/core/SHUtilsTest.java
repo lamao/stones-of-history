@@ -11,14 +11,14 @@ import java.util.Map;
 
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
-import com.jme.math.Vector3f;
-import com.jme.scene.Node;
-import com.jme.scene.Point;
-import com.jme.scene.SharedMesh;
-import com.jme.scene.SharedNode;
-import com.jme.scene.Spatial;
-import com.jme.scene.shape.Box;
-import com.jme.scene.shape.Sphere;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
+import com.jme3.scene.Point;
+import com.jme3.scene.SharedMesh;
+import com.jme3.scene.SharedNode;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Sphere;
 
 /**
  * @author lamao

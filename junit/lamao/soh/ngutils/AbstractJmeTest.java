@@ -11,12 +11,12 @@ import java.util.logging.Logger;
 
 import org.testng.annotations.BeforeSuite;
 
-import com.jme.input.KeyInput;
-import com.jme.input.MouseInput;
-import com.jme.input.dummy.DummyKeyInput;
-import com.jme.input.dummy.DummyMouseInput;
-import com.jme.system.DisplaySystem;
-import com.jme.system.dummy.DummySystemProvider;
+import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
+import com.jme3.input.dummy.DummyKeyInput;
+import com.jme3.input.dummy.DummyMouseInput;
+import com.jme3.system.DisplaySystem;
+import com.jme3.system.dummy.DummySystemProvider;
 
 /**
  * Base class for all JME related tests. 

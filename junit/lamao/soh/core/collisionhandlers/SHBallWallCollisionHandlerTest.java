@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 import static org.mockito.Mockito.*;
 
-import com.jme.math.Vector3f;
+import com.jme3.math.Vector3f;
 
 import lamao.soh.core.SHEntity;
 import lamao.soh.core.SHScene;

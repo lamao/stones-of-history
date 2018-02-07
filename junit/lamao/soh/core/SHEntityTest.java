@@ -13,10 +13,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
-import com.jme.bounding.BoundingBox;
-import com.jme.math.Vector3f;
-import com.jme.scene.Node;
-import com.jme.scene.shape.Box;
+import com.jme3.bounding.BoundingBox;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
+import com.jme3.scene.shape.Box;
 
 
 /**

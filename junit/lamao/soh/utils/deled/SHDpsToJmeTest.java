@@ -14,9 +14,9 @@ import lamao.soh.ngutils.AbstractJmeTest;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
-import com.jme.scene.Node;
-import com.jme.scene.Spatial;
-import com.jme.scene.state.RenderState.StateType;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.state.RenderState.StateType;
 
 /**
  * @author lamao

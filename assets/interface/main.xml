@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty>
+	<useStyles filename="nifty-default-styles.xml" />
+	<useControls filename="nifty-default-controls.xml" />
+	  
+	<style id="panelStyle">
+		<attributes backgroundColor="#0000" align="center"/>
+	</style>  
+	
+	<style id="listitem-disabled">
+	   <attributes color="#888888ff" textHAlign="left"/>
+	</style>
+	  
+<screen id="start" controller="lamao.soh.ui.controllers.SHMainMenuScreenController">
+ 
+    <layer id="mainLayer" childLayout="vertical" align="center">
+ 
+	 	<panel height="25%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+ 
+ 		<panel id="menuPanel" style="nifty-panel" childLayout="vertical" align="center" valign="center" width="50%" height="50%">
+ 			<!-- <effect>
+	        	<onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
+	          	<onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
+	          	<onHover name="pulsate" scaleFactor="0.008" startColor="#EE7F" endColor="#EE7F" post="true"/>
+	        </effect> -->
+ 
+ 			<control id="helloLabel" name="label" text="Hello, ${CALL.getUserName()}" width="90%" height="5%" align="center"/>
+ 			
+ 			<panel height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+      
+      		<panel id="gameStart" height="20%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
+      			<control id="btnStart" name="button" label="Start Game" align="center" valign="center" width="100%" height="100%" 
+      				visibleToMouse="true">
+        			<interact onClick="gotoScreen(epochs)"/>
+	        	</control>
+	      	</panel>
+	 
+	      	<panel height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	      	
+	      	<panel id="showProfiles" height="20%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
+	        	<control id="btnProfiles" name="button" label="Profiles" align="center" valign="center" width="100%" height="100%"
+	        		visibleToMouse="true">
+	        		<interact onClick="gotoScreen(profiles)"/>
+	        	</control>
+	      	</panel>
+	      	
+	      	<panel height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	 
+            <panel id="about" height="20%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
+                <control id="btnAbout" name="button" label="About" align="center" valign="center" width="100%" height="100%"
+                    visibleToMouse="true">
+                    <interact onClick="gotoScreen(about)"/>
+                </control>
+            </panel>
+          
+            <panel height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	 
+	      	<panel id="gameExit" height="20%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center">
+	        	<control id="btnExit" name="button" label="Exit" align="center" valign="center" width="100%" height="100%"
+	        		visibleToMouse="true">
+	        		<interact onClick="quit()"/>
+	        	</control>
+	      	</panel>
+	      
+	      	<panel height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+ 
+ 		</panel>
+ 		
+ 		<panel height="25%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+    </layer>
+ 
+</screen>
+
+<screen id="profiles" controller="lamao.soh.ui.controllers.SHProfilesScreenController">
+ 
+    <layer id="mainLayer" childLayout="vertical" align="center">
+ 
+	 	<panel height="10%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+ 
+ 		<panel id="menuPanel" style="nifty-panel" childLayout="vertical" align="center" valign="center" width="50%" height="80%">
+ 			<!-- <effect>
+	        	<onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
+	          	<onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
+	          	<onHover name="pulsate" scaleFactor="0.008" startColor="#EE7F" endColor="#EE7F" post="true"/>
+	        </effect> -->
+ 
+ 			<panel height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+      
+      		<panel id="profiles" height="78%" width="90%" align="center" backgroundColor="#BBBF" childLayout="center" visibleToMouse="true">
+      			<control id="listProfiles" name="listBox" vertical="optional" horizontal="optional" displayItems="12" width="100%" height="100%"/>
+      			
+      			<panel height="*" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	      	</panel>
+	      	
+	      	<panel height="2%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+      
+      		<panel id="buttons" height="10%" width="90%" align="center" backgroundColor="#BBBF" childLayout="horizontal" visibleToMouse="true">
+      			<control id="btnSelect" name="button" label="Select" align="center" valign="center" width="25%" height="100%">
+        			<interact onClick="selectProfile()"/>
+	        	</control>
+	        	<control id="btnAdd" name="button" label="Add" align="center" valign="center" width="25%" height="100%">
+        			<interact onClick="showAddProfilesWindow()"/>
+	        	</control>
+	        	<control id="btnDelete" name="button" label="Delete" align="center" valign="center" width="25%" height="100%">
+        			<interact onClick="deleteProfile()"/>
+	        	</control>
+      			<control id="btnBack" name="button" label="Back" align="center" valign="center" width="25%" height="100%">
+        			<interact onClick="gotoScreen(start)"/>
+	        	</control>
+	        	
+	        	<panel height="100%" width="*" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	      	</panel>
+	 
+	      	<panel height="5%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+	      	
+ 		</panel>
+ 		
+ 		<panel height="10%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+    </layer>
+    
+    <layer id="windows" childLayout="absolute">
+    	<control id="addProfiles" name="window" title="Input your name" closeable="false" 
+    			width="50%" height="100px" x="25%" y="35%" visible="false">
+    		<panel id="rootPanel" height="100%" width="100%" style="panelStyle" childLayout="vertical">
+	    		<panel id="text" height="50%" width="90%" style="panelStyle" childLayout="vertical">
+	  				<control id="profileName" name="textfield" maxLength="20"/>
+	  			</panel>
+	  			<panel id="buttons" height="50%" width="90%" style="panelStyle" childLayout="horizontal">
+	  				<control id="btnAdd" name="button" label="Add" align="center" valign="center" width="50%" height="100%">
+	  					<interact onClick="addProfile()"/>
+		        	</control>
+		        	<control id="btnCancel" name="button" label="Cancel" align="center" valign="center" width="50%" height="100%">
+		        		<interact onClick="hideAddProfilesWindow()"/>
+		        	</control>
+	  			</panel>
+	  		</panel>
+  		</control>
+	</layer>
+</screen>
+
+<screen id="epochs" controller="lamao.soh.ui.controllers.SHEpochsScreenController">
+    <layer id="epochsLayer" childLayout="vertical" align="center">
+	    <panel id="topPanel" style="nifty-panel" childLayout="vertical" width="100%" height="100%">
+	        <!-- <effect>
+	             <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
+	             <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
+	             <onHover name="pulsate" scaleFactor="0.008" startColor="#EE7F" endColor="#EE7F" post="true"/>
+	         </effec -->t>
+	    
+		    <panel id="contentPanel" style="panelStyle" childLayout="horizontal" width="100%" height="*">
+		      <panel id="listPanel" style="nifty-panel-no-shadow" childLayout="vertical" width="200px">
+			      <panel id="epochsPanel" childLayout="vertical" height="40%" >
+			          <control id="epochsLabel" name="label" text="Epochs"/>
+			          <control id="epochsList" name="listBox" vertical="optional" horizontal="optional" displayItems="6"
+			                 viewConverterClass="lamao.soh.ui.ListBoxDisablableViewConverter"/>
+			      </panel>
+			      
+			      <panel height="10px"/>
+			      
+			      <panel id="levelsPanel" childLayout="vertical" height="*">
+	                  <control id="levelsLabel" name="label" text="Levels"/>
+	                  <control id="levelsList" name="listBox" vertical="optional" horizontal="optional" displayItems="8"
+	                       viewConverterClass="lamao.soh.ui.ListBoxDisablableViewConverter"/>
+	              </panel>
+              </panel>
+              
+              <panel width="10px"/>
+              
+              <panel id="detailsPanel" style="nifty-panel-no-shadow" childLayout="vertical">
+                  <control id="detailsTitleLabel" name="label" text="Details" width="100%"/>
+                    
+                  <control id="scrollbarPanelId" name="scrollPanel" height="*">
+                      <control id="detailsContentLabel" name="label" text="More details" 
+                        width="100%" height="100%" x="10" y="10" textHAlign="left" textVAlign="top"/>
+                  </control>
+              </panel>
+		    </panel>
+		    
+		    <panel id="buttonPanel" style="panelStyle" childLayout="horizontal" width="100%" height="50px" valign="bottom">
+		        <control id="btnBack" name="button" label="Back" align="left" valign="center">
+		            <interact onClick="gotoScreen(start)"/>
+		        </control>
+		        
+		        <panel width="*"/>
+		        
+		        <control id="btnPlay" name="button" label="Play" align="right" valign="center">
+		            <interact onClick="startGame()"/>
+		        </control>
+		    </panel>
+	    </panel>
+    </layer>
+</screen>
+
+<screen id="about" controller="lamao.soh.ui.controllers.SHAboutScreenController">
+    <layer id="epochsLayer" childLayout="vertical" align="center">
+        <panel height="10%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+        
+        <panel id="listPanel" style="nifty-panel-no-shadow" childLayout="vertical" align="center" width="50%">
+            <control id="labelAbout" name="label" text="${CALL.getAboutContents()}" width="100%"/>
+            <control id="btnBack" name="button" label="Back" align="center">
+                <interact onClick="gotoScreen(start)"/>
+            </control>
+        </panel>
+        
+        <panel height="25%" width="100%" align="center" backgroundColor="#0000" childLayout="center" visibleToMouse="false"/>
+    </layer>
+</screen>
+</nifty>

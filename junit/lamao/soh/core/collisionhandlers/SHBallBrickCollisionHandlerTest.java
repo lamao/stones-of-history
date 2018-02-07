@@ -9,7 +9,7 @@ package lamao.soh.core.collisionhandlers;
 import lamao.soh.core.SHEntityCreator;
 import lamao.soh.core.SHScene;
 import lamao.soh.core.bonuses.SHBonus;
-import lamao.soh.core.bonuses.SHDefaultMover;
+import lamao.soh.core.controllers.SHDefaultMover;
 import lamao.soh.core.entities.SHBall;
 import lamao.soh.core.entities.SHBrick;
 import lamao.soh.utils.events.SHEvent;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.jme.math.Vector3f;
+import com.jme3.math.Vector3f;
 
 /**
  * @author lamao

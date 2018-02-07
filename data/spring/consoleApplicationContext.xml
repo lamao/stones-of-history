@@ -4,6 +4,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 <bean id="consoleState" class="lamao.soh.console.SHConsoleState">
+    <constructor-arg ref="application"/>
+
 	<property name="commands">
 		<map>
 			<entry>
@@ -14,7 +16,6 @@
 				</key>
 				<bean class="lamao.soh.console.SHWireFrameCommand">
 					<constructor-arg ref="levelStateRootNode"/>
-					<constructor-arg ref="displaySystem"/>
 				</bean>
 			</entry>
 			<entry>
@@ -97,7 +98,7 @@
                     </bean>
                 </key>
                 <bean class="lamao.soh.console.SHCameraDirectionCommand">
-                    <constructor-arg ref="displaySystem"/>
+                    <constructor-arg ref="application"/>
                 </bean>
             </entry>
             <entry>
@@ -107,7 +108,7 @@
                     </bean>
                 </key>
                 <bean class="lamao.soh.console.SHCameraLocationCommand">
-                    <constructor-arg ref="displaySystem"/>
+                    <constructor-arg ref="application"/>
                 </bean>
             </entry>
 		</map>

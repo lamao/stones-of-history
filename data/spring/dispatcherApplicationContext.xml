@@ -13,17 +13,6 @@
 			<entry>
 				<key>
 					<bean class="java.lang.String">
-						<constructor-arg value="scene-collision-ball-wall"/>
-					</bean>
-				</key>
-				<bean class="lamao.soh.core.collisionhandlers.SHBallWallCollisionHandler">
-					<constructor-arg ref="dispatcher"/>
-					<constructor-arg ref="scene"/>
-				</bean>
-			</entry>
-			<entry>
-				<key>
-					<bean class="java.lang.String">
 						<constructor-arg value=""/>
 					</bean>
 				</key>
@@ -31,97 +20,20 @@
 					<constructor-arg ref="dispatcher"/>
 				</bean>
 			</entry>
-			<entry>
-				<key>
-					<bean class="java.lang.String">
-						<constructor-arg value="scene-collision-ball-paddle"/>
-					</bean>
-				</key>
-				<bean class="lamao.soh.core.collisionhandlers.SHBallPaddleCollisionHandler">
-					<constructor-arg ref="dispatcher"/>
-					<constructor-arg ref="scene"/>
-				</bean>
-			</entry>
-			<entry>
-				<key>
-					<bean class="java.lang.String">
-						<constructor-arg value="scene-collision-ball-brick"/>
-					</bean>
-				</key>
-				<bean class="lamao.soh.core.collisionhandlers.SHBallBrickCollisionHandler">
-					<constructor-arg ref="dispatcher"/>
-					<constructor-arg ref="scene"/>
-				</bean>
-			</entry>
-			<entry>
-				<key>
-					<bean class="java.lang.String">
-						<constructor-arg value="level-brick-deleted"/>
-					</bean>
-				</key>
-				<bean class="lamao.soh.core.eventhandlers.SHBrickDeletedEventHandler">
-					<constructor-arg ref="dispatcher"/>
-					<constructor-arg ref="gameContext"/>
-					<constructor-arg ref="gameContextService"/>
-					<constructor-arg ref="ingameScreenController"/>
-				</bean>
-			</entry>
-			<entry>
-				<key>
-					<bean class="java.lang.String">
-						<constructor-arg value="scene-collision-bonus-bottom-wall"/>
-					</bean>
-				</key>
-				<bean class="lamao.soh.core.collisionhandlers.SHBonusBottomWallCollisionHandler">
-					<constructor-arg ref="dispatcher"/>
-					<constructor-arg ref="scene"/>
-				</bean>
-			</entry>
-			<entry>
-				<key>
-					<bean class="java.lang.String">
-						<constructor-arg value="scene-collision-bonus-paddle"/>
-					</bean>
-				</key>
-				<bean class="lamao.soh.core.collisionhandlers.SHBonusPaddleCollisionHandler">
-					<constructor-arg ref="dispatcher"/>
-					<constructor-arg ref="scene"/>
-				</bean>
-			</entry>
-			<entry>
-				<key>
-					<bean class="java.lang.String">
-						<constructor-arg value="scene-collision-ball-bottom-wall"/>
-					</bean>
-				</key>
-				<bean class="lamao.soh.core.collisionhandlers.SHBallBottomWallCollisionHandler">
-					<constructor-arg ref="dispatcher"/>
-					<constructor-arg ref="scene"/>
-				</bean>
-			</entry>
-			<entry>
-				<key>
-					<bean class="java.lang.String">
-						<constructor-arg value="scene-collision-bullet-brick"/>
-					</bean>
-				</key>
-				<bean class="lamao.soh.core.collisionhandlers.SHBulletBrickCollisionHandler">
-					<constructor-arg ref="dispatcher"/>
-					<constructor-arg ref="scene"/>
-				</bean>
-			</entry>
-			<entry>
-				<key>
-					<bean class="java.lang.String">
-						<constructor-arg value="scene-collision-bullet-wall"/>
-					</bean>
-				</key>
-				<bean class="lamao.soh.core.collisionhandlers.SHBulletWallCollisionHandler">
-					<constructor-arg ref="dispatcher"/>
-					<constructor-arg ref="scene"/>
-				</bean>
-			</entry>
-			<entry>
+            <entry>
+                <key>
+                    <bean class="java.lang.String">
+                        <constructor-arg value="level-brick-deleted"/>
+                    </bean>
+                </key>
+                <bean class="lamao.soh.core.eventhandlers.SHBrickDeletedEventHandler">
+                    <constructor-arg ref="dispatcher"/>
+                    <constructor-arg ref="gameContext"/>
+                    <constructor-arg ref="gameContextService"/>
+                    <constructor-arg ref="ingameScreenController"/>
+                </bean>
+            </entry>
+            <entry>
                 <key>
                     <bean class="java.lang.String">
                         <constructor-arg value="level-completed"/>
@@ -153,6 +65,96 @@
                     <constructor-arg ref="levelState"/>
                 </bean>
             </entry>
+
+            <entry>
+                <key>
+                    <bean class="java.lang.String">
+                        <constructor-arg value="scene-collision-ball-wall"/>
+                    </bean>
+                </key>
+                <bean class="lamao.soh.core.collisionhandlers.SHBallWallCollisionHandler">
+                    <constructor-arg ref="dispatcher"/>
+                    <constructor-arg ref="levelState"/>
+                </bean>
+            </entry>
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="scene-collision-ball-paddle"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.core.collisionhandlers.SHBallPaddleCollisionHandler">
+					<constructor-arg ref="dispatcher"/>
+					<constructor-arg ref="levelState"/>
+				</bean>
+			</entry>
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="scene-collision-ball-brick"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.core.collisionhandlers.SHBallBrickCollisionHandler">
+					<constructor-arg ref="dispatcher"/>
+					<constructor-arg ref="levelState"/>
+				</bean>
+			</entry>
+
+			<!--<entry>-->
+				<!--<key>-->
+					<!--<bean class="java.lang.String">-->
+						<!--<constructor-arg value="scene-collision-bonus-bottom-wall"/>-->
+					<!--</bean>-->
+				<!--</key>-->
+				<!--<bean class="lamao.soh.core.collisionhandlers.SHBonusBottomWallCollisionHandler">-->
+					<!--<constructor-arg ref="dispatcher"/>-->
+					<!--<constructor-arg ref="scene"/>-->
+				<!--</bean>-->
+			<!--</entry>-->
+			<!--<entry>-->
+				<!--<key>-->
+					<!--<bean class="java.lang.String">-->
+						<!--<constructor-arg value="scene-collision-bonus-paddle"/>-->
+					<!--</bean>-->
+				<!--</key>-->
+				<!--<bean class="lamao.soh.core.collisionhandlers.SHBonusPaddleCollisionHandler">-->
+					<!--<constructor-arg ref="dispatcher"/>-->
+					<!--<constructor-arg ref="scene"/>-->
+				<!--</bean>-->
+			<!--</entry>-->
+			<entry>
+				<key>
+					<bean class="java.lang.String">
+						<constructor-arg value="scene-collision-ball-bottom-wall"/>
+					</bean>
+				</key>
+				<bean class="lamao.soh.core.collisionhandlers.SHBallBottomWallCollisionHandler">
+					<constructor-arg ref="dispatcher"/>
+					<constructor-arg ref="levelState"/>
+				</bean>
+			</entry>
+			<!--<entry>-->
+				<!--<key>-->
+					<!--<bean class="java.lang.String">-->
+						<!--<constructor-arg value="scene-collision-bullet-brick"/>-->
+					<!--</bean>-->
+				<!--</key>-->
+				<!--<bean class="lamao.soh.core.collisionhandlers.SHBulletBrickCollisionHandler">-->
+					<!--<constructor-arg ref="dispatcher"/>-->
+					<!--<constructor-arg ref="scene"/>-->
+				<!--</bean>-->
+			<!--</entry>-->
+			<!--<entry>-->
+				<!--<key>-->
+					<!--<bean class="java.lang.String">-->
+						<!--<constructor-arg value="scene-collision-bullet-wall"/>-->
+					<!--</bean>-->
+				<!--</key>-->
+				<!--<bean class="lamao.soh.core.collisionhandlers.SHBulletWallCollisionHandler">-->
+					<!--<constructor-arg ref="dispatcher"/>-->
+					<!--<constructor-arg ref="scene"/>-->
+				<!--</bean>-->
+			<!--</entry>-->
 		</map>
 	</property>
 </bean>

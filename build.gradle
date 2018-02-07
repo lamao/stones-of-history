@@ -1,0 +1,74 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+
+def projectName = 'stones-of-history'
+def version = '0.1'
+
+def jmeVersion = '3.0.10'
+def springVersion = '3.0.2.RELEASE'
+def testNgVersion = '6.0'
+def xstreamVersion = '1.3'
+
+
+repositories {
+    mavenCentral()
+//    jcenter()
+    maven {
+        url "http://dl.bintray.com/jmonkeyengine/com.jme3"
+    }
+}
+
+dependencies {
+    //jMonkeyEngine 3
+    compile "com.jme3:jme3-core:$jmeVersion"
+    compile "com.jme3:jme3-effects:$jmeVersion"
+    compile "com.jme3:jme3-networking:$jmeVersion"
+    compile "com.jme3:jme3-plugins:$jmeVersion"
+    compile "com.jme3:jme3-jogg:$jmeVersion"
+    compile "com.jme3:jme3-terrain:$jmeVersion"
+    compile "com.jme3:jme3-blender:$jmeVersion"
+    compile "com.jme3:jme3-jbullet:$jmeVersion"
+    compile "com.jme3:jme3-desktop:$jmeVersion"
+    compile "com.jme3:jme3-lwjgl:$jmeVersion"
+
+    // Nifty
+    runtime 'org.bushe:eventbus:1.4'
+    compile "com.jme3:jme3-niftygui:$jmeVersion"
+
+    // Mockito
+    compile 'org.mockito:mockito-core:1.9.0'
+
+    // Spring
+    compile "org.springframework:spring-asm:$springVersion"
+    compile "org.springframework:spring-beans:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-expression:$springVersion"
+
+    //TestNG
+    compile "org.testng:testng:$testNgVersion"
+
+    // XStream
+    compile "com.thoughtworks.xstream:xstream:$xstreamVersion"
+}
+
+jar {
+    baseName = "$projectName"
+    version =  "$version"
+    manifest {
+        attributes 'Main-Class': 'lamao.soh.SHMain'
+    }
+
+    // This line of code recursively collects and copies all of a project's files
+    // and adds them to the JAR itself. One can extend this task, to skip certain
+    // files or particular types at will
+    from {
+        configurations.compile
+                .plus(configurations.runtime)
+                .collect {
+                    it.isDirectory() ? it : zipTree(it)
+                }
+    }
+}
+

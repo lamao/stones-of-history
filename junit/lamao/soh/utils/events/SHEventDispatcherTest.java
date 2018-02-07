@@ -7,8 +7,8 @@
 package lamao.soh.utils.events;
 
 
-import com.jme.util.GameTaskQueue;
-import com.jme.util.GameTaskQueueManager;
+import com.jme3.util.GameTaskQueue;
+import com.jme3.util.GameTaskQueueManager;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
