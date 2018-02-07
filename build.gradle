@@ -8,6 +8,10 @@ apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'idea'
 
+mainClassName = 'lamao.soh.SHMain'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 def projectName = 'stones-of-history'
 def version = '0.1'
 
@@ -63,7 +67,7 @@ jar {
     baseName = "$projectName"
     version =  "$version"
     manifest {
-        attributes 'Main-Class': 'lamao.soh.SHMain'
+        attributes 'Main-Class': mainClassName
     }
 
     // This line of code recursively collects and copies all of a project's files
