@@ -35,10 +35,10 @@ public class SHConstants
     public static List<String> PATHS_TO_ASSETS = Arrays.asList("data", "assets");
 
 	/** Directory where player's profiles are stored */
-	public final String PLAYERS_DIR = "data/players/";
+	public String PLAYERS_DIR = "data/players/";
 
 	/** Directory where epochs are located */
-	public final String EPOCHS_DIR = "data/epochs";
+	public String EPOCHS_DIR = "data/epochs";
 
 	public final String CURSOR_DEFAULT = "default";
 	

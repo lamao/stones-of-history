@@ -63,6 +63,10 @@ dependencies {
     compile "com.thoughtworks.xstream:xstream:$xstreamVersion"
 }
 
+test {
+    useTestNG()
+}
+
 jar {
     baseName = "$projectName"
     version =  "$version"

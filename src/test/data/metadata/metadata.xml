@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="metadata.xsd">
+	<bricks>
+		<brick name="brick1" super="true" glass="true" />
+		<brick name="brick2" bonus="inc-paddle-width" />
+		<brick name="brick3" strength="3" bonus="double-ball"/>
+	</bricks>
+</metadata>
