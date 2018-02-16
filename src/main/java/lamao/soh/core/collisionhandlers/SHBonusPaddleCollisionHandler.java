@@ -34,7 +34,7 @@ public class SHBonusPaddleCollisionHandler extends SHAbstractCollisionHandler {
             if (dispatcher.hasTimeEvent(eventName)) {
                 needAdd = false;
                 dispatcher.prolongTimeEvent(eventName, bonus.getDuration());
-                dispatcher.addEventEx("level-bonus-prolongated", this, "bonus", bonus);
+                dispatcher.addEvent("level-bonus-prolongated", this, "bonus", bonus);
             }
         }
         if (needAdd) {
@@ -42,7 +42,7 @@ public class SHBonusPaddleCollisionHandler extends SHAbstractCollisionHandler {
             dispatcher.addEventExWithTime(eventType, this, bonus.getDuration(), "bonus", bonus);
             dispatcher.addHandler(eventType, new SHBonusTimeOverEventHandler(dispatcher, scene));
             bonus.apply(scene);
-            dispatcher.addEventEx("level-bonus-activated", this, "bonus", bonus);
+            dispatcher.addEvent("level-bonus-activated", this, "bonus", bonus);
         }
     }
 

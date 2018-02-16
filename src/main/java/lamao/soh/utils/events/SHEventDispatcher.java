@@ -121,11 +121,13 @@ public class SHEventDispatcher
 	 * String key, Object value]</code>
 	 * @param type
 	 * @param sender
-	 * @param params
+	 * @param key - first parameter key
+	 * @param value - first parameter value
+	 * @param otherParams - other key-value pairs
 	 */
-	public void addEventEx(String type, Object sender, Object... params)
+	public void addEvent(String type, Object sender, Object key, Object value, Object... otherParams)
 	{
-		addEvent(type, sender, SHUtils.buildEventMap(params));
+		addEvent(type, sender, SHUtils.buildEventMap(key, value, otherParams));
 	}
 	
 	public void addEvent(String type, Object sender, float time, Map<String, Object> params)

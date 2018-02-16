@@ -32,7 +32,7 @@ public class SHBallWallCollisionHandler extends SHAbstractCollisionHandler {
             ball.getVelocity().z = -ball.getVelocity().z;
         }
 
-        dispatcher.addEventEx("level-wall-hit", this, "wall-type", wall.getName());
+        dispatcher.addEvent("level-wall-hit", this, "wall-type", wall.getName());
     }
 
     private Geometry getWall(SHEvent event) {

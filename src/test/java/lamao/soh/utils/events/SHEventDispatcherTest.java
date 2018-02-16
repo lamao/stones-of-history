@@ -105,7 +105,7 @@ public class SHEventDispatcherTest
 		SHEventCounter counter = new SHEventCounter();
 		_dispatcher.addHandler("all", counter);
 
-		_dispatcher.addEventEx("1", null, "1", 2, "3", 4);
+		_dispatcher.addEvent("1", null, "1", 2, "3", 4);
 		assertNotNull(counter.lastEvent.getParameters());
 		assertTrue(2 == counter.lastEvent.getParameters().size());
 		assertEquals(2, counter.lastEvent.getParameter("1"));
@@ -169,7 +169,7 @@ public class SHEventDispatcherTest
 		_dispatcher.addHandler("all", handler);
 
 		_dispatcher.addEvent("type", "name", null);
-		_dispatcher.addEventEx("type1", "name1", null, 100);
+		_dispatcher.addEvent("type1", "name1", null, 100);
 		_dispatcher.reset();
 
 		assertEquals(0, _dispatcher.getHandlers().size());
@@ -188,7 +188,7 @@ public class SHEventDispatcherTest
 		_dispatcher.addHandler("all", handler);
 
 		_dispatcher.addEvent("type", "name", null);
-		_dispatcher.addEventEx("type1", "name1", null, 100);
+		_dispatcher.addEvent("type1", "name1", null, 100);
 		_dispatcher.deleteEvents();
 		assertEquals(0, _dispatcher.getNumberOfTimeEvents());
 

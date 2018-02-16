@@ -36,11 +36,11 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
         CollisionResults collisionResults = event.getParameter("data", CollisionResults.class);
         SHScene scene = getLevelState().getScene();
 
-        dispatcher.addEventEx("level-brick-hit", this, "brick", brick);
+        dispatcher.addEvent("level-brick-hit", this, "brick", brick);
         onHit(ball, brick, collisionResults);
         if (brick.getStrength() <= 0) {
             scene.remove(brick);
-            dispatcher.addEventEx("level-brick-deleted", this, "brick", brick);
+            dispatcher.addEvent("level-brick-deleted", this, "brick", brick);
 
             SHBonus bonus = brick.getBonus();
             if (bonus != null) {
@@ -49,7 +49,7 @@ public class SHBallBrickCollisionHandler extends SHAbstractCollisionHandler {
                 bonusLocation.y = 0;
                 bonus.setLocation(bonusLocation);
                 scene.add(bonus.getType(), bonus);
-                dispatcher.addEventEx("level-bonus-extracted", this, "bonus", bonus);
+                dispatcher.addEvent("level-bonus-extracted", this, "bonus", bonus);
             }
         }
     }

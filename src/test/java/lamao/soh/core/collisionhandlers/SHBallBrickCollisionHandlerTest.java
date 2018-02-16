@@ -76,10 +76,10 @@ public class SHBallBrickCollisionHandlerTest
 		
 		verify(event).getParameter("src", SHBall.class);
 		verify(event).getParameter("dst", SHBrick.class);
-		verify(dispatcher).addEventEx("level-brick-hit", handler, "brick", brick);
+		verify(dispatcher).addEvent("level-brick-hit", handler, "brick", brick);
 		verify(scene).remove(brick);
-		verify(dispatcher).addEventEx("level-brick-deleted", handler, "brick", brick);
-		verify(dispatcher, never()).addEventEx(eq("level-bonus-extracted"), 
+		verify(dispatcher).addEvent("level-brick-deleted", handler, "brick", brick);
+		verify(dispatcher, never()).addEvent(eq("level-bonus-extracted"),
 				same(handler), eq("bonus"), any(SHBonus.class));
 	}
 	
@@ -95,10 +95,10 @@ public class SHBallBrickCollisionHandlerTest
 		
 		verify(event).getParameter("src", SHBall.class);
 		verify(event).getParameter("dst", SHBrick.class);
-		verify(dispatcher).addEventEx("level-brick-hit", handler, "brick", brick);
+		verify(dispatcher).addEvent("level-brick-hit", handler, "brick", brick);
 		verify(scene, never()).remove(brick);
-		verify(dispatcher, never()).addEventEx("level-brick-deleted", handler, "brick", brick);
-		verify(dispatcher, never()).addEventEx(eq("level-bonus-extracted"), 
+		verify(dispatcher, never()).addEvent("level-brick-deleted", handler, "brick", brick);
+		verify(dispatcher, never()).addEvent(eq("level-bonus-extracted"),
 				same(handler), eq("bonus"), any(SHBonus.class));
 	}
 	
@@ -120,16 +120,16 @@ public class SHBallBrickCollisionHandlerTest
 		
 		verify(event).getParameter("src", SHBall.class);
 		verify(event).getParameter("dst", SHBrick.class);
-		verify(dispatcher).addEventEx("level-brick-hit", handler, "brick", brick);
+		verify(dispatcher).addEvent("level-brick-hit", handler, "brick", brick);
 		verify(scene).remove(brick);
-		verify(dispatcher).addEventEx("level-brick-deleted", handler, "brick", brick);
+		verify(dispatcher).addEvent("level-brick-deleted", handler, "brick", brick);
 		verify(scene).add("bonus", bonus);
-		verify(dispatcher).addEventEx(eq("level-bonus-extracted"), 
+		verify(dispatcher).addEvent(eq("level-bonus-extracted"),
 				same(handler), eq("bonus"), any(SHBonus.class));
 		
 		verify(bonus).addControl(any(SHDefaultMover.class));
 		verify(bonus).setLocation(eq(Vector3f.UNIT_X));
 		verify(bonus, times(2)).updateGeometricState();
-		verify(dispatcher).addEventEx("level-bonus-extracted", handler, "bonus", bonus);
+		verify(dispatcher).addEvent("level-bonus-extracted", handler, "bonus", bonus);
 	}
 }
