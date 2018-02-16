@@ -127,7 +127,11 @@ public class SHEventDispatcher
 	 */
 	public void addEvent(String type, Object sender, Object key, Object value, Object... otherParams)
 	{
-		addEvent(type, sender, SHUtils.buildEventMap(key, value, otherParams));
+		Object[] params = new Object[otherParams.length + 2];
+		params[0] = key;
+		params[1] = value;
+		System.arraycopy(otherParams, 0, params, 2, otherParams.length);
+		addEvent(type, sender, SHUtils.buildEventMap(params));
 	}
 	
 	public void addEvent(String type, Object sender, float time, Map<String, Object> params)
